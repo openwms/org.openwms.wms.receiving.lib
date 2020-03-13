@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.common.transport.api;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.common.transport.api.commands.Command;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A AsyncTransportUnitApi is able to process Commands asynchronously.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public interface AsyncTransportUnitApi {
 
     /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
+     * Process the given {@code command}.
+     *
+     * @param command Command to process
      */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
+    void process(Command command);
 }

@@ -13,30 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.api;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import java.util.Set;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ReceivingOrderVO.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public class ReceivingOrderVO {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
+    private String orderId;
+    private Set<ReceivingOrderPositionVO> positions;
+
+    public String getOrderId() {
+        return orderId;
     }
 
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
+    public Set<ReceivingOrderPositionVO> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(Set<ReceivingOrderPositionVO> positions) {
+        this.positions = positions;
+    }
 }

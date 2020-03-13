@@ -13,30 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
-
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+package org.openwms.wms.receiving.impl;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ReceivingService.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public interface ReceivingService {
 
     /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
+     * Create a {@link ReceivingOrder} with containing {@link ReceivingOrderPosition}.
+     *
+     * @param order The ReceivingOrder instance to create
+     * @return The saved instance
      */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
+    ReceivingOrder createOrder(ReceivingOrder order);
 }

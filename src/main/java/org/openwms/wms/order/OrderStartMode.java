@@ -13,30 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
-
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+package org.openwms.wms.order;
 
 /**
- * A ReceivingOrderCreatedEvent.
+ * An OrderStartMode.
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public enum OrderStartMode {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
+    /** Order is started automatically. */
+    AUTOMATIC,
 
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
+    /** Order has to be started manually, e.g. via user interface. */
+    MANUAL;
 }

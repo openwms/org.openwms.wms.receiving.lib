@@ -13,30 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.spi;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.common.transport.api.AsyncTransportUnitApi;
+import org.openwms.wms.receiving.impl.OrderPositionProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A SPITestConfiguration.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+@Configuration
+public class SPITestConfiguration {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
+    @Bean
+    OrderPositionProcessor orderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {
+        return new DefaultOrderPositionProcessor(transportUnitApi);
     }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
 }

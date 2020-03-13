@@ -15,28 +15,21 @@
  */
 package org.openwms.wms.receiving;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.ameba.annotation.NotLogged;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ProcessingException.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+@NotLogged
+public class ProcessingException extends RuntimeException {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
+    public ProcessingException(String message) {
+        super(message);
     }
 
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
+    public ProcessingException(String message, Throwable cause) {
+        super(message, cause);
     }
-
 }

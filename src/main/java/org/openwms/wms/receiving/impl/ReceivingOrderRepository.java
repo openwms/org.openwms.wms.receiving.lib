@@ -13,30 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.impl;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ReceivingOrderRepository.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public interface ReceivingOrderRepository extends JpaRepository<ReceivingOrder, Long> {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
+    Optional<ReceivingOrder> findByOrderId(String orderId);
 }

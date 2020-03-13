@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.api;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.core.units.api.Measurable;
+
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ReceivingOrderPositionVO.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public class ReceivingOrderPositionVO implements Serializable {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
-
+    @NotEmpty
+    private String positionId;
+    @NotEmpty
+    private Measurable<?, ?, ?> quantityExpected;
+    private String sku;
+    private String startMode;
+    private String transportUnitId;
+    private String transportUnitType;
+    private String supplierPackingUnit;
 }

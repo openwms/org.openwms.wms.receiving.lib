@@ -13,30 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.common.transport.impl;
 
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.ameba.annotation.TxService;
+import org.openwms.common.transport.TransportUnit;
+import org.openwms.common.transport.TransportUnitService;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A TransportUnitServiceImpl.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+@TxService
+class TransportUnitServiceImpl implements TransportUnitService {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
+    private final TransportUnitRepository repository;
+
+    public TransportUnitServiceImpl(TransportUnitRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
+    public void upsert(TransportUnit transportUnit) {
+        repository.save(transportUnit);
     }
-
 }

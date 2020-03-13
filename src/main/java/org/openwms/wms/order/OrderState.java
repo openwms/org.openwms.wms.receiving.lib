@@ -13,30 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
-
-import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+package org.openwms.wms.order;
 
 /**
- * A ReceivingOrderCreatedEvent.
+ * An OrderState.
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public enum OrderState {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
-        super(source);
-    }
-
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
-    }
+    UNDEFINED, CREATED, AVAILABLE, PROCESSING, PROCESSED, COMMISSIONING, ON_TRUCK, FAILURE_WMS, FAILURE_TMS, COMPLETED;
 
 }
