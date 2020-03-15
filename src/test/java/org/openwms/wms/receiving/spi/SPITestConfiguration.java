@@ -25,10 +25,10 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Heiko Scherrer
  */
-@Configuration
+//@Configuration
 public class SPITestConfiguration {
 
-    @Bean
+  //  @Bean
     OrderPositionProcessor orderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {
         return new DefaultOrderPositionProcessor(transportUnitApi);
     }
