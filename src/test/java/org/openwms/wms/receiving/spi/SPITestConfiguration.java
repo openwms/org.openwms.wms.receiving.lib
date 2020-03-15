@@ -17,8 +17,6 @@ package org.openwms.wms.receiving.spi;
 
 import org.openwms.common.transport.api.AsyncTransportUnitApi;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * A SPITestConfiguration.
