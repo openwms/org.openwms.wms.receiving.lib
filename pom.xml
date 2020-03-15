@@ -93,7 +93,7 @@
     </reporting>
 
     <build>
-        <finalName>openwms-wms-inventory</finalName>
+        <finalName>openwms-wms-receiving</finalName>
         <plugins>
             <plugin>
                 <groupId>org.asciidoctor</groupId>

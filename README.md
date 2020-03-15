@@ -1,0 +1,1 @@
+# org.openwms.wms.receiving
