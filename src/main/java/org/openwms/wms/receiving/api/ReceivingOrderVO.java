@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 /**
@@ -24,6 +25,7 @@ import java.util.Set;
  */
 public class ReceivingOrderVO {
 
+    @NotEmpty
     private String orderId;
     private Set<ReceivingOrderPositionVO> positions;
 

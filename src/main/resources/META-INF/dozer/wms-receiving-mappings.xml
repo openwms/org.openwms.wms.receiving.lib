@@ -23,4 +23,17 @@
         </custom-converters>
 	</configuration>
 
+	<mapping>
+		<class-a>org.openwms.wms.receiving.api.ReceivingOrderVO</class-a>
+		<class-b>org.openwms.wms.receiving.impl.ReceivingOrder</class-b>
+		<field>
+			<a is-accessible="true">orderId</a>
+			<b is-accessible="true">orderId</b>
+		</field>
+		<field>
+			<a is-accessible="true">positions</a>
+			<b is-accessible="true">positions</b>
+		</field>
+	</mapping>
+
 </mappings>
