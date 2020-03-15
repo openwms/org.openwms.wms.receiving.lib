@@ -86,8 +86,8 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder createOrder(ReceivingOrder order) {
 <span class="fc" id="L87">        Assert.notNull(order, format(&quot;Argument is null or the order identified by the argument already exists: [%s]&quot;, order));</span>
 <span class="fc" id="L88">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
-<span class="fc" id="L90">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L90">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
         }
 <span class="fc" id="L92">        order = repository.save(order);</span>
 <span class="fc" id="L93">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
