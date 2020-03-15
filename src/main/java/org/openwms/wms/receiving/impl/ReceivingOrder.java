@@ -142,4 +142,9 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     public Set<ReceivingOrderPosition> getPositions() {
         return positions == null ? Collections.emptySet() : positions;
     }
+
+    @Override
+    public String toString() {
+        return orderId;
+    }
 }

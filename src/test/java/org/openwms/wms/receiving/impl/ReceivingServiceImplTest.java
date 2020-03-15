@@ -17,9 +17,9 @@ package org.openwms.wms.receiving.impl;
 
 import org.junit.jupiter.api.Test;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
-import org.openwms.wms.receiving.spi.SPITestConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A ReceivingServiceImplTest.
@@ -27,7 +27,9 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Heiko Scherrer
  */
 @ReceivingApplicationTest
-@ContextConfiguration(classes = SPITestConfiguration.class)
+@Transactional
+@Rollback
+//@ContextConfiguration(classes = SPITestConfiguration.class)
 class ReceivingServiceImplTest {
 
     @Autowired
