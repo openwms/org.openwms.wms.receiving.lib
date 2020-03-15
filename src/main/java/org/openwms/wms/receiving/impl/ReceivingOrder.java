@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -139,6 +140,6 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public Set<ReceivingOrderPosition> getPositions() {
-        return positions;
+        return positions == null ? Collections.emptySet() : positions;
     }
 }
