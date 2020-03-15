@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingOrder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving.impl</a> &gt; <span class="el_source">ReceivingOrder.java</span></div><h1>ReceivingOrder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.receiving.impl;
+
+import org.ameba.integration.jpa.ApplicationEntity;
+import org.openwms.values.Problem;
+import org.openwms.wms.order.OrderState;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
+
+/**
+ * A ReceivingOrder.
+ * 
+ * @author Heiko Scherrer
+ */
+@Entity
+@Table(name = &quot;WMS_REC_ORDER&quot;,
+        uniqueConstraints = @UniqueConstraint(name = &quot;UC_ORDER_ID&quot;, columnNames = { &quot;C_ORDER_ID&quot; })
+)
+public class ReceivingOrder extends ApplicationEntity implements Serializable {
+
+    /** Unique order id, business key. */
+    @Column(name = &quot;C_ORDER_ID&quot;, nullable = false)
+    private String orderId;
+
+    /** Current state of this Order. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;C_ORDER_STATE&quot;)
+<span class="pc" id="L55">    private OrderState orderState = OrderState.UNDEFINED;</span>
+
+    /**
+     * Property to lock/unlock an Order.
+     * &lt;ul&gt;
+     * &lt;li&gt;true: locked&lt;/li&gt;
+     * &lt;li&gt;false: unlocked&lt;/li&gt;
+     * &lt;/ul&gt;
+     * Default is {@value}
+     */
+    @Column(name = &quot;C_LOCKED&quot;)
+<span class="pc" id="L66">    private boolean locked = false;</span>
+
+    /** Current priority of the Order. */
+    @Column(name = &quot;C_PRIORITY&quot;)
+    private int priority;
+
+    /** Latest finish date of this Order. */
+    @Column(name = &quot;C_LATEST_DUE&quot;)
+    private ZonedDateTime latestDueDate;
+
+    /** Earliest date the Order can be started. */
+    @Column(name = &quot;C_START_DATE&quot;)
+    private ZonedDateTime startDate;
+
+    /** Date when the Order should be allocated. */
+    @Column(name = &quot;C_NEXT_ALLOC&quot;)
+    private ZonedDateTime nextAllocationDate;
+
+    /** Latest problem that is occurred on this Order. */
+    @Embedded
+    private Problem problem;
+
+    /** All GoodsReceiptPosition this Order has. */
+    @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL})
+    private Set&lt;ReceivingOrderPosition&gt; positions;
+
+    /*~ -------------- Constructors -------------- */
+    /** Used by the JPA provider. */
+<span class="fc" id="L94">    protected ReceivingOrder() {}</span>
+
+<span class="nc" id="L96">    protected ReceivingOrder(String orderId) {</span>
+<span class="nc" id="L97">        this.orderId = orderId;</span>
+<span class="nc" id="L98">    }</span>
+    /*~ --------------- Lifecycle ---------------- */
+    @PrePersist
+    protected void prePersist() {
+<span class="nc" id="L102">        this.orderState = OrderState.CREATED;</span>
+<span class="nc" id="L103">    }</span>
+
+    public String getOrderId() {
+<span class="nc" id="L106">        return orderId;</span>
+    }
+
+    public OrderState getOrderState() {
+<span class="nc" id="L110">        return orderState;</span>
+    }
+
+    public void setOrderState(OrderState orderState) {
+<span class="nc" id="L114">        this.orderState = orderState;</span>
+<span class="nc" id="L115">    }</span>
+
+    public boolean isLocked() {
+<span class="nc" id="L118">        return locked;</span>
+    }
+
+    public int getPriority() {
+<span class="nc" id="L122">        return priority;</span>
+    }
+
+    public ZonedDateTime getLatestDueDate() {
+<span class="nc" id="L126">        return latestDueDate;</span>
+    }
+
+    public ZonedDateTime getStartDate() {
+<span class="nc" id="L130">        return startDate;</span>
+    }
+
+    public ZonedDateTime getNextAllocationDate() {
+<span class="nc" id="L134">        return nextAllocationDate;</span>
+    }
+
+    public Problem getProblem() {
+<span class="nc" id="L138">        return problem;</span>
+    }
+
+    public Set&lt;ReceivingOrderPosition&gt; getPositions() {
+<span class="nc" id="L142">        return positions;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

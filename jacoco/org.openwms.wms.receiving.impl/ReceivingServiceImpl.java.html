@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving.impl</a> &gt; <span class="el_source">ReceivingServiceImpl.java</span></div><h1>ReceivingServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.receiving.impl;
+
+import org.ameba.annotation.Measured;
+import org.ameba.annotation.TxService;
+import org.ameba.exception.ResourceExistsException;
+import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.util.Assert;
+
+import java.util.Optional;
+
+import static java.lang.String.format;
+
+/**
+ * A ReceivingServiceImpl.
+ * 
+ * @author Heiko Scherrer
+ */
+@TxService
+class ReceivingServiceImpl implements ReceivingService {
+
+<span class="fc" id="L39">    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);</span>
+    private final ReceivingOrderRepository repository;
+    private final ApplicationEventPublisher publisher;
+
+<span class="fc" id="L43">    ReceivingServiceImpl(ReceivingOrderRepository repository, ApplicationEventPublisher publisher) {</span>
+<span class="fc" id="L44">        this.repository = repository;</span>
+<span class="fc" id="L45">        this.publisher = publisher;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * {@inheritDoc}
+    public ReceivingOrderPosition createOrderPosition(OrderPositionKey orderPositionKey, String productId,
+            UnitType quantity, String barcode) {
+
+        // Get order data
+        ReceivingOrder order = rcvOrderDao.findByOrderId(orderPositionKey.getOrderId());
+
+        // Search Product
+        Product product = productDao.findBySku(productId);
+
+        List&lt;LoadUnit&gt; loadUnits = loadUnitDao.findByTransportUnit(new Barcode(barcode));
+        String physicalPosition = &quot;&quot;;
+        if (!loadUnits.isEmpty()) {
+            String currentMaxPosition = loadUnits.get(loadUnits.size() - 1).getPhysicalPosition();
+            try {
+                int val = Integer.valueOf(currentMaxPosition);
+                val++;
+                physicalPosition = String.valueOf(val);
+            } catch (NumberFormatException e) {}
+        }
+
+        TransportUnit transportUnit = transportUnitSrv.findByBarcode(new Barcode(barcode));
+
+        LoadUnit loadUnit = new LoadUnit(transportUnit, physicalPosition, product);
+
+        PackagingUnit pu = new PackagingUnit(loadUnit, quantity);
+        ReceivingOrderPosition rcvOrderPosition = new ReceivingOrderPosition(order, orderPositionKey.getPositionNo(),
+                quantity, product);
+        return wmsOrderDao.createOrderPosition(rcvOrderPosition);
+    }
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ReceivingOrder createOrder(ReceivingOrder order) {
+        try {
+<span class="nc" id="L88">            Assert.notNull(order, format(&quot;Argument is null or the order identified by the argument already exists: [%s]&quot;, order));</span>
+<span class="nc" id="L89">            Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (opt.isPresent()) {</span>
+<span class="nc" id="L91">                throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
+            }
+<span class="nc" id="L93">            order = repository.save(order);</span>
+<span class="nc" id="L94">            publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
+<span class="nc" id="L95">            return order;</span>
+<span class="nc" id="L96">        } catch (Exception e) {</span>
+<span class="nc" id="L97">            e.printStackTrace();</span>
+<span class="nc" id="L98">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
