@@ -103,7 +103,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>0%</td>
-<td>11.327</td></tr></table><br />
+<td>45.96</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></section><section>
 <h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
@@ -123,7 +123,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>0%</td>
-<td>8.843</td></tr>
+<td>26.762</td></tr>
 <tr class="a">
 <td><a href="#org.openwms.wms.receiving.impl">org.openwms.wms.receiving.impl</a></td>
 <td>1</td>
@@ -131,7 +131,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>0%</td>
-<td>2.484</td></tr></table><br />
+<td>19.198</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p><section>
 <h3><a name="org.openwms.wms.receiving"></a>org.openwms.wms.receiving</h3><a name="org.openwms.wms.receiving"></a>
 <table border="1" class="table table-striped">
@@ -152,7 +152,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>0%</td>
-<td>8.843</td></tr></table></section><section>
+<td>26.762</td></tr></table></section><section>
 <h3><a name="org.openwms.wms.receiving.impl"></a>org.openwms.wms.receiving.impl</h3><a name="org.openwms.wms.receiving.impl"></a>
 <table border="1" class="table table-striped">
 <tr class="a">
@@ -172,7 +172,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>0%</td>
-<td>2.484</td></tr></table></section><br /></section><section>
+<td>19.198</td></tr></table></section><br /></section><section>
 <h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><section>
 <h3><a name="ReceivingServiceImplTest"></a>ReceivingServiceImplTest</h3><a name="org.openwms.wms.receiving.impl.ReceivingServiceImplTest"></a>
@@ -181,7 +181,7 @@ function toggleDisplay(elementId) {
 <td><a href="#org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder"><figure><img src="images/icon_error_sml.gif" alt="" /></figure></a></td>
 <td><a name="TC_org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder"></a><a href="#org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder">createOrder</a>
 <div class="detailToggle" style="display:inline"><a href="javascript:toggleDisplay('org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder');"><span style="display:inline;" id="org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder-off"> + </span><span style="display:none;" id="org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder-on"> - </span>[ Detail ]</a></div></td>
-<td>0.005</td></tr>
+<td>0</td></tr>
 <tr class="b">
 <td></td>
 <td>Failed to load ApplicationContext</td>
@@ -192,8 +192,14 @@ function toggleDisplay(elementId) {
 <div id="org.openwms.wms.receiving.impl.ReceivingServiceImplTest.createOrder-error" style="display:none;">
 <div>
 <pre>java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderProcessor' defined in file [/home/travis/build/openwms/org.openwms.wms.receiving/target/classes/org/openwms/wms/receiving/impl/OrderProcessor.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.openwms.wms.receiving.impl.OrderPositionProcessor' available: expected single matching bean but found 2: defaultOrderPositionProcessor,orderPositionProcessor
-Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.openwms.wms.receiving.impl.OrderPositionProcessor' available: expected single matching bean but found 2: defaultOrderPositionProcessor,orderPositionProcessor</pre></div></div></td>
+Caused by: org.springframework.context.ApplicationContextException: Failed to start bean 'org.springframework.amqp.rabbit.config.internalRabbitListenerEndpointRegistry'; nested exception is org.springframework.amqp.AmqpIllegalStateException: Fatal exception on listener startup
+Caused by: org.springframework.amqp.AmqpIllegalStateException: Fatal exception on listener startup
+Caused by: org.springframework.amqp.rabbit.listener.QueuesNotAvailableException: Cannot prepare queue for listener. Either the queue doesn't exist or the broker will not allow us to use it.
+Caused by: org.springframework.amqp.rabbit.listener.BlockingQueueConsumer$DeclarationException: Failed to declare queue(s):[wms-shipping-order]
+Caused by: java.io.IOException
+Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method&lt;channel.close&gt;(reply-code=404, reply-text=NOT_FOUND - no queue 'wms-shipping-order' in vhost '/', class-id=50, method-id=10)
+Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method&lt;channel.close&gt;(reply-code=404, reply-text=NOT_FOUND - no queue 'wms-shipping-order' in vhost '/', class-id=50, method-id=10)
+</pre></div></div></td>
 <td></td></tr></table></section><section>
 <h3><a name="ReceivingControllerDocumentation"></a>ReceivingControllerDocumentation</h3><a name="org.openwms.wms.receiving.ReceivingControllerDocumentation"></a>
 <table border="1" class="table table-striped">
@@ -201,7 +207,7 @@ Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No
 <td><a href="#org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index"><figure><img src="images/icon_error_sml.gif" alt="" /></figure></a></td>
 <td><a name="TC_org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index"></a><a href="#org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index">shall_return_index</a>
 <div class="detailToggle" style="display:inline"><a href="javascript:toggleDisplay('org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index');"><span style="display:inline;" id="org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index-off"> + </span><span style="display:none;" id="org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index-on"> - </span>[ Detail ]</a></div></td>
-<td>0.006</td></tr>
+<td>0.01</td></tr>
 <tr class="b">
 <td></td>
 <td>Failed to load ApplicationContext</td>
@@ -212,8 +218,14 @@ Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No
 <div id="org.openwms.wms.receiving.ReceivingControllerDocumentation.shall_return_index-error" style="display:none;">
 <div>
 <pre>java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderProcessor' defined in file [/home/travis/build/openwms/org.openwms.wms.receiving/target/classes/org/openwms/wms/receiving/impl/OrderProcessor.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.openwms.wms.receiving.impl.OrderPositionProcessor' available: expected single matching bean but found 2: defaultOrderPositionProcessor,orderPositionProcessor
-Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.openwms.wms.receiving.impl.OrderPositionProcessor' available: expected single matching bean but found 2: defaultOrderPositionProcessor,orderPositionProcessor</pre></div></div></td>
+Caused by: org.springframework.context.ApplicationContextException: Failed to start bean 'org.springframework.amqp.rabbit.config.internalRabbitListenerEndpointRegistry'; nested exception is org.springframework.amqp.AmqpIllegalStateException: Fatal exception on listener startup
+Caused by: org.springframework.amqp.AmqpIllegalStateException: Fatal exception on listener startup
+Caused by: org.springframework.amqp.rabbit.listener.QueuesNotAvailableException: Cannot prepare queue for listener. Either the queue doesn't exist or the broker will not allow us to use it.
+Caused by: org.springframework.amqp.rabbit.listener.BlockingQueueConsumer$DeclarationException: Failed to declare queue(s):[wms-shipping-order]
+Caused by: java.io.IOException
+Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method&lt;channel.close&gt;(reply-code=404, reply-text=NOT_FOUND - no queue 'wms-shipping-order' in vhost '/', class-id=50, method-id=10)
+Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method&lt;channel.close&gt;(reply-code=404, reply-text=NOT_FOUND - no queue 'wms-shipping-order' in vhost '/', class-id=50, method-id=10)
+</pre></div></div></td>
 <td></td></tr></table></section><br /></section><section>
 <h2><a name="Failure_Details"></a>Failure Details</h2><a name="Failure_Details"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />

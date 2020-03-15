@@ -45,13 +45,8 @@ public class ReceivingController extends AbstractWebController {
 
     @PostMapping(&quot;/v1/receiving&quot;)
     public ResponseEntity&lt;Void&gt; createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
-        try {
-<span class="nc" id="L49">            ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
-<span class="nc" id="L50">            return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
-<span class="nc" id="L51">        } catch (Exception e) {</span>
-<span class="nc" id="L52">            e.printStackTrace();</span>
-<span class="nc" id="L53">            return null;</span>
-        }
+<span class="nc" id="L48">        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
+<span class="nc" id="L49">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

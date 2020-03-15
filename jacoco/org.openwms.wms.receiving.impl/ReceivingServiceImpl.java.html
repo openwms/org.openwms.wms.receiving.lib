@@ -84,19 +84,14 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public ReceivingOrder createOrder(ReceivingOrder order) {
-        try {
-<span class="nc" id="L88">            Assert.notNull(order, format(&quot;Argument is null or the order identified by the argument already exists: [%s]&quot;, order));</span>
-<span class="nc" id="L89">            Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (opt.isPresent()) {</span>
-<span class="nc" id="L91">                throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
-            }
-<span class="nc" id="L93">            order = repository.save(order);</span>
-<span class="nc" id="L94">            publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
-<span class="nc" id="L95">            return order;</span>
-<span class="nc" id="L96">        } catch (Exception e) {</span>
-<span class="nc" id="L97">            e.printStackTrace();</span>
-<span class="nc" id="L98">            return null;</span>
+<span class="nc" id="L87">        Assert.notNull(order, format(&quot;Argument is null or the order identified by the argument already exists: [%s]&quot;, order));</span>
+<span class="nc" id="L88">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L90">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
         }
+<span class="nc" id="L92">        order = repository.save(order);</span>
+<span class="nc" id="L93">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
+<span class="nc" id="L94">        return order;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
