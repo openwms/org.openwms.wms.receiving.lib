@@ -45,14 +45,9 @@ class OrderProcessor {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
 <span class="fc" id="L47">    public void onCreate(ReceivingOrderCreatedEvent event) {</span>
-        try {
-            ReceivingOrder order = event.getSource();
-            order.setOrderState(OrderState.PROCESSED);
-<span class="nc" id="L51">            order.getPositions().forEach(p -&gt; positionProcessor.processPosition(order, p));</span>
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ReceivingOrder order = event.getSource();
+        order.setOrderState(OrderState.PROCESSED);
+<span class="nc" id="L50">        order.getPositions().forEach(p -&gt; positionProcessor.processPosition(order, p));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

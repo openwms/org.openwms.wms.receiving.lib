@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -52,7 +53,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Current state of this Order. */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_ORDER_STATE&quot;)
-<span class="fc" id="L55">    private OrderState orderState = OrderState.UNDEFINED;</span>
+<span class="fc" id="L56">    private OrderState orderState = OrderState.UNDEFINED;</span>
 
     /**
      * Property to lock/unlock an Order.
@@ -63,7 +64,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
      * Default is {@value}
      */
     @Column(name = &quot;C_LOCKED&quot;)
-<span class="fc" id="L66">    private boolean locked = false;</span>
+<span class="fc" id="L67">    private boolean locked = false;</span>
 
     /** Current priority of the Order. */
     @Column(name = &quot;C_PRIORITY&quot;)
@@ -91,55 +92,55 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */
-<span class="fc" id="L94">    protected ReceivingOrder() {}</span>
+<span class="fc" id="L95">    protected ReceivingOrder() {}</span>
 
-<span class="fc" id="L96">    protected ReceivingOrder(String orderId) {</span>
-<span class="fc" id="L97">        this.orderId = orderId;</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L97">    protected ReceivingOrder(String orderId) {</span>
+<span class="fc" id="L98">        this.orderId = orderId;</span>
+<span class="fc" id="L99">    }</span>
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
-<span class="fc" id="L102">        this.orderState = OrderState.CREATED;</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        this.orderState = OrderState.CREATED;</span>
+<span class="fc" id="L104">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L106">        return orderId;</span>
+<span class="fc" id="L107">        return orderId;</span>
     }
 
     public OrderState getOrderState() {
-<span class="nc" id="L110">        return orderState;</span>
+<span class="nc" id="L111">        return orderState;</span>
     }
 
     public void setOrderState(OrderState orderState) {
-<span class="fc" id="L114">        this.orderState = orderState;</span>
-<span class="fc" id="L115">    }</span>
+<span class="fc" id="L115">        this.orderState = orderState;</span>
+<span class="fc" id="L116">    }</span>
 
     public boolean isLocked() {
-<span class="nc" id="L118">        return locked;</span>
+<span class="nc" id="L119">        return locked;</span>
     }
 
     public int getPriority() {
-<span class="nc" id="L122">        return priority;</span>
+<span class="nc" id="L123">        return priority;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L126">        return latestDueDate;</span>
+<span class="nc" id="L127">        return latestDueDate;</span>
     }
 
     public ZonedDateTime getStartDate() {
-<span class="nc" id="L130">        return startDate;</span>
+<span class="nc" id="L131">        return startDate;</span>
     }
 
     public ZonedDateTime getNextAllocationDate() {
-<span class="nc" id="L134">        return nextAllocationDate;</span>
+<span class="nc" id="L135">        return nextAllocationDate;</span>
     }
 
     public Problem getProblem() {
-<span class="nc" id="L138">        return problem;</span>
+<span class="nc" id="L139">        return problem;</span>
     }
 
     public Set&lt;ReceivingOrderPosition&gt; getPositions() {
-<span class="fc" id="L142">        return positions;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
