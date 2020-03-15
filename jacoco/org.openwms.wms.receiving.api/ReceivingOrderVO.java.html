@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 /**
@@ -22,25 +23,26 @@ import java.util.Set;
  *
  * @author Heiko Scherrer
  */
-<span class="fc" id="L25">public class ReceivingOrderVO {</span>
+<span class="fc" id="L26">public class ReceivingOrderVO {</span>
 
+    @NotEmpty
     private String orderId;
     private Set&lt;ReceivingOrderPositionVO&gt; positions;
 
     public String getOrderId() {
-<span class="fc" id="L31">        return orderId;</span>
+<span class="fc" id="L33">        return orderId;</span>
     }
 
     public void setOrderId(String orderId) {
-<span class="fc" id="L35">        this.orderId = orderId;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L37">        this.orderId = orderId;</span>
+<span class="fc" id="L38">    }</span>
 
     public Set&lt;ReceivingOrderPositionVO&gt; getPositions() {
-<span class="fc" id="L39">        return positions;</span>
+<span class="fc" id="L41">        return positions;</span>
     }
 
     public void setPositions(Set&lt;ReceivingOrderPositionVO&gt; positions) {
-<span class="fc" id="L43">        this.positions = positions;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L45">        this.positions = positions;</span>
+<span class="fc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
