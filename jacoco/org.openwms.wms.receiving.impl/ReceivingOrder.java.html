@@ -52,7 +52,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Current state of this Order. */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_ORDER_STATE&quot;)
-<span class="pc" id="L55">    private OrderState orderState = OrderState.UNDEFINED;</span>
+<span class="fc" id="L55">    private OrderState orderState = OrderState.UNDEFINED;</span>
 
     /**
      * Property to lock/unlock an Order.
@@ -63,7 +63,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
      * Default is {@value}
      */
     @Column(name = &quot;C_LOCKED&quot;)
-<span class="pc" id="L66">    private boolean locked = false;</span>
+<span class="fc" id="L66">    private boolean locked = false;</span>
 
     /** Current priority of the Order. */
     @Column(name = &quot;C_PRIORITY&quot;)
@@ -93,17 +93,17 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Used by the JPA provider. */
 <span class="fc" id="L94">    protected ReceivingOrder() {}</span>
 
-<span class="nc" id="L96">    protected ReceivingOrder(String orderId) {</span>
-<span class="nc" id="L97">        this.orderId = orderId;</span>
-<span class="nc" id="L98">    }</span>
+<span class="fc" id="L96">    protected ReceivingOrder(String orderId) {</span>
+<span class="fc" id="L97">        this.orderId = orderId;</span>
+<span class="fc" id="L98">    }</span>
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
-<span class="nc" id="L102">        this.orderState = OrderState.CREATED;</span>
-<span class="nc" id="L103">    }</span>
+<span class="fc" id="L102">        this.orderState = OrderState.CREATED;</span>
+<span class="fc" id="L103">    }</span>
 
     public String getOrderId() {
-<span class="nc" id="L106">        return orderId;</span>
+<span class="fc" id="L106">        return orderId;</span>
     }
 
     public OrderState getOrderState() {
@@ -111,8 +111,8 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public void setOrderState(OrderState orderState) {
-<span class="nc" id="L114">        this.orderState = orderState;</span>
-<span class="nc" id="L115">    }</span>
+<span class="fc" id="L114">        this.orderState = orderState;</span>
+<span class="fc" id="L115">    }</span>
 
     public boolean isLocked() {
 <span class="nc" id="L118">        return locked;</span>
@@ -139,7 +139,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public Set&lt;ReceivingOrderPosition&gt; getPositions() {
-<span class="nc" id="L142">        return positions;</span>
+<span class="fc" id="L142">        return positions;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
