@@ -50,6 +50,8 @@
         </developer>
     </developers>
 
+    <contributors></contributors>
+
     <ciManagement>
         <system>travis</system>
         <url>https://travis-ci.com/openwms/${project.artifactId}</url>
