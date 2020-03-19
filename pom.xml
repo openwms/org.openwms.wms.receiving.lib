@@ -64,7 +64,7 @@
     </ciManagement>
 
     <properties>
-        <ameba-lib.version>2.3</ameba-lib.version>
+        <ameba-lib.version>2.4-SNAPSHOT</ameba-lib.version>
         <ameba-cloud.version>2.0</ameba-cloud.version>
         <common.version>1.6.0-SNAPSHOT</common.version>
         <core.version>1.7.0-SNAPSHOT</core.version>

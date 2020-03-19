@@ -15,11 +15,15 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.exception.ServiceLayerException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A ReceivingServiceImplTest.
@@ -35,9 +39,13 @@ class ReceivingServiceImplTest {
     @Autowired
     private ReceivingServiceImpl service;
 
-    @Test
-    void createOrder() {
-        ReceivingOrder order = new ReceivingOrder("4711");
-        service.createOrder(order);
+    @Test void createOrderWithNull() {
+        ServiceLayerException sle = Assertions.assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
+        //assertThat(sle.getCause()).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test void createOrder() {
+        ReceivingOrder order = service.createOrder(new ReceivingOrder("4711"));
+        assertThat(order.isNew()).isFalse();
     }
 }
