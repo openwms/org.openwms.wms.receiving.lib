@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.order;
+package org.openwms.wms.receiving.impl;
+
+import org.ameba.exception.BusinessRuntimeException;
+
+import java.io.Serializable;
 
 /**
- * An OrderState.
- * 
+ * A CancellationDeniedException.
+ *
  * @author Heiko Scherrer
  */
-public enum OrderState {
+public class CancellationDeniedException extends BusinessRuntimeException {
 
-    UNDEFINED, CREATED, PROCESSING, PROCESSED, ON_TRUCK, FAILURE_WMS, FAILURE_TMS, COMPLETED, CANCELED;
-
+    public CancellationDeniedException(String message, String messageKey, Serializable[] data) {
+        super(message, messageKey, data);
+    }
 }

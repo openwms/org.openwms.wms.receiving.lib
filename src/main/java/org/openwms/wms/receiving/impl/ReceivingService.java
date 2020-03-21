@@ -15,6 +15,9 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * A ReceivingService.
  *
@@ -28,7 +31,7 @@ public interface ReceivingService {
      * @param order The ReceivingOrder instance to create
      * @return The saved instance
      */
-    ReceivingOrder createOrder(ReceivingOrder order);
+    ReceivingOrder createOrder(@NotNull ReceivingOrder order);
 
     /**
      * Find and return a {@link ReceivingOrder} identified by its synthetic persistent key.
@@ -37,5 +40,13 @@ public interface ReceivingService {
      * @return The instance
      * @throws org.ameba.exception.NotFoundException if not found
      */
-    ReceivingOrder findByPKey(String pKey);
+    ReceivingOrder findByPKey(@NotEmpty String pKey);
+
+    /**
+     * Cancel a {@link ReceivingOrder}.
+     *
+     * @param pKey The synthetic persistent key
+     * @throws CancellationDeniedException in case the cancellation is nt allowed
+     */
+    void cancelOrder(@NotEmpty String pKey);
 }

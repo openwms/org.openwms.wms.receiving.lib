@@ -15,17 +15,18 @@
  */
 package org.openwms.wms.receiving;
 
+import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Heiko Scherrer
  */
-@RestController
+@MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
     private final ReceivingService service;
@@ -55,5 +56,11 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
         ReceivingOrder order = service.findByPKey(pKey);
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+    }
+
+    @DeleteMapping("/v1/receiving/{pKey}")
+    public ResponseEntity<Void> cancel(@PathVariable("pKey") String pKey){
+        service.cancelOrder(pKey);
+        return ResponseEntity.noContent().build();
     }
 }

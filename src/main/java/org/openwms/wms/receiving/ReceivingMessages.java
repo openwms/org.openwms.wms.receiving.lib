@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.order;
+package org.openwms.wms.receiving;
 
 /**
- * An OrderState.
- * 
+ * A ReceivingMessages.
+ *
  * @author Heiko Scherrer
  */
-public enum OrderState {
+public final class ReceivingMessages {
 
-    UNDEFINED, CREATED, PROCESSING, PROCESSED, ON_TRUCK, FAILURE_WMS, FAILURE_TMS, COMPLETED, CANCELED;
+    private ReceivingMessages() {
+    }
 
+    public static final String CANCELLATION_DENIED = "CANCELLATION.DENIED";
 }

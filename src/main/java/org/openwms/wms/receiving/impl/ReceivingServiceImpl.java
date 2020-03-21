@@ -28,6 +28,10 @@ import org.springframework.util.Assert;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.openwms.wms.order.OrderState.CANCELED;
+import static org.openwms.wms.order.OrderState.CREATED;
+import static org.openwms.wms.order.OrderState.UNDEFINED;
+import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
 
 /**
  * A ReceivingServiceImpl.
@@ -107,5 +111,23 @@ class ReceivingServiceImpl implements ReceivingService {
         Assert.hasText(pKey, "pKey must not be null");
         Optional<ReceivingOrder> order = repository.findBypKey(pKey);
         return order.orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void cancelOrder(String pKey) {
+        Assert.hasText(pKey, "pKey must not be null");
+        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+        if (order.getOrderState() != UNDEFINED && order.getOrderState() != CREATED) {
+            throw new CancellationDeniedException(
+                    format("Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]", order.getOrderId(), order.getOrderState()),
+                    CANCELLATION_DENIED,
+                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}
+            );
+        }
+        order.setOrderState(CANCELED);
     }
 }

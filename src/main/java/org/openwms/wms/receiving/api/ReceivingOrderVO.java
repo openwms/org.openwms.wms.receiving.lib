@@ -33,6 +33,13 @@ public class ReceivingOrderVO implements Serializable {
     private String orderId;
     private Set<ReceivingOrderPositionVO> positions;
 
+    public ReceivingOrderVO() {
+    }
+
+    public ReceivingOrderVO(@NotEmpty String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getOrderId() {
         return orderId;
     }

@@ -21,11 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -64,17 +66,35 @@ class ReceivingControllerDocumentation {
     }
 
     @Test void shall_create_order() throws Exception {
-        ReceivingOrderVO vo = new ReceivingOrderVO();
-        vo.setOrderId("4711");
         mockMvc
                 .perform(
                         post("/v1/receiving")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(vo))
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4711")))
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, notNullValue()))
                 .andDo(document("order-create", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test void shall_find_order() throws Exception {
+        MvcResult result = mockMvc
+                .perform(
+                        post("/v1/receiving")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4711")))
+                )
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String toLocation = (String) result.getResponse().getHeaderValue(HttpHeaders.LOCATION);
+        mockMvc
+                .perform(
+                        get(toLocation)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("order-find", preprocessResponse(prettyPrint())))
         ;
     }
 
