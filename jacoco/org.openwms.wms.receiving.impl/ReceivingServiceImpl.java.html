@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
@@ -36,14 +37,14 @@ import static java.lang.String.format;
 @TxService
 class ReceivingServiceImpl implements ReceivingService {
 
-<span class="fc" id="L39">    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);</span>
+<span class="fc" id="L40">    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);</span>
     private final ReceivingOrderRepository repository;
     private final ApplicationEventPublisher publisher;
 
-<span class="fc" id="L43">    ReceivingServiceImpl(ReceivingOrderRepository repository, ApplicationEventPublisher publisher) {</span>
-<span class="fc" id="L44">        this.repository = repository;</span>
-<span class="fc" id="L45">        this.publisher = publisher;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L44">    ReceivingServiceImpl(ReceivingOrderRepository repository, ApplicationEventPublisher publisher) {</span>
+<span class="fc" id="L45">        this.repository = repository;</span>
+<span class="fc" id="L46">        this.publisher = publisher;</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * {@inheritDoc}
@@ -84,17 +85,28 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public ReceivingOrder createOrder(ReceivingOrder order) {
-<span class="fc" id="L87">        Assert.notNull(order, &quot;order to create must not be null&quot;);</span>
-<span class="fc" id="L88">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
-<span class="fc" id="L90">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
+<span class="fc" id="L88">        Assert.notNull(order, &quot;order to create must not be null&quot;);</span>
+<span class="fc" id="L89">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
+<span class="fc" id="L91">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
         }
-<span class="fc" id="L92">        order = repository.save(order);</span>
-<span class="fc" id="L93">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (LOGGER.isInfoEnabled()) {</span>
-<span class="fc" id="L95">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
+<span class="fc" id="L93">        order = repository.save(order);</span>
+<span class="fc" id="L94">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (LOGGER.isInfoEnabled()) {</span>
+<span class="fc" id="L96">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
         }
-<span class="fc" id="L97">        return order;</span>
+<span class="fc" id="L98">        return order;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ReceivingOrder findByPKey(String pKey) {
+<span class="fc" id="L107">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
+<span class="fc" id="L108">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
+<span class="pc" id="L109">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

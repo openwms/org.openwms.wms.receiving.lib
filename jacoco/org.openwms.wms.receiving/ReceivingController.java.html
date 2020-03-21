@@ -21,6 +21,8 @@ import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,15 +40,21 @@ public class ReceivingController extends AbstractWebController {
     private final ReceivingService service;
     private final BeanMapper mapper;
 
-<span class="fc" id="L41">    public ReceivingController(ReceivingService service, BeanMapper mapper) {</span>
-<span class="fc" id="L42">        this.service = service;</span>
-<span class="fc" id="L43">        this.mapper = mapper;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L43">    public ReceivingController(ReceivingService service, BeanMapper mapper) {</span>
+<span class="fc" id="L44">        this.service = service;</span>
+<span class="fc" id="L45">        this.mapper = mapper;</span>
+<span class="fc" id="L46">    }</span>
 
     @PostMapping(&quot;/v1/receiving&quot;)
     public ResponseEntity&lt;Void&gt; createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
-<span class="fc" id="L48">        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
-<span class="fc" id="L49">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+<span class="fc" id="L50">        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
+<span class="fc" id="L51">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+    }
+
+    @GetMapping(&quot;/v1/receiving/{pKey}&quot;)
+    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {
+<span class="nc" id="L56">        ReceivingOrder order = service.findByPKey(pKey);</span>
+<span class="nc" id="L57">        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
