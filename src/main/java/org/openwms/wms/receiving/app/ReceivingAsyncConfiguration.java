@@ -49,6 +49,7 @@ import static org.ameba.LoggingCategories.BOOT;
 public class ReceivingAsyncConfiguration {
 
     private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);
+
     @ConditionalOnExpression("'${owms.receiving.serialization}'=='json'")
     @Bean
     MessageConverter messageConverter() {

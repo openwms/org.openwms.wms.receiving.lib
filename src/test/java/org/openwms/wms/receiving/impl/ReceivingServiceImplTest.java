@@ -15,8 +15,8 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * A ReceivingServiceImplTest.
@@ -33,19 +34,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ReceivingApplicationTest
 @Transactional
 @Rollback
-//@ContextConfiguration(classes = SPITestConfiguration.class)
 class ReceivingServiceImplTest {
 
     @Autowired
     private ReceivingServiceImpl service;
 
     @Test void createOrderWithNull() {
-        ServiceLayerException sle = Assertions.assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
-        //assertThat(sle.getCause()).isInstanceOf(IllegalArgumentException.class);
+        ServiceLayerException ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
+        assertThat(ex.getMessage()).containsIgnoringCase("order");
     }
 
     @Test void createOrder() {
         ReceivingOrder order = service.createOrder(new ReceivingOrder("4711"));
         assertThat(order.isNew()).isFalse();
+
+        ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4711")));
+        assertThat(ex.getMessage()).containsIgnoringCase("exists");
     }
 }

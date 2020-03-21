@@ -11,7 +11,7 @@
     </parent>
 	<artifactId>org.openwms.wms.receiving</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>OpenWMS.org WMS: Receiving</name>
+    <name>OpenWMS.org WMS: Receiving Service</name>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
