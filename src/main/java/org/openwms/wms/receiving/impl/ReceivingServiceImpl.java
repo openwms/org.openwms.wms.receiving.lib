@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
@@ -95,5 +96,16 @@ class ReceivingServiceImpl implements ReceivingService {
             LOGGER.info("ReceivingOrder with orderId [{}] saved", order.getOrderId());
         }
         return order;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ReceivingOrder findByPKey(String pKey) {
+        Assert.hasText(pKey, "pKey must not be null");
+        Optional<ReceivingOrder> order = repository.findBypKey(pKey);
+        return order.orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
     }
 }

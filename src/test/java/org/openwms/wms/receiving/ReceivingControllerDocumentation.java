@@ -30,11 +30,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -59,8 +63,7 @@ class ReceivingControllerDocumentation {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(documentationConfiguration(restDocumentation)).build();
     }
 
-    @Test
-    void shall_return_index() throws Exception {
+    @Test void shall_create_order() throws Exception {
         ReceivingOrderVO vo = new ReceivingOrderVO();
         vo.setOrderId("4711");
         mockMvc
@@ -70,7 +73,18 @@ class ReceivingControllerDocumentation {
                                 .content(om.writeValueAsString(vo))
                 )
                 .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, notNullValue()))
                 .andDo(document("create-order", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test void shall_NOT_find_order() throws Exception {
+        mockMvc
+                .perform(
+                        get("/v1/receiving/unknown")
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("find-order-404", preprocessResponse(prettyPrint())))
         ;
     }
 }

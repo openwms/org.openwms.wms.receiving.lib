@@ -29,4 +29,13 @@ public interface ReceivingService {
      * @return The saved instance
      */
     ReceivingOrder createOrder(ReceivingOrder order);
+
+    /**
+     * Find and return a {@link ReceivingOrder} identified by its synthetic persistent key.
+     *
+     * @param pKey The synthetic persistent key
+     * @return The instance
+     * @throws org.ameba.exception.NotFoundException if not found
+     */
+    ReceivingOrder findByPKey(String pKey);
 }
