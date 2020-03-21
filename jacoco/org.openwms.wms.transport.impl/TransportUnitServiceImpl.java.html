@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransportUnitServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.transport.impl</a> &gt; <span class="el_source">TransportUnitServiceImpl.java</span></div><h1>TransportUnitServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.transport.impl;
+
+import org.ameba.annotation.TxService;
+import org.ameba.mapping.BeanMapper;
+import org.openwms.wms.transport.TransportUnit;
+import org.openwms.wms.transport.TransportUnitService;
+import org.springframework.util.Assert;
+
+import java.util.Optional;
+
+/**
+ * A TransportUnitServiceImpl.
+ *
+ * @author Heiko Scherrer
+ */
+@TxService
+class TransportUnitServiceImpl implements TransportUnitService {
+
+    private final TransportUnitRepository repository;
+    private final BeanMapper mapper;
+
+<span class="fc" id="L37">    public TransportUnitServiceImpl(TransportUnitRepository repository, BeanMapper mapper) {</span>
+<span class="fc" id="L38">        this.repository = repository;</span>
+<span class="fc" id="L39">        this.mapper = mapper;</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    public TransportUnit upsert(TransportUnit transportUnit) {
+<span class="fc" id="L44">        Assert.notNull(transportUnit, &quot;transportUnit must not be null&quot;);</span>
+<span class="fc" id="L45">        Assert.hasText(transportUnit.getBarcode(), &quot;barcode of TransportUnit must be set before saving&quot;);</span>
+<span class="fc" id="L46">        Optional&lt;TransportUnit&gt; opt = repository.findByBarcode(transportUnit.getBarcode());</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
+<span class="fc" id="L48">            TransportUnit merged = mapper.mapFromTo(transportUnit, opt.get());</span>
+<span class="fc" id="L49">            return repository.save(merged);</span>
+        }
+<span class="fc" id="L51">        return repository.save(transportUnit);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

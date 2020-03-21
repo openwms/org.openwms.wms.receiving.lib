@@ -1,8 +1,4 @@
 org.openwms
-org.openwms.common.transport
-org.openwms.common.transport.api
-org.openwms.common.transport.event
-org.openwms.common.transport.impl
 org.openwms.values
 org.openwms.wms.inventory
 org.openwms.wms.order
@@ -11,3 +7,7 @@ org.openwms.wms.receiving.api
 org.openwms.wms.receiving.app
 org.openwms.wms.receiving.impl
 org.openwms.wms.receiving.spi
+org.openwms.wms.transport
+org.openwms.wms.transport.api
+org.openwms.wms.transport.event
+org.openwms.wms.transport.impl
