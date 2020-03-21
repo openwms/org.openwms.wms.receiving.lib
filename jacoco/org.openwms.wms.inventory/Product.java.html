@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Product.
@@ -47,17 +48,17 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
     private BaseUnit baseUnit;
 
     /** Dear JPA ... */
-<span class="fc" id="L50">    protected Product() {</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L51">    protected Product() {</span>
+<span class="fc" id="L52">    }</span>
 
     /**
      * Create a Product with a sku.
      *
      * @param sku The sku
      */
-<span class="nc" id="L58">    public Product(String sku) {</span>
-<span class="nc" id="L59">        this.sku = sku;</span>
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L59">    public Product(String sku) {</span>
+<span class="nc" id="L60">        this.sku = sku;</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Get the SKU.
@@ -65,20 +66,20 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
      * @return the SKU.
      */
     public String getSku() {
-<span class="nc" id="L68">        return sku;</span>
+<span class="nc" id="L69">        return sku;</span>
     }
 
     public void setSku(String sku) {
-<span class="nc" id="L72">        this.sku = sku;</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L73">        this.sku = sku;</span>
+<span class="nc" id="L74">    }</span>
 
     public BaseUnit getBaseUnit() {
-<span class="nc" id="L76">        return baseUnit;</span>
+<span class="nc" id="L77">        return baseUnit;</span>
     }
 
     public void setBaseUnit(BaseUnit baseUnit) {
-<span class="nc" id="L80">        this.baseUnit = baseUnit;</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L81">        this.baseUnit = baseUnit;</span>
+<span class="nc" id="L82">    }</span>
 
     /**
      * {@inheritDoc}
@@ -87,7 +88,31 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
      */
     @Override
     public int compareTo(Product o) {
-<span class="nc bnc" id="L90" title="All 2 branches missed.">        return null == o ? -1 : this.sku.compareTo(o.sku);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        return null == o ? -1 : this.sku.compareTo(o.sku);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Include all fields
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L103">        Product product = (Product) o;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        return sku.equals(product.sku) &amp;&amp;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">                Objects.equals(baseUnit, product.baseUnit);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Include all fields
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L115">        return Objects.hash(sku, baseUnit);</span>
     }
 
     /**
@@ -97,7 +122,7 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
      */
     @Override
     public String toString() {
-<span class="nc" id="L100">        return sku;</span>
+<span class="nc" id="L125">        return sku;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -62,9 +62,8 @@ class TransportUnitEventListener {
                 }
             }
 <span class="nc" id="L64">        } catch (Exception e) {</span>
-<span class="nc" id="L65">            LOGGER.error(e.getMessage(), e);</span>
-<span class="nc" id="L66">            throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);</span>
+<span class="nc" id="L65">            throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);</span>
         }
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L67">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
