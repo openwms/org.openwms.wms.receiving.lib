@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,7 +26,8 @@ import java.io.Serializable;
  *
  * @author Heiko Scherrer
  */
-<span class="nc" id="L28">public class ReceivingOrderPositionVO implements Serializable {</span>
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+<span class="nc" id="L30">public class ReceivingOrderPositionVO implements Serializable {</span>
 
     @NotEmpty
     private String positionId;
@@ -38,31 +40,31 @@ import java.io.Serializable;
     private String supplierPackingUnit;
 
     public String getPositionId() {
-<span class="nc" id="L41">        return positionId;</span>
+<span class="nc" id="L43">        return positionId;</span>
     }
 
     public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
-<span class="nc" id="L45">        return quantityExpected;</span>
+<span class="nc" id="L47">        return quantityExpected;</span>
     }
 
     public String getSku() {
-<span class="nc" id="L49">        return sku;</span>
+<span class="nc" id="L51">        return sku;</span>
     }
 
     public String getStartMode() {
-<span class="nc" id="L53">        return startMode;</span>
+<span class="nc" id="L55">        return startMode;</span>
     }
 
     public String getTransportUnitId() {
-<span class="nc" id="L57">        return transportUnitId;</span>
+<span class="nc" id="L59">        return transportUnitId;</span>
     }
 
     public String getTransportUnitType() {
-<span class="nc" id="L61">        return transportUnitType;</span>
+<span class="nc" id="L63">        return transportUnitType;</span>
     }
 
     public String getSupplierPackingUnit() {
-<span class="nc" id="L65">        return supplierPackingUnit;</span>
+<span class="nc" id="L67">        return supplierPackingUnit;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
