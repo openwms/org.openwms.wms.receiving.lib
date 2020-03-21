@@ -36,4 +36,32 @@ public class ReceivingOrderPositionVO implements Serializable {
     private String transportUnitId;
     private String transportUnitType;
     private String supplierPackingUnit;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public Measurable<?, ?, ?> getQuantityExpected() {
+        return quantityExpected;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public String getStartMode() {
+        return startMode;
+    }
+
+    public String getTransportUnitId() {
+        return transportUnitId;
+    }
+
+    public String getTransportUnitType() {
+        return transportUnitType;
+    }
+
+    public String getSupplierPackingUnit() {
+        return supplierPackingUnit;
+    }
 }

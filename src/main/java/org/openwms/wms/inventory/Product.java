@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Product.
@@ -88,6 +89,30 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     @Override
     public int compareTo(Product o) {
         return null == o ? -1 : this.sku.compareTo(o.sku);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Include all fields
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return sku.equals(product.sku) &&
+                Objects.equals(baseUnit, product.baseUnit);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Include all fields
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(sku, baseUnit);
     }
 
     /**
