@@ -15,7 +15,10 @@
  */
 package org.openwms.wms.receiving.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -23,7 +26,8 @@ import java.util.Set;
  *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderVO {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ReceivingOrderVO implements Serializable {
 
     @NotEmpty
     private String orderId;

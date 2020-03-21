@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,6 +26,7 @@ import java.io.Serializable;
  *
  * @author Heiko Scherrer
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderPositionVO implements Serializable {
 
     @NotEmpty
