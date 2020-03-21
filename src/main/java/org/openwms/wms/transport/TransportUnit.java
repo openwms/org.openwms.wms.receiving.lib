@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.common.transport;
+package org.openwms.wms.transport;
 
 import org.ameba.integration.jpa.ApplicationEntity;
 
@@ -36,13 +36,30 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
     @Column(name = "C_BARCODE", nullable = false)
     private String barcode;
 
+    /** The current {@code Location} of the {@code TransportUnit}. */
+    @Column(name = "C_ACTUAL_LOCATION", nullable = false)
+    private String actualLocation;
+
     /** Dear JPA... */
     protected TransportUnit() {
     }
 
     /** Dear JPA... */
-    public TransportUnit(String barcode) {
+    public TransportUnit(String barcode, String actualLocation) {
         this.barcode = barcode;
+        this.actualLocation = actualLocation;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getActualLocation() {
+        return actualLocation;
+    }
+
+    @Override
+    public String toString() {
+        return barcode;
+    }
 }

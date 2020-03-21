@@ -32,7 +32,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableDiscoveryClient
 @EnableJpaAuditing
-@EnableAspects
+@EnableAspects(propagateRootCause = true)
 @EnableScheduling
 public class ReceivingModuleConfiguration {
 

@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.common.transport.api;
+package org.openwms.wms.transport.impl;
 
-import org.openwms.common.transport.api.commands.Command;
+import org.openwms.wms.transport.TransportUnit;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
- * A AsyncTransportUnitApi is able to process Commands asynchronously.
+ * A TransportUnitRepository.
  *
  * @author Heiko Scherrer
  */
-public interface AsyncTransportUnitApi {
+interface TransportUnitRepository extends JpaRepository<TransportUnit, Long> {
 
-    /**
-     * Process the given {@code command}.
-     *
-     * @param command Command to process
-     */
-    void process(Command command);
+    Optional<TransportUnit> findByBarcode(String barcode);
 }

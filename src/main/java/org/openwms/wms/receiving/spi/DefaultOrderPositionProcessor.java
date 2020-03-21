@@ -16,7 +16,7 @@
 package org.openwms.wms.receiving.spi;
 
 import org.ameba.annotation.TxService;
-import org.openwms.common.transport.api.AsyncTransportUnitApi;
+import org.openwms.wms.transport.api.AsyncTransportUnitApi;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;

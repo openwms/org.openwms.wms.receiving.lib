@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.common.transport.impl;
+package org.openwms.wms.transport.impl;
 
-import org.openwms.common.transport.api.AsyncTransportUnitApi;
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.core.SpringProfiles;
+import org.openwms.wms.transport.api.AsyncTransportUnitApi;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Component;
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
 class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
 

@@ -13,28 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.common.transport.impl;
-
-import org.ameba.annotation.TxService;
-import org.openwms.common.transport.TransportUnit;
-import org.openwms.common.transport.TransportUnitService;
+package org.openwms.wms.transport;
 
 /**
- * A TransportUnitServiceImpl.
+ * A TransportUnitService.
  *
  * @author Heiko Scherrer
  */
-@TxService
-class TransportUnitServiceImpl implements TransportUnitService {
+public interface TransportUnitService {
 
-    private final TransportUnitRepository repository;
-
-    public TransportUnitServiceImpl(TransportUnitRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public void upsert(TransportUnit transportUnit) {
-        repository.save(transportUnit);
-    }
+    /**
+     * Create or update a {@link TransportUnit} instance.
+     *
+     * @param transportUnit Instance to save
+     * @return Saved instance
+     */
+    TransportUnit upsert(TransportUnit transportUnit);
 }

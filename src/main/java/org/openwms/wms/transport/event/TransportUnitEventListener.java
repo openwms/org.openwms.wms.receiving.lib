@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.common.transport.event;
+package org.openwms.wms.transport.event;
 
 import org.ameba.annotation.Measured;
-import org.ameba.annotation.TxService;
 import org.ameba.mapping.BeanMapper;
-import org.openwms.common.transport.TransportUnit;
-import org.openwms.common.transport.TransportUnitService;
+import org.openwms.wms.transport.TransportUnit;
+import org.openwms.wms.transport.TransportUnitService;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
 
 /**
  * A TransportUnitEventListener.
@@ -33,7 +33,7 @@ import org.springframework.messaging.handler.annotation.Payload;
  * @author Heiko Scherrer
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
-@TxService
+@Component
 class TransportUnitEventListener {
 
     private final TransportUnitService service;
