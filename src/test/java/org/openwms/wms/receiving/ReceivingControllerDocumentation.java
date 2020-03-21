@@ -74,7 +74,7 @@ class ReceivingControllerDocumentation {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, notNullValue()))
-                .andDo(document("create-order", preprocessResponse(prettyPrint())))
+                .andDo(document("order-create", preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -84,7 +84,7 @@ class ReceivingControllerDocumentation {
                         get("/v1/receiving/unknown")
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("find-order-404", preprocessResponse(prettyPrint())))
+                .andDo(document("order-find-404", preprocessResponse(prettyPrint())))
         ;
     }
 }
