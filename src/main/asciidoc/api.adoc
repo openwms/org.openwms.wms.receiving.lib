@@ -118,10 +118,12 @@ A description of all used API resources.
 The initial HTTP request to retrieve information about all available resources looks like the following. The Index page is a public
 available resource and does not need any authentication.
 
+include::{generated}/get-index/http-request.adoc[]
 
 The Index resource is returned in the response body with the response status of 200-OK. This main Index lists all primary resource entities
 to follow next.
 
+include::{generated}/get-index/http-response.adoc[]
 
 A client application must only know about the agreed link names and follow the corresponding `href` link to navigate further.
 
@@ -131,11 +133,13 @@ prior to the actual goods receipt. A `ReceivingOrder` is just the envelope that 
 determines the expected product to receive in its quantity.
 
 === ReceivingOrder Index
-The index with all possible operations can be retrieved with the following GET request:
+The index with all possible operations on a `ReceivingOrder` can be retrieved with a GET request:
 
+include::{generated}/get-order-index/http-request.adoc[]
 
-The response lists all the operations with a name and the corresponding href link:
+The response lists all the operations possible on `ReceivingOrders` with a name and the corresponding href link:
 
+include::{generated}/get-order-index/http-response.adoc[]
 
 === Create a ReceivingOrder
 The POST operation take a flat structure of a simple `ReceivingOrder` to create.
@@ -162,3 +166,17 @@ include::{generated}/order-find/http-response.adoc[]
 In case the order does not exist, the server responds with:
 
 include::{generated}/order-find-404/http-response.adoc[]
+
+=== Cancel a ReceivingOrder
+An earlier posted `ReceivingOrder` can be cancelled for further processing. The client needs to send a HTTP DELETE request with the unique
+identifier of the order.
+
+include::{generated}/order-cancel/http-request.adoc[]
+
+If the `ReceivingOrder` has been cancelled, the server returns the order as part of the response body:
+
+include::{generated}/order-cancel/http-response.adoc[]
+
+In case the order couldn't be cancelled because the order is already in process or has been processed, the server responds with:
+
+include::{generated}/order-cancel-403/http-response.adoc[]

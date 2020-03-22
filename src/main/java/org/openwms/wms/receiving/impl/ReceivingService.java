@@ -46,7 +46,7 @@ public interface ReceivingService {
      * Cancel a {@link ReceivingOrder}.
      *
      * @param pKey The synthetic persistent key
-     * @throws CancellationDeniedException in case the cancellation is nt allowed
+     * @throws CancellationDeniedException in case the cancellation is not allowed
      */
     void cancelOrder(@NotEmpty String pKey);
 }

@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 /**
  * A ReceivingController.
  *
@@ -46,6 +49,17 @@ public class ReceivingController extends AbstractWebController {
         this.mapper = mapper;
     }
 
+    @GetMapping("/v1/receiving/index")
+    public ResponseEntity<Index> index() {
+        return ResponseEntity.ok(
+                new Index(
+                        linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
+                        linkTo(methodOn(ReceivingController.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
+                        linkTo(methodOn(ReceivingController.class).cancelOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-cancel")
+                )
+        );
+    }
+
     @PostMapping("/v1/receiving")
     public ResponseEntity<Void> createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
         ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));
@@ -59,7 +73,7 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @DeleteMapping("/v1/receiving/{pKey}")
-    public ResponseEntity<Void> cancel(@PathVariable("pKey") String pKey){
+    public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
         service.cancelOrder(pKey);
         return ResponseEntity.noContent().build();
     }

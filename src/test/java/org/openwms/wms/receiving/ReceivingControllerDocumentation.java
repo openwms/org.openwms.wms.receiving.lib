@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.SpringProfiles;
@@ -32,15 +33,18 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -50,8 +54,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ActiveProfiles(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @ReceivingApplicationTest
-@Transactional
-@Rollback
 class ReceivingControllerDocumentation {
 
     @Autowired
@@ -65,6 +67,27 @@ class ReceivingControllerDocumentation {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(documentationConfiguration(restDocumentation)).build();
     }
 
+    @AfterEach
+    void tearDown() {
+
+    }
+
+    @Test
+    void shall_return_index() throws Exception {
+        mockMvc
+                .perform(
+                        get("/v1/receiving/index")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._links.receiving-order-create").exists())
+                .andExpect(jsonPath("$._links.receiving-order-findbypkey").exists())
+                .andExpect(jsonPath("$._links.receiving-order-cancel").exists())
+                .andExpect(jsonPath("$._links.length()", is(3)))
+                .andDo(document("get-order-index", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Transactional
     @Test void shall_create_order() throws Exception {
         mockMvc
                 .perform(
@@ -78,12 +101,13 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Transactional
     @Test void shall_find_order() throws Exception {
         MvcResult result = mockMvc
                 .perform(
                         post("/v1/receiving")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(new ReceivingOrderVO("4711")))
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4712")))
                 )
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -106,5 +130,44 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isNotFound())
                 .andDo(document("order-find-404", preprocessResponse(prettyPrint())))
         ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_cancel_order() throws Exception {
+        String toLocation = createOrder("4713");
+        mockMvc
+                .perform(
+                        delete(toLocation)
+                )
+                .andExpect(status().isNoContent())
+                .andDo(document("order-cancel", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test void shall_NOT_cancel_order() throws Exception {
+        String toLocation = createOrder("4714");
+        mockMvc
+                .perform(
+                        delete(toLocation)
+                )
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("messageKey", is(ReceivingMessages.CANCELLATION_DENIED)))
+                .andDo(document("order-cancel-403", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Transactional
+    public String createOrder(String orderId) throws Exception {
+        MvcResult result = mockMvc
+                .perform(
+                        post("/v1/receiving")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new ReceivingOrderVO(orderId)))
+                )
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        return (String) result.getResponse().getHeaderValue(HttpHeaders.LOCATION);
     }
 }

@@ -25,5 +25,6 @@ public final class ReceivingMessages {
     private ReceivingMessages() {
     }
 
+    public static final String ALREADY_CANCELLED = "ALREADY_CANCELLED";
     public static final String CANCELLATION_DENIED = "CANCELLATION.DENIED";
 }

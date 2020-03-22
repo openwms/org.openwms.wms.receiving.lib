@@ -31,6 +31,7 @@ import static java.lang.String.format;
 import static org.openwms.wms.order.OrderState.CANCELED;
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.UNDEFINED;
+import static org.openwms.wms.receiving.ReceivingMessages.ALREADY_CANCELLED;
 import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
 
 /**
@@ -121,6 +122,14 @@ class ReceivingServiceImpl implements ReceivingService {
     public void cancelOrder(String pKey) {
         Assert.hasText(pKey, "pKey must not be null");
         ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+        LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
+        if (order.getOrderState() == CANCELED) {
+            throw new AlreadyCancelledException(
+                    format("ReceivingOrder [%s] is already in state [%s]", order.getOrderId(), order.getOrderState()),
+                    ALREADY_CANCELLED,
+                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}
+            );
+        }
         if (order.getOrderState() != UNDEFINED && order.getOrderState() != CREATED) {
             throw new CancellationDeniedException(
                     format("Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]", order.getOrderId(), order.getOrderState()),

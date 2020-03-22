@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.Serializable;
 
 /**
- * A CancellationDeniedException.
+ * A AlreadyCancelledException.
  *
  * @author Heiko Scherrer
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class CancellationDeniedException extends BusinessRuntimeException {
+@ResponseStatus(HttpStatus.GONE)
+public class AlreadyCancelledException extends BusinessRuntimeException {
 
-    public CancellationDeniedException(String message, String messageKey, Serializable[] data) {
+    public AlreadyCancelledException(String message, String messageKey, Serializable[] data) {
         super(message, messageKey, data);
     }
 }

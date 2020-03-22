@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.impl;
+package org.openwms.wms.receiving;
 
-import org.ameba.exception.BusinessRuntimeException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.io.Serializable;
+import org.ameba.http.AbstractBase;
+import org.springframework.hateoas.Link;
 
 /**
- * A CancellationDeniedException.
+ * A Index encapsulates HAL links to point to exposed REST resources.
  *
  * @author Heiko Scherrer
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class CancellationDeniedException extends BusinessRuntimeException {
+public class Index extends AbstractBase {
 
-    public CancellationDeniedException(String message, String messageKey, Serializable[] data) {
-        super(message, messageKey, data);
+    public Index(Link... links) {
+        this.add(links);
     }
 }

@@ -19,6 +19,8 @@ import org.ameba.annotation.TxService;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
@@ -32,10 +34,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @TxService
 class OrderProcessor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderProcessor.class);
     private final OrderPositionProcessor positionProcessor;
+    private final ReceivingOrderRepository repository;
 
-    OrderProcessor(OrderPositionProcessor positionProcessor) {
+    OrderProcessor(OrderPositionProcessor positionProcessor, ReceivingOrderRepository repository) {
         this.positionProcessor = positionProcessor;
+        this.repository = repository;
     }
 
     /**
@@ -46,7 +51,9 @@ class OrderProcessor {
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void onCreate(ReceivingOrderCreatedEvent event) {
         ReceivingOrder order = event.getSource();
+        LOGGER.debug("Processing ReceivingOrder [{}]", order.getOrderId());
         order.setOrderState(OrderState.PROCESSED);
         order.getPositions().forEach(p -> positionProcessor.processPosition(order, p));
+        repository.save(order);
     }
 }
