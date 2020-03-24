@@ -1,0 +1,54 @@
+[[resources-receiving-order]]
+==== ReceivingOrder
+A `ReceivingOrder` represents an announcement of receiving goods into the warehouse. Usually these kind of orders are sent by the ERP system
+prior to the actual goods receipt. A `ReceivingOrder` is just the envelope that contains `ReceivingOrderPositions`, where each position
+determines the expected product to receive in its quantity.
+
+=== ReceivingOrder Index
+The index with all possible operations on a `ReceivingOrder` can be retrieved with a GET request:
+
+include::{generated}/get-order-index/http-request.adoc[]
+
+The response lists all the operations possible on `ReceivingOrders` with a name and the corresponding href link:
+
+include::{generated}/get-order-index/http-response.adoc[]
+
+=== Create a ReceivingOrder
+The POST operation take a flat structure of a simple `ReceivingOrder` to create.
+
+include::{generated}/order-create/http-request.adoc[]
+
+If the `ReceivingOrder` has been created successfully, the server returns the URI to the created resource:
+
+include::{generated}/order-create/http-response.adoc[]
+
+In case the client request did not match the server expectations, the server responds with:
+
+include::{generated}/order-create-400/http-response.adoc[]
+
+=== Find a ReceivingOrder
+A HTTP GET request is required to find a `ReceivingOrder`.
+
+include::{generated}/order-find/http-request.adoc[]
+
+If the `ReceivingOrder` has been found, the server returns the order as part of the response body:
+
+include::{generated}/order-find/http-response.adoc[]
+
+In case the order does not exist, the server responds with:
+
+include::{generated}/order-find-404/http-response.adoc[]
+
+=== Cancel a ReceivingOrder
+An earlier posted `ReceivingOrder` can be cancelled for further processing. The client needs to send a HTTP DELETE request with the unique
+identifier of the order.
+
+include::{generated}/order-cancel/http-request.adoc[]
+
+If the `ReceivingOrder` has been cancelled, the server returns the order as part of the response body:
+
+include::{generated}/order-cancel/http-response.adoc[]
+
+In case the order couldn't be cancelled because the order is already in process or has been processed, the server responds with:
+
+include::{generated}/order-cancel-403/http-response.adoc[]
