@@ -108,12 +108,12 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public OrderState getOrderState() {
-<span class="nc" id="L111">        return orderState;</span>
+<span class="fc" id="L111">        return orderState;</span>
     }
 
     public void setOrderState(OrderState orderState) {
-<span class="nc" id="L115">        this.orderState = orderState;</span>
-<span class="nc" id="L116">    }</span>
+<span class="fc" id="L115">        this.orderState = orderState;</span>
+<span class="fc" id="L116">    }</span>
 
     public boolean isLocked() {
 <span class="nc" id="L119">        return locked;</span>
@@ -140,7 +140,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public Set&lt;ReceivingOrderPosition&gt; getPositions() {
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
     }
 
     @Override

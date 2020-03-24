@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 /**
  * A ReceivingController.
  *
@@ -41,27 +44,38 @@ public class ReceivingController extends AbstractWebController {
     private final ReceivingService service;
     private final BeanMapper mapper;
 
-<span class="fc" id="L44">    public ReceivingController(ReceivingService service, BeanMapper mapper) {</span>
-<span class="fc" id="L45">        this.service = service;</span>
-<span class="fc" id="L46">        this.mapper = mapper;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L47">    public ReceivingController(ReceivingService service, BeanMapper mapper) {</span>
+<span class="fc" id="L48">        this.service = service;</span>
+<span class="fc" id="L49">        this.mapper = mapper;</span>
+<span class="fc" id="L50">    }</span>
+
+    @GetMapping(&quot;/v1/receiving/index&quot;)
+    public ResponseEntity&lt;Index&gt; index() {
+<span class="fc" id="L54">        return ResponseEntity.ok(</span>
+<span class="fc" id="L55">                new Index(</span>
+<span class="fc" id="L56">                        linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO(&quot;4711&quot;), null)).withRel(&quot;receiving-order-create&quot;),</span>
+<span class="fc" id="L57">                        linkTo(methodOn(ReceivingController.class).findOrder(&quot;b65a7658-c53c-4a81-8abb-75ab67783f47&quot;)).withRel(&quot;receiving-order-findbypkey&quot;),</span>
+<span class="fc" id="L58">                        linkTo(methodOn(ReceivingController.class).cancelOrder(&quot;b65a7658-c53c-4a81-8abb-75ab67783f47&quot;)).withRel(&quot;receiving-order-cancel&quot;)</span>
+                )
+        );
+    }
 
     @PostMapping(&quot;/v1/receiving&quot;)
     public ResponseEntity&lt;Void&gt; createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
-<span class="fc" id="L51">        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
-<span class="fc" id="L52">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+<span class="fc" id="L65">        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));</span>
+<span class="fc" id="L66">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
     }
 
     @GetMapping(&quot;/v1/receiving/{pKey}&quot;)
     public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {
-<span class="fc" id="L57">        ReceivingOrder order = service.findByPKey(pKey);</span>
-<span class="fc" id="L58">        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));</span>
+<span class="fc" id="L71">        ReceivingOrder order = service.findByPKey(pKey);</span>
+<span class="fc" id="L72">        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));</span>
     }
 
     @DeleteMapping(&quot;/v1/receiving/{pKey}&quot;)
-    public ResponseEntity&lt;Void&gt; cancel(@PathVariable(&quot;pKey&quot;) String pKey){
-<span class="nc" id="L63">        service.cancelOrder(pKey);</span>
-<span class="nc" id="L64">        return ResponseEntity.noContent().build();</span>
+    public ResponseEntity&lt;Void&gt; cancelOrder(@PathVariable(&quot;pKey&quot;) String pKey){
+<span class="fc" id="L77">        service.cancelOrder(pKey);</span>
+<span class="fc" id="L78">        return ResponseEntity.noContent().build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

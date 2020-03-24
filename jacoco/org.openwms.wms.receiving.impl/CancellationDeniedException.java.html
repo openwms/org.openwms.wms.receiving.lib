@@ -16,6 +16,8 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.BusinessRuntimeException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.Serializable;
 
@@ -24,10 +26,11 @@ import java.io.Serializable;
  *
  * @author Heiko Scherrer
  */
+@ResponseStatus(HttpStatus.FORBIDDEN)
 public class CancellationDeniedException extends BusinessRuntimeException {
 
     public CancellationDeniedException(String message, String messageKey, Serializable[] data) {
-<span class="nc" id="L30">        super(message, messageKey, data);</span>
-<span class="nc" id="L31">    }</span>
+<span class="fc" id="L33">        super(message, messageKey, data);</span>
+<span class="fc" id="L34">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
