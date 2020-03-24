@@ -98,4 +98,23 @@ public class ReceivingAsyncConfiguration {
                 .to(orderExchange)
                 .with(routingKey);
     }
+
+    /* Common Service Bindings */
+    @Bean
+    TopicExchange tuExchange(@Value("${owms.events.common.tu.exchange-name}") String exchangeName) {
+        return new TopicExchange(exchangeName, true, false);
+    }
+
+    @Bean
+    Queue tuQueue(@Value("${owms.events.common.tu.queue-name}") String queueName) {
+        return new Queue(queueName, true);
+    }
+
+    @Bean
+    Binding tuBinding(TopicExchange tuExchange, Queue tuQueue, @Value("${owms.events.common.tu.routing-key}") String routingKey) {
+        return BindingBuilder
+                .bind(tuQueue)
+                .to(tuExchange)
+                .with(routingKey);
+    }
 }

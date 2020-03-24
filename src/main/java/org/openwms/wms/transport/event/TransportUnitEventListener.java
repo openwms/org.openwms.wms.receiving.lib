@@ -47,7 +47,7 @@ class TransportUnitEventListener {
     }
 
     @Measured
-    @RabbitListener(queues = "${owms.receiving.orders.queue-name}")
+    @RabbitListener(queues = "${owms.events.common.tu.queue-name}")
     public void handle(@Payload TransportUnitMO mo, @Header("amqp_receivedRoutingKey") String routingKey) {
         try {
             if ("tu.event.created".equals(routingKey) ||

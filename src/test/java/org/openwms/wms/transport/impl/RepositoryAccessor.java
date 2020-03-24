@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.impl;
+package org.openwms.wms.transport.impl;
+
+import org.openwms.wms.transport.TransportUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
 /**
- * A OrderPositionProcessor.
+ * A RepositoryAccessor.
  *
  * @author Heiko Scherrer
  */
-public interface OrderPositionProcessor {
+@Component
+public class RepositoryAccessor {
 
-    /**
-     * Process a single {@code orderPosition} of an {@code order}.
-     *
-     * @param order The Order that holds the position, here for reference
-     * @param orderPosition The actual position to process
-     */
-    void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition);
+    @Autowired
+    private TransportUnitRepository repository;
+
+    public JpaRepository<TransportUnit, Long> getRepository() {
+        return repository;
+    }
 }

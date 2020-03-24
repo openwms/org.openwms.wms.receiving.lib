@@ -48,13 +48,18 @@ owms:
     tms:
       to:
         exchange-name: tms.commands
-
+  events:
+    common:
+      tu:
+        exchange-name: common.tu
+        routing-key: tu.event.*
+        queue-name: wms-receiving-common-tu
   receiving:
     serialization: json
     orders:
-      queue-name: wms-shipping-order
-      exchange-name: shipping
-      routing-key: wms.shipping.order
+      queue-name: wms-receiving-order
+      exchange-name: wms.receiving
+      routing-key: wms.receiving.order
 
 
 server:
