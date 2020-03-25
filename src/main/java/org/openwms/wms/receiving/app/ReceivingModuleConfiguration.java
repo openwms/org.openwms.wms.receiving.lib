@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * A ReceivingModuleConfiguration.
@@ -31,6 +32,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @Configuration
 @EnableDiscoveryClient
+@EnableTransactionManagement
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling

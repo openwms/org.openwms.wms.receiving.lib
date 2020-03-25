@@ -21,8 +21,6 @@ import org.openwms.wms.transport.TransportUnit;
 import org.openwms.wms.transport.TransportUnitService;
 import org.springframework.util.Assert;
 
-import java.util.Optional;
-
 /**
  * A TransportUnitServiceImpl.
  *
@@ -43,11 +41,8 @@ class TransportUnitServiceImpl implements TransportUnitService {
     public TransportUnit upsert(TransportUnit transportUnit) {
         Assert.notNull(transportUnit, "transportUnit must not be null");
         Assert.hasText(transportUnit.getBarcode(), "barcode of TransportUnit must be set before saving");
-        Optional<TransportUnit> opt = repository.findByBarcode(transportUnit.getBarcode());
-        if (opt.isPresent()) {
-            TransportUnit merged = mapper.mapFromTo(transportUnit, opt.get());
-            return repository.save(merged);
-        }
-        return repository.save(transportUnit);
+        TransportUnit merged = repository.findByBarcode(transportUnit.getBarcode()).orElse(transportUnit);
+        merged.setActualLocation(transportUnit.getActualLocation());
+        return repository.save(merged);
     }
 }

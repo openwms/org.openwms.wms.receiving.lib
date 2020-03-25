@@ -15,18 +15,16 @@
  */
 package org.openwms.wms.transport.event;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
+import org.openwms.wms.ReceivingApplicationTest;
 import org.openwms.wms.transport.impl.RepositoryAccessor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.test.annotation.Commit;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,44 +36,31 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Heiko Scherrer
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
-@Transactional
-@SpringBootTest
+@ReceivingApplicationTest
 class TransportUnitEventListenerTest {
 
     @Autowired
     private AmqpTemplate template;
     @Autowired
     private RepositoryAccessor accessor;
-    @Value("${owms.receiving.orders.exchange-name}")
+    @Value("${owms.events.common.tu.exchange-name}")
     private String exchangeName;
-    @Value("${owms.receiving.orders.routing-key}")
-    private String routingKey;
-
-    @Commit
-    public void delete() {
-        accessor.getRepository().deleteAll();
-    }
-
-    @BeforeEach
-    void onSetup() {
-        this.delete();
-    }
+    @Autowired
+    TransactionTemplate txTemplate;
 
     @Test
     void shall_create_TU() throws Exception {
-        int exists = accessor.getRepository().findAll().size();
-        System.out.println(exists);
-        assertThat(exists).isEqualTo(0);
-        assertThat(exists).isZero();
+        assertThat(accessor.getRepository().findAll().size()).isZero();
 
-        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").build();
+        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation("EXT_/0000/0000/0000/0000").build();
         template.convertAndSend(exchangeName, "tu.event.created", create);
         TimeUnit.MILLISECONDS.sleep(500);
-        assertThat(accessor.getRepository().findAll().size()).isEqualTo(exists + 1);
+        assertThat(accessor.getRepository().findAll().size()).isEqualTo(1);
 
         create.setActualLocation("INIT/0000/0000/0000/0000");
-        template.convertAndSend(exchangeName, "tu.event.changed", create);
+        template.convertAndSend(exchangeName, "tu.event.moved.INIT/0000/0000/0000/0000", create);
         TimeUnit.MILLISECONDS.sleep(500);
-        assertThat(accessor.getRepository().findAll().get(1).getActualLocation()).isEqualTo("INIT/0000/0000/0000/0000");
+        assertThat(accessor.getRepository().findAll()).hasSize(1);
+        assertThat(accessor.getRepository().findAll().get(0).getActualLocation()).isEqualTo("INIT/0000/0000/0000/0000");
     }
 }

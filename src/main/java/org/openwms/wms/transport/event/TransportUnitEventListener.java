@@ -17,6 +17,7 @@ package org.openwms.wms.transport.event;
 
 import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
+import org.openwms.common.transport.api.ValidationGroups;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.wms.transport.TransportUnit;
 import org.openwms.wms.transport.TransportUnitService;
@@ -27,6 +28,10 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+
+import javax.validation.Validator;
+
+import static org.ameba.system.ValidationUtil.validate;
 
 /**
  * A TransportUnitEventListener is a Spring managed RabbiMQ event listener that is interested in changes on
@@ -40,21 +45,29 @@ class TransportUnitEventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitEventListener.class);
     private final TransportUnitService service;
     private final BeanMapper mapper;
+    private final Validator validator;
 
-    TransportUnitEventListener(TransportUnitService service, BeanMapper mapper) {
+    TransportUnitEventListener(TransportUnitService service, BeanMapper mapper, Validator validator) {
         this.service = service;
         this.mapper = mapper;
+        this.validator = validator;
     }
 
     @Measured
     @RabbitListener(queues = "${owms.events.common.tu.queue-name}")
     public void handle(@Payload TransportUnitMO mo, @Header("amqp_receivedRoutingKey") String routingKey) {
         try {
-            if ("tu.event.created".equals(routingKey) ||
-                    routingKey.startsWith("tu.event.moved") ||
-                    routingKey.startsWith("tu.event.changed")
-            ) {
-
+            if ("tu.event.created".equals(routingKey)) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Event: Create TransportUnit with Barcode [{}]", mo.getBarcode());
+                }
+                validate(validator, mo, ValidationGroups.TransportUnit.Create.class);
+                service.upsert(mapper.map(mo, TransportUnit.class));
+            } else if (routingKey.startsWith("tu.event.moved")) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Event: Move TransportUnit with Barcode [{}] to [{}]", mo.getBarcode(), mo.getActualLocation());
+                }
+                validate(validator, mo);
                 service.upsert(mapper.map(mo, TransportUnit.class));
             } else {
                 if (LOGGER.isDebugEnabled()) {
