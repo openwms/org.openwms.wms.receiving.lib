@@ -17,11 +17,6 @@ Run in standalone mode:
 $ java -jar target/openwms-wms-receiving.jar 
 ```
 
-Or run with some sample data:
-```
-$ java -Dspring.profiles.active=DEMO -jar target/openwms-wms-receiving.jar 
-```
-
 Or additionally run in a distributed environment with an already running Service Registry, Configuration Server and a RabbitMQ broker:
 ```
 $ java -Dspring.profiles.active=ASYNCHRONOUS,DEMO -jar target/openwms-wms-receiving.jar 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms;
 
 import org.ameba.test.categories.SpringTestSupport;
 import org.openwms.ReceivingRunner;

@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "WMS_REC_PRODUCT",
-        uniqueConstraints = @UniqueConstraint(name = "UC_SKU", columnNames = {"C_SKU"})
+        uniqueConstraints = @UniqueConstraint(name = "UC_REC_PRODUCT_SKU", columnNames = {"C_SKU"})
 )
 public class Product extends ApplicationEntity implements Comparable<Product>, Serializable {
 

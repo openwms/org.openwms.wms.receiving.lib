@@ -41,7 +41,7 @@ import java.time.ZonedDateTime;
 public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_POS_ORDER_ID"))
+    @JoinColumn(name = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
     private ReceivingOrder order;
 
     /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
@@ -62,7 +62,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
-    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_POS_PRODUCT"))
+    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"))
     private Product product;
 
     /** The barcode of an expected {@code TransportUnit} to be received. */

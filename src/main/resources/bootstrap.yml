@@ -52,7 +52,7 @@ owms:
     common:
       tu:
         exchange-name: common.tu
-        routing-key: tu.event.*
+        routing-key: tu.event.*.*
         queue-name: wms-receiving-common-tu
   receiving:
     serialization: json
@@ -60,7 +60,6 @@ owms:
       queue-name: wms-receiving-order
       exchange-name: wms.receiving
       routing-key: wms.receiving.order
-
 
 server:
   port: ${PORT:8140}
@@ -118,15 +117,6 @@ eureka:
     statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
     healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
     homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/
-
----
-spring:
-  profiles: DEMO
-  jpa:
-    properties:
-      hibernate:
-        hbm2ddl:
-          import_files: import-DEMO.sql
 
 ---
 spring:

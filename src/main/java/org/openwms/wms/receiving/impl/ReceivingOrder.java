@@ -42,7 +42,7 @@ import static javax.persistence.CascadeType.ALL;
  */
 @Entity
 @Table(name = "WMS_REC_ORDER",
-        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID", columnNames = { "C_ORDER_ID" })
+        uniqueConstraints = @UniqueConstraint(name = "UC_REC_ORDER_ID", columnNames = { "C_ORDER_ID" })
 )
 public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
