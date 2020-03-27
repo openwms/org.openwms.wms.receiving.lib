@@ -81,24 +81,6 @@ public class ReceivingAsyncConfiguration {
         return rabbitTemplate;
     }
 
-    @Bean
-    TopicExchange orderExchange(@Value("${owms.receiving.orders.exchange-name}") String exchangeName) {
-        return new TopicExchange(exchangeName, true, false);
-    }
-
-    @Bean
-    Queue orderQueue(@Value("${owms.receiving.orders.queue-name}") String queueName) {
-        return new Queue(queueName, true);
-    }
-
-    @Bean
-    Binding orderBinding(TopicExchange orderExchange, Queue orderQueue, @Value("${owms.receiving.orders.routing-key}") String routingKey) {
-        return BindingBuilder
-                .bind(orderQueue)
-                .to(orderExchange)
-                .with(routingKey);
-    }
-
     /* Common Service Bindings */
     @Bean
     TopicExchange tuExchange(@Value("${owms.events.common.tu.exchange-name}") String exchangeName) {

@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -138,5 +139,10 @@ class ReceivingServiceImpl implements ReceivingService {
             );
         }
         order.setOrderState(CANCELED);
+    }
+
+    @Override
+    public List<ReceivingOrder> findAll() {
+        return repository.findAll();
     }
 }

@@ -62,7 +62,7 @@ owms:
       routing-key: wms.receiving.order
 
 server:
-  port: ${PORT:8140}
+  port: ${PORT:8141}
 
 eureka:
   client:
@@ -128,6 +128,15 @@ owms:
     url: http://user:sa@owms-services:8761
   srv:
     hostname: owms-receiving
+
+---
+spring:
+  profiles: DEMO
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files: import-DEMO.sql
 
 ---
 spring:

@@ -31,6 +31,7 @@ import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -88,7 +89,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     /** All GoodsReceiptPosition this Order has. */
     @OneToMany(mappedBy = "order", cascade = {ALL})
-    private Set<ReceivingOrderPosition> positions;
+    private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
     /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */

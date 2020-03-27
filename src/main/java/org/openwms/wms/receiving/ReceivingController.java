@@ -22,6 +22,7 @@ import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -64,6 +66,13 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<Void> createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
         ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
+    }
+
+    @Transactional
+    @GetMapping("/v1/receiving")
+    public ResponseEntity<List<ReceivingOrderVO>> findAll() {
+        List<ReceivingOrder> order = service.findAll();
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
     @GetMapping("/v1/receiving/{pKey}")

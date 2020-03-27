@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * A ReceivingService.
@@ -49,4 +50,6 @@ public interface ReceivingService {
      * @throws CancellationDeniedException in case the cancellation is not allowed
      */
     void cancelOrder(@NotEmpty String pKey);
+
+    List<ReceivingOrder> findAll();
 }
