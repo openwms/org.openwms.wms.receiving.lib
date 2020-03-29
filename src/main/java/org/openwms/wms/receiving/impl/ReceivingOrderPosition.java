@@ -58,7 +58,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
             @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
             @Column(name = "C_QTY_EXPECTED", nullable = false)
     })
-    private Measurable qtyExpected;
+    private Measurable quantityExpected;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
@@ -77,5 +77,29 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public String getTransportUnitBK() {
         return transportUnitBK;
+    }
+
+    public ReceivingOrder getOrder() {
+        return order;
+    }
+
+    public int getPosNo() {
+        return posNo;
+    }
+
+    public OrderState getState() {
+        return state;
+    }
+
+    public Measurable getQuantityExpected() {
+        return quantityExpected;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public ZonedDateTime getLatestDueDate() {
+        return latestDueDate;
     }
 }
