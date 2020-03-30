@@ -33,20 +33,17 @@ class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
 
     private final AmqpTemplate template;
     private final String exchangeName;
-    private final String routingKey;
 
     AsyncTransportUnitApiImpl(
             AmqpTemplate template,
-            @Value("${owms.commands.common.tu.exchange-name}") String exchangeName,
-            @Value("${owms.commands.common.tu.routing-key}") String routingKey
+            @Value("${owms.commands.common.tu.exchange-name}") String exchangeName
     ) {
         this.template = template;
         this.exchangeName = exchangeName;
-        this.routingKey = routingKey;
     }
 
     @Override
     public void process(Command command) {
-        template.convertAndSend(exchangeName, routingKey, command);
+        template.convertAndSend(exchangeName, "common.tu.command.in.create", command);
     }
 }
