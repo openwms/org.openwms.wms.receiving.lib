@@ -21,8 +21,6 @@ import org.openwms.wms.transport.TransportUnit;
 import org.openwms.wms.transport.TransportUnitService;
 import org.springframework.util.Assert;
 
-import java.util.Optional;
-
 /**
  * A TransportUnitServiceImpl.
  *
@@ -34,21 +32,18 @@ class TransportUnitServiceImpl implements TransportUnitService {
     private final TransportUnitRepository repository;
     private final BeanMapper mapper;
 
-<span class="fc" id="L37">    public TransportUnitServiceImpl(TransportUnitRepository repository, BeanMapper mapper) {</span>
-<span class="fc" id="L38">        this.repository = repository;</span>
-<span class="fc" id="L39">        this.mapper = mapper;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L35">    public TransportUnitServiceImpl(TransportUnitRepository repository, BeanMapper mapper) {</span>
+<span class="fc" id="L36">        this.repository = repository;</span>
+<span class="fc" id="L37">        this.mapper = mapper;</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public TransportUnit upsert(TransportUnit transportUnit) {
-<span class="fc" id="L44">        Assert.notNull(transportUnit, &quot;transportUnit must not be null&quot;);</span>
-<span class="fc" id="L45">        Assert.hasText(transportUnit.getBarcode(), &quot;barcode of TransportUnit must be set before saving&quot;);</span>
-<span class="fc" id="L46">        Optional&lt;TransportUnit&gt; opt = repository.findByBarcode(transportUnit.getBarcode());</span>
-<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
-<span class="fc" id="L48">            TransportUnit merged = mapper.mapFromTo(transportUnit, opt.get());</span>
-<span class="fc" id="L49">            return repository.save(merged);</span>
-        }
-<span class="fc" id="L51">        return repository.save(transportUnit);</span>
+<span class="fc" id="L42">        Assert.notNull(transportUnit, &quot;transportUnit must not be null&quot;);</span>
+<span class="fc" id="L43">        Assert.hasText(transportUnit.getBarcode(), &quot;barcode of TransportUnit must be set before saving&quot;);</span>
+<span class="fc" id="L44">        TransportUnit merged = repository.findByBarcode(transportUnit.getBarcode()).orElse(transportUnit);</span>
+<span class="fc" id="L45">        merged.setActualLocation(transportUnit.getActualLocation());</span>
+<span class="fc" id="L46">        return repository.save(merged);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

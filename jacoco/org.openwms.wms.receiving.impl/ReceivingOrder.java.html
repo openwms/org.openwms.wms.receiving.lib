@@ -31,6 +31,7 @@ import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -42,7 +43,7 @@ import static javax.persistence.CascadeType.ALL;
  */
 @Entity
 @Table(name = &quot;WMS_REC_ORDER&quot;,
-        uniqueConstraints = @UniqueConstraint(name = &quot;UC_ORDER_ID&quot;, columnNames = { &quot;C_ORDER_ID&quot; })
+        uniqueConstraints = @UniqueConstraint(name = &quot;UC_REC_ORDER_ID&quot;, columnNames = { &quot;C_ORDER_ID&quot; })
 )
 public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
@@ -53,7 +54,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Current state of this Order. */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_ORDER_STATE&quot;)
-<span class="fc" id="L56">    private OrderState orderState = OrderState.UNDEFINED;</span>
+<span class="fc" id="L57">    private OrderState orderState = OrderState.UNDEFINED;</span>
 
     /**
      * Property to lock/unlock an Order.
@@ -64,7 +65,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
      * Default is {@value}
      */
     @Column(name = &quot;C_LOCKED&quot;)
-<span class="fc" id="L67">    private boolean locked = false;</span>
+<span class="fc" id="L68">    private boolean locked = false;</span>
 
     /** Current priority of the Order. */
     @Column(name = &quot;C_PRIORITY&quot;)
@@ -88,64 +89,64 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     /** All GoodsReceiptPosition this Order has. */
     @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL})
-    private Set&lt;ReceivingOrderPosition&gt; positions;
+<span class="fc" id="L92">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
 
     /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */
-<span class="fc" id="L95">    protected ReceivingOrder() {}</span>
+<span class="fc" id="L96">    protected ReceivingOrder() {}</span>
 
-<span class="fc" id="L97">    protected ReceivingOrder(String orderId) {</span>
-<span class="fc" id="L98">        this.orderId = orderId;</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L98">    protected ReceivingOrder(String orderId) {</span>
+<span class="fc" id="L99">        this.orderId = orderId;</span>
+<span class="fc" id="L100">    }</span>
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
-<span class="fc" id="L103">        this.orderState = OrderState.CREATED;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L104">        this.orderState = OrderState.CREATED;</span>
+<span class="fc" id="L105">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L107">        return orderId;</span>
+<span class="fc" id="L108">        return orderId;</span>
     }
 
     public OrderState getOrderState() {
-<span class="fc" id="L111">        return orderState;</span>
+<span class="fc" id="L112">        return orderState;</span>
     }
 
     public void setOrderState(OrderState orderState) {
-<span class="fc" id="L115">        this.orderState = orderState;</span>
-<span class="fc" id="L116">    }</span>
+<span class="fc" id="L116">        this.orderState = orderState;</span>
+<span class="fc" id="L117">    }</span>
 
     public boolean isLocked() {
-<span class="nc" id="L119">        return locked;</span>
+<span class="nc" id="L120">        return locked;</span>
     }
 
     public int getPriority() {
-<span class="nc" id="L123">        return priority;</span>
+<span class="nc" id="L124">        return priority;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L127">        return latestDueDate;</span>
+<span class="nc" id="L128">        return latestDueDate;</span>
     }
 
     public ZonedDateTime getStartDate() {
-<span class="nc" id="L131">        return startDate;</span>
+<span class="nc" id="L132">        return startDate;</span>
     }
 
     public ZonedDateTime getNextAllocationDate() {
-<span class="nc" id="L135">        return nextAllocationDate;</span>
+<span class="nc" id="L136">        return nextAllocationDate;</span>
     }
 
     public Problem getProblem() {
-<span class="nc" id="L139">        return problem;</span>
+<span class="nc" id="L140">        return problem;</span>
     }
 
     public Set&lt;ReceivingOrderPosition&gt; getPositions() {
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L148">        return orderId;</span>
+<span class="fc" id="L149">        return orderId;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

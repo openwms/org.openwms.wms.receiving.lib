@@ -33,21 +33,18 @@ class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
 
     private final AmqpTemplate template;
     private final String exchangeName;
-    private final String routingKey;
 
-<span class="fc" id="L38">    AsyncTransportUnitApiImpl(</span>
+<span class="fc" id="L37">    AsyncTransportUnitApiImpl(</span>
             AmqpTemplate template,
-            @Value(&quot;${owms.commands.common.tu.exchange-name}&quot;) String exchangeName,
-            @Value(&quot;${owms.commands.common.tu.routing-key}&quot;) String routingKey
+            @Value(&quot;${owms.commands.common.tu.exchange-name}&quot;) String exchangeName
     ) {
-<span class="fc" id="L43">        this.template = template;</span>
-<span class="fc" id="L44">        this.exchangeName = exchangeName;</span>
-<span class="fc" id="L45">        this.routingKey = routingKey;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L41">        this.template = template;</span>
+<span class="fc" id="L42">        this.exchangeName = exchangeName;</span>
+<span class="fc" id="L43">    }</span>
 
     @Override
     public void process(Command command) {
-<span class="nc" id="L50">        template.convertAndSend(exchangeName, routingKey, command);</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L47">        template.convertAndSend(exchangeName, &quot;common.tu.command.in.create&quot;, command);</span>
+<span class="nc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

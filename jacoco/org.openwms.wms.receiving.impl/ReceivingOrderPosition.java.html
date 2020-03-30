@@ -41,7 +41,7 @@ import java.time.ZonedDateTime;
 public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = &quot;C_ORDER_ID&quot;, foreignKey = @ForeignKey(name = &quot;FK_POS_ORDER_ID&quot;))
+    @JoinColumn(name = &quot;C_ORDER_ID&quot;, foreignKey = @ForeignKey(name = &quot;FK_REC_POS_ORDER_ID&quot;))
     private ReceivingOrder order;
 
     /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
@@ -58,11 +58,11 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
             @Column(name = &quot;C_QTY_EXPECTED_TYPE&quot;, nullable = false),
             @Column(name = &quot;C_QTY_EXPECTED&quot;, nullable = false)
     })
-    private Measurable qtyExpected;
+    private Measurable quantityExpected;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
-    @JoinColumn(name = &quot;C_SKU&quot;, referencedColumnName = &quot;C_SKU&quot;, foreignKey = @ForeignKey(name = &quot;FK_POS_PRODUCT&quot;))
+    @JoinColumn(name = &quot;C_SKU&quot;, referencedColumnName = &quot;C_SKU&quot;, foreignKey = @ForeignKey(name = &quot;FK_REC_POS_PRODUCT&quot;))
     private Product product;
 
     /** The barcode of an expected {@code TransportUnit} to be received. */
@@ -77,6 +77,30 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public String getTransportUnitBK() {
 <span class="nc" id="L79">        return transportUnitBK;</span>
+    }
+
+    public ReceivingOrder getOrder() {
+<span class="nc" id="L83">        return order;</span>
+    }
+
+    public int getPosNo() {
+<span class="nc" id="L87">        return posNo;</span>
+    }
+
+    public OrderState getState() {
+<span class="nc" id="L91">        return state;</span>
+    }
+
+    public Measurable getQuantityExpected() {
+<span class="nc" id="L95">        return quantityExpected;</span>
+    }
+
+    public Product getProduct() {
+<span class="nc" id="L99">        return product;</span>
+    }
+
+    public ZonedDateTime getLatestDueDate() {
+<span class="nc" id="L103">        return latestDueDate;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

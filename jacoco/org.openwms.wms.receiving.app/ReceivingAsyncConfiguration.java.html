@@ -81,22 +81,23 @@ import static org.ameba.LoggingCategories.BOOT;
 <span class="fc" id="L81">        return rabbitTemplate;</span>
     }
 
+    /* Common Service Bindings */
     @Bean
-    TopicExchange orderExchange(@Value(&quot;${owms.receiving.orders.exchange-name}&quot;) String exchangeName) {
-<span class="fc" id="L86">        return new TopicExchange(exchangeName, true, false);</span>
+    TopicExchange tuExchange(@Value(&quot;${owms.events.common.tu.exchange-name}&quot;) String exchangeName) {
+<span class="fc" id="L87">        return new TopicExchange(exchangeName, true, false);</span>
     }
 
     @Bean
-    Queue orderQueue(@Value(&quot;${owms.receiving.orders.queue-name}&quot;) String queueName) {
-<span class="fc" id="L91">        return new Queue(queueName, true);</span>
+    Queue tuQueue(@Value(&quot;${owms.events.common.tu.queue-name}&quot;) String queueName) {
+<span class="fc" id="L92">        return new Queue(queueName, true);</span>
     }
 
     @Bean
-    Binding orderBinding(TopicExchange orderExchange, Queue orderQueue, @Value(&quot;${owms.receiving.orders.routing-key}&quot;) String routingKey) {
-<span class="fc" id="L96">        return BindingBuilder</span>
-<span class="fc" id="L97">                .bind(orderQueue)</span>
-<span class="fc" id="L98">                .to(orderExchange)</span>
-<span class="fc" id="L99">                .with(routingKey);</span>
+    Binding tuBinding(TopicExchange tuExchange, Queue tuQueue, @Value(&quot;${owms.events.common.tu.routing-key}&quot;) String routingKey) {
+<span class="fc" id="L97">        return BindingBuilder</span>
+<span class="fc" id="L98">                .bind(tuQueue)</span>
+<span class="fc" id="L99">                .to(tuExchange)</span>
+<span class="fc" id="L100">                .with(routingKey);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

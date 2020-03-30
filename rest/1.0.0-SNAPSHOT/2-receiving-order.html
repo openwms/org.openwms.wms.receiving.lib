@@ -501,7 +501,7 @@ Content-Length: 24
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving/a1319143-9f99-4427-8300-a751fa201b8c/</code></pre>
+Location: http://localhost:8080/v1/receiving/b428c92e-42e1-4d74-9fe1-05e355aa3636/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -518,7 +518,7 @@ Location: http://localhost:8080/v1/receiving/a1319143-9f99-4427-8300-a751fa201b8
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/3eb97446-3d28-45d2-a617-61e16f9bd514/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/62ac17c8-0c99-4d21-a5e5-dc77e38e611d/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -561,7 +561,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving/cfe2be40-e33a-46e9-8602-848d83f4cb43/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving/806d5502-0dc9-40a1-bbcd-4fac276138fe/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -576,14 +576,26 @@ Host: localhost:8080</code></pre>
 <div class="paragraph">
 <p>In case the order couldn&#8217;t be cancelled because the order is already in process or has been processed, the server responds with:</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-cancel-403/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 403 Forbidden
+Content-Type: application/hal+json
+Content-Length: 279
+
+{
+  "message" : "Cancellation of ReceivingOrder [4714] is not allowed because order is already in state [PROCESSED]",
+  "messageKey" : "CANCELLATION.DENIED",
+  "obj" : [ "4714", "PROCESSED", "3a25dc75-e264-43f2-9b86-96ef27172cba" ],
+  "httpStatus" : "403",
+  "class" : "String"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-03-24 21:25:35 UTC
+Last updated 2020-03-30 21:54:56 UTC
 </div>
 </div>
 </body>

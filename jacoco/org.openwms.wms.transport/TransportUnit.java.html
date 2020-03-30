@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = &quot;WMS_REC_TRANSPORT_UNIT&quot;, uniqueConstraints = @UniqueConstraint(columnNames = {&quot;C_BARCODE&quot;}))
+@Table(name = &quot;WMS_REC_TRANSPORT_UNIT&quot;, uniqueConstraints = @UniqueConstraint(name = &quot;UC_REC_TRANSPORT_UNIT_BARCODE&quot;, columnNames = {&quot;C_BARCODE&quot;}))
 public class TransportUnit extends ApplicationEntity implements Serializable {
 
     /** Unique natural key. */
@@ -55,12 +55,16 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
     }
 
     public String getActualLocation() {
-<span class="nc" id="L58">        return actualLocation;</span>
+<span class="fc" id="L58">        return actualLocation;</span>
     }
+
+    public void setActualLocation(String actualLocation) {
+<span class="fc" id="L62">        this.actualLocation = actualLocation;</span>
+<span class="fc" id="L63">    }</span>
 
     @Override
     public String toString() {
-<span class="nc" id="L63">        return barcode;</span>
+<span class="nc" id="L67">        return barcode;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
