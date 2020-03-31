@@ -146,8 +146,27 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Test void shall_NOT_cancel_order() throws Exception {
+    @Transactional
+    @Test void shall_cancel_cancelled_order() throws Exception {
         String toLocation = createOrder("4714");
+        mockMvc
+                .perform(
+                        delete(toLocation)
+                )
+                .andExpect(status().isNoContent())
+        ;
+        mockMvc
+                .perform(
+                        delete(toLocation)
+                )
+                .andExpect(status().isGone())
+                .andExpect(jsonPath("messageKey", is(ReceivingMessages.ALREADY_CANCELLED)))
+                .andDo(document("order-cancel-cancelled", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test void shall_NOT_cancel_order() throws Exception {
+        String toLocation = createOrder("4715");
         mockMvc
                 .perform(
                         delete(toLocation)
