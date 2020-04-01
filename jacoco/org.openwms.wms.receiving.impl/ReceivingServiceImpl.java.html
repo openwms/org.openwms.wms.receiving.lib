@@ -124,11 +124,11 @@ class ReceivingServiceImpl implements ReceivingService {
 <span class="fc" id="L124">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
 <span class="pc" id="L125">        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
 <span class="fc" id="L126">        LOGGER.info(&quot;Cancelling ReceivingOrder [{}] in state [{}]&quot;, order.getOrderId(), order.getOrderState());</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (order.getOrderState() == CANCELED) {</span>
-<span class="nc" id="L128">            throw new AlreadyCancelledException(</span>
-<span class="nc" id="L129">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
-<span class="nc" id="L130">                    ALREADY_CANCELLED,</span>
-<span class="nc" id="L131">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (order.getOrderState() == CANCELED) {</span>
+<span class="fc" id="L128">            throw new AlreadyCancelledException(</span>
+<span class="fc" id="L129">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
+<span class="fc" id="L130">                    ALREADY_CANCELLED,</span>
+<span class="fc" id="L131">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
             );
         }
 <span class="pc bpc" id="L134" title="1 of 4 branches missed.">        if (order.getOrderState() != UNDEFINED &amp;&amp; order.getOrderState() != CREATED) {</span>
