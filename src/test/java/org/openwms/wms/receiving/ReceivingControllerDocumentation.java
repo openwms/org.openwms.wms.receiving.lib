@@ -88,7 +88,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
+//    @Transactional
     @Test void shall_create_order() throws Exception {
         mockMvc
                 .perform(
