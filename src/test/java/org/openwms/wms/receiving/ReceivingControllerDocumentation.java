@@ -94,7 +94,7 @@ class ReceivingControllerDocumentation {
                 .perform(
                         post("/v1/receiving")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(new ReceivingOrderVO("4711")))
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4712")))
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, notNullValue()))
@@ -108,7 +108,7 @@ class ReceivingControllerDocumentation {
                 .perform(
                         post("/v1/receiving")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(new ReceivingOrderVO("4712")))
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4713")))
                 )
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -136,7 +136,7 @@ class ReceivingControllerDocumentation {
     @Transactional
     @Rollback
     @Test void shall_cancel_order() throws Exception {
-        String toLocation = createOrder("4713");
+        String toLocation = createOrder("4714");
         mockMvc
                 .perform(
                         delete(toLocation)
@@ -148,7 +148,7 @@ class ReceivingControllerDocumentation {
 
     @Transactional
     @Test void shall_cancel_cancelled_order() throws Exception {
-        String toLocation = createOrder("4714");
+        String toLocation = createOrder("4715");
         mockMvc
                 .perform(
                         delete(toLocation)
@@ -166,7 +166,7 @@ class ReceivingControllerDocumentation {
     }
 
     @Test void shall_NOT_cancel_order() throws Exception {
-        String toLocation = createOrder("4715");
+        String toLocation = createOrder("4716");
         mockMvc
                 .perform(
                         delete(toLocation)
