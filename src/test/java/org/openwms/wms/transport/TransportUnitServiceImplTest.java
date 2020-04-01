@@ -43,7 +43,6 @@ class TransportUnitServiceImplTest {
         assertThat(ex.getMessage()).containsIgnoringCase("barcode");
     }
 
-    @Disabled("Fails on CI")
     @Test
     void upsert() {
         TransportUnit tu = new TransportUnit("4709", "EXT_/0000/0000/0000/0000");
