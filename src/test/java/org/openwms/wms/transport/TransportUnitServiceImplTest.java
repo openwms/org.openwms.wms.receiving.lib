@@ -44,17 +44,17 @@ class TransportUnitServiceImplTest {
 
     @Test
     void upsert() {
-        TransportUnit tu = new TransportUnit("4711", "EXT_/0000/0000/0000/0000");
+        TransportUnit tu = new TransportUnit("4709", "EXT_/0000/0000/0000/0000");
         tu = service.upsert(tu);
-        assertThat(tu.getBarcode()).isEqualTo("4711");
+        assertThat(tu.getBarcode()).isEqualTo("4709");
         assertThat(tu.isNew()).isFalse();
 
         tu = service.upsert(tu);
-        assertThat(tu.getBarcode()).isEqualTo("4711");
+        assertThat(tu.getBarcode()).isEqualTo("4709");
         assertThat(tu.isNew()).isFalse();
 
-        tu = service.upsert(new TransportUnit("4711", "EXT_/0000/0000/0000/0000"));
-        assertThat(tu.getBarcode()).isEqualTo("4711");
+        tu = service.upsert(new TransportUnit("4709", "EXT_/0000/0000/0000/0000"));
+        assertThat(tu.getBarcode()).isEqualTo("4709");
         assertThat(tu.isNew()).isFalse();
     }
 }
