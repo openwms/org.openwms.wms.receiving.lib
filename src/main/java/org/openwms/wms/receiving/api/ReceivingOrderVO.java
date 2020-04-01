@@ -48,7 +48,7 @@ public class ReceivingOrderVO implements Serializable {
         this.orderId = orderId;
     }
 
-    public Set<ReceivingOrderPositionVO> getPositions() {
+     public Set<ReceivingOrderPositionVO> getPositions() {
         return positions;
     }
 
