@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.8">
-<meta name="author" content="(1.0.0-SNAPSHOT-30)">
+<meta name="author" content="(1.0.0-SNAPSHOT-31)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-30)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-31)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -779,7 +779,7 @@ Content-Length: 24
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving/de105419-fb3c-464b-89b5-9ec86a7e929e/</code></pre>
+Location: http://localhost:8080/v1/receiving/a09cb439-92cf-4d87-8d6a-ae693f0c021c/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -796,7 +796,7 @@ Location: http://localhost:8080/v1/receiving/de105419-fb3c-464b-89b5-9ec86a7e929
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/receiving/69fee878-7f9d-457a-919f-f4b66663eb57/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/receiving/7eb199cd-33dd-4c77-a70a-34d54f4d1a4b/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -839,7 +839,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving/7263cd8c-7620-4549-afb6-bac79a67c82e/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving/a1263dee-b65d-4b3e-bbad-e212d97f05fb/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -863,7 +863,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "539c33e2-401a-4a00-b220-ebe20af1f806" ],
+  "obj" : [ "4716", "PROCESSED", "34fcf6c9-d966-4491-a946-1f46da3fdfbf" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -875,7 +875,7 @@ Content-Length: 279
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-01 23:00:20 UTC
+Last updated 2020-04-01 23:11:15 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
