@@ -19,12 +19,12 @@ taskInputsFiles = ["${inputPath}/arc42-template.adoc"]
 
 confluence = [:]
 confluence.with {
-    input = [[ file: "build/html5/arc42-template.html", ancestorId: '836861953']]
-    ancestorId = '836861953'
+    input = [[ file: "build/html5/arc42-template.html", ancestorId: '859799571']]
+    ancestorId = '859799571'
     api = 'https://openwms.atlassian.net/wiki/rest/api/'
     spaceKey = 'WMS'
     createSubpages = false
-    pagePrefix = 'RCV'
+    pagePrefix = 'RCV-'
     preambleTitle = 'Technical Architecture'
     pageSuffix = ''
     credentials = "${System.getenv('ATLASSIAN_USER')}:${System.getenv('ATLASSIAN_PASSWORD')}".bytes.encodeBase64().toString()
