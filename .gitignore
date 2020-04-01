@@ -12,6 +12,7 @@ libs/
 **/*.js.map
 doc/build/
 doc/.gradle/
+doc/docToolchain-master/
 
 # OS Files #
 .DS_Store
