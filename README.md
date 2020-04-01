@@ -1,8 +1,8 @@
 # Purpose
 
-This service is responsible to handle incoming order, so called receiving orders, expected receipts or receiving notices. Before a pallet or
-box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier and some other
-characteristics that differ between projects.
+This service is responsible to handle incoming orders, so called receiving orders, aka expected receipts or receiving notices. Before a
+pallet or box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier and some other
+characteristics that may differ between projects.
 
 # Build and Run locally
 The service can be built and run locally without any other services.
