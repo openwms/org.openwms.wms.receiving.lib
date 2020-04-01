@@ -23,8 +23,8 @@ confluence.with {
     ancestorId = '836861953'
     api = 'https://openwms.atlassian.net/wiki/rest/api/'
     spaceKey = 'WMS'
-    createSubpages = true
-    pagePrefix = ''
+    createSubpages = false
+    pagePrefix = 'RCV'
     preambleTitle = 'Technical Architecture'
     pageSuffix = ''
     credentials = "${System.getenv('ATLASSIAN_USER')}:${System.getenv('ATLASSIAN_PASSWORD')}".bytes.encodeBase64().toString()

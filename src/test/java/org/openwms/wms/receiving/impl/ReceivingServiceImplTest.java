@@ -45,10 +45,10 @@ class ReceivingServiceImplTest {
     }
 
     @Test void createOrder() {
-        ReceivingOrder order = service.createOrder(new ReceivingOrder("4711"));
+        ReceivingOrder order = service.createOrder(new ReceivingOrder("4710"));
         assertThat(order.isNew()).isFalse();
 
-        ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4711")));
+        ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4710")));
         assertThat(ex.getMessage()).containsIgnoringCase("exists");
     }
 }
