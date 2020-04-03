@@ -39,6 +39,15 @@ In case the order does not exist, the server responds with:
 
 include::{generated}/order-find-404/http-response.adoc[]
 
+=== Find all ReceivingOrders
+A HTTP GET request to the primary resource is required to find all `ReceivingOrders`.
+
+include::{generated}/order-find-all/http-request.adoc[]
+
+Returns an array of `ReceivingOrders` or an empty array:
+
+include::{generated}/order-find-all/http-response.adoc[]
+
 === Cancel a ReceivingOrder
 An earlier posted `ReceivingOrder` can be cancelled for further processing. The client needs to send a HTTP DELETE request with the unique
 identifier of the order.
