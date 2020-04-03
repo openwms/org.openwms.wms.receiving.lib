@@ -45,45 +45,41 @@ public class ReceivingOrderPositionVO implements Serializable {
 <span class="fc" id="L45">    ReceivingOrderPositionVO() {</span>
 <span class="fc" id="L46">    }</span>
 
-<span class="fc" id="L48">    public ReceivingOrderPositionVO(@NotEmpty String positionId) {</span>
+<span class="fc" id="L48">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected) {</span>
 <span class="fc" id="L49">        this.positionId = positionId;</span>
-<span class="fc" id="L50">    }</span>
-
-<span class="fc" id="L52">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected) {</span>
-<span class="fc" id="L53">        this.positionId = positionId;</span>
-<span class="fc" id="L54">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L50">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L51">    }</span>
 
     public String getPositionId() {
-<span class="fc" id="L58">        return positionId;</span>
+<span class="fc" id="L54">        return positionId;</span>
     }
 
     public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
-<span class="fc" id="L62">        return quantityExpected;</span>
+<span class="fc" id="L58">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable&lt;?, ?, ?&gt; quantityExpected) {
-<span class="fc" id="L66">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L62">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L63">    }</span>
 
     public String getSku() {
-<span class="fc" id="L70">        return sku;</span>
+<span class="fc" id="L66">        return sku;</span>
     }
 
     public String getStartMode() {
-<span class="fc" id="L74">        return startMode;</span>
+<span class="fc" id="L70">        return startMode;</span>
     }
 
     public String getTransportUnitId() {
-<span class="fc" id="L78">        return transportUnitId;</span>
+<span class="fc" id="L74">        return transportUnitId;</span>
     }
 
     public String getTransportUnitType() {
-<span class="fc" id="L82">        return transportUnitType;</span>
+<span class="fc" id="L78">        return transportUnitType;</span>
     }
 
     public String getSupplierPackingUnit() {
-<span class="fc" id="L86">        return supplierPackingUnit;</span>
+<span class="fc" id="L82">        return supplierPackingUnit;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
