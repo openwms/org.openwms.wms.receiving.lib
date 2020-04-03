@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ public class ReceivingOrderVO implements Serializable {
 
     @NotEmpty
     private String orderId;
-    private Set<ReceivingOrderPositionVO> positions;
+    private Set<ReceivingOrderPositionVO> positions = new HashSet<>(0);
 
     public ReceivingOrderVO() {
     }

@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openwms.core.units.api.Measurable;
 
@@ -38,6 +39,14 @@ public class ReceivingOrderPositionVO implements Serializable {
     private String transportUnitId;
     private String transportUnitType;
     private String supplierPackingUnit;
+
+    @JsonCreator
+    ReceivingOrderPositionVO() {
+    }
+
+    public ReceivingOrderPositionVO(@NotEmpty String positionId) {
+        this.positionId = positionId;
+    }
 
     public String getPositionId() {
         return positionId;
