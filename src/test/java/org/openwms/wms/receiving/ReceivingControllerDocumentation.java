@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -111,7 +112,7 @@ class ReceivingControllerDocumentation {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length() > 0", is(true)))
+                .andExpect(jsonPath("$.length()", greaterThan(0)))
                 .andDo(document("order-find-all", preprocessResponse(prettyPrint())))
         ;
     }
