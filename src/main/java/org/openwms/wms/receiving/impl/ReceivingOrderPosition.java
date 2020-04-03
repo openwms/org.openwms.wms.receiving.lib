@@ -95,6 +95,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return quantityExpected;
     }
 
+    public void setQuantityExpected(Measurable quantityExpected) {
+        this.quantityExpected = quantityExpected;
+    }
+
     public Product getProduct() {
         return product;
     }

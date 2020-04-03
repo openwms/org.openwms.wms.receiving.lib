@@ -69,11 +69,14 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @PostMapping("/v1/receiving")
-    public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO order, HttpServletRequest req) {
+    public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
+        validate(validator, orderVO);
+        // FIXME [openwms]:
+        orderVO.getPositions().clear();
+        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
         // FIXME [openwms]:
         order.getPositions().forEach(p -> p.setQuantityExpected(Piece.of(1)));
-        validate(validator, order);
-        ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));
+        ReceivingOrder saved = service.createOrder(order);
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 
