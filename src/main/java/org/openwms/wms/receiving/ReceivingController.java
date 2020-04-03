@@ -18,6 +18,7 @@ package org.openwms.wms.receiving;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
+import org.openwms.core.units.api.Piece;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
@@ -69,6 +70,8 @@ public class ReceivingController extends AbstractWebController {
 
     @PostMapping("/v1/receiving")
     public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO order, HttpServletRequest req) {
+        // FIXME [openwms]:
+        order.getPositions().forEach(p -> p.setQuantityExpected(Piece.of(1)));
         validate(validator, order);
         ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();

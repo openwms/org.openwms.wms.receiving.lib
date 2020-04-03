@@ -62,6 +62,10 @@ public class ReceivingOrderPositionVO implements Serializable {
         return quantityExpected;
     }
 
+    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
+        this.quantityExpected = quantityExpected;
+    }
+
     public String getSku() {
         return sku;
     }

@@ -33,8 +33,7 @@ public class ReceivingOrderVO implements Serializable {
 
     @NotEmpty
     private String orderId;
-    @Valid
-    private Set<ReceivingOrderPositionVO> positions = new HashSet<>(0);
+    private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
 
     public ReceivingOrderVO() {
     }
