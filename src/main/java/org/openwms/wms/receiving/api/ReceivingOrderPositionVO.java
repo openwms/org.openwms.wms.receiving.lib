@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -32,7 +33,7 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     @NotEmpty
     private String positionId;
-    @NotEmpty
+    @NotNull
     private Measurable<?, ?, ?> quantityExpected;
     private String sku;
     private String startMode;
@@ -46,6 +47,11 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     public ReceivingOrderPositionVO(@NotEmpty String positionId) {
         this.positionId = positionId;
+    }
+
+    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected) {
+        this.positionId = positionId;
+        this.quantityExpected = quantityExpected;
     }
 
     public String getPositionId() {

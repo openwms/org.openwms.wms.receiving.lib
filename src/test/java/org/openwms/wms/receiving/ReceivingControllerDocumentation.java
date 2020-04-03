@@ -20,11 +20,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.SpringProfiles;
+import org.openwms.core.units.api.Piece;
 import org.openwms.wms.ReceivingApplicationTest;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
@@ -90,10 +90,22 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
+    //@Transactional
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
         orderVO.getPositions().add(new ReceivingOrderPositionVO("1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(orderVO))
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("order-create-400", preprocessResponse(prettyPrint())))
+        ;
+
+        orderVO.getPositions().clear();
+        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1)));
         mockMvc
                 .perform(
                         post("/v1/receiving")
@@ -105,6 +117,7 @@ class ReceivingControllerDocumentation {
                 .andDo(document("order-create", preprocessResponse(prettyPrint())))
         ;
     }
+
     @Test void shall_find_all() throws Exception {
         mockMvc
                 .perform(

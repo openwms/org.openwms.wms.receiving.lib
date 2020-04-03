@@ -30,8 +30,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.List;
 
+import static org.ameba.system.ValidationUtil.validate;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -45,10 +48,12 @@ public class ReceivingController extends AbstractWebController {
 
     private final ReceivingService service;
     private final BeanMapper mapper;
+    private final Validator validator;
 
-    public ReceivingController(ReceivingService service, BeanMapper mapper) {
+    public ReceivingController(ReceivingService service, BeanMapper mapper, Validator validator) {
         this.service = service;
         this.mapper = mapper;
+        this.validator = validator;
     }
 
     @GetMapping("/v1/receiving/index")
@@ -63,7 +68,8 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @PostMapping("/v1/receiving")
-    public ResponseEntity<Void> createOrder(@RequestBody ReceivingOrderVO order, HttpServletRequest req) {
+    public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO order, HttpServletRequest req) {
+        validate(validator, order);
         ReceivingOrder saved = service.createOrder(mapper.map(order, ReceivingOrder.class));
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }

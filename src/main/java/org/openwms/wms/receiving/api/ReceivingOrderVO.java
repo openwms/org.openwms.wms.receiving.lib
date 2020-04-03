@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ public class ReceivingOrderVO implements Serializable {
 
     @NotEmpty
     private String orderId;
+    @Valid
     private Set<ReceivingOrderPositionVO> positions = new HashSet<>(0);
 
     public ReceivingOrderVO() {

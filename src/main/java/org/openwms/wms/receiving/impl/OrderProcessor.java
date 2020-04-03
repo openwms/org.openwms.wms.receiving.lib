@@ -45,7 +45,8 @@ class OrderProcessor {
 
     /**
      * After a {@link ReceivingOrder} is created all positions are processed.
-     * @param event
+     *
+     * @param event Expected to keep the created order instance
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
