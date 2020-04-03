@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.8">
-<meta name="author" content="(1.0.0-SNAPSHOT-39)">
+<meta name="author" content="(1.0.0-SNAPSHOT-40)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-39)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-40)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -767,12 +767,17 @@ Content-Length: 375
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/receiving HTTP/1.1
 Content-Type: application/json
 Host: localhost:8080
-Content-Length: 74
+Content-Length: 252
 
 {
   "orderId" : "4712",
   "positions" : [ {
-    "positionId" : "1"
+    "positionId" : "1",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    }
   } ]
 }</code></pre>
 </div>
@@ -783,14 +788,16 @@ Content-Length: 74
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving/9c897e87-e00a-45dd-8c82-a79fc26041a1/</code></pre>
+Location: http://localhost:8080/v1/receiving/8daf9a35-12c7-4c62-8204-9d32a54fe77e/</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>In case the client request did not match the server expectations, the server responds with:</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-create-400/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -800,7 +807,7 @@ Location: http://localhost:8080/v1/receiving/9c897e87-e00a-45dd-8c82-a79fc26041a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/receiving/ceb66a17-e2f5-43e6-94c5-661eff092ad8/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/receiving/c7c21458-605e-40e4-b065-2f57c0643bce/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -853,10 +860,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 28
+Content-Length: 54
 
 [ {
   "orderId" : "4716"
+}, {
+  "orderId" : "4712"
 } ]</code></pre>
 </div>
 </div>
@@ -869,7 +878,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving/d326e3bf-1115-4f79-83a1-ba7d533951e7/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving/a97eccc1-49c6-409c-85b1-611d875cf266/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -893,7 +902,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "641c12e2-5fd0-4b17-9f00-0ef3d28b22b9" ],
+  "obj" : [ "4716", "PROCESSED", "6337ec8d-12f0-413b-8116-65a524483b41" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -905,7 +914,7 @@ Content-Length: 279
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-03 22:14:42 UTC
+Last updated 2020-04-03 23:09:43 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

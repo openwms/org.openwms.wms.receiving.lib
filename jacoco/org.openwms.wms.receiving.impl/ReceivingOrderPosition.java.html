@@ -95,12 +95,16 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 <span class="nc" id="L95">        return quantityExpected;</span>
     }
 
+    public void setQuantityExpected(Measurable quantityExpected) {
+<span class="nc" id="L99">        this.quantityExpected = quantityExpected;</span>
+<span class="nc" id="L100">    }</span>
+
     public Product getProduct() {
-<span class="nc" id="L99">        return product;</span>
+<span class="nc" id="L103">        return product;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L103">        return latestDueDate;</span>
+<span class="nc" id="L107">        return latestDueDate;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
