@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,29 +32,29 @@ public class ReceivingOrderVO implements Serializable {
 
     @NotEmpty
     private String orderId;
-    private Set&lt;ReceivingOrderPositionVO&gt; positions;
+<span class="fc" id="L35">    private Set&lt;ReceivingOrderPositionVO&gt; positions = new HashSet&lt;&gt;(0);</span>
 
-<span class="fc" id="L36">    public ReceivingOrderVO() {</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L37">    public ReceivingOrderVO() {</span>
+<span class="fc" id="L38">    }</span>
 
-<span class="fc" id="L39">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
-<span class="fc" id="L40">        this.orderId = orderId;</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L40">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
+<span class="fc" id="L41">        this.orderId = orderId;</span>
+<span class="fc" id="L42">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L44">        return orderId;</span>
+<span class="fc" id="L45">        return orderId;</span>
     }
 
     public void setOrderId(String orderId) {
-<span class="fc" id="L48">        this.orderId = orderId;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L49">        this.orderId = orderId;</span>
+<span class="fc" id="L50">    }</span>
 
      public Set&lt;ReceivingOrderPositionVO&gt; getPositions() {
-<span class="fc" id="L52">        return positions;</span>
+<span class="fc" id="L53">        return positions;</span>
     }
 
     public void setPositions(Set&lt;ReceivingOrderPositionVO&gt; positions) {
-<span class="nc" id="L56">        this.positions = positions;</span>
-<span class="nc" id="L57">    }</span>
+<span class="fc" id="L57">        this.positions = positions;</span>
+<span class="fc" id="L58">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
