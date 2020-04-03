@@ -90,10 +90,9 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    //@Transactional
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1"));
+        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", null));
         mockMvc
                 .perform(
                         post("/v1/receiving")

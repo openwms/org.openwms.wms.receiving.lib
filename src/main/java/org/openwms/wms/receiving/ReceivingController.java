@@ -35,7 +35,6 @@ import javax.validation.Valid;
 import javax.validation.Validator;
 import java.util.List;
 
-import static org.ameba.system.ValidationUtil.validate;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -70,7 +69,6 @@ public class ReceivingController extends AbstractWebController {
 
     @PostMapping("/v1/receiving")
     public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
-        validate(validator, orderVO);
         // FIXME [openwms]:
         orderVO.getPositions().clear();
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);

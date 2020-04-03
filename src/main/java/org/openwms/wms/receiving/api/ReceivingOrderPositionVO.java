@@ -45,10 +45,6 @@ public class ReceivingOrderPositionVO implements Serializable {
     ReceivingOrderPositionVO() {
     }
 
-    public ReceivingOrderPositionVO(@NotEmpty String positionId) {
-        this.positionId = positionId;
-    }
-
     public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected) {
         this.positionId = positionId;
         this.quantityExpected = quantityExpected;
