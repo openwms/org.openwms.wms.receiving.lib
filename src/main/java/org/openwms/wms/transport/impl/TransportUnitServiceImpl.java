@@ -16,7 +16,6 @@
 package org.openwms.wms.transport.impl;
 
 import org.ameba.annotation.TxService;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.wms.transport.TransportUnit;
 import org.openwms.wms.transport.TransportUnitService;
 import org.springframework.util.Assert;
@@ -30,11 +29,9 @@ import org.springframework.util.Assert;
 class TransportUnitServiceImpl implements TransportUnitService {
 
     private final TransportUnitRepository repository;
-    private final BeanMapper mapper;
 
-    public TransportUnitServiceImpl(TransportUnitRepository repository, BeanMapper mapper) {
+    public TransportUnitServiceImpl(TransportUnitRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     @Override
