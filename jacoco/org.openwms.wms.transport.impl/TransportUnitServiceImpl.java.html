@@ -16,7 +16,6 @@
 package org.openwms.wms.transport.impl;
 
 import org.ameba.annotation.TxService;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.wms.transport.TransportUnit;
 import org.openwms.wms.transport.TransportUnitService;
 import org.springframework.util.Assert;
@@ -30,20 +29,18 @@ import org.springframework.util.Assert;
 class TransportUnitServiceImpl implements TransportUnitService {
 
     private final TransportUnitRepository repository;
-    private final BeanMapper mapper;
 
-<span class="fc" id="L35">    public TransportUnitServiceImpl(TransportUnitRepository repository, BeanMapper mapper) {</span>
-<span class="fc" id="L36">        this.repository = repository;</span>
-<span class="fc" id="L37">        this.mapper = mapper;</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L33">    public TransportUnitServiceImpl(TransportUnitRepository repository) {</span>
+<span class="fc" id="L34">        this.repository = repository;</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public TransportUnit upsert(TransportUnit transportUnit) {
-<span class="fc" id="L42">        Assert.notNull(transportUnit, &quot;transportUnit must not be null&quot;);</span>
-<span class="fc" id="L43">        Assert.hasText(transportUnit.getBarcode(), &quot;barcode of TransportUnit must be set before saving&quot;);</span>
-<span class="fc" id="L44">        TransportUnit merged = repository.findByBarcode(transportUnit.getBarcode()).orElse(transportUnit);</span>
-<span class="fc" id="L45">        merged.setActualLocation(transportUnit.getActualLocation());</span>
-<span class="fc" id="L46">        return repository.save(merged);</span>
+<span class="fc" id="L39">        Assert.notNull(transportUnit, &quot;transportUnit must not be null&quot;);</span>
+<span class="fc" id="L40">        Assert.hasText(transportUnit.getBarcode(), &quot;barcode of TransportUnit must be set before saving&quot;);</span>
+<span class="fc" id="L41">        TransportUnit merged = repository.findByBarcode(transportUnit.getBarcode()).orElse(transportUnit);</span>
+<span class="fc" id="L42">        merged.setActualLocation(transportUnit.getActualLocation());</span>
+<span class="fc" id="L43">        return repository.save(merged);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
