@@ -36,7 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -44,6 +46,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,8 +100,8 @@ class ReceivingControllerDocumentation {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(orderVO))
                 )
-//                .andExpect(status().isCreated())
-//                .andExpect(header().string(LOCATION, notNullValue()))
+                .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, notNullValue()))
                 .andDo(document("order-create", preprocessResponse(prettyPrint())))
         ;
     }
@@ -125,7 +128,7 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        String toLocation = (String) result.getResponse().getHeaderValue(HttpHeaders.LOCATION);
+        String toLocation = (String) result.getResponse().getHeaderValue(LOCATION);
         mockMvc
                 .perform(
                         get(toLocation)
@@ -200,6 +203,6 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        return (String) result.getResponse().getHeaderValue(HttpHeaders.LOCATION);
+        return (String) result.getResponse().getHeaderValue(LOCATION);
     }
 }
