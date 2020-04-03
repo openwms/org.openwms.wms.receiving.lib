@@ -27,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  *
  * @author Heiko Scherrer
  */
-@RestController
+@RestController("receivingIndexController")
 class IndexController {
 
     @GetMapping("/index")
