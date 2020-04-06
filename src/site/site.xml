@@ -29,16 +29,13 @@
     </custom>
 
     <body>
-
         <menu name="Documentation">
             <item name="Home" href="index.html" />
             <item name="REST API Documentation" href="rest/${project.version}/api.html" />
+            <item name="Confluence Wiki" href="https://openwms.atlassian.net/l/c/d11p3GgQ" />
             <item name="Database Schema" href="schemaspy/relationships.html" />
-            <item name="Confluence" href="https://openwms.atlassian.net/l/c/d11p3GgQ" />
         </menu>
-
         <menu name="Project" ref="reports" />
-
     </body>
 
 </project>
