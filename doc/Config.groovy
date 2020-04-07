@@ -7,7 +7,7 @@ outputPath = 'build'
 inputPath = '.'
 
 inputFiles = [
-        [file: 'arc42-template.adoc', formats: ['html','pdf','docbook']],
+        [file: 'index.adoc', formats: ['html','pdf','docbook']],
         [file: 'ppt/Demo.pptx.ad', formats: ['revealjs']]
              ]
 
@@ -15,18 +15,26 @@ taskInputsDirs = ["${inputPath}/src",
                   "${inputPath}/images",
                  ]
 
-taskInputsFiles = ["${inputPath}/arc42-template.adoc"]
+taskInputsFiles = ["${inputPath}/index.adoc"]
 
 confluence = [:]
 confluence.with {
-    input = [[ file: "build/html5/arc42-template.html", ancestorId: '859799571']]
+    input = [[ file: "build/html5/index.html", ancestorId: '859799571']]
     ancestorId = '859799571'
     api = 'https://openwms.atlassian.net/wiki/rest/api/'
     spaceKey = 'WMS'
     createSubpages = false
     pagePrefix = 'RCV-'
-    preambleTitle = 'Technical Architecture'
-    pageSuffix = ''
+    preambleTitle = 'Architecture'
+    pageSuffix = ' (RCV)'
     credentials = "${System.getenv('ATLASSIAN_USER')}:${System.getenv('ATLASSIAN_PASSWORD')}".bytes.encodeBase64().toString()
     extraPageContent = ''
+}
+
+
+github = [:]
+github.with {
+    user = "${System.getenv('GITHUB_USER')}"
+    password = "${System.getenv('GITHUB_PASSWORD')}"
+    root = "https://api.github.com/"
 }
