@@ -24,9 +24,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -69,6 +71,9 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     @Column(name = "C_TRANSPORT_UNIT_BK")
     private String transportUnitBK;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private ReceivingOrderPositionDetails details;
+
     /** Latest finish date of this Order. */
     @Column(name = "C_LATEST_DUE")
     private ZonedDateTime latestDueDate;
@@ -78,6 +83,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public String getTransportUnitBK() {
         return transportUnitBK;
+    }
+
+    public ReceivingOrderPositionDetails getDetails() {
+        return details;
     }
 
     public ReceivingOrder getOrder() {

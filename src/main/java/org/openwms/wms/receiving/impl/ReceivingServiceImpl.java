@@ -141,7 +141,11 @@ class ReceivingServiceImpl implements ReceivingService {
         order.setOrderState(CANCELED);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Measured
     public List<ReceivingOrder> findAll() {
         return repository.findAll();
     }

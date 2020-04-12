@@ -16,6 +16,8 @@
 package org.openwms.wms.receiving.spi;
 
 import org.ameba.annotation.TxService;
+import org.openwms.common.transport.api.messages.TransportUnitMO;
+import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
 import org.openwms.wms.transport.api.AsyncTransportUnitApi;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.wms.receiving.ProcessingException;
@@ -42,6 +44,19 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {
-        transportUnitApi.process(TUCommand.newBuilder(TUCommand.Type.CREATE).build());
+        TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
+                .type(orderPosition.getDetails().getTransportUnitType());
+        orderPosition.getDetails().setHeightIfExists(type::height);
+        orderPosition.getDetails().setWidthIfExists(type::width);
+        orderPosition.getDetails().setLengthIfExists(type::length);
+        transportUnitApi.process(
+                TUCommand.newBuilder(TUCommand.Type.CREATE)
+                        .withTransportUnit(TransportUnitMO.newBuilder()
+                                .withBarcode(orderPosition.getTransportUnitBK())
+                                .withTransportUnitType(type.build())
+                                .build()
+                        )
+                        .build()
+        );
     }
 }
