@@ -66,6 +66,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     private Product product;
 
     /** The barcode of an expected {@code TransportUnit} to be received. */
+    @Column(name = "C_TRANSPORT_UNIT_BK")
     private String transportUnitBK;
 
     /** Latest finish date of this Order. */
