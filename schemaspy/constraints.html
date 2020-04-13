@@ -31,7 +31,7 @@
 <div class='indent'>
 <table width='100%'>
 <tr><td class='container' valign='bottom'><b>
-2 Foreign Key Constraints:</b>
+3 Foreign Key Constraints:</b>
 </td><td class='container' align='right'>
 <table>
 <tr><td class='container'>
@@ -63,6 +63,13 @@
   <td class='detail'>fk_rec_pos_product</td>
   <td class='detail'><a href='tables/wms_rec_order_position.html'>wms_rec_order_position</a>.c_sku</td>
   <td class='detail'><a href='tables/wms_rec_product.html'>wms_rec_product</a>.c_sku</td>
+  <td class='detail'><span title='Restrict delete:
+ Parent cannot be deleted if children exist'>Restrict delete&nbsp;</span></td>
+ </tr>
+  <tr class='even'>
+  <td class='detail'>fkcbsm0jivxx46iqijpkvd9cb1h</td>
+  <td class='detail'><a href='tables/wms_rec_order_position.html'>wms_rec_order_position</a>.details_c_pk</td>
+  <td class='detail'><a href='tables/wms_rec_order_position_details.html'>wms_rec_order_position_details</a>.c_pk</td>
   <td class='detail'><span title='Restrict delete:
  Parent cannot be deleted if children exist'>Restrict delete&nbsp;</span></td>
  </tr>

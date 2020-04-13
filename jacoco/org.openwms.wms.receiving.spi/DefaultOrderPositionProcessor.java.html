@@ -16,6 +16,8 @@
 package org.openwms.wms.receiving.spi;
 
 import org.ameba.annotation.TxService;
+import org.openwms.common.transport.api.messages.TransportUnitMO;
+import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
 import org.openwms.wms.transport.api.AsyncTransportUnitApi;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.wms.receiving.ProcessingException;
@@ -35,14 +37,27 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
 
     private final AsyncTransportUnitApi transportUnitApi;
 
-<span class="fc" id="L38">    DefaultOrderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {</span>
-<span class="fc" id="L39">        this.transportUnitApi = transportUnitApi;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L40">    DefaultOrderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {</span>
+<span class="fc" id="L41">        this.transportUnitApi = transportUnitApi;</span>
+<span class="fc" id="L42">    }</span>
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
-<span class="nc" id="L44">    public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {</span>
-        transportUnitApi.process(TUCommand.newBuilder(TUCommand.Type.CREATE).build());
+<span class="nc" id="L46">    public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {</span>
+        TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
+                .type(orderPosition.getDetails().getTransportUnitType());
+        orderPosition.getDetails().setHeightIfExists(type::height);
+        orderPosition.getDetails().setWidthIfExists(type::width);
+        orderPosition.getDetails().setLengthIfExists(type::length);
+        transportUnitApi.process(
+                TUCommand.newBuilder(TUCommand.Type.CREATE)
+                        .withTransportUnit(TransportUnitMO.newBuilder()
+                                .withBarcode(orderPosition.getTransportUnitBK())
+                                .withTransportUnitType(type.build())
+                                .build()
+                        )
+                        .build()
+        );
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

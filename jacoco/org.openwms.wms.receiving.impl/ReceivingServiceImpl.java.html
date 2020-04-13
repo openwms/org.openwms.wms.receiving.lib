@@ -141,9 +141,13 @@ class ReceivingServiceImpl implements ReceivingService {
 <span class="fc" id="L141">        order.setOrderState(CANCELED);</span>
 <span class="fc" id="L142">    }</span>
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Measured
     public List&lt;ReceivingOrder&gt; findAll() {
-<span class="fc" id="L146">        return repository.findAll();</span>
+<span class="fc" id="L150">        return repository.findAll();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

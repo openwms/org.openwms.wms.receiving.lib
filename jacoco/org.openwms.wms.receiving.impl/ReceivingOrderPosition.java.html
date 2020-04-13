@@ -24,9 +24,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -51,7 +53,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     /** Current position state. Default is {@value} */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_STATE&quot;)
-<span class="fc" id="L54">    private OrderState state = OrderState.UNDEFINED;</span>
+<span class="fc" id="L56">    private OrderState state = OrderState.UNDEFINED;</span>
 
     @org.hibernate.annotations.Type(type = &quot;org.openwms.core.units.persistence.UnitUserType&quot;)
     @org.hibernate.annotations.Columns(columns = {
@@ -66,45 +68,53 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     private Product product;
 
     /** The barcode of an expected {@code TransportUnit} to be received. */
+    @Column(name = &quot;C_TRANSPORT_UNIT_BK&quot;)
     private String transportUnitBK;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private ReceivingOrderPositionDetails details;
 
     /** Latest finish date of this Order. */
     @Column(name = &quot;C_LATEST_DUE&quot;)
     private ZonedDateTime latestDueDate;
 
     /** Used by the JPA provider. */
-<span class="fc" id="L76">    protected ReceivingOrderPosition() {}</span>
+<span class="fc" id="L82">    protected ReceivingOrderPosition() {}</span>
 
     public String getTransportUnitBK() {
-<span class="nc" id="L79">        return transportUnitBK;</span>
+<span class="nc" id="L85">        return transportUnitBK;</span>
+    }
+
+    public ReceivingOrderPositionDetails getDetails() {
+<span class="nc" id="L89">        return details;</span>
     }
 
     public ReceivingOrder getOrder() {
-<span class="nc" id="L83">        return order;</span>
+<span class="nc" id="L93">        return order;</span>
     }
 
     public int getPosNo() {
-<span class="nc" id="L87">        return posNo;</span>
+<span class="nc" id="L97">        return posNo;</span>
     }
 
     public OrderState getState() {
-<span class="nc" id="L91">        return state;</span>
+<span class="nc" id="L101">        return state;</span>
     }
 
     public Measurable getQuantityExpected() {
-<span class="nc" id="L95">        return quantityExpected;</span>
+<span class="nc" id="L105">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable quantityExpected) {
-<span class="nc" id="L99">        this.quantityExpected = quantityExpected;</span>
-<span class="nc" id="L100">    }</span>
+<span class="nc" id="L109">        this.quantityExpected = quantityExpected;</span>
+<span class="nc" id="L110">    }</span>
 
     public Product getProduct() {
-<span class="nc" id="L103">        return product;</span>
+<span class="nc" id="L113">        return product;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L107">        return latestDueDate;</span>
+<span class="nc" id="L117">        return latestDueDate;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

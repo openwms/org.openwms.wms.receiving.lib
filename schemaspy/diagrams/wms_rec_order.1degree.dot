@@ -57,10 +57,11 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_qty_expected_type" COLSPAN="3" ALIGN="LEFT">c_qty_expected_type</TD></TR>
       <TR><TD PORT="c_qty_expected" COLSPAN="3" ALIGN="LEFT">c_qty_expected</TD></TR>
       <TR><TD PORT="c_state" COLSPAN="3" ALIGN="LEFT">c_state</TD></TR>
-      <TR><TD PORT="transport_unitbk" COLSPAN="3" ALIGN="LEFT">transport_unitbk</TD></TR>
+      <TR><TD PORT="c_transport_unit_bk" COLSPAN="3" ALIGN="LEFT">c_transport_unit_bk</TD></TR>
+      <TR><TD PORT="details_c_pk" COLSPAN="3" ALIGN="LEFT">details_c_pk</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="3" ALIGN="LEFT">c_order_id</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="3" ALIGN="LEFT">c_sku</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="wms_rec_order_position.html"
     tooltip="wms_rec_order_position"
