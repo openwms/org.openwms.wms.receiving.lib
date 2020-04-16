@@ -6,9 +6,10 @@ available resource and does not need any authentication.
 
 include::{generated}/get-index/http-request.adoc[]
 
-The Index resource is returned in the response body with the response status of 200-OK. This main Index lists all primary resource entities
-to follow next.
+The `Index` resource is returned in the response body with the response status of 200-OK. This main `Index` lists all primary resource
+entities to follow next.
 
 include::{generated}/get-index/http-response.adoc[]
 
-A client application must only know about the agreed link names and follow the corresponding `href` link to navigate further.
+A client application only needs to know about the agreed link names and follow the corresponding `href` link to navigate to further
+resources.
