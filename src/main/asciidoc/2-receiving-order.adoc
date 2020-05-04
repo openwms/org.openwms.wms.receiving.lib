@@ -26,6 +26,7 @@ In case the client request did not match the server expectations, the server res
 
 include::{generated}/order-create-400/http-response.adoc[]
 
+[[resources-receiving-order-find]]
 === Find a ReceivingOrder
 A HTTP GET request is required to find a `ReceivingOrder`.
 
@@ -38,6 +39,17 @@ include::{generated}/order-find/http-response.adoc[]
 In case the order does not exist, the server responds with:
 
 include::{generated}/order-find-404/http-response.adoc[]
+
+=== Find a ReceivingOrder by Order ID
+A HTTP GET request is required to find a `ReceivingOrder` by it's identifying business key, the order ID.
+
+include::{generated}/order-findby-orderid/http-request.adoc[]
+
+If the `ReceivingOrder` has been found, the server returns the order as part of the response body:
+
+include::{generated}/order-findby-orderid/http-response.adoc[]
+
+In case the order does not exist, the server responds the same way like <<resources-receiving-order-find>>.
 
 === Find all ReceivingOrders
 A HTTP GET request to the primary resource is required to find all `ReceivingOrders`.

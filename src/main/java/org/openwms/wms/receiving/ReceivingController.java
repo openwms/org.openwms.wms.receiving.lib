@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving;
 
+import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -88,6 +90,12 @@ public class ReceivingController extends AbstractWebController {
     @GetMapping("/v1/receiving/{pKey}")
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
         ReceivingOrder order = service.findByPKey(pKey);
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+    }
+
+    @GetMapping(value = "/v1/receiving2", params = {"orderId"})
+    public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
+        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(""));
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 

@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ import static org.openwms.wms.receiving.ReceivingMessages.ALREADY_CANCELLED;
 import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
 
 /**
- * A ReceivingServiceImpl.
+ * A ReceivingServiceImpl is a Spring managed transactional Services that deals with {@link ReceivingOrder}s.
  * 
  * @author Heiko Scherrer
  */
@@ -113,6 +114,15 @@ class ReceivingServiceImpl implements ReceivingService {
         Assert.hasText(pKey, "pKey must not be null");
         Optional<ReceivingOrder> order = repository.findBypKey(pKey);
         return order.orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
+    @Override
+    public Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId) {
+        return repository.findByOrderId(orderId);
     }
 
     /**

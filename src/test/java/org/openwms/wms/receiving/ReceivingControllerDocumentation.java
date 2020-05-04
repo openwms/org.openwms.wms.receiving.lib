@@ -150,6 +150,27 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Transactional
+    @Test void shall_find_orderBy_BK() throws Exception {
+        MvcResult result = mockMvc
+                .perform(
+                        post("/v1/receiving")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new ReceivingOrderVO("4717")))
+                )
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String toLocation = (String) result.getResponse().getHeaderValue(LOCATION);
+        mockMvc
+                .perform(
+                        get("/v1/receiving2").param("orderId", "4717")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("order-findby-orderid", preprocessResponse(prettyPrint())))
+        ;
+    }
+
     @Test void shall_NOT_find_order() throws Exception {
         mockMvc
                 .perform(

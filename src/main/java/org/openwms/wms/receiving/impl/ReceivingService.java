@@ -18,9 +18,10 @@ package org.openwms.wms.receiving.impl;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * A ReceivingService.
+ * A ReceivingService managed {@link ReceivingOrder}s.
  *
  * @author Heiko Scherrer
  */
@@ -35,6 +36,21 @@ public interface ReceivingService {
     ReceivingOrder createOrder(@NotNull ReceivingOrder order);
 
     /**
+     * Cancel a {@link ReceivingOrder}.
+     *
+     * @param pKey The synthetic persistent key
+     * @throws CancellationDeniedException in case the cancellation is not allowed
+     */
+    void cancelOrder(@NotEmpty String pKey);
+
+    /**
+     * Find and return all existing {@link ReceivingOrder}s.
+     *
+     * @return A list of ReceivingOrders, never {@literal null}
+     */
+    List<ReceivingOrder> findAll();
+
+    /**
      * Find and return a {@link ReceivingOrder} identified by its synthetic persistent key.
      *
      * @param pKey The synthetic persistent key
@@ -44,12 +60,10 @@ public interface ReceivingService {
     ReceivingOrder findByPKey(@NotEmpty String pKey);
 
     /**
-     * Cancel a {@link ReceivingOrder}.
+     * Find and return a {@link ReceivingOrder} identified by its business key.
      *
-     * @param pKey The synthetic persistent key
-     * @throws CancellationDeniedException in case the cancellation is not allowed
+     * @param orderId The business key
+     * @return The order instance
      */
-    void cancelOrder(@NotEmpty String pKey);
-
-    List<ReceivingOrder> findAll();
+    Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId);
 }
