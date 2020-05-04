@@ -509,7 +509,7 @@ Content-Length: 252
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving/bae5e998-46af-47dc-bc93-a07beda152ab/</code></pre>
+Location: http://localhost:8080/v1/receiving/2c473755-da0a-4b59-9152-3f17a0b25aba/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -522,13 +522,13 @@ Location: http://localhost:8080/v1/receiving/bae5e998-46af-47dc-bc93-a07beda152a
 </div>
 </div>
 <div class="sect2">
-<h3 id="_find_a_receivingorder">Find a ReceivingOrder</h3>
+<h3 id="resources-receiving-order-find">Find a ReceivingOrder</h3>
 <div class="paragraph">
 <p>A HTTP GET request is required to find a <code>ReceivingOrder</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/9740db1f-01a7-46d4-8ffb-0418db479595/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/e2f33bbf-dd71-47b6-b23b-3ad3171629bd/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -561,6 +561,35 @@ Content-Length: 123
   "httpStatus" : "404"
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_find_a_receivingorder_by_order_id">Find a ReceivingOrder by Order ID</h3>
+<div class="paragraph">
+<p>A HTTP GET request is required to find a <code>ReceivingOrder</code> by it&#8217;s identifying business key, the order ID.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving2?orderId=4717 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>ReceivingOrder</code> has been found, the server returns the order as part of the response body:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 24
+
+{
+  "orderId" : "4717"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In case the order does not exist, the server responds the same way like <a href="#resources-receiving-order-find">Find a ReceivingOrder</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -599,7 +628,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving/07ce4024-9e69-4942-90ee-1e3297d5ab13/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving/57294a0b-a7b9-4308-91f7-1e88a35cde6e/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -623,7 +652,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "cac2c1ab-3f05-4238-b6c6-dfab39603dab" ],
+  "obj" : [ "4716", "PROCESSED", "9865d157-8d29-4693-af67-53b771abe692" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -633,7 +662,7 @@ Content-Length: 279
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-16 19:11:54 UTC
+Last updated 2020-05-04 22:00:15 UTC
 </div>
 </div>
 </body>
