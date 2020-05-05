@@ -37,9 +37,6 @@ import java.lang.annotation.Target;
 @Inherited
 @EnableSpringConfigured
 @SpringTestSupport
-//@SqlGroup({
-//        @Sql(scripts = "classpath:test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//})
 @SpringBootTest(classes = {
         ReceivingRunner.class
 }, properties = {

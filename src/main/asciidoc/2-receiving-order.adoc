@@ -29,7 +29,7 @@ responds with:
 include::{generated}/order-create-400/http-response.adoc[]
 
 [[resources-receiving-order-find]]
-=== Find a ReceivingOrder
+=== Find a ReceivingOrder by Persistent Key
 A HTTP GET request is required to find a `ReceivingOrder`.
 
 include::{generated}/order-find/http-request.adoc[]
@@ -42,6 +42,7 @@ In case the order does not exist, the server responds with:
 
 include::{generated}/order-find-404/http-response.adoc[]
 
+[[resources-receiving-order-findby-orderid]]
 === Find a ReceivingOrder by Order ID
 A HTTP GET request is required to find a `ReceivingOrder` by it's identifying business key, the order ID.
 

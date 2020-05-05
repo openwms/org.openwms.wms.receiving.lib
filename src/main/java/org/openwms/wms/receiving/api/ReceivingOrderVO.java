@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
@@ -31,11 +32,14 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderVO implements Serializable {
 
+    /** The unique identifier of an {@code ReceivingOrder}. */
     @NotEmpty
     private String orderId;
+    /** A set of {@code ReceivingOrderPosition}s belonging to this order. */
     private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
 
-    public ReceivingOrderVO() {
+    @JsonCreator
+    ReceivingOrderVO() {
     }
 
     public ReceivingOrderVO(@NotEmpty String orderId) {

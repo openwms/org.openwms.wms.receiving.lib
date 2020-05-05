@@ -77,8 +77,8 @@ class ReceivingControllerDocumentation {
 
     }
 
-    @Test
-    void shall_return_index() throws Exception {
+    @Rollback
+    @Test void shall_return_index() throws Exception {
         mockMvc
                 .perform(
                         get("/v1/receiving-orders/index")
@@ -92,6 +92,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Rollback
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
         orderVO.getPositions().add(new ReceivingOrderPositionVO("1", null, null));
@@ -131,6 +132,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Rollback
     @Test void shall_find_all() throws Exception {
         mockMvc
                 .perform(
@@ -144,20 +146,11 @@ class ReceivingControllerDocumentation {
     }
 
     @Transactional
+    @Rollback
     @Test void shall_find_order() throws Exception {
-        MvcResult result = mockMvc
-                .perform(
-                        post("/v1/receiving-orders")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(new ReceivingOrderVO("4713")))
-                )
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        String toLocation = (String) result.getResponse().getHeaderValue(LOCATION);
         mockMvc
                 .perform(
-                        get(toLocation)
+                        get("/v1/receiving-orders/d8099b89-bdb6-40d3-9580-d56aeadd578f")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("order-find", preprocessResponse(prettyPrint())))
@@ -165,6 +158,7 @@ class ReceivingControllerDocumentation {
     }
 
     @Transactional
+    @Rollback
     @Test void shall_find_orderBy_BK() throws Exception {
         MvcResult result = mockMvc
                 .perform(
@@ -185,6 +179,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Rollback
     @Test void shall_NOT_find_order() throws Exception {
         mockMvc
                 .perform(
@@ -209,6 +204,7 @@ class ReceivingControllerDocumentation {
     }
 
     @Transactional
+    @Rollback
     @Test void shall_cancel_cancelled_order() throws Exception {
         String toLocation = createOrder("4715");
         mockMvc
@@ -227,6 +223,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Rollback
     @Test void shall_NOT_cancel_order() throws Exception {
         String toLocation = createOrder("4716");
         mockMvc
@@ -240,6 +237,7 @@ class ReceivingControllerDocumentation {
     }
 
     @Transactional
+    @Rollback
     public String createOrder(String orderId) throws Exception {
         MvcResult result = mockMvc
                 .perform(

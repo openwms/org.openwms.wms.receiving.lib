@@ -30,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -39,10 +40,11 @@ import java.time.ZonedDateTime;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "WMS_REC_ORDER_POSITION")
+@Table(name = "WMS_REC_ORDER_POSITION",
+        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
 public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, targetEntity = ReceivingOrder.class)
     @JoinColumn(name = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
     private ReceivingOrder order;
 
