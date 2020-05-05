@@ -17,12 +17,14 @@ include::{generated}/get-order-index/http-response.adoc[]
 The POST operation take a flat structure of a simple `ReceivingOrder` to create.
 
 include::{generated}/order-create/http-request.adoc[]
+include::{generated}/order-create/request-fields.adoc[]
 
 If the `ReceivingOrder` has been created successfully, the server returns the URI to the created resource:
 
 include::{generated}/order-create/http-response.adoc[]
 
-In case the client request did not match the server expectations, the server responds with:
+In case the client request did not match the server expectations because of invalid or missing fields in the request body, the server
+responds with:
 
 include::{generated}/order-create-400/http-response.adoc[]
 

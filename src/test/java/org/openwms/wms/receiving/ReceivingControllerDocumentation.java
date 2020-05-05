@@ -43,6 +43,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -113,7 +115,19 @@ class ReceivingControllerDocumentation {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, notNullValue()))
-                .andDo(document("order-create", preprocessResponse(prettyPrint())))
+                .andDo(document("order-create",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("orderId").description("An unique identifier of the ReceivingOrder to create"),
+                                fieldWithPath("positions[]").description("An array of positions, must not be empty"),
+                                fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
+                                fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),
+                                fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
+                                fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),
+                                fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
+                                fieldWithPath("positions[].sku").description("The SKU of the expected Product"))
+                        )
+                )
         ;
     }
 
