@@ -1,5 +1,5 @@
-org.openwms
 org.openwms.values
+org.openwms.wms
 org.openwms.wms.inventory
 org.openwms.wms.order
 org.openwms.wms.receiving

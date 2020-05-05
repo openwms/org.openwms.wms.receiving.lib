@@ -449,7 +449,7 @@ determines the expected product to receive in its quantity.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/index HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders/index HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -460,18 +460,18 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 375
+Content-Length: 396
 
 {
   "_links" : {
     "receiving-order-create" : {
-      "href" : "http://localhost:8080/v1/receiving"
+      "href" : "http://localhost:8080/v1/receiving-orders"
     },
     "receiving-order-findbypkey" : {
-      "href" : "http://localhost:8080/v1/receiving/b65a7658-c53c-4a81-8abb-75ab67783f47"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
     },
     "receiving-order-cancel" : {
-      "href" : "http://localhost:8080/v1/receiving/b65a7658-c53c-4a81-8abb-75ab67783f47"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
     }
   }
 }</code></pre>
@@ -485,10 +485,10 @@ Content-Length: 375
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/receiving HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/receiving-orders HTTP/1.1
 Content-Type: application/json
 Host: localhost:8080
-Content-Length: 252
+Content-Length: 274
 
 {
   "orderId" : "4712",
@@ -498,7 +498,8 @@ Content-Length: 252
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 1
-    }
+    },
+    "sku" : "SKU001"
   } ]
 }</code></pre>
 </div>
@@ -509,7 +510,7 @@ Content-Length: 252
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving/c2b439ad-c3e4-457f-9a65-7e4edda9e3a0/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/5060a0fc-eaf8-45ac-9214-2ab22e4254f3/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -528,7 +529,7 @@ Location: http://localhost:8080/v1/receiving/c2b439ad-c3e4-457f-9a65-7e4edda9e3a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving/688a3366-016c-4be7-9476-7ce9e9358208/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders/0cfb5795-22d8-4e41-ba5d-3d2d4145cbbb/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -570,7 +571,7 @@ Content-Length: 123
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving2?orderId=4717 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders?orderId=4717 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -599,7 +600,7 @@ Content-Length: 24
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -628,7 +629,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving/8641767e-d618-4883-9643-163e8d85ea63/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/87b16503-0dc6-4a38-a21d-e8f3ebf983b1/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -652,7 +653,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "11b51f6d-5c7c-4934-8650-d0d0869e427a" ],
+  "obj" : [ "4716", "PROCESSED", "cf7e1c8f-6202-4d35-bf0b-5dba2c746fe1" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -662,7 +663,7 @@ Content-Length: 279
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-04 22:09:21 UTC
+Last updated 2020-05-05 22:02:56 UTC
 </div>
 </div>
 </body>

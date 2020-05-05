@@ -16,14 +16,20 @@
 package org.openwms.wms.receiving.app;
 
 import org.ameba.annotation.EnableAspects;
+import org.ameba.app.SpringProfiles;
+import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CorsFilter;
+
+import javax.servlet.Filter;
 
 /**
  * A ReceivingModuleConfiguration.
@@ -36,11 +42,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling
-<span class="fc" id="L39">public class ReceivingModuleConfiguration {</span>
+<span class="fc" id="L45">public class ReceivingModuleConfiguration {</span>
+
+    @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
+    public @Bean
+    Filter corsFiler() {
+<span class="nc" id="L50">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+    }
 
     @Bean
     BeanMapper beanMapper() {
-<span class="fc" id="L43">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
+<span class="fc" id="L55">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

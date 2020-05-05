@@ -31,55 +31,63 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderPositionVO implements Serializable {
 
+    /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotEmpty
     private String positionId;
+    /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
     private Measurable&lt;?, ?, ?&gt; quantityExpected;
+    /** The unique SKU of the expected {@code Product} - must not be empty. */
+    @NotEmpty
     private String sku;
+    /** Optional: How the position should be processed, manually oder automatically. */
     private String startMode;
+    /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
     private String transportUnitId;
+    /** Optional: The suppliers type of {@code TransportUnit}. */
     private String transportUnitType;
     private String supplierPackingUnit;
 
     @JsonCreator
-<span class="fc" id="L45">    ReceivingOrderPositionVO() {</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L52">    ReceivingOrderPositionVO() {</span>
+<span class="fc" id="L53">    }</span>
 
-<span class="fc" id="L48">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected) {</span>
-<span class="fc" id="L49">        this.positionId = positionId;</span>
-<span class="fc" id="L50">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L55">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotEmpty String sku) {</span>
+<span class="fc" id="L56">        this.positionId = positionId;</span>
+<span class="fc" id="L57">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L58">        this.sku = sku;</span>
+<span class="fc" id="L59">    }</span>
 
     public String getPositionId() {
-<span class="fc" id="L54">        return positionId;</span>
+<span class="fc" id="L62">        return positionId;</span>
     }
 
     public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
-<span class="fc" id="L58">        return quantityExpected;</span>
+<span class="fc" id="L66">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable&lt;?, ?, ?&gt; quantityExpected) {
-<span class="fc" id="L62">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L70">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L71">    }</span>
 
     public String getSku() {
-<span class="fc" id="L66">        return sku;</span>
+<span class="fc" id="L74">        return sku;</span>
     }
 
     public String getStartMode() {
-<span class="fc" id="L70">        return startMode;</span>
+<span class="fc" id="L78">        return startMode;</span>
     }
 
     public String getTransportUnitId() {
-<span class="fc" id="L74">        return transportUnitId;</span>
+<span class="fc" id="L82">        return transportUnitId;</span>
     }
 
     public String getTransportUnitType() {
-<span class="fc" id="L78">        return transportUnitType;</span>
+<span class="fc" id="L86">        return transportUnitType;</span>
     }
 
     public String getSupplierPackingUnit() {
-<span class="fc" id="L82">        return supplierPackingUnit;</span>
+<span class="fc" id="L90">        return supplierPackingUnit;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
