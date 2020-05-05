@@ -25,6 +25,7 @@ import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  *
  * @author Heiko Scherrer
  */
+@Validated
 @MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
@@ -52,13 +54,13 @@ public class ReceivingController extends AbstractWebController {
     private final BeanMapper mapper;
     private final Validator validator;
 
-    public ReceivingController(ReceivingService service, BeanMapper mapper, Validator validator) {
+    ReceivingController(ReceivingService service, BeanMapper mapper, Validator validator) {
         this.service = service;
         this.mapper = mapper;
         this.validator = validator;
     }
 
-    @GetMapping("/v1/receiving/index")
+    @GetMapping("/v1/receiving-orders/index")
     public ResponseEntity<Index> index() {
         return ResponseEntity.ok(
                 new Index(
@@ -69,7 +71,7 @@ public class ReceivingController extends AbstractWebController {
         );
     }
 
-    @PostMapping("/v1/receiving")
+    @PostMapping("/v1/receiving-orders")
     public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
         // FIXME [openwms]:
         orderVO.getPositions().clear();
@@ -80,28 +82,30 @@ public class ReceivingController extends AbstractWebController {
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 
-    @Transactional
-    @GetMapping("/v1/receiving")
+    @DeleteMapping("/v1/receiving-orders/{pKey}")
+    public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
+        service.cancelOrder(pKey);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/v1/receiving-orders")
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
         List<ReceivingOrder> order = service.findAll();
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
-    @GetMapping("/v1/receiving/{pKey}")
+    @Transactional(readOnly = true)
+    @GetMapping("/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
         ReceivingOrder order = service.findByPKey(pKey);
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
-    @GetMapping(value = "/v1/receiving2", params = {"orderId"})
+    @Transactional(readOnly = true)
+    @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
     public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
         ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(""));
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
-    }
-
-    @DeleteMapping("/v1/receiving/{pKey}")
-    public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
-        service.cancelOrder(pKey);
-        return ResponseEntity.noContent().build();
     }
 }

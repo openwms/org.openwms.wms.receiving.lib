@@ -79,7 +79,7 @@ class ReceivingControllerDocumentation {
     void shall_return_index() throws Exception {
         mockMvc
                 .perform(
-                        get("/v1/receiving/index")
+                        get("/v1/receiving-orders/index")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._links.receiving-order-create").exists())
@@ -92,10 +92,10 @@ class ReceivingControllerDocumentation {
 
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", null));
+        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", null, null));
         mockMvc
                 .perform(
-                        post("/v1/receiving")
+                        post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(orderVO))
                 )
@@ -104,10 +104,10 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1)));
+        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1), "SKU001"));
         mockMvc
                 .perform(
-                        post("/v1/receiving")
+                        post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(orderVO))
                 )
@@ -120,7 +120,7 @@ class ReceivingControllerDocumentation {
     @Test void shall_find_all() throws Exception {
         mockMvc
                 .perform(
-                        get("/v1/receiving")
+                        get("/v1/receiving-orders")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -133,7 +133,7 @@ class ReceivingControllerDocumentation {
     @Test void shall_find_order() throws Exception {
         MvcResult result = mockMvc
                 .perform(
-                        post("/v1/receiving")
+                        post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(new ReceivingOrderVO("4713")))
                 )
@@ -154,7 +154,7 @@ class ReceivingControllerDocumentation {
     @Test void shall_find_orderBy_BK() throws Exception {
         MvcResult result = mockMvc
                 .perform(
-                        post("/v1/receiving")
+                        post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(new ReceivingOrderVO("4717")))
                 )
@@ -164,7 +164,7 @@ class ReceivingControllerDocumentation {
         String toLocation = (String) result.getResponse().getHeaderValue(LOCATION);
         mockMvc
                 .perform(
-                        get("/v1/receiving2").param("orderId", "4717")
+                        get("/v1/receiving-orders").param("orderId", "4717")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("order-findby-orderid", preprocessResponse(prettyPrint())))
@@ -174,7 +174,7 @@ class ReceivingControllerDocumentation {
     @Test void shall_NOT_find_order() throws Exception {
         mockMvc
                 .perform(
-                        get("/v1/receiving/unknown")
+                        get("/v1/receiving-orders/unknown")
                 )
                 .andExpect(status().isNotFound())
                 .andDo(document("order-find-404", preprocessResponse(prettyPrint())))
@@ -229,7 +229,7 @@ class ReceivingControllerDocumentation {
     public String createOrder(String orderId) throws Exception {
         MvcResult result = mockMvc
                 .perform(
-                        post("/v1/receiving")
+                        post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(new ReceivingOrderVO(orderId)))
                 )
