@@ -31,13 +31,20 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderPositionVO implements Serializable {
 
+    /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotEmpty
     private String positionId;
+    /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
     private Measurable<?, ?, ?> quantityExpected;
+    /** The unique SKU of the expected {@code Product} - must not be empty. */
+    @NotEmpty
     private String sku;
+    /** Optional: How the position should be processed, manually oder automatically. */
     private String startMode;
+    /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
     private String transportUnitId;
+    /** Optional: The suppliers type of {@code TransportUnit}. */
     private String transportUnitType;
     private String supplierPackingUnit;
 
@@ -45,9 +52,10 @@ public class ReceivingOrderPositionVO implements Serializable {
     ReceivingOrderPositionVO() {
     }
 
-    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected) {
+    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected, @NotEmpty String sku) {
         this.positionId = positionId;
         this.quantityExpected = quantityExpected;
+        this.sku = sku;
     }
 
     public String getPositionId() {

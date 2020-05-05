@@ -1,5 +1,5 @@
 -- Product
-insert into WMS_REC_PRODUCT (c_pk,c_pid,c_sku,C_BASE_UNIT,c_ol,c_created) values (1,306981811784,'C1','PC@org.openwms.core.units.api.Piece',0,now());
+insert into WMS_REC_PRODUCT (c_pk,c_pid,c_sku,C_BASE_UNIT,c_ol,c_created) values (1,306981811784,'C1','PC@org.openwms.core.units.api.PieceUnit',0,now());
 
 
 -- ReceivingOrder

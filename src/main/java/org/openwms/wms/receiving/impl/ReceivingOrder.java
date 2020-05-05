@@ -24,6 +24,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -88,7 +89,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     private Problem problem;
 
     /** All GoodsReceiptPosition this Order has. */
-    @OneToMany(mappedBy = "order", cascade = {ALL})
+    @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
     /*~ -------------- Constructors -------------- */

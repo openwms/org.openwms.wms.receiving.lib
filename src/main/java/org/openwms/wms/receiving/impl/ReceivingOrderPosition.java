@@ -60,7 +60,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
             @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
             @Column(name = "C_QTY_EXPECTED", nullable = false)
     })
-    private Measurable quantityExpected;
+    private Measurable<?, ?, ?> quantityExpected;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
@@ -101,11 +101,11 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return state;
     }
 
-    public Measurable getQuantityExpected() {
+    public Measurable<?, ?, ?> getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable quantityExpected) {
+    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 

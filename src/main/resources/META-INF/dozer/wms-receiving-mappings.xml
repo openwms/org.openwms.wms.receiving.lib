@@ -20,12 +20,16 @@
 				<class-a>org.openwms.core.units.api.BaseUnit</class-a>
 				<class-b>java.lang.String</class-b>
 			</converter>
+			<converter type="org.openwms.core.units.converter.MeasurableConverter">
+				<class-a>org.openwms.core.units.api.Measurable</class-a>
+				<class-b>org.openwms.core.units.api.Measurable</class-b>
+			</converter>
         </custom-converters>
 	</configuration>
 
 	<mapping>
-		<class-a>org.openwms.wms.receiving.api.ReceivingOrderVO</class-a>
-		<class-b>org.openwms.wms.receiving.impl.ReceivingOrder</class-b>
+		<class-a>org.openwms.wms.receiving.impl.ReceivingOrder</class-a>
+		<class-b>org.openwms.wms.receiving.api.ReceivingOrderVO</class-b>
 		<field>
 			<a is-accessible="true">orderId</a>
 			<b is-accessible="true">orderId</b>
@@ -37,8 +41,29 @@
 	</mapping>
 
 	<mapping>
-		<class-a>org.openwms.common.transport.api.messages.TransportUnitMO</class-a>
-		<class-b>org.openwms.wms.transport.TransportUnit</class-b>
+		<class-a>org.openwms.wms.receiving.impl.ReceivingOrderPosition</class-a>
+		<class-b>org.openwms.wms.receiving.api.ReceivingOrderPositionVO</class-b>
+		<field>
+			<a is-accessible="true">posNo</a>
+			<b is-accessible="true">positionId</b>
+		</field>
+		<field>
+			<a is-accessible="true">quantityExpected</a>
+			<b is-accessible="true">quantityExpected</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">product.sku</a>
+			<b is-accessible="true">sku</b>
+		</field>
+		<field>
+			<a is-accessible="true">transportUnitBK</a>
+			<b is-accessible="true">transportUnitId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.wms.transport.TransportUnit</class-a>
+		<class-b>org.openwms.common.transport.api.messages.TransportUnitMO</class-b>
 		<field>
 			<a is-accessible="true">pKey</a>
 			<b is-accessible="true">pKey</b>
