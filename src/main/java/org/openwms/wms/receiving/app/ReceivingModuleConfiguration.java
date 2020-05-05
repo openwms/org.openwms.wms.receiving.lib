@@ -16,14 +16,20 @@
 package org.openwms.wms.receiving.app;
 
 import org.ameba.annotation.EnableAspects;
+import org.ameba.app.SpringProfiles;
+import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CorsFilter;
+
+import javax.servlet.Filter;
 
 /**
  * A ReceivingModuleConfiguration.
@@ -37,6 +43,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling
 public class ReceivingModuleConfiguration {
+
+    @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
+    public @Bean
+    Filter corsFiler() {
+        return new CorsFilter(new PermitAllCorsConfigurationSource());
+    }
 
     @Bean
     BeanMapper beanMapper() {
