@@ -63,7 +63,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_details_pk" COLSPAN="2" ALIGN="LEFT">c_details_pk</TD><TD PORT="c_details_pk.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD><TD PORT="c_order_id.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="2" ALIGN="LEFT">c_sku</TD><TD PORT="c_sku.type" ALIGN="LEFT">varchar[255]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 &gt;</TD></TR>
     </TABLE>>
     URL="wms_rec_order_position.html"
     tooltip="wms_rec_order_position"
@@ -97,7 +97,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_base_unit" COLSPAN="3" ALIGN="LEFT">c_base_unit</TD></TR>
       <TR><TD PORT="c_description" COLSPAN="3" ALIGN="LEFT">c_description</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_sku</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
     </TABLE>>
     URL="wms_rec_product.html"
     tooltip="wms_rec_product"

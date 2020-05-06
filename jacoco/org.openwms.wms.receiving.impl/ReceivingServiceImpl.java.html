@@ -113,7 +113,7 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder findByPKey(String pKey) {
 <span class="fc" id="L114">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
 <span class="fc" id="L115">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
-<span class="pc" id="L116">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+<span class="fc" id="L116">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
