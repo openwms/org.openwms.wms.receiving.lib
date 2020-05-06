@@ -42,6 +42,10 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     @Column(name = "C_SKU")
     private String sku;
 
+    /** Textual descriptive text. */
+    @Column(name = "C_DESCRIPTION")
+    private String description;
+
     /** Products may be defined with different base units. */
     @Type(type = "org.openwms.core.units.persistence.BaseUnitUserType")
     @Columns(columns = @Column(name = "C_BASE_UNIT", nullable = false))
@@ -73,6 +77,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.sku = sku;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public BaseUnit getBaseUnit() {
         return baseUnit;
     }
@@ -101,7 +113,8 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return sku.equals(product.sku) &&
+        return Objects.equals(sku, product.sku) &&
+                Objects.equals(description, product.description) &&
                 Objects.equals(baseUnit, product.baseUnit);
     }
 
@@ -112,7 +125,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
      */
     @Override
     public int hashCode() {
-        return Objects.hash(sku, baseUnit);
+        return Objects.hash(sku, description, baseUnit);
     }
 
     /**

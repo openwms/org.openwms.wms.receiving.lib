@@ -19,51 +19,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * A ReceivingOrderVO.
+ * A ProductVO.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderVO implements Serializable {
+public class ProductVO implements Serializable {
 
-    /** The unique identifier of an {@code ReceivingOrder}. */
     @NotEmpty
-    @JsonProperty("orderId")
-    private String orderId;
-    @JsonProperty("state")
-    private String state;
-    /** A set of {@code ReceivingOrderPosition}s belonging to this order. */
-    @JsonProperty("positions")
-    private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
+    @JsonProperty("sku")
+    private String sku;
+    @JsonProperty("description")
+    private String description;
 
     @JsonCreator
-    ReceivingOrderVO() {
+    ProductVO() {
     }
 
-    public ReceivingOrderVO(@NotEmpty String orderId) {
-        this.orderId = orderId;
+    public ProductVO(@NotEmpty String sku) {
+        this.sku = sku;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getSku() {
+        return sku;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public String getDescription() {
+        return description;
     }
 
-     public Set<ReceivingOrderPositionVO> getPositions() {
-        return positions;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
-    public void setPositions(Set<ReceivingOrderPositionVO> positions) {
-        this.positions = positions;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

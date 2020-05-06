@@ -34,9 +34,13 @@
 			<a is-accessible="true">orderId</a>
 			<b is-accessible="true">orderId</b>
 		</field>
+		<field type="one-way">
+			<a is-accessible="true">orderState</a>
+			<b is-accessible="true">state</b>
+		</field>
 		<field>
-			<a is-accessible="true">positions</a>
-			<b is-accessible="true">positions</b>
+			<a is-accessible="false">positions</a>
+			<b is-accessible="false">positions</b>
 		</field>
 	</mapping>
 
@@ -52,12 +56,25 @@
 			<b is-accessible="true">quantityExpected</b>
 		</field>
 		<field type="one-way">
-			<a is-accessible="true">product.sku</a>
-			<b is-accessible="true">sku</b>
+			<a is-accessible="true">product</a>
+			<b is-accessible="true">product</b>
 		</field>
 		<field>
 			<a is-accessible="true">transportUnitBK</a>
 			<b is-accessible="true">transportUnitId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.wms.inventory.Product</class-a>
+		<class-b>org.openwms.wms.receiving.api.ProductVO</class-b>
+		<field>
+			<a is-accessible="true">sku</a>
+			<b is-accessible="true">sku</b>
+		</field>
+		<field>
+			<a is-accessible="true">description</a>
+			<b is-accessible="true">description</b>
 		</field>
 	</mapping>
 

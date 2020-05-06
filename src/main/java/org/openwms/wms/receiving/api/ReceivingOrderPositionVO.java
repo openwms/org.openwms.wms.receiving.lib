@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
@@ -33,29 +34,36 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotEmpty
+    @JsonProperty("positionId")
     private String positionId;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
+    @JsonProperty("quantityExpected")
     private Measurable<?, ?, ?> quantityExpected;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
-    @NotEmpty
-    private String sku;
+    @NotNull
+    @JsonProperty("product")
+    private ProductVO product;
     /** Optional: How the position should be processed, manually oder automatically. */
+    @JsonProperty("startMode")
     private String startMode;
     /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
+    @JsonProperty("transportUnitId")
     private String transportUnitId;
     /** Optional: The suppliers type of {@code TransportUnit}. */
+    @JsonProperty("transportUnitType")
     private String transportUnitType;
+    @JsonProperty("supplierPackingUnit")
     private String supplierPackingUnit;
 
     @JsonCreator
     ReceivingOrderPositionVO() {
     }
 
-    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected, @NotEmpty String sku) {
+    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected, @NotNull ProductVO product) {
         this.positionId = positionId;
         this.quantityExpected = quantityExpected;
-        this.sku = sku;
+        this.product = product;
     }
 
     public String getPositionId() {
@@ -70,8 +78,8 @@ public class ReceivingOrderPositionVO implements Serializable {
         this.quantityExpected = quantityExpected;
     }
 
-    public String getSku() {
-        return sku;
+    public ProductVO getProduct() {
+        return product;
     }
 
     public String getStartMode() {

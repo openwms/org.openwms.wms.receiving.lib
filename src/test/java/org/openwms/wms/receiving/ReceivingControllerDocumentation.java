@@ -19,16 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openwms.core.SpringProfiles;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.ReceivingApplicationTest;
+import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -57,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Heiko Scherrer
  */
-@ActiveProfiles(SpringProfiles.ASYNCHRONOUS_PROFILE)
+//@ActiveProfiles(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @ReceivingApplicationTest
 class ReceivingControllerDocumentation {
 
@@ -77,7 +76,6 @@ class ReceivingControllerDocumentation {
 
     }
 
-    @Rollback
     @Test void shall_return_index() throws Exception {
         mockMvc
                 .perform(
@@ -92,6 +90,7 @@ class ReceivingControllerDocumentation {
         ;
     }
 
+    @Transactional
     @Rollback
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
@@ -107,7 +106,7 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1), "SKU001"));
+        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1), new ProductVO("SKU001")));
         mockMvc
                 .perform(
                         post("/v1/receiving-orders")
@@ -132,7 +131,6 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Rollback
     @Test void shall_find_all() throws Exception {
         mockMvc
                 .perform(
@@ -145,8 +143,6 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_find_order() throws Exception {
         mockMvc
                 .perform(
@@ -157,29 +153,16 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_find_orderBy_BK() throws Exception {
-        MvcResult result = mockMvc
-                .perform(
-                        post("/v1/receiving-orders")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(new ReceivingOrderVO("4717")))
-                )
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        String toLocation = (String) result.getResponse().getHeaderValue(LOCATION);
         mockMvc
                 .perform(
-                        get("/v1/receiving-orders").param("orderId", "4717")
+                        get("/v1/receiving-orders").param("orderId", "T4711")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("order-findby-orderid", preprocessResponse(prettyPrint())))
         ;
     }
 
-    @Rollback
     @Test void shall_NOT_find_order() throws Exception {
         mockMvc
                 .perform(
@@ -223,7 +206,6 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Rollback
     @Test void shall_NOT_cancel_order() throws Exception {
         String toLocation = createOrder("4716");
         mockMvc
@@ -236,8 +218,6 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
-    @Rollback
     public String createOrder(String orderId) throws Exception {
         MvcResult result = mockMvc
                 .perform(

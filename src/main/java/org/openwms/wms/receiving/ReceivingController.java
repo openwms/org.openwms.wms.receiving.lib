@@ -91,8 +91,11 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders")
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
-        List<ReceivingOrder> order = service.findAll();
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+        List<ReceivingOrder> orders = service.findAll();
+        orders.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
+        List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
+        result.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
+        return ResponseEntity.ok(result);
     }
 
     @Transactional(readOnly = true)

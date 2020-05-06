@@ -157,6 +157,8 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public List<ReceivingOrder> findAll() {
-        return repository.findAll();
+        List<ReceivingOrder> all = repository.findAll();
+        all.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
+        return all;
     }
 }
