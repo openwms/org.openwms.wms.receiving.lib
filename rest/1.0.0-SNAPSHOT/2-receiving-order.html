@@ -488,7 +488,7 @@ Content-Length: 396
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/receiving-orders HTTP/1.1
 Content-Type: application/json
 Host: localhost:8080
-Content-Length: 274
+Content-Length: 300
 
 {
   "orderId" : "4712",
@@ -499,74 +499,20 @@ Content-Length: 274
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 1
     },
-    "sku" : "SKU001"
+    "product" : {
+      "sku" : "SKU001"
+    }
   } ]
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>orderId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An unique identifier of the ReceivingOrder to create</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An array of positions, must not be empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].positionId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier of the ReceivingOrderPosition within the ReceivingOrder</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity of the Product</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.@class</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Must be one of the static values to identify the type of UOM</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.unitType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Must be one of the static values to identify the concrete UOM</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.magnitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The amount</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].sku</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The SKU of the expected Product</p></td>
-</tr>
-</tbody>
-</table>
 <div class="paragraph">
 <p>If the <code>ReceivingOrder</code> has been created successfully, the server returns the URI to the created resource:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/06071402-01d1-480f-aea6-2eac2d39de38/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/2498036b-a95d-4ab8-8ff5-201ad5e50ebe/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -580,29 +526,18 @@ responds with:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="resources-receiving-order-find">Find a ReceivingOrder</h3>
+<h3 id="resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</h3>
 <div class="paragraph">
 <p>A HTTP GET request is required to find a <code>ReceivingOrder</code>.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders/adf911a4-ddbc-4373-a38f-53f8956d0067/ HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-find/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the <code>ReceivingOrder</code> has been found, the server returns the order as part of the response body:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 24
-
-{
-  "orderId" : "4713"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-find/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>In case the order does not exist, the server responds with:</p>
@@ -622,32 +557,21 @@ Content-Length: 123
 </div>
 </div>
 <div class="sect2">
-<h3 id="_find_a_receivingorder_by_order_id">Find a ReceivingOrder by Order ID</h3>
+<h3 id="resources-receiving-order-findby-orderid">Find a ReceivingOrder by Order ID</h3>
 <div class="paragraph">
 <p>A HTTP GET request is required to find a <code>ReceivingOrder</code> by it&#8217;s identifying business key, the order ID.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders?orderId=4717 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-findby-orderid/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the <code>ReceivingOrder</code> has been found, the server returns the order as part of the response body:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 24
-
-{
-  "orderId" : "4717"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-findby-orderid/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>In case the order does not exist, the server responds the same way like <a href="#resources-receiving-order-find">Find a ReceivingOrder</a>.</p>
+<p>In case the order does not exist, the server responds the same way like <a href="#resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -668,12 +592,14 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 54
+Content-Length: 102
 
 [ {
-  "orderId" : "4716"
+  "orderId" : "4716",
+  "state" : "PROCESSED"
 }, {
-  "orderId" : "4712"
+  "orderId" : "4711",
+  "state" : "CREATED"
 } ]</code></pre>
 </div>
 </div>
@@ -686,7 +612,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/466fe48c-4787-4181-8e1a-a597de3556af/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/29879c29-9302-4ade-9180-702040631eac/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -710,7 +636,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "e89cd69e-610c-4a4c-8c25-935b97ca2dd7" ],
+  "obj" : [ "4716", "PROCESSED", "45525091-3f78-43ed-9d5e-1a38257ab753" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -720,7 +646,7 @@ Content-Length: 279
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-05 22:45:28 UTC
+Last updated 2020-05-06 19:33:50 UTC
 </div>
 </div>
 </body>

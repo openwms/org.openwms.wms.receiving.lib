@@ -88,7 +88,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Embedded
     private Problem problem;
 
-    /** All GoodsReceiptPosition this Order has. */
+    /** All ReceivingOrderPosition this Order has. */
     @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL}, fetch = FetchType.EAGER)
 <span class="fc" id="L93">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
 
@@ -147,7 +147,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     @Override
     public String toString() {
-<span class="fc" id="L150">        return orderId;</span>
+<span class="nc" id="L150">        return orderId;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

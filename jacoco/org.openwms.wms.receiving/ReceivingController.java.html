@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving Service</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving</a> &gt; <span class="el_source">ReceivingController.java</span></div><h1>ReceivingController.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/*</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving Service</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving</a> &gt; <span class="el_source">ReceivingController.java</span></div><h1>ReceivingController.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/*</span>
  * Copyright 2005-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -91,21 +91,24 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping(&quot;/v1/receiving-orders&quot;)
 <span class="fc" id="L93">    public ResponseEntity&lt;List&lt;ReceivingOrderVO&gt;&gt; findAll() {</span>
-        List&lt;ReceivingOrder&gt; order = service.findAll();
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+        List&lt;ReceivingOrder&gt; orders = service.findAll();
+<span class="fc" id="L95">        orders.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
+        List&lt;ReceivingOrderVO&gt; result = mapper.map(orders, ReceivingOrderVO.class);
+<span class="fc" id="L97">        result.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
+        return ResponseEntity.ok(result);
     }
 
     @Transactional(readOnly = true)
     @GetMapping(&quot;/v1/receiving-orders/{pKey}&quot;)
-<span class="fc" id="L100">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {</span>
+<span class="nc" id="L103">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {</span>
         ReceivingOrder order = service.findByPKey(pKey);
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
     @Transactional(readOnly = true)
     @GetMapping(value = &quot;/v1/receiving-orders&quot;, params = {&quot;orderId&quot;})
-<span class="fc" id="L107">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrderByOrderId(@RequestParam(&quot;orderId&quot;) String orderId) {</span>
-<span class="nc" id="L108">        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -&gt; new NotFoundException(&quot;&quot;));</span>
+<span class="nc" id="L110">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrderByOrderId(@RequestParam(&quot;orderId&quot;) String orderId) {</span>
+<span class="fc" id="L111">        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -&gt; new NotFoundException(&quot;&quot;));</span>
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 }

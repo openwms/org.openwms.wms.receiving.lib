@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
@@ -33,61 +34,68 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotEmpty
+    @JsonProperty(&quot;positionId&quot;)
     private String positionId;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
+    @JsonProperty(&quot;quantityExpected&quot;)
     private Measurable&lt;?, ?, ?&gt; quantityExpected;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
-    @NotEmpty
-    private String sku;
+    @NotNull
+    @JsonProperty(&quot;product&quot;)
+    private ProductVO product;
     /** Optional: How the position should be processed, manually oder automatically. */
+    @JsonProperty(&quot;startMode&quot;)
     private String startMode;
     /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
+    @JsonProperty(&quot;transportUnitId&quot;)
     private String transportUnitId;
     /** Optional: The suppliers type of {@code TransportUnit}. */
+    @JsonProperty(&quot;transportUnitType&quot;)
     private String transportUnitType;
+    @JsonProperty(&quot;supplierPackingUnit&quot;)
     private String supplierPackingUnit;
 
     @JsonCreator
-<span class="fc" id="L52">    ReceivingOrderPositionVO() {</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L60">    ReceivingOrderPositionVO() {</span>
+<span class="fc" id="L61">    }</span>
 
-<span class="fc" id="L55">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotEmpty String sku) {</span>
-<span class="fc" id="L56">        this.positionId = positionId;</span>
-<span class="fc" id="L57">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L58">        this.sku = sku;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L63">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotNull ProductVO product) {</span>
+<span class="fc" id="L64">        this.positionId = positionId;</span>
+<span class="fc" id="L65">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L66">        this.product = product;</span>
+<span class="fc" id="L67">    }</span>
 
     public String getPositionId() {
-<span class="fc" id="L62">        return positionId;</span>
+<span class="fc" id="L70">        return positionId;</span>
     }
 
     public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
-<span class="fc" id="L66">        return quantityExpected;</span>
+<span class="fc" id="L74">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable&lt;?, ?, ?&gt; quantityExpected) {
-<span class="fc" id="L70">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L78">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L79">    }</span>
 
-    public String getSku() {
-<span class="fc" id="L74">        return sku;</span>
+    public ProductVO getProduct() {
+<span class="fc" id="L82">        return product;</span>
     }
 
     public String getStartMode() {
-<span class="fc" id="L78">        return startMode;</span>
+<span class="fc" id="L86">        return startMode;</span>
     }
 
     public String getTransportUnitId() {
-<span class="fc" id="L82">        return transportUnitId;</span>
+<span class="fc" id="L90">        return transportUnitId;</span>
     }
 
     public String getTransportUnitType() {
-<span class="fc" id="L86">        return transportUnitType;</span>
+<span class="fc" id="L94">        return transportUnitType;</span>
     }
 
     public String getSupplierPackingUnit() {
-<span class="fc" id="L90">        return supplierPackingUnit;</span>
+<span class="fc" id="L98">        return supplierPackingUnit;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

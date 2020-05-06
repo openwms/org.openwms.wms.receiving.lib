@@ -94,8 +94,8 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder createOrder(ReceivingOrder order) {
 <span class="fc" id="L95">        Assert.notNull(order, &quot;order to create must not be null&quot;);</span>
 <span class="fc" id="L96">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (opt.isPresent()) {</span>
-<span class="fc" id="L98">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L98">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
         }
 <span class="fc" id="L100">        order = repository.save(order);</span>
 <span class="fc" id="L101">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
@@ -113,7 +113,7 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder findByPKey(String pKey) {
 <span class="fc" id="L114">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
 <span class="fc" id="L115">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
-<span class="fc" id="L116">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+<span class="pc" id="L116">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
@@ -157,7 +157,9 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public List&lt;ReceivingOrder&gt; findAll() {
-<span class="fc" id="L160">        return repository.findAll();</span>
+<span class="fc" id="L160">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
+<span class="fc" id="L161">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
+<span class="fc" id="L162">        return all;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

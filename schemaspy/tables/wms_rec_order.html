@@ -89,16 +89,7 @@
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
  <td class='detail'></td>
- <td class='detail'>
-  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
-    <td class='relatedTable detail' title="wms_rec_order_position.c_order_id refs wms_rec_order.c_pk via fk_rec_pos_order_id"><a href='wms_rec_order_position.html'>wms_rec_order_position</a><span class='relatedKey'>.c_order_id</span>
-    </td>
-    <td class='constraint detail'>fk_rec_pos_order_id<span title='Restrict delete:
- Parent cannot be deleted if children exist'>&nbsp;R</span></td>
-   </tr>
-  </table>
-</td>
+ <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
@@ -186,7 +177,16 @@
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
  <td class='detail'></td>
- <td class='detail'></td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative even' valign='top'>
+    <td class='relatedTable detail' title="wms_rec_order_position.c_order_id refs wms_rec_order.c_order_id via fk_rec_pos_order_id"><a href='wms_rec_order_position.html'>wms_rec_order_position</a><span class='relatedKey'>.c_order_id</span>
+    </td>
+    <td class='constraint detail'>fk_rec_pos_order_id<span title='Restrict delete:
+ Parent cannot be deleted if children exist'>&nbsp;R</span></td>
+   </tr>
+  </table>
+</td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
@@ -257,7 +257,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='15 columns'>Table contained 1 rows at Tue May 05 22:49 UTC 2020<p/>
+<p title='15 columns'>Table contained 1 rows at Wed May 06 19:37 UTC 2020<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -290,14 +290,14 @@
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
 <area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="354,5,542,377">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,266,309,691">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,74,309,499">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/wms_rec_order.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="354,5,542,377">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,266,309,691">
-<area shape="rect" id="node3" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="85,709,230,793">
-<area shape="rect" id="node4" href="wms_rec_order_position_details.html" title="wms_rec_order_position_details" alt="" coords="39,165,276,249">
+<area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="354,37,542,409">
+<area shape="rect" id="node2" href="wms_rec_order_position_details.html" title="wms_rec_order_position_details" alt="" coords="39,5,276,89">
+<area shape="rect" id="node3" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,106,309,531">
+<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="85,549,230,633">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/wms_rec_order.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
