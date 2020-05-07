@@ -19,19 +19,24 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
+import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.inventory.Product;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.openwms.wms.order.OrderState.CANCELED;
 import static org.openwms.wms.order.OrderState.CREATED;
+import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.order.OrderState.UNDEFINED;
 import static org.openwms.wms.receiving.ReceivingMessages.ALREADY_CANCELLED;
 import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
@@ -41,6 +46,7 @@ import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
  * 
  * @author Heiko Scherrer
  */
+@Validated
 @TxService
 class ReceivingServiceImpl implements ReceivingService {
 
@@ -103,6 +109,23 @@ class ReceivingServiceImpl implements ReceivingService {
             LOGGER.info("ReceivingOrder with orderId [{}] saved", order.getOrderId());
         }
         return order;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable<?, ?, ?> quantityReceived, @NotNull Product product) {
+        ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException("No ReceivingOrder found"));
+        receivingOrder.getPositions().stream()
+                .filter(p->p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(p->p.getProduct().equals(product))
+                .filter(p->p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
+                .forEach( p -> {
+                    // capture ...
+                });
+        return null;
     }
 
     /**

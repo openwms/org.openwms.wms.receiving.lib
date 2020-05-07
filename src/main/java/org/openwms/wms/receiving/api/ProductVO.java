@@ -30,7 +30,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ProductVO implements Serializable {
 
-    @NotEmpty
+    @NotEmpty(groups = ValidationGroups.Capture.class)
     @JsonProperty("sku")
     private String sku;
     @JsonProperty("description")
