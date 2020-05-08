@@ -116,7 +116,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable<?, ?, ?> quantityReceived, @NotNull Product product) {
+    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable quantityReceived, @NotNull Product product) {
         ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException("No ReceivingOrder found"));
         receivingOrder.getPositions().stream()
                 .filter(p->p.getState() == CREATED || p.getState() == PROCESSING)
@@ -124,8 +124,9 @@ class ReceivingServiceImpl implements ReceivingService {
                 .filter(p->p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
                 .forEach( p -> {
                     // capture ...
+                    p.getQuantityExpected().add(quantityReceived);
                 });
-        return null;
+        return receivingOrder;
     }
 
     /**

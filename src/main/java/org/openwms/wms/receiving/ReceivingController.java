@@ -86,7 +86,7 @@ public class ReceivingController extends AbstractWebController {
 
     @PostMapping("/v1/receiving-orders/{pKey}/capture")
     public ResponseEntity<Void> captureOrder(@PathVariable("pKey") String pKey, @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
-        ReceivingOrder saved = service.capture(request.getTransportUnitId(), request.getQuantityReceived(), mapper.map(request.getProduct(), Product.class));
+        ReceivingOrder saved = service.capture(pKey, request.getTransportUnitId(), request.getQuantityReceived(), mapper.map(request.getProduct(), Product.class));
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 

@@ -31,6 +31,10 @@
 		<class-a>org.openwms.wms.receiving.impl.ReceivingOrder</class-a>
 		<class-b>org.openwms.wms.receiving.api.ReceivingOrderVO</class-b>
 		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
 			<a is-accessible="true">orderId</a>
 			<b is-accessible="true">orderId</b>
 		</field>

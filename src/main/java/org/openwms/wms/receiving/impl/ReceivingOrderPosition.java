@@ -62,14 +62,14 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
             @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
             @Column(name = "C_QTY_EXPECTED", nullable = false)
     })
-    private Measurable<?, ?, ?> quantityExpected;
+    private Measurable quantityExpected;
 
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
     @org.hibernate.annotations.Columns(columns = {
             @Column(name = "C_QTY_RECEIVED_TYPE", nullable = false),
             @Column(name = "C_QTY_RECEIVED", nullable = false)
     })
-    private Measurable<?, ?, ?> quantityReceived;
+    private Measurable quantityReceived;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
@@ -111,19 +111,19 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return state;
     }
 
-    public Measurable<?, ?, ?> getQuantityExpected() {
+    public Measurable getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
+    public void setQuantityExpected(Measurable quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 
-    public Measurable<?, ?, ?> getQuantityReceived() {
+    public Measurable getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable<?, ?, ?> quantityReceived) {
+    public void setQuantityReceived(Measurable quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

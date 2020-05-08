@@ -33,6 +33,8 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderVO implements Serializable {
 
+    @JsonProperty("pKey")
+    private String pKey;
     /** The unique identifier of an {@code ReceivingOrder}. */
     @NotEmpty
     @JsonProperty("orderId")

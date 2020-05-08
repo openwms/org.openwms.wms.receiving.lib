@@ -35,7 +35,7 @@ public class CaptureRequestVO implements Serializable {
     /** The unique identifier of an {@code ReceivingOrder}. */
     @NotNull
     @JsonProperty("quantityReceived")
-    private Measurable<?, ?, ?> quantityReceived;
+    private Measurable quantityReceived;
     @NotNull
     @JsonProperty("product")
     private ProductVO product;
@@ -47,17 +47,17 @@ public class CaptureRequestVO implements Serializable {
     CaptureRequestVO() {
     }
 
-    public CaptureRequestVO(@NotNull Measurable<?, ?, ?> quantityReceived, @NotNull ProductVO product, @NotEmpty String transportUnitId) {
+    public CaptureRequestVO(@NotNull Measurable quantityReceived, @NotNull ProductVO product, @NotEmpty String transportUnitId) {
         this.quantityReceived = quantityReceived;
         this.product = product;
         this.transportUnitId = transportUnitId;
     }
 
-    public Measurable<?, ?, ?> getQuantityReceived() {
+    public Measurable getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable<?, ?, ?> quantityReceived) {
+    public void setQuantityReceived(Measurable quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

@@ -48,7 +48,7 @@ public interface ReceivingService {
      * @param product The received Product
      * @return The updated ReceivingOrder instance with updated positions
      */
-    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable<?, ?, ?> quantityReceived,
+    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable quantityReceived,
             @NotNull Product product);
 
     /**
