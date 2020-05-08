@@ -11,8 +11,8 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingAsyncC
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingModuleConfiguration,7,10,0,0,1,2,1,2,1,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,OrderProcessor.AjcClosure1,0,18,0,0,0,1,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,CancellationDeniedException,0,6,0,0,0,2,0,1,0,1
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPosition,28,6,0,0,10,2,9,1,9,1
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingServiceImpl,24,210,3,7,1,35,4,11,1,9
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPosition,35,6,0,0,13,2,11,1,11,1
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingServiceImpl,83,210,7,7,10,35,12,11,7,9
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrder,23,51,1,1,7,14,8,7,7,7
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPositionDetails,36,3,6,0,13,1,10,1,7,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,AlreadyCancelledException,0,6,0,0,0,2,0,1,0,1
@@ -25,8 +25,9 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ProcessingException
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,IndexController,0,22,0,0,0,4,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingOrderCreatedEvent,0,8,0,0,0,3,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,Index,0,7,0,0,0,3,0,1,0,1
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController,10,187,0,0,1,23,2,10,2,10
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController,34,187,0,0,3,23,3,10,3,10
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ReceivingOrderVO,0,35,0,0,0,12,0,6,0,6
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,CaptureRequestVO,36,0,0,0,16,0,8,0,8,0
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ReceivingOrderPositionVO,0,40,0,0,0,16,0,10,0,10
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ProductVO,4,19,0,0,2,9,1,5,1,5
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.transport,TransportUnit,3,22,0,0,1,10,1,5,1,5

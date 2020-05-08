@@ -44,12 +44,14 @@ digraph "twoDegreesRelationshipsDiagram" {
       <TR><TD PORT="c_pos_no" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_pos_no</TD></TR>
       <TR><TD PORT="c_qty_expected_type" COLSPAN="3" ALIGN="LEFT">c_qty_expected_type</TD></TR>
       <TR><TD PORT="c_qty_expected" COLSPAN="3" ALIGN="LEFT">c_qty_expected</TD></TR>
+      <TR><TD PORT="c_qty_received_type" COLSPAN="3" ALIGN="LEFT">c_qty_received_type</TD></TR>
+      <TR><TD PORT="c_qty_received" COLSPAN="3" ALIGN="LEFT">c_qty_received</TD></TR>
       <TR><TD PORT="c_state" COLSPAN="3" ALIGN="LEFT">c_state</TD></TR>
       <TR><TD PORT="c_transport_unit_bk" COLSPAN="3" ALIGN="LEFT">c_transport_unit_bk</TD></TR>
       <TR><TD PORT="c_details_pk" COLSPAN="3" ALIGN="LEFT">c_details_pk</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="3" ALIGN="LEFT">c_sku</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="wms_rec_order_position.html"
     tooltip="wms_rec_order_position"
