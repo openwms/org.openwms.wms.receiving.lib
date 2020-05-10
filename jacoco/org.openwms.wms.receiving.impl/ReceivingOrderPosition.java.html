@@ -55,7 +55,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     /** Current position state. Default is {@value} */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_STATE&quot;)
-<span class="fc" id="L58">    private OrderState state = OrderState.UNDEFINED;</span>
+<span class="fc" id="L58">    private OrderState state = OrderState.CREATED;</span>
 
     @org.hibernate.annotations.Type(type = &quot;org.openwms.core.units.persistence.UnitUserType&quot;)
     @org.hibernate.annotations.Columns(columns = {
@@ -66,8 +66,8 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @org.hibernate.annotations.Type(type = &quot;org.openwms.core.units.persistence.UnitUserType&quot;)
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = &quot;C_QTY_RECEIVED_TYPE&quot;, nullable = false),
-            @Column(name = &quot;C_QTY_RECEIVED&quot;, nullable = false)
+            @Column(name = &quot;C_QTY_RECEIVED_TYPE&quot;),
+            @Column(name = &quot;C_QTY_RECEIVED&quot;)
     })
     private Measurable quantityReceived;
 
