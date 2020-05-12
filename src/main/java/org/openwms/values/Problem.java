@@ -15,12 +15,15 @@
  */
 package org.openwms.values;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A Problem is used to signal an occurred failure.
@@ -41,8 +44,9 @@ public class Problem implements Serializable {
     private int messageNo;
 
     /** Message text about the {@code Problem}. */
-    @Column(name = "C_PROBLEM_MESSAGE")
+    @Column(name = "C_PROBLEM_MESSAGE", length = DEF_MESSAGE_LENGTH)
     private String message;
+    public static final int DEF_MESSAGE_LENGTH = 255;
 
     /* ----------------------------- methods ------------------- */
 
@@ -58,7 +62,8 @@ public class Problem implements Serializable {
      */
     public Problem(String message) {
         this();
-        this.message = message;
+        Assert.hasText(message, "Message must be given");
+        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);
     }
 
     /**
@@ -69,7 +74,8 @@ public class Problem implements Serializable {
      */
     public Problem(String message, int messageNo) {
         this();
-        this.message = message;
+        Assert.hasText(message, "Message must be given");
+        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);
         this.messageNo = messageNo;
     }
 
@@ -124,6 +130,21 @@ public class Problem implements Serializable {
      * @param message The message to set.
      */
     public void setMessage(String message) {
-        this.message = message;
+        this.message = message == null ? message : message.substring(0, DEF_MESSAGE_LENGTH - 1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Problem)) return false;
+        Problem problem = (Problem) o;
+        return messageNo == problem.messageNo &&
+                Objects.equals(occurred, problem.occurred) &&
+                Objects.equals(message, problem.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(occurred, messageNo, message);
     }
 }

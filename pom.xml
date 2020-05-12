@@ -185,6 +185,24 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Project Dependencies -->
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.core.util</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.core.units</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.common.service</artifactId>
+            <classifier>client</classifier>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -246,9 +264,13 @@
             </exclusions>
         </dependency>
         <dependency>
-            <!-- Required to use PATCH -->
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-httpclient</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -263,6 +285,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 3rd party dependencies -->
         <dependency>
             <groupId>io.interface21</groupId>
             <artifactId>ameba-lib</artifactId>
@@ -274,23 +297,17 @@
             <scope>compile</scope> <!-- Fix the scope -->
             <optional>true</optional>
         </dependency>
-
         <dependency>
-            <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.core.util</artifactId>
+            <!-- Required to use PATCH -->
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.core.units</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.common.service</artifactId>
-            <classifier>client</classifier>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <!-- Required by eureka-client -->
             <groupId>com.google.guava</groupId>

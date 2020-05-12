@@ -79,12 +79,33 @@ management:
         include: "*"
   health:
     rabbit:
-      enabled: true
+      enabled: false
 
 logging:
   file:
     name: BOOT-WMS-Receiving.log
     path: "/tmp/owms"
+
+---
+spring:
+  profiles: DEMO
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files: import-DEMO.sql
+
+---
+spring:
+  profiles: DISTRIBUTED
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
 
 ---
 spring:
@@ -120,27 +141,6 @@ owms:
     url: http://user:sa@owms-services:8761
   srv:
     hostname: owms-receiving
-
----
-spring:
-  profiles: DEMO
-  jpa:
-    properties:
-      hibernate:
-        hbm2ddl:
-          import_files: import-DEMO.sql
-
----
-spring:
-  profiles: DISTRIBUTED
-  cloud:
-    config:
-      discovery:
-        enabled: true
-      enabled: true
-      fail-fast: true # true means retry
-    discovery:
-      enabled: true
 
 ---
 spring:
