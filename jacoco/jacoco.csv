@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.order,OrderStartMode,24,0,0,0,5,0,1,0,1,0
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.order,OrderState,0,94,0,0,0,2,0,1,0,1
-OpenWMS.org WMS: Receiving Service,org.openwms.values,Problem,52,0,0,0,19,0,9,0,9,0
+OpenWMS.org WMS: Receiving Service,org.openwms.values,Problem,125,0,12,0,28,0,17,0,11,0
 OpenWMS.org WMS: Receiving Service,org.openwms.wms,ReceivingRunner,5,3,0,0,2,1,1,1,1,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.transport.impl,AsyncTransportUnitApiImpl,8,9,0,0,2,4,1,1,1,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.transport.impl,TransportUnitServiceImpl,0,32,0,0,0,8,0,2,0,2
