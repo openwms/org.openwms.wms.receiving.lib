@@ -24,7 +24,7 @@ confluence.with {
     api = 'https://openwms.atlassian.net/wiki/rest/api/'
     spaceKey = 'WMS'
     createSubpages = false
-    pagePrefix = 'RCV-'
+    pagePrefix = ''
     preambleTitle = 'Architecture'
     pageSuffix = ' (RCV)'
     credentials = "${System.getenv('ATLASSIAN_USER')}:${System.getenv('ATLASSIAN_PASSWORD')}".bytes.encodeBase64().toString()
