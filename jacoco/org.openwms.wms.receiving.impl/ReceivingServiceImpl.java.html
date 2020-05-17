@@ -21,15 +21,22 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.Product;
+import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.inventory.api.PackagingUnitVO;
+import org.openwms.wms.inventory.api.UnitTypeVO;
+import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,14 +57,20 @@ import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
 @TxService
 class ReceivingServiceImpl implements ReceivingService {
 
-<span class="fc" id="L53">    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);</span>
+<span class="fc" id="L60">    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);</span>
+    private final boolean overbookingAllowed;
     private final ReceivingOrderRepository repository;
     private final ApplicationEventPublisher publisher;
+    private final PackagingUnitApi packagingUnitApi;
 
-<span class="fc" id="L57">    ReceivingServiceImpl(ReceivingOrderRepository repository, ApplicationEventPublisher publisher) {</span>
-<span class="fc" id="L58">        this.repository = repository;</span>
-<span class="fc" id="L59">        this.publisher = publisher;</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L66">    ReceivingServiceImpl(</span>
+            @Value(&quot;${owms.receiving.unexpected-receipts-allowed:true}&quot;) boolean overbookingAllowed, ReceivingOrderRepository repository,
+            ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
+<span class="fc" id="L69">        this.overbookingAllowed = overbookingAllowed;</span>
+<span class="fc" id="L70">        this.repository = repository;</span>
+<span class="fc" id="L71">        this.publisher = publisher;</span>
+<span class="fc" id="L72">        this.packagingUnitApi = packagingUnitApi;</span>
+<span class="fc" id="L73">    }</span>
 
     /**
      * {@inheritDoc}
@@ -97,18 +110,18 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder createOrder(ReceivingOrder order) {
-<span class="fc" id="L101">        Assert.notNull(order, &quot;order to create must not be null&quot;);</span>
-<span class="fc" id="L102">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
-<span class="nc" id="L104">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
+    public @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order) {
+<span class="fc" id="L114">        Assert.notNull(order, &quot;order to create must not be null&quot;);</span>
+<span class="fc" id="L115">        Optional&lt;ReceivingOrder&gt; opt = repository.findByOrderId(order.getOrderId());</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L117">            throw new ResourceExistsException(format(&quot;The ReceivingOrder with orderId [%s] already exists&quot;, order));</span>
         }
-<span class="fc" id="L106">        order = repository.save(order);</span>
-<span class="fc" id="L107">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (LOGGER.isInfoEnabled()) {</span>
-<span class="fc" id="L109">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
+<span class="fc" id="L119">        order = repository.save(order);</span>
+<span class="fc" id="L120">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if (LOGGER.isInfoEnabled()) {</span>
+<span class="fc" id="L122">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
         }
-<span class="fc" id="L111">        return order;</span>
+<span class="fc" id="L124">        return order;</span>
     }
 
     /**
@@ -116,17 +129,32 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable quantityReceived, @NotNull Product product) {
-<span class="nc" id="L120">        ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(&quot;No ReceivingOrder found&quot;));</span>
-<span class="nc" id="L121">        receivingOrder.getPositions().stream()</span>
-<span class="nc bnc" id="L122" title="All 4 branches missed.">                .filter(p-&gt;p.getState() == CREATED || p.getState() == PROCESSING)</span>
-<span class="nc" id="L123">                .filter(p-&gt;p.getProduct().equals(product))</span>
-<span class="nc" id="L124">                .filter(p-&gt;p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))</span>
-<span class="nc" id="L125">                .forEach( p -&gt; {</span>
-                    // capture ...
-<span class="nc" id="L127">                    p.getQuantityExpected().add(quantityReceived);</span>
-<span class="nc" id="L128">                });</span>
-<span class="nc" id="L129">        return receivingOrder;</span>
+    public @NotNull ReceivingOrder capture(@NotEmpty String pKey,
+            @NotEmpty String transportUnitId,
+            @NotEmpty String loadUnitPosition,
+            @NotNull Measurable quantityReceived,
+            @NotNull @Valid Product product) {
+
+<span class="pc" id="L138">        ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(&quot;No ReceivingOrder found&quot;));</span>
+<span class="fc" id="L139">        Optional&lt;ReceivingOrderPosition&gt; openPosition = receivingOrder.getPositions().stream()</span>
+<span class="pc bnc" id="L140" title="All 4 branches missed.">                .filter(p -&gt; p.getState() == CREATED || p.getState() == PROCESSING)</span>
+<span class="pc" id="L141">                .filter(p -&gt; p.getProduct().equals(product))</span>
+<span class="pc" id="L142">                .filter(p -&gt; p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))</span>
+<span class="pc bnc" id="L143" title="All 2 branches missed.">                .filter(p -&gt; p.getQuantityExpected().compareTo(quantityReceived) &gt;= 0)</span>
+<span class="fc" id="L144">                .findFirst();</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (openPosition.isEmpty()) {</span>
+
+            // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            if (!overbookingAllowed) {</span>
+<span class="nc" id="L149">                throw new ProcessingException(&quot;Received a Product but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed&quot;);</span>
+            }
+<span class="fc" id="L151">            throw new ProcessingException(&quot;Received a Product but all ReceivingOrderPositions are already satisfied&quot;);</span>
+        }
+<span class="nc" id="L153">        PackagingUnitVO pu = new PackagingUnitVO();</span>
+<span class="nc" id="L154">        pu.setQuantity(new UnitTypeVO(BigDecimal.valueOf(quantityReceived.getMagnitude().floatValue()), quantityReceived.getUnitType().name()));</span>
+<span class="nc" id="L155">        packagingUnitApi.create(transportUnitId, loadUnitPosition, pu);</span>
+<span class="nc" id="L156">        openPosition.get().getQuantityReceived().add(quantityReceived);</span>
+<span class="nc" id="L157">        return receivingOrder;</span>
     }
 
     /**
@@ -134,10 +162,10 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder findByPKey(String pKey) {
-<span class="fc" id="L138">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
-<span class="fc" id="L139">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
-<span class="fc" id="L140">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+    public @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey) {
+<span class="fc" id="L166">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
+<span class="fc" id="L167">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
+<span class="fc" id="L168">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
@@ -146,7 +174,7 @@ class ReceivingServiceImpl implements ReceivingService {
     @Measured
     @Override
     public Optional&lt;ReceivingOrder&gt; findByOrderId(@NotEmpty String orderId) {
-<span class="fc" id="L149">        return repository.findByOrderId(orderId);</span>
+<span class="fc" id="L177">        return repository.findByOrderId(orderId);</span>
     }
 
     /**
@@ -154,36 +182,36 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public void cancelOrder(String pKey) {
-<span class="fc" id="L158">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
-<span class="pc" id="L159">        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
-<span class="fc" id="L160">        LOGGER.info(&quot;Cancelling ReceivingOrder [{}] in state [{}]&quot;, order.getOrderId(), order.getOrderState());</span>
-<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (order.getOrderState() == CANCELED) {</span>
-<span class="fc" id="L162">            throw new AlreadyCancelledException(</span>
-<span class="fc" id="L163">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
-<span class="fc" id="L164">                    ALREADY_CANCELLED,</span>
-<span class="fc" id="L165">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
+    public void cancelOrder(@NotEmpty String pKey) {
+<span class="fc" id="L186">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
+<span class="pc" id="L187">        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+<span class="fc" id="L188">        LOGGER.info(&quot;Cancelling ReceivingOrder [{}] in state [{}]&quot;, order.getOrderId(), order.getOrderState());</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (order.getOrderState() == CANCELED) {</span>
+<span class="fc" id="L190">            throw new AlreadyCancelledException(</span>
+<span class="fc" id="L191">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
+<span class="fc" id="L192">                    ALREADY_CANCELLED,</span>
+<span class="fc" id="L193">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
             );
         }
-<span class="pc bpc" id="L168" title="1 of 4 branches missed.">        if (order.getOrderState() != UNDEFINED &amp;&amp; order.getOrderState() != CREATED) {</span>
-<span class="fc" id="L169">            throw new CancellationDeniedException(</span>
-<span class="fc" id="L170">                    format(&quot;Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
-<span class="fc" id="L171">                    CANCELLATION_DENIED,</span>
-<span class="fc" id="L172">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
+<span class="pc bpc" id="L196" title="1 of 4 branches missed.">        if (order.getOrderState() != UNDEFINED &amp;&amp; order.getOrderState() != CREATED) {</span>
+<span class="fc" id="L197">            throw new CancellationDeniedException(</span>
+<span class="fc" id="L198">                    format(&quot;Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
+<span class="fc" id="L199">                    CANCELLATION_DENIED,</span>
+<span class="fc" id="L200">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
             );
         }
-<span class="fc" id="L175">        order.setOrderState(CANCELED);</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L203">        order.setOrderState(CANCELED);</span>
+<span class="fc" id="L204">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     @Measured
-    public List&lt;ReceivingOrder&gt; findAll() {
-<span class="fc" id="L184">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
-<span class="fc" id="L185">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
-<span class="fc" id="L186">        return all;</span>
+    public @NotNull List&lt;ReceivingOrder&gt; findAll() {
+<span class="fc" id="L212">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
+<span class="fc" id="L213">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
+<span class="fc" id="L214">        return all;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

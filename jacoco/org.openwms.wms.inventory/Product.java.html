@@ -24,6 +24,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
 
     /** The product id is part of the unique business key. */
     @Column(name = &quot;C_SKU&quot;)
+    @NotEmpty
     private String sku;
 
     /** Textual descriptive text. */
@@ -52,17 +54,17 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
     private BaseUnit baseUnit;
 
     /** Dear JPA ... */
-<span class="fc" id="L55">    protected Product() {</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L57">    protected Product() {</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * Create a Product with a sku.
      *
      * @param sku The sku
      */
-<span class="nc" id="L63">    public Product(String sku) {</span>
-<span class="nc" id="L64">        this.sku = sku;</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L65">    public Product(String sku) {</span>
+<span class="nc" id="L66">        this.sku = sku;</span>
+<span class="nc" id="L67">    }</span>
 
     /**
      * Get the SKU.
@@ -70,28 +72,28 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
      * @return the SKU.
      */
     public String getSku() {
-<span class="nc" id="L73">        return sku;</span>
+<span class="nc" id="L75">        return sku;</span>
     }
 
     public void setSku(String sku) {
-<span class="nc" id="L77">        this.sku = sku;</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L79">        this.sku = sku;</span>
+<span class="nc" id="L80">    }</span>
 
     public String getDescription() {
-<span class="nc" id="L81">        return description;</span>
+<span class="nc" id="L83">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="nc" id="L85">        this.description = description;</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L87">        this.description = description;</span>
+<span class="nc" id="L88">    }</span>
 
     public BaseUnit getBaseUnit() {
-<span class="nc" id="L89">        return baseUnit;</span>
+<span class="nc" id="L91">        return baseUnit;</span>
     }
 
     public void setBaseUnit(BaseUnit baseUnit) {
-<span class="nc" id="L93">        this.baseUnit = baseUnit;</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L95">        this.baseUnit = baseUnit;</span>
+<span class="nc" id="L96">    }</span>
 
     /**
      * {@inheritDoc}
@@ -100,32 +102,30 @@ public class Product extends ApplicationEntity implements Comparable&lt;Product&
      */
     @Override
     public int compareTo(Product o) {
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        return null == o ? -1 : this.sku.compareTo(o.sku);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        return null == o ? -1 : this.sku.compareTo(o.sku);</span>
     }
 
     /**
      * {@inheritDoc}
      *
-     * Include all fields
+     * SKU only.
      */
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L114" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="nc" id="L115">        Product product = (Product) o;</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        return Objects.equals(sku, product.sku) &amp;&amp;</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">                Objects.equals(description, product.description) &amp;&amp;</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">                Objects.equals(baseUnit, product.baseUnit);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L117">        Product product = (Product) o;</span>
+<span class="nc" id="L118">        return Objects.equals(sku, product.sku);</span>
     }
 
     /**
      * {@inheritDoc}
      *
-     * Include all fields
+     * SKU only.
      */
     @Override
     public int hashCode() {
-<span class="nc" id="L128">        return Objects.hash(sku, description, baseUnit);</span>
+<span class="nc" id="L128">        return Objects.hash(sku);</span>
     }
 
     /**

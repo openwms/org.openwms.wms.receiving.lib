@@ -52,13 +52,13 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Column(name = &quot;C_ORDER_ID&quot;, nullable = false)
     private String orderId;
 
-    /** Current state of this Order. */
+    /** Current state of this order. */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_ORDER_STATE&quot;)
 <span class="fc" id="L58">    private OrderState orderState = OrderState.UNDEFINED;</span>
 
     /**
-     * Property to lock/unlock an Order.
+     * Property to lock/unlock an order.
      * &lt;ul&gt;
      * &lt;li&gt;true: locked&lt;/li&gt;
      * &lt;li&gt;false: unlocked&lt;/li&gt;
@@ -68,27 +68,27 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Column(name = &quot;C_LOCKED&quot;)
 <span class="fc" id="L69">    private boolean locked = false;</span>
 
-    /** Current priority of the Order. */
+    /** Current priority of the order. */
     @Column(name = &quot;C_PRIORITY&quot;)
     private int priority;
 
-    /** Latest finish date of this Order. */
+    /** Latest date of this order can be processed. */
     @Column(name = &quot;C_LATEST_DUE&quot;)
     private ZonedDateTime latestDueDate;
 
-    /** Earliest date the Order can be started. */
+    /** Earliest date the order can be started. */
     @Column(name = &quot;C_START_DATE&quot;)
     private ZonedDateTime startDate;
 
-    /** Date when the Order should be allocated. */
+    /** Date when the order should be allocated. */
     @Column(name = &quot;C_NEXT_ALLOC&quot;)
     private ZonedDateTime nextAllocationDate;
 
-    /** Latest problem that is occurred on this Order. */
+    /** Latest problem that is occurred on this order. */
     @Embedded
     private Problem problem;
 
-    /** All ReceivingOrderPosition this Order has. */
+    /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL}, fetch = FetchType.EAGER)
 <span class="fc" id="L93">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
 

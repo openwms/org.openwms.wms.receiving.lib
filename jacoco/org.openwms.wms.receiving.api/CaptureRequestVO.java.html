@@ -42,39 +42,44 @@ public class CaptureRequestVO implements Serializable {
     @NotEmpty
     @JsonProperty(&quot;barcode&quot;)
     private String transportUnitId;
+    @NotEmpty
+    @JsonProperty(&quot;loadUnitLabel&quot;)
+    private String loadUnitLabel;
 
     @JsonCreator
-<span class="nc" id="L47">    CaptureRequestVO() {</span>
-<span class="nc" id="L48">    }</span>
-
-<span class="nc" id="L50">    public CaptureRequestVO(@NotNull Measurable quantityReceived, @NotNull ProductVO product, @NotEmpty String transportUnitId) {</span>
-<span class="nc" id="L51">        this.quantityReceived = quantityReceived;</span>
-<span class="nc" id="L52">        this.product = product;</span>
-<span class="nc" id="L53">        this.transportUnitId = transportUnitId;</span>
-<span class="nc" id="L54">    }</span>
+<span class="fc" id="L50">    public CaptureRequestVO() {</span>
+<span class="fc" id="L51">    }</span>
 
     public Measurable getQuantityReceived() {
-<span class="nc" id="L57">        return quantityReceived;</span>
+<span class="fc" id="L54">        return quantityReceived;</span>
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {
-<span class="nc" id="L61">        this.quantityReceived = quantityReceived;</span>
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L58">        this.quantityReceived = quantityReceived;</span>
+<span class="fc" id="L59">    }</span>
 
     public ProductVO getProduct() {
-<span class="nc" id="L65">        return product;</span>
+<span class="fc" id="L62">        return product;</span>
     }
 
     public void setProduct(ProductVO product) {
-<span class="nc" id="L69">        this.product = product;</span>
-<span class="nc" id="L70">    }</span>
+<span class="fc" id="L66">        this.product = product;</span>
+<span class="fc" id="L67">    }</span>
 
     public String getTransportUnitId() {
-<span class="nc" id="L73">        return transportUnitId;</span>
+<span class="fc" id="L70">        return transportUnitId;</span>
     }
 
     public void setTransportUnitId(String transportUnitId) {
-<span class="nc" id="L77">        this.transportUnitId = transportUnitId;</span>
-<span class="nc" id="L78">    }</span>
+<span class="fc" id="L74">        this.transportUnitId = transportUnitId;</span>
+<span class="fc" id="L75">    }</span>
+
+    public String getLoadUnitLabel() {
+<span class="fc" id="L78">        return loadUnitLabel;</span>
+    }
+
+    public void setLoadUnitLabel(String loadUnitLabel) {
+<span class="fc" id="L82">        this.loadUnitLabel = loadUnitLabel;</span>
+<span class="fc" id="L83">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

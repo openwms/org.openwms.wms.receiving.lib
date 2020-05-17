@@ -31,6 +31,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -50,89 +51,100 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
     @Column(name = &quot;C_POS_NO&quot;, nullable = false)
-    private int posNo;
+    @NotNull
+    private Integer posNo;
 
     /** Current position state. Default is {@value} */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_STATE&quot;)
-<span class="fc" id="L58">    private OrderState state = OrderState.CREATED;</span>
+    @NotNull
+<span class="fc" id="L61">    private OrderState state = OrderState.CREATED;</span>
 
     @org.hibernate.annotations.Type(type = &quot;org.openwms.core.units.persistence.UnitUserType&quot;)
     @org.hibernate.annotations.Columns(columns = {
             @Column(name = &quot;C_QTY_EXPECTED_TYPE&quot;, nullable = false),
             @Column(name = &quot;C_QTY_EXPECTED&quot;, nullable = false)
     })
+    @NotNull
     private Measurable quantityExpected;
 
     @org.hibernate.annotations.Type(type = &quot;org.openwms.core.units.persistence.UnitUserType&quot;)
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = &quot;C_QTY_RECEIVED_TYPE&quot;),
-            @Column(name = &quot;C_QTY_RECEIVED&quot;)
+            @Column(name = &quot;C_QTY_RECEIVED_TYPE&quot;, nullable = false),
+            @Column(name = &quot;C_QTY_RECEIVED&quot;, nullable = false)
     })
+    @NotNull
     private Measurable quantityReceived;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
     @JoinColumn(name = &quot;C_SKU&quot;, referencedColumnName = &quot;C_SKU&quot;, foreignKey = @ForeignKey(name = &quot;FK_REC_POS_PRODUCT&quot;), nullable = false)
+    @NotNull
     private Product product;
 
-    /** The barcode of an expected {@code TransportUnit} to be received. */
+    /** The business key of the expected {@code TransportUnit} that will be received. */
     @Column(name = &quot;C_TRANSPORT_UNIT_BK&quot;)
     private String transportUnitBK;
 
+    /** Some more detail information on this position, could by populated with ERP information. */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = &quot;C_DETAILS_PK&quot;, foreignKey = @ForeignKey(name = &quot;FK_REC_POS_DETAILS&quot;))
     private ReceivingOrderPositionDetails details;
 
-    /** Latest finish date of this Order. */
+    /** Latest date this position can be processed. */
     @Column(name = &quot;C_LATEST_DUE&quot;)
     private ZonedDateTime latestDueDate;
 
     /** Used by the JPA provider. */
-<span class="fc" id="L92">    protected ReceivingOrderPosition() {}</span>
+<span class="fc" id="L99">    protected ReceivingOrderPosition() {}</span>
 
     public String getTransportUnitBK() {
-<span class="nc" id="L95">        return transportUnitBK;</span>
+<span class="nc" id="L102">        return transportUnitBK;</span>
     }
 
     public ReceivingOrderPositionDetails getDetails() {
-<span class="nc" id="L99">        return details;</span>
+<span class="nc" id="L106">        return details;</span>
     }
 
     public ReceivingOrder getOrder() {
-<span class="nc" id="L103">        return order;</span>
+<span class="nc" id="L110">        return order;</span>
     }
 
     public int getPosNo() {
-<span class="nc" id="L107">        return posNo;</span>
+<span class="nc" id="L114">        return posNo;</span>
     }
 
     public OrderState getState() {
-<span class="nc" id="L111">        return state;</span>
+<span class="nc" id="L118">        return state;</span>
     }
 
     public Measurable getQuantityExpected() {
-<span class="nc" id="L115">        return quantityExpected;</span>
+<span class="nc" id="L122">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable quantityExpected) {
-<span class="nc" id="L119">        this.quantityExpected = quantityExpected;</span>
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L126">        this.quantityExpected = quantityExpected;</span>
+<span class="nc" id="L127">    }</span>
 
     public Measurable getQuantityReceived() {
-<span class="nc" id="L123">        return quantityReceived;</span>
+<span class="nc" id="L130">        return quantityReceived;</span>
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {
-<span class="nc" id="L127">        this.quantityReceived = quantityReceived;</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L134">        this.quantityReceived = quantityReceived;</span>
+<span class="nc" id="L135">    }</span>
 
     public Product getProduct() {
-<span class="nc" id="L131">        return product;</span>
+<span class="nc" id="L138">        return product;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L135">        return latestDueDate;</span>
+<span class="nc" id="L142">        return latestDueDate;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        return (order == null ? &quot;n/a&quot; : order.getOrderId()) + &quot;/&quot; + posNo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

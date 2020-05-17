@@ -79,44 +79,48 @@ public class ReceivingController extends AbstractWebController {
 <span class="fc" id="L79">        orderVO.getPositions().clear();</span>
 <span class="fc" id="L80">        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);</span>
         // FIXME [openwms]:
-<span class="pc" id="L82">        order.getPositions().forEach(p -&gt; p.setQuantityExpected(Piece.of(1)));</span>
-<span class="fc" id="L83">        ReceivingOrder saved = service.createOrder(order);</span>
-<span class="fc" id="L84">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+<span class="fc" id="L82">        order.getPositions().forEach(p -&gt; {</span>
+<span class="nc" id="L83">            p.setQuantityReceived(Piece.ZERO);</span>
+<span class="nc" id="L84">            p.setQuantityExpected(Piece.of(1));</span>
+<span class="nc" id="L85">        });</span>
+<span class="fc" id="L86">        ReceivingOrder saved = service.createOrder(order);</span>
+<span class="fc" id="L87">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
     }
 
     @PostMapping(&quot;/v1/receiving-orders/{pKey}/capture&quot;)
-    public ResponseEntity&lt;Void&gt; captureOrder(@PathVariable(&quot;pKey&quot;) String pKey, @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
-<span class="nc" id="L89">        ReceivingOrder saved = service.capture(pKey, request.getTransportUnitId(), request.getQuantityReceived(), mapper.map(request.getProduct(), Product.class));</span>
-<span class="nc" id="L90">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+    public ResponseEntity&lt;Void&gt; captureOrder(
+            @PathVariable(&quot;pKey&quot;) String pKey,
+            @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
+<span class="fc" id="L94">        Product map = mapper.map(request.getProduct(), Product.class);</span>
+<span class="nc" id="L95">        service.capture(pKey, request.getTransportUnitId(), request.getLoadUnitLabel(), request.getQuantityReceived(), map);</span>
+<span class="nc" id="L96">        return ResponseEntity.noContent().build();</span>
     }
 
     @DeleteMapping(&quot;/v1/receiving-orders/{pKey}&quot;)
     public ResponseEntity&lt;Void&gt; cancelOrder(@PathVariable(&quot;pKey&quot;) String pKey){
-<span class="fc" id="L95">        service.cancelOrder(pKey);</span>
-<span class="fc" id="L96">        return ResponseEntity.noContent().build();</span>
+<span class="fc" id="L101">        service.cancelOrder(pKey);</span>
+<span class="fc" id="L102">        return ResponseEntity.noContent().build();</span>
     }
 
     @Transactional(readOnly = true)
     @GetMapping(&quot;/v1/receiving-orders&quot;)
-<span class="fc" id="L101">    public ResponseEntity&lt;List&lt;ReceivingOrderVO&gt;&gt; findAll() {</span>
+<span class="fc" id="L107">    public ResponseEntity&lt;List&lt;ReceivingOrderVO&gt;&gt; findAll() {</span>
         List&lt;ReceivingOrder&gt; orders = service.findAll();
-<span class="fc" id="L103">        orders.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
         List&lt;ReceivingOrderVO&gt; result = mapper.map(orders, ReceivingOrderVO.class);
-<span class="fc" id="L105">        result.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
         return ResponseEntity.ok(result);
     }
 
     @Transactional(readOnly = true)
     @GetMapping(&quot;/v1/receiving-orders/{pKey}&quot;)
-<span class="fc" id="L111">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {</span>
+<span class="fc" id="L115">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {</span>
         ReceivingOrder order = service.findByPKey(pKey);
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
     @Transactional(readOnly = true)
     @GetMapping(value = &quot;/v1/receiving-orders&quot;, params = {&quot;orderId&quot;})
-<span class="fc" id="L118">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrderByOrderId(@RequestParam(&quot;orderId&quot;) String orderId) {</span>
-<span class="nc" id="L119">        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -&gt; new NotFoundException(&quot;&quot;));</span>
+<span class="fc" id="L122">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrderByOrderId(@RequestParam(&quot;orderId&quot;) String orderId) {</span>
+<span class="nc" id="L123">        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -&gt; new NotFoundException(&quot;&quot;));</span>
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 }
