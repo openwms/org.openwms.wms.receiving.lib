@@ -447,35 +447,14 @@ determines the expected product to receive in its quantity.</p>
 <div class="paragraph">
 <p>The index with all possible operations on a <code>ReceivingOrder</code> can be retrieved with a GET request:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders/index HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/get-order-index/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The response lists all the operations possible on <code>ReceivingOrders</code> with a name and the corresponding href link:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
-Content-Length: 396
-
-{
-  "_links" : {
-    "receiving-order-create" : {
-      "href" : "http://localhost:8080/v1/receiving-orders"
-    },
-    "receiving-order-findbypkey" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
-    },
-    "receiving-order-cancel" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
-    }
-  }
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/get-order-index/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
@@ -568,7 +547,7 @@ Content-Length: 300
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/9f95cddc-3f5a-45a2-a32d-8c5d3d74ad4b/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/73617e15-578c-4a22-9a11-7bbb46a2a522/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -584,7 +563,7 @@ responds with:</p>
 <div class="sect2">
 <h3 id="resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</h3>
 <div class="paragraph">
-<p>A HTTP GET request is required to find a <code>ReceivingOrder</code>.</p>
+<p>A HTTP GET request is required to lookup a <code>ReceivingOrder</code> by its synthetic persistent key.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -593,7 +572,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the <code>ReceivingOrder</code> has been found, the server returns the order as part of the response body:</p>
+<p>If the <code>ReceivingOrder</code> has been found, the server returns the order instance in the response body:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -609,7 +588,7 @@ Content-Length: 99
 </div>
 </div>
 <div class="paragraph">
-<p>In case the order does not exist, the server responds with:</p>
+<p>In case the order does not exist, the server responds with a error of the client family because the <code>pKey</code> is expected to exist:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -637,7 +616,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the <code>ReceivingOrder</code> has been found, the server returns the order as part of the response body:</p>
+<p>If the <code>ReceivingOrder</code> has been found, the server returns the order instance in the response body:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -653,13 +632,14 @@ Content-Length: 99
 </div>
 </div>
 <div class="paragraph">
-<p>In case the order does not exist, the server responds the same way like <a href="#resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</a>.</p>
+<p>In case the order does not exist, the server responds in the same way like <a href="#resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_find_all_receivingorders">Find all ReceivingOrders</h3>
 <div class="paragraph">
-<p>A HTTP GET request to the primary resource is required to find all <code>ReceivingOrders</code>.</p>
+<p>A HTTP GET request to the primary resource is required to find all <code>ReceivingOrders</code>. Notice, this method is foreseen for UI applications
+and may change in future API versions.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -677,7 +657,7 @@ Content-Type: application/json
 Content-Length: 205
 
 [ {
-  "pKey" : "b1f944b7-5e98-453f-bd1e-90d8b4677cfd",
+  "pKey" : "1ae594b4-f5d3-4091-9e44-35d5bc6a21ba",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -696,7 +676,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/5ef253f2-b603-41f8-a82b-0abec12882dd/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/0bb54cc1-0f13-49f0-9fc2-70f87917602f/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -720,7 +700,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "b1f944b7-5e98-453f-bd1e-90d8b4677cfd" ],
+  "obj" : [ "4716", "PROCESSED", "1ae594b4-f5d3-4091-9e44-35d5bc6a21ba" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -799,7 +779,7 @@ Content-Length: 116
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-17 14:20:43 UTC
+Last updated 2020-05-17 14:49:09 UTC
 </div>
 </div>
 </body>

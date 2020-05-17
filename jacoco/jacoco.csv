@@ -26,7 +26,7 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ProcessingException
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,IndexController,0,22,0,0,0,4,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingOrderCreatedEvent,0,8,0,0,0,3,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,Index,0,7,0,0,0,3,0,1,0,1
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController,28,169,0,0,6,22,2,9,2,9
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController,28,208,0,0,6,24,2,9,2,9
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ReceivingOrderVO,0,35,0,0,0,12,0,6,0,6
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,CaptureRequestVO,0,31,0,0,0,14,0,9,0,9
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ReceivingOrderPositionVO,0,40,0,0,0,16,0,10,0,10
