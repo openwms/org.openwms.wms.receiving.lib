@@ -13,6 +13,9 @@ cache:
     - .autoconf
     - $TRAVIS_HOME/.m2
 
+jobs:
+  fast_finish: true
+
 services:
   - docker
   - rabbitmq
