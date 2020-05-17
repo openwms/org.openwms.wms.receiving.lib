@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
 import org.openwms.wms.ReceivingApplicationTest;
@@ -47,7 +48,7 @@ class ReceivingServiceImplTest {
         ReceivingOrder order = service.createOrder(new ReceivingOrder("4710"));
         assertThat(order.isNew()).isFalse();
 
-        ServiceLayerException ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(new ReceivingOrder("4710")));
+        ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4710")));
         assertThat(ex.getMessage()).containsIgnoringCase("exists");
     }
 }

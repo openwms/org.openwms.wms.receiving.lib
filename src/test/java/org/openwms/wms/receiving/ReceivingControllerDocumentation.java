@@ -50,6 +50,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -91,10 +92,6 @@ class ReceivingControllerDocumentation {
                         get("/v1/receiving-orders/index")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._links.receiving-order-create").exists())
-                .andExpect(jsonPath("$._links.receiving-order-findbypkey").exists())
-                .andExpect(jsonPath("$._links.receiving-order-cancel").exists())
-                .andExpect(jsonPath("$._links.length()", is(3)))
                 .andDo(document("get-order-index", preprocessResponse(prettyPrint())))
         ;
     }
@@ -160,10 +157,15 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isOk())
                 .andDo(document("order-find",
                         preprocessResponse(prettyPrint()),
-                        requestFields(
+                        responseFields(
                                 fieldWithPath("pKey").description("The synthetic unique identifier of the ReceivingOrder"),
                                 fieldWithPath("orderId").description("The business key of the ReceivingOrder"),
-                                fieldWithPath("state").description("The current state of the ReceiginOrder")
+                                fieldWithPath("state").description("The current state of the ReceivingOrder"),
+                                fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
+                                fieldWithPath("positions[].quantityExpected").description("The expected quantity to be received"),
+                                fieldWithPath("positions[].quantityExpected.*").ignored(),
+                                fieldWithPath("positions[].product").description("The expected Product to be received"),
+                                fieldWithPath("positions[].product.*").ignored()
                         )
                 ))
         ;

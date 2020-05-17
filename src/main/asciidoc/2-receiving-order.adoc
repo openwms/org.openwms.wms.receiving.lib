@@ -33,6 +33,7 @@ include::{generated}/order-create-400/http-response.adoc[]
 A HTTP GET request is required to lookup a `ReceivingOrder` by its synthetic persistent key.
 
 include::{generated}/order-find/http-request.adoc[]
+include::{generated}/order-find/request-fields.adoc[]
 
 If the `ReceivingOrder` has been found, the server returns the order instance in the response body:
 
