@@ -52,13 +52,13 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Column(name = "C_ORDER_ID", nullable = false)
     private String orderId;
 
-    /** Current state of this Order. */
+    /** Current state of this order. */
     @Enumerated(EnumType.STRING)
     @Column(name = "C_ORDER_STATE")
     private OrderState orderState = OrderState.UNDEFINED;
 
     /**
-     * Property to lock/unlock an Order.
+     * Property to lock/unlock an order.
      * <ul>
      * <li>true: locked</li>
      * <li>false: unlocked</li>
@@ -68,27 +68,27 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Column(name = "C_LOCKED")
     private boolean locked = false;
 
-    /** Current priority of the Order. */
+    /** Current priority of the order. */
     @Column(name = "C_PRIORITY")
     private int priority;
 
-    /** Latest finish date of this Order. */
+    /** Latest date of this order can be processed. */
     @Column(name = "C_LATEST_DUE")
     private ZonedDateTime latestDueDate;
 
-    /** Earliest date the Order can be started. */
+    /** Earliest date the order can be started. */
     @Column(name = "C_START_DATE")
     private ZonedDateTime startDate;
 
-    /** Date when the Order should be allocated. */
+    /** Date when the order should be allocated. */
     @Column(name = "C_NEXT_ALLOC")
     private ZonedDateTime nextAllocationDate;
 
-    /** Latest problem that is occurred on this Order. */
+    /** Latest problem that is occurred on this order. */
     @Embedded
     private Problem problem;
 
-    /** All ReceivingOrderPosition this Order has. */
+    /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 

@@ -42,15 +42,12 @@ public class CaptureRequestVO implements Serializable {
     @NotEmpty
     @JsonProperty("barcode")
     private String transportUnitId;
+    @NotEmpty
+    @JsonProperty("loadUnitLabel")
+    private String loadUnitLabel;
 
     @JsonCreator
-    CaptureRequestVO() {
-    }
-
-    public CaptureRequestVO(@NotNull Measurable quantityReceived, @NotNull ProductVO product, @NotEmpty String transportUnitId) {
-        this.quantityReceived = quantityReceived;
-        this.product = product;
-        this.transportUnitId = transportUnitId;
+    public CaptureRequestVO() {
     }
 
     public Measurable getQuantityReceived() {
@@ -75,5 +72,13 @@ public class CaptureRequestVO implements Serializable {
 
     public void setTransportUnitId(String transportUnitId) {
         this.transportUnitId = transportUnitId;
+    }
+
+    public String getLoadUnitLabel() {
+        return loadUnitLabel;
+    }
+
+    public void setLoadUnitLabel(String loadUnitLabel) {
+        this.loadUnitLabel = loadUnitLabel;
     }
 }

@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
-
-import org.ameba.annotation.NotLogged;
-import org.ameba.exception.BusinessRuntimeException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+package org.openwms.wms;
 
 /**
- * A ProcessingException.
+ * A TestData.
  *
  * @author Heiko Scherrer
  */
-@NotLogged
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class ProcessingException extends BusinessRuntimeException {
+public final class TestData {
 
-    public ProcessingException(String message) {
-        super(message);
-    }
+    private TestData() {}
 
-    public ProcessingException(String message, Throwable cause) {
-        super(message, cause);
+    public static final String ORDER1_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578f";
+
+    public static String extractPKey(String locationURI) {
+        String result = locationURI.substring(0, locationURI.length() - 1);
+        return result.substring(result.lastIndexOf("/") + 1);
     }
 }

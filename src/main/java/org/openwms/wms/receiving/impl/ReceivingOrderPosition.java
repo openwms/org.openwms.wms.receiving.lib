@@ -31,6 +31,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -50,11 +51,13 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
     @Column(name = "C_POS_NO", nullable = false)
-    private int posNo;
+    @NotNull
+    private Integer posNo;
 
     /** Current position state. Default is {@value} */
     @Enumerated(EnumType.STRING)
     @Column(name = "C_STATE")
+    @NotNull
     private OrderState state = OrderState.CREATED;
 
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
@@ -62,29 +65,33 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
             @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
             @Column(name = "C_QTY_EXPECTED", nullable = false)
     })
+    @NotNull
     private Measurable quantityExpected;
 
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_RECEIVED_TYPE"),
-            @Column(name = "C_QTY_RECEIVED")
+            @Column(name = "C_QTY_RECEIVED_TYPE", nullable = false),
+            @Column(name = "C_QTY_RECEIVED", nullable = false)
     })
+    @NotNull
     private Measurable quantityReceived;
 
     /** The ordered {@link Product} identified by it's SKU. */
     @ManyToOne
     @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"), nullable = false)
+    @NotNull
     private Product product;
 
-    /** The barcode of an expected {@code TransportUnit} to be received. */
+    /** The business key of the expected {@code TransportUnit} that will be received. */
     @Column(name = "C_TRANSPORT_UNIT_BK")
     private String transportUnitBK;
 
+    /** Some more detail information on this position, could by populated with ERP information. */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_DETAILS_PK", foreignKey = @ForeignKey(name = "FK_REC_POS_DETAILS"))
     private ReceivingOrderPositionDetails details;
 
-    /** Latest finish date of this Order. */
+    /** Latest date this position can be processed. */
     @Column(name = "C_LATEST_DUE")
     private ZonedDateTime latestDueDate;
 
@@ -133,5 +140,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public ZonedDateTime getLatestDueDate() {
         return latestDueDate;
+    }
+
+    @Override
+    public String toString() {
+        return (order == null ? "n/a" : order.getOrderId()) + "/" + posNo;
     }
 }

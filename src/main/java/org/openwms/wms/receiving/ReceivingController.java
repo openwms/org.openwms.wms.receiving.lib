@@ -79,15 +79,21 @@ public class ReceivingController extends AbstractWebController {
         orderVO.getPositions().clear();
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
         // FIXME [openwms]:
-        order.getPositions().forEach(p -> p.setQuantityExpected(Piece.of(1)));
+        order.getPositions().forEach(p -> {
+            p.setQuantityReceived(Piece.ZERO);
+            p.setQuantityExpected(Piece.of(1));
+        });
         ReceivingOrder saved = service.createOrder(order);
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 
     @PostMapping("/v1/receiving-orders/{pKey}/capture")
-    public ResponseEntity<Void> captureOrder(@PathVariable("pKey") String pKey, @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
-        ReceivingOrder saved = service.capture(pKey, request.getTransportUnitId(), request.getQuantityReceived(), mapper.map(request.getProduct(), Product.class));
-        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
+    public ResponseEntity<Void> captureOrder(
+            @PathVariable("pKey") String pKey,
+            @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
+        Product map = mapper.map(request.getProduct(), Product.class);
+        service.capture(pKey, request.getTransportUnitId(), request.getLoadUnitLabel(), request.getQuantityReceived(), map);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/v1/receiving-orders/{pKey}")
@@ -100,9 +106,7 @@ public class ReceivingController extends AbstractWebController {
     @GetMapping("/v1/receiving-orders")
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
         List<ReceivingOrder> orders = service.findAll();
-        orders.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
         List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
-        result.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
         return ResponseEntity.ok(result);
     }
 

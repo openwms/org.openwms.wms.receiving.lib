@@ -21,15 +21,22 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.Product;
+import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.inventory.api.PackagingUnitVO;
+import org.openwms.wms.inventory.api.UnitTypeVO;
+import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,12 +58,18 @@ import static org.openwms.wms.receiving.ReceivingMessages.CANCELLATION_DENIED;
 class ReceivingServiceImpl implements ReceivingService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
+    private final boolean overbookingAllowed;
     private final ReceivingOrderRepository repository;
     private final ApplicationEventPublisher publisher;
+    private final PackagingUnitApi packagingUnitApi;
 
-    ReceivingServiceImpl(ReceivingOrderRepository repository, ApplicationEventPublisher publisher) {
+    ReceivingServiceImpl(
+            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, ReceivingOrderRepository repository,
+            ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
+        this.overbookingAllowed = overbookingAllowed;
         this.repository = repository;
         this.publisher = publisher;
+        this.packagingUnitApi = packagingUnitApi;
     }
 
     /**
@@ -97,7 +110,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder createOrder(ReceivingOrder order) {
+    public @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order) {
         Assert.notNull(order, "order to create must not be null");
         Optional<ReceivingOrder> opt = repository.findByOrderId(order.getOrderId());
         if (opt.isPresent()) {
@@ -116,16 +129,31 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable quantityReceived, @NotNull Product product) {
+    public @NotNull ReceivingOrder capture(@NotEmpty String pKey,
+            @NotEmpty String transportUnitId,
+            @NotEmpty String loadUnitPosition,
+            @NotNull Measurable quantityReceived,
+            @NotNull @Valid Product product) {
+
         ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException("No ReceivingOrder found"));
-        receivingOrder.getPositions().stream()
-                .filter(p->p.getState() == CREATED || p.getState() == PROCESSING)
-                .filter(p->p.getProduct().equals(product))
-                .filter(p->p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
-                .forEach( p -> {
-                    // capture ...
-                    p.getQuantityExpected().add(quantityReceived);
-                });
+        Optional<ReceivingOrderPosition> openPosition = receivingOrder.getPositions().stream()
+                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(p -> p.getProduct().equals(product))
+                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
+                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .findFirst();
+        if (openPosition.isEmpty()) {
+
+            // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
+            if (!overbookingAllowed) {
+                throw new ProcessingException("Received a Product but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
+            }
+            throw new ProcessingException("Received a Product but all ReceivingOrderPositions are already satisfied");
+        }
+        PackagingUnitVO pu = new PackagingUnitVO();
+        pu.setQuantity(new UnitTypeVO(BigDecimal.valueOf(quantityReceived.getMagnitude().floatValue()), quantityReceived.getUnitType().name()));
+        packagingUnitApi.create(transportUnitId, loadUnitPosition, pu);
+        openPosition.get().getQuantityReceived().add(quantityReceived);
         return receivingOrder;
     }
 
@@ -134,7 +162,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder findByPKey(String pKey) {
+    public @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey) {
         Assert.hasText(pKey, "pKey must not be null");
         Optional<ReceivingOrder> order = repository.findBypKey(pKey);
         return order.orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
@@ -154,7 +182,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public void cancelOrder(String pKey) {
+    public void cancelOrder(@NotEmpty String pKey) {
         Assert.hasText(pKey, "pKey must not be null");
         ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
@@ -180,7 +208,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public List<ReceivingOrder> findAll() {
+    public @NotNull List<ReceivingOrder> findAll() {
         List<ReceivingOrder> all = repository.findAll();
         all.forEach(o -> System.out.println(o.getOrderId()+o.getPositions()));
         return all;

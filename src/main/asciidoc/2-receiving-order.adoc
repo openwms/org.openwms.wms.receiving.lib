@@ -76,3 +76,26 @@ include::{generated}/order-cancel/http-response.adoc[]
 In case the order couldn't be cancelled because the order is already in process or has been processed, the server responds with:
 
 include::{generated}/order-cancel-403/http-response.adoc[]
+
+=== Capture Receivings
+When products arrive at the warehouse they were usually preregistered with a `ReceivingOrder` and its `ReceivingOrderPositions`. This is
+called an expected receipt. Also unexpected receipts may occur, any unplanned material that needs to be stored in the warehouse without any
+previously received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more of a
+product that was previously announced in a `ReceivingOrderPosition`.
+
+Capturing receipts happens at goods in, where the material arrives and is scanned (captured). The scanned articles are assigned to `ReceivingOrderPositions`
+and basically assigned to a `TransportUnit` (with all its logical compartments on top).
+
+To capture an amount of a `Product` in the context of a `ReceivingOrder` the caller sends a `POST` request:
+
+include::{generated}/order-capture/http-request.adoc[]
+
+If an open and not satisfied position with the same demanded `Product` exists in the `ReceivingOrder` the captured quantity is assigned to
+that position and the server responds with success:
+
+include::{generated}/order-capture/http-response.adoc[]
+
+If no open positions exist in the `ReceivingOrder` or the `Product` does not fit to the demanded `Products`, the server cannot capture the
+article and responds with an error:
+
+include::{generated}/order-capture-500/http-response.adoc[]

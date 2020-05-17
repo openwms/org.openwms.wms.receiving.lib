@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "wms-receiving", qualifier = "receivingApi")
 public interface ReceivingApi {
 
-    @PostMapping("/v1/receiving")
+    @PostMapping("/v1/receiving-orders")
     void createOrder(
             @RequestBody ReceivingOrderVO order
     );
@@ -41,7 +41,13 @@ public interface ReceivingApi {
             @RequestBody ReceivingOrderVO order
     );
 
-    @DeleteMapping("/v1/receiving/{pKey}/cancel")
+    @PostMapping("/v1/receiving-orders/{pKey}/capture")
+    void captureOrder(
+            @PathVariable("pKey") String pKey,
+            @RequestBody CaptureRequestVO request
+    );
+
+    @DeleteMapping("/v1/receiving-orders/{pKey}")
     void cancelOrder(
             @PathVariable("pKey") String pKey
     );

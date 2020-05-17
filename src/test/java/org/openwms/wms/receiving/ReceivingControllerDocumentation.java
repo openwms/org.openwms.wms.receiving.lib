@@ -19,12 +19,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.ReceivingApplicationTest;
+import org.openwms.wms.TestData;
+import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
@@ -37,6 +42,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -64,16 +70,19 @@ class ReceivingControllerDocumentation {
     private WebApplicationContext context;
     @Autowired
     private ObjectMapper om;
+    @MockBean
+    private PackagingUnitApi packagingUnitApi;
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
+        packagingUnitApi = mock(PackagingUnitApi.class);
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(documentationConfiguration(restDocumentation)).build();
     }
 
     @AfterEach
     void tearDown() {
-
+        Mockito.reset(packagingUnitApi);
     }
 
     @Test void shall_return_index() throws Exception {
@@ -125,7 +134,7 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
                                 fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),
                                 fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
-                                fieldWithPath("positions[].sku").description("The SKU of the expected Product"))
+                                fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"))
                         )
                 )
         ;
@@ -215,6 +224,44 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("messageKey", is(ReceivingMessages.CANCELLATION_DENIED)))
                 .andDo(document("order-cancel-403", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_capture_order() throws Exception {
+        CaptureRequestVO vo = new CaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setQuantityReceived(Piece.of(1));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(vo))
+                )
+                .andDo(document("order-capture", preprocessResponse(prettyPrint())))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_capture_order_INSUFFISIENT() throws Exception {
+        CaptureRequestVO vo = new CaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setQuantityReceived(Piece.of(2));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
+                )
+                .andDo(document("order-capture-500", preprocessResponse(prettyPrint())))
+                .andExpect(status().isInternalServerError())
         ;
     }
 

@@ -18,13 +18,14 @@ package org.openwms.wms.receiving.impl;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.Product;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * A ReceivingService managed {@link ReceivingOrder}s.
+ * A ReceivingService manages {@link ReceivingOrder}s.
  *
  * @author Heiko Scherrer
  */
@@ -36,20 +37,23 @@ public interface ReceivingService {
      * @param order The ReceivingOrder instance to create
      * @return The saved instance
      */
-    ReceivingOrder createOrder(@NotNull ReceivingOrder order);
+    @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order);
 
     /**
-     * Decrease one of the {@code ReceivingOrderPosition}s by the received material with the given quantity of the given {@code Product} and
-     * book the received physical article to the {@code TransportUnit} identified by the {@code transportUnitId}.
+     * Decrease one of the {@code ReceivingOrderPosition}s by the received amount of the given {@code Product} and book the received article
+     * to the {@code TransportUnit} identified by the {@code transportUnitId}.
      *
      * @param pKey The persistent key of the ReceivingOrder
      * @param transportUnitId The identifier of the TransportUnit to book the Product to
+     * @param loadUnitPosition The position of the LoadUnit
      * @param quantityReceived The received quantity
      * @param product The received Product
      * @return The updated ReceivingOrder instance with updated positions
      */
-    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId, @NotNull Measurable quantityReceived,
-            @NotNull Product product);
+    @NotNull ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId,
+            @NotEmpty String loadUnitPosition,
+            @NotNull Measurable quantityReceived,
+            @NotNull @Valid Product product);
 
     /**
      * Cancel a {@link ReceivingOrder}.
@@ -64,7 +68,7 @@ public interface ReceivingService {
      *
      * @return A list of ReceivingOrders, never {@literal null}
      */
-    List<ReceivingOrder> findAll();
+    @NotNull List<ReceivingOrder> findAll();
 
     /**
      * Find and return a {@link ReceivingOrder} identified by its synthetic persistent key.
@@ -73,7 +77,7 @@ public interface ReceivingService {
      * @return The instance
      * @throws org.ameba.exception.NotFoundException if not found
      */
-    ReceivingOrder findByPKey(@NotEmpty String pKey);
+    @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey);
 
     /**
      * Find and return a {@link ReceivingOrder} identified by its business key.

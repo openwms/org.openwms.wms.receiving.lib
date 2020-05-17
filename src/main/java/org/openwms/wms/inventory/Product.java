@@ -24,6 +24,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
 
     /** The product id is part of the unique business key. */
     @Column(name = "C_SKU")
+    @NotEmpty
     private String sku;
 
     /** Textual descriptive text. */
@@ -106,26 +108,24 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     /**
      * {@inheritDoc}
      *
-     * Include all fields
+     * SKU only.
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(sku, product.sku) &&
-                Objects.equals(description, product.description) &&
-                Objects.equals(baseUnit, product.baseUnit);
+        return Objects.equals(sku, product.sku);
     }
 
     /**
      * {@inheritDoc}
      *
-     * Include all fields
+     * SKU only.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(sku, description, baseUnit);
+        return Objects.hash(sku);
     }
 
     /**

@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.app;
 
-import org.ameba.annotation.NotLogged;
-import org.ameba.exception.BusinessRuntimeException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
- * A ProcessingException.
+ * A ReceivingFeignConfiguration.
  *
  * @author Heiko Scherrer
  */
-@NotLogged
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class ProcessingException extends BusinessRuntimeException {
-
-    public ProcessingException(String message) {
-        super(message);
-    }
-
-    public ProcessingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+@Profile("!INMEM")
+@Configuration
+@EnableFeignClients(basePackageClasses = {
+        PackagingUnitApi.class
+})
+class ReceivingFeignConfiguration {
 }

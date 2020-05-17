@@ -21,6 +21,8 @@ spring:
     open-in-view: false
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+  main:
+    allow-bean-definition-overriding: true
   zipkin:
     sender:
       type: web
@@ -52,6 +54,7 @@ owms:
         queue-name: wms-receiving-common-tu
   receiving:
     serialization: json
+    unexpected-receipts-allowed: true
 
 server:
   port: ${PORT:8141}

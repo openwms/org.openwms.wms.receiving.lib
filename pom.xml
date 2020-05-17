@@ -69,8 +69,9 @@
         <ameba-lib.version>2.4-SNAPSHOT</ameba-lib.version>
         <ameba-cloud.version>2.0</ameba-cloud.version>
         <common.version>1.6.0-SNAPSHOT</common.version>
-        <core.version>1.7.0-SNAPSHOT</core.version>
+        <core.version>1.8.0-SNAPSHOT</core.version>
         <core.units.version>0.4.0-SNAPSHOT</core.units.version>
+        <inventory.version>1.1.0-SNAPSHOT</inventory.version>
 		<spring-cloud-dependencies.version>Hoxton.RELEASE</spring-cloud-dependencies.version>
     </properties>
 
@@ -148,14 +149,20 @@
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
+                <artifactId>org.openwms.core.units</artifactId>
+                <version>${core.units.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.common.service</artifactId>
                 <version>${common.version}</version>
                 <classifier>client</classifier>
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
-                <artifactId>org.openwms.core.units</artifactId>
-                <version>${core.units.version}</version>
+                <artifactId>org.openwms.wms.inventory</artifactId>
+                <version>${inventory.version}</version>
+                <classifier>client</classifier>
             </dependency>
             <dependency>
                 <groupId>io.interface21</groupId>
@@ -199,6 +206,12 @@
         <dependency>
             <groupId>org.openwms</groupId>
             <artifactId>org.openwms.common.service</artifactId>
+            <classifier>client</classifier>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.wms.inventory</artifactId>
             <classifier>client</classifier>
             <optional>true</optional>
         </dependency>
