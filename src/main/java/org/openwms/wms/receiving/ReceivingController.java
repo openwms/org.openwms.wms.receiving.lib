@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -54,23 +53,46 @@ public class ReceivingController extends AbstractWebController {
 
     private final ReceivingService service;
     private final BeanMapper mapper;
-    private final Validator validator;
 
-    ReceivingController(ReceivingService service, BeanMapper mapper, Validator validator) {
+    ReceivingController(ReceivingService service, BeanMapper mapper) {
         this.service = service;
         this.mapper = mapper;
-        this.validator = validator;
     }
 
     @GetMapping("/v1/receiving-orders/index")
     public ResponseEntity<Index> index() {
         return ResponseEntity.ok(
                 new Index(
-                        linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
+                        linkTo(methodOn(ReceivingController.class).findAll()).withRel("receiving-order-findall"),
                         linkTo(methodOn(ReceivingController.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
+                        linkTo(methodOn(ReceivingController.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
+                        linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
+                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", new CaptureRequestVO(), null)).withRel("receiving-order-capture"),
                         linkTo(methodOn(ReceivingController.class).cancelOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-cancel")
                 )
         );
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/v1/receiving-orders")
+    public ResponseEntity<List<ReceivingOrderVO>> findAll() {
+        List<ReceivingOrder> orders = service.findAll();
+        List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
+        return ResponseEntity.ok(result);
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/v1/receiving-orders/{pKey}")
+    public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
+        ReceivingOrder order = service.findByPKey(pKey);
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
+    public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
+        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(""));
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
     @PostMapping("/v1/receiving-orders")
@@ -100,27 +122,5 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
         service.cancelOrder(pKey);
         return ResponseEntity.noContent().build();
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping("/v1/receiving-orders")
-    public ResponseEntity<List<ReceivingOrderVO>> findAll() {
-        List<ReceivingOrder> orders = service.findAll();
-        List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
-        return ResponseEntity.ok(result);
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping("/v1/receiving-orders/{pKey}")
-    public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
-        ReceivingOrder order = service.findByPKey(pKey);
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
-    public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
-        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(""));
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 }

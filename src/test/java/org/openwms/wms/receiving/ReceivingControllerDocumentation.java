@@ -158,7 +158,14 @@ class ReceivingControllerDocumentation {
                         get("/v1/receiving-orders/d8099b89-bdb6-40d3-9580-d56aeadd578f")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("order-find", preprocessResponse(prettyPrint())))
+                .andDo(document("order-find",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("pKey").description("The synthetic unique identifier of the ReceivingOrder"),
+                                fieldWithPath("orderId").description("The business key of the ReceivingOrder"),
+                                fieldWithPath("state").description("The current state of the ReceiginOrder")
+                        )
+                ))
         ;
     }
 
