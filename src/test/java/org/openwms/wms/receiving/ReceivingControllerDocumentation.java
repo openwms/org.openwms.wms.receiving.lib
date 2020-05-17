@@ -163,6 +163,7 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("state").description("The current state of the ReceivingOrder"),
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity to be received"),
+                                fieldWithPath("positions[].quantityExpected.unitType").description("The expected type"),
                                 fieldWithPath("positions[].quantityExpected.*").ignored(),
                                 fieldWithPath("positions[].product").description("The expected Product to be received"),
                                 fieldWithPath("positions[].product.*").ignored()
