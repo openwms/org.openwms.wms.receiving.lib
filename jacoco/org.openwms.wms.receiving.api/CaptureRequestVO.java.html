@@ -45,41 +45,51 @@ public class CaptureRequestVO implements Serializable {
     @NotEmpty
     @JsonProperty(&quot;loadUnitLabel&quot;)
     private String loadUnitLabel;
+    @JsonProperty(&quot;details&quot;)
+    private CaptureDetailsVO details;
 
     @JsonCreator
-<span class="fc" id="L50">    public CaptureRequestVO() {</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L52">    public CaptureRequestVO() {</span>
+<span class="fc" id="L53">    }</span>
 
     public Measurable getQuantityReceived() {
-<span class="fc" id="L54">        return quantityReceived;</span>
+<span class="fc" id="L56">        return quantityReceived;</span>
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {
-<span class="fc" id="L58">        this.quantityReceived = quantityReceived;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L60">        this.quantityReceived = quantityReceived;</span>
+<span class="fc" id="L61">    }</span>
 
     public ProductVO getProduct() {
-<span class="fc" id="L62">        return product;</span>
+<span class="fc" id="L64">        return product;</span>
     }
 
     public void setProduct(ProductVO product) {
-<span class="fc" id="L66">        this.product = product;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L68">        this.product = product;</span>
+<span class="fc" id="L69">    }</span>
 
     public String getTransportUnitId() {
-<span class="fc" id="L70">        return transportUnitId;</span>
+<span class="fc" id="L72">        return transportUnitId;</span>
     }
 
     public void setTransportUnitId(String transportUnitId) {
-<span class="fc" id="L74">        this.transportUnitId = transportUnitId;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L76">        this.transportUnitId = transportUnitId;</span>
+<span class="fc" id="L77">    }</span>
 
     public String getLoadUnitLabel() {
-<span class="fc" id="L78">        return loadUnitLabel;</span>
+<span class="fc" id="L80">        return loadUnitLabel;</span>
     }
 
     public void setLoadUnitLabel(String loadUnitLabel) {
-<span class="fc" id="L82">        this.loadUnitLabel = loadUnitLabel;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L84">        this.loadUnitLabel = loadUnitLabel;</span>
+<span class="fc" id="L85">    }</span>
+
+    public CaptureDetailsVO getDetails() {
+<span class="fc" id="L88">        return details;</span>
+    }
+
+    public void setDetails(CaptureDetailsVO details) {
+<span class="nc" id="L92">        this.details = details;</span>
+<span class="nc" id="L93">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
