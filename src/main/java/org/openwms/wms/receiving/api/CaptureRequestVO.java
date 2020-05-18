@@ -45,6 +45,8 @@ public class CaptureRequestVO implements Serializable {
     @NotEmpty
     @JsonProperty("loadUnitLabel")
     private String loadUnitLabel;
+    @JsonProperty("details")
+    private CaptureDetailsVO details;
 
     @JsonCreator
     public CaptureRequestVO() {
@@ -80,5 +82,13 @@ public class CaptureRequestVO implements Serializable {
 
     public void setLoadUnitLabel(String loadUnitLabel) {
         this.loadUnitLabel = loadUnitLabel;
+    }
+
+    public CaptureDetailsVO getDetails() {
+        return details;
+    }
+
+    public void setDetails(CaptureDetailsVO details) {
+        this.details = details;
     }
 }

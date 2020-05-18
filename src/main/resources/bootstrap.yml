@@ -109,7 +109,10 @@ spring:
       fail-fast: true # true means retry
     discovery:
       enabled: true
-
+  zipkin:
+    locator:
+      discovery:
+        enabled: true
 ---
 spring:
   profiles: HEROKU
