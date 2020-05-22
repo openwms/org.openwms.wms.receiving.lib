@@ -63,7 +63,11 @@ public class Problem implements Serializable {
     public Problem(String message) {
         this();
         Assert.hasText(message, "Message must be given");
-        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);
+        this.message = trim(message);
+    }
+
+    private String trim(String message) {
+        return message.length() > DEF_MESSAGE_LENGTH ? message.substring(0, DEF_MESSAGE_LENGTH - 1) : message;
     }
 
     /**
@@ -75,7 +79,7 @@ public class Problem implements Serializable {
     public Problem(String message, int messageNo) {
         this();
         Assert.hasText(message, "Message must be given");
-        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);
+        this.message = trim(message);
         this.messageNo = messageNo;
     }
 
@@ -130,7 +134,7 @@ public class Problem implements Serializable {
      * @param message The message to set.
      */
     public void setMessage(String message) {
-        this.message = message == null ? message : message.substring(0, DEF_MESSAGE_LENGTH - 1);
+        this.message = message == null ? message : trim(message);
     }
 
     @Override
