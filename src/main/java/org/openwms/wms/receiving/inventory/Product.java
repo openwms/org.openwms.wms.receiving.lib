@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.inventory;
+package org.openwms.wms.receiving.inventory;
 
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.hibernate.annotations.Columns;

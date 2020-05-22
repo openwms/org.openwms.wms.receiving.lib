@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.impl;
+package org.openwms.wms.receiving.transport.impl;
 
 import org.ameba.annotation.TxService;
-import org.openwms.wms.transport.TransportUnit;
-import org.openwms.wms.transport.TransportUnitService;
+import org.openwms.wms.receiving.transport.TransportUnit;
+import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.springframework.util.Assert;
 
 /**

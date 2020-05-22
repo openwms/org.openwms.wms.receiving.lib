@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport;
+package org.openwms.wms.receiving.transport;
 
 import org.ameba.exception.ServiceLayerException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,13 +38,13 @@ class TransportUnitServiceImplTest {
     void upsertWithNull() {
         Exception ex = assertThrows(ServiceLayerException.class, () -> service.upsert(null));
         assertThat(ex.getMessage()).containsIgnoringCase("transportUnit");
-        ex = assertThrows(ServiceLayerException.class, () -> service.upsert(new TransportUnit()));
+        ex = assertThrows(ServiceLayerException.class, () -> service.upsert(new org.openwms.wms.receiving.transport.TransportUnit()));
         assertThat(ex.getMessage()).containsIgnoringCase("barcode");
     }
 
     @Test
     void upsert() {
-        TransportUnit tu = new TransportUnit("4709", "EXT_/0000/0000/0000/0000");
+        org.openwms.wms.receiving.transport.TransportUnit tu = new org.openwms.wms.receiving.transport.TransportUnit("4709", "EXT_/0000/0000/0000/0000");
         tu = service.upsert(tu);
         assertThat(tu.getBarcode()).isEqualTo("4709");
         assertThat(tu.isNew()).isFalse();

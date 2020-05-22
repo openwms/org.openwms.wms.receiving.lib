@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms;
+package org.openwms.wms.receiving.transport.api;
+
+import org.openwms.common.transport.api.commands.Command;
 
 /**
- * A TestData.
+ * A AsyncTransportUnitApi is able to process Commands asynchronously.
  *
  * @author Heiko Scherrer
  */
-public final class TestData {
+public interface AsyncTransportUnitApi {
 
-    private TestData() {}
-
-    public static final String ORDER1_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578f";
-
-    public static String extractPKey(String locationURI) {
-        String result = locationURI.substring(0, locationURI.length() - 1);
-        return result.substring(result.lastIndexOf("/") + 1);
-    }
+    /**
+     * Process the given {@code command}.
+     *
+     * @param command Command to process
+     */
+    void process(Command command);
 }

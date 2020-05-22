@@ -20,7 +20,7 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.units.api.Piece;
-import org.openwms.wms.inventory.Product;
+import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;

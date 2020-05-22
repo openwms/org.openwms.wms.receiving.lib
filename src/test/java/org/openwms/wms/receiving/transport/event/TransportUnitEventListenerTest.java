@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.event;
+package org.openwms.wms.receiving.transport.event;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.ReceivingApplicationTest;
-import org.openwms.wms.transport.impl.RepositoryAccessor;
+import org.openwms.wms.receiving.ReceivingApplicationTest;
+import org.openwms.wms.receiving.transport.impl.RepositoryAccessor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

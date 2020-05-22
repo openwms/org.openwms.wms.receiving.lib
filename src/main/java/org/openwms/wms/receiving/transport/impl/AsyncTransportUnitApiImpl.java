@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.impl;
+package org.openwms.wms.receiving.transport.impl;
 
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.transport.api.AsyncTransportUnitApi;
+import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -18,7 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
-import org.openwms.wms.ReceivingApplicationTest;
+import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;

@@ -16,7 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.inventory.Product;
+import org.openwms.wms.receiving.inventory.Product;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;

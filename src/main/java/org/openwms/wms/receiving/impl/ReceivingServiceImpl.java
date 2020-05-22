@@ -20,12 +20,13 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.inventory.Product;
+import org.openwms.core.units.api.Piece;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
-import org.openwms.wms.inventory.api.UnitTypeVO;
+import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
+import org.openwms.wms.receiving.inventory.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,7 +136,7 @@ class ReceivingServiceImpl implements ReceivingService {
             @NotNull Measurable quantityReceived,
             @NotNull @Valid Product product) {
 
-        ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException("No ReceivingOrder found"));
+        ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         Optional<ReceivingOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(p -> p.getProduct().equals(product))
@@ -146,15 +147,21 @@ class ReceivingServiceImpl implements ReceivingService {
 
             // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
             if (!overbookingAllowed) {
-                throw new ProcessingException("Received a Product but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
+                LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
+                throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
             }
-            throw new ProcessingException("Received a Product but all ReceivingOrderPositions are already satisfied");
+            LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
+            throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
         }
-        PackagingUnitVO pu = new PackagingUnitVO();
-        pu.setQuantity(new UnitTypeVO(BigDecimal.valueOf(quantityReceived.getMagnitude().floatValue()), quantityReceived.getUnitType().name()));
+        PackagingUnitVO pu = new PackagingUnitVO(
+                ProductVO.newBuilder().sku(product.getSku()).build(),
+                Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
+        );
+        LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
         packagingUnitApi.create(transportUnitId, loadUnitPosition, pu);
-        openPosition.get().getQuantityReceived().add(quantityReceived);
-        return receivingOrder;
+        ReceivingOrderPosition pos = openPosition.get();
+        pos.addQuantityReceived(quantityReceived);
+        return repository.save(receivingOrder);
     }
 
     /**

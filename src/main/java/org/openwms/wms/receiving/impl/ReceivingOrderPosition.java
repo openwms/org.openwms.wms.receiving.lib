@@ -17,7 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.inventory.Product;
+import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.order.OrderState;
 
 import javax.persistence.Column;
@@ -127,6 +127,11 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     }
 
     public Measurable getQuantityReceived() {
+        return quantityReceived;
+    }
+
+    public Measurable addQuantityReceived(Measurable quantityReceived) {
+        this.quantityReceived = this.quantityReceived.add(quantityReceived);
         return quantityReceived;
     }
 

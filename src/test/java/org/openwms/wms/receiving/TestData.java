@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.impl;
-
-import org.openwms.wms.transport.TransportUnit;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
+package org.openwms.wms.receiving;
 
 /**
- * A TransportUnitRepository.
+ * A TestData.
  *
  * @author Heiko Scherrer
  */
-interface TransportUnitRepository extends JpaRepository<TransportUnit, Long> {
+public final class TestData {
 
-    Optional<TransportUnit> findByBarcode(String barcode);
+    private TestData() {}
+
+    public static final String ORDER1_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578f";
+
+    public static String extractPKey(String locationURI) {
+        String result = locationURI.substring(0, locationURI.length() - 1);
+        return result.substring(result.lastIndexOf("/") + 1);
+    }
 }

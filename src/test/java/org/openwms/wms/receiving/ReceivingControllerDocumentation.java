@@ -21,8 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.openwms.core.units.api.Piece;
-import org.openwms.wms.ReceivingApplicationTest;
-import org.openwms.wms.TestData;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ProductVO;
@@ -143,7 +141,7 @@ class ReceivingControllerDocumentation {
                         get("/v1/receiving-orders")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()", greaterThan(0)))
                 .andDo(document("order-find-all", preprocessResponse(prettyPrint())))
         ;

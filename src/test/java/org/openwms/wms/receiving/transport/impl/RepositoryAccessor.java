@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport;
+package org.openwms.wms.receiving.transport.impl;
+
+import org.openwms.wms.receiving.transport.TransportUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
 /**
- * A TransportUnitService.
+ * A RepositoryAccessor.
  *
  * @author Heiko Scherrer
  */
-public interface TransportUnitService {
+@Component
+public class RepositoryAccessor {
 
-    /**
-     * Create or update a {@link TransportUnit} instance.
-     *
-     * @param transportUnit Instance to save
-     * @return Saved instance
-     */
-    TransportUnit upsert(TransportUnit transportUnit);
+    @Autowired
+    private org.openwms.wms.receiving.transport.impl.TransportUnitRepository repository;
+
+    public JpaRepository<TransportUnit, Long> getRepository() {
+        return repository;
+    }
 }

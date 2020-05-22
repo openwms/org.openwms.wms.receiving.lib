@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.event;
+package org.openwms.wms.receiving.transport.event;
 
 import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.common.transport.api.ValidationGroups;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
-import org.openwms.wms.transport.TransportUnit;
-import org.openwms.wms.transport.TransportUnitService;
+import org.openwms.wms.receiving.transport.TransportUnit;
+import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -34,20 +34,20 @@ import javax.validation.Validator;
 import static org.ameba.system.ValidationUtil.validate;
 
 /**
- * A TransportUnitEventListener is a Spring managed RabbiMQ event listener that is interested in changes on
+ * A TransportUnitMessageListener is a Spring managed RabbiMQ event listener that is interested in changes on
  * TransportUnits.
  *
  * @author Heiko Scherrer
  */
 @Component
-class TransportUnitEventListener {
+class TransportUnitMessageListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitEventListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitMessageListener.class);
     private final TransportUnitService service;
     private final BeanMapper mapper;
     private final Validator validator;
 
-    TransportUnitEventListener(TransportUnitService service, BeanMapper mapper, Validator validator) {
+    TransportUnitMessageListener(TransportUnitService service, BeanMapper mapper, Validator validator) {
         this.service = service;
         this.mapper = mapper;
         this.validator = validator;

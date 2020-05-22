@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.impl;
+package org.openwms.wms.receiving.transport.impl;
 
-import org.openwms.wms.transport.TransportUnit;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openwms.wms.receiving.transport.TransportUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
- * A RepositoryAccessor.
+ * A TransportUnitRepository.
  *
  * @author Heiko Scherrer
  */
-@Component
-public class RepositoryAccessor {
+interface TransportUnitRepository extends JpaRepository<TransportUnit, Long> {
 
-    @Autowired
-    private TransportUnitRepository repository;
-
-    public JpaRepository<TransportUnit, Long> getRepository() {
-        return repository;
-    }
+    Optional<TransportUnit> findByBarcode(String barcode);
 }

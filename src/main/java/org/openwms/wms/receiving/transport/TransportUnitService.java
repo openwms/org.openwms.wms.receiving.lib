@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.transport.api;
-
-import org.openwms.common.transport.api.commands.Command;
+package org.openwms.wms.receiving.transport;
 
 /**
- * A AsyncTransportUnitApi is able to process Commands asynchronously.
+ * A TransportUnitService.
  *
  * @author Heiko Scherrer
  */
-public interface AsyncTransportUnitApi {
+public interface TransportUnitService {
 
     /**
-     * Process the given {@code command}.
+     * Create or update a {@link TransportUnit} instance.
      *
-     * @param command Command to process
+     * @param transportUnit Instance to save
+     * @return Saved instance
      */
-    void process(Command command);
+    TransportUnit upsert(TransportUnit transportUnit);
 }

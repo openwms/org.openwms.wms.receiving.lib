@@ -15,7 +15,7 @@
  */
 package org.openwms.wms.receiving.spi;
 
-import org.openwms.wms.transport.api.AsyncTransportUnitApi;
+import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 
 /**
