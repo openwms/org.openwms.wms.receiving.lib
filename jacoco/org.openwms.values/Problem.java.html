@@ -63,8 +63,12 @@ public class Problem implements Serializable {
     public Problem(String message) {
 <span class="nc" id="L64">        this();</span>
 <span class="nc" id="L65">        Assert.hasText(message, &quot;Message must be given&quot;);</span>
-<span class="nc" id="L66">        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);</span>
+<span class="nc" id="L66">        this.message = trim(message);</span>
 <span class="nc" id="L67">    }</span>
+
+    private String trim(String message) {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        return message.length() &gt; DEF_MESSAGE_LENGTH ? message.substring(0, DEF_MESSAGE_LENGTH - 1) : message;</span>
+    }
 
     /**
      * Create a new &lt;code&gt;Problem&lt;/code&gt; instance with a message text and a message number.
@@ -73,11 +77,11 @@ public class Problem implements Serializable {
      * @param messageNo message number
      */
     public Problem(String message, int messageNo) {
-<span class="nc" id="L76">        this();</span>
-<span class="nc" id="L77">        Assert.hasText(message, &quot;Message must be given&quot;);</span>
-<span class="nc" id="L78">        this.message = message.substring(0, DEF_MESSAGE_LENGTH - 1);</span>
-<span class="nc" id="L79">        this.messageNo = messageNo;</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L80">        this();</span>
+<span class="nc" id="L81">        Assert.hasText(message, &quot;Message must be given&quot;);</span>
+<span class="nc" id="L82">        this.message = trim(message);</span>
+<span class="nc" id="L83">        this.messageNo = messageNo;</span>
+<span class="nc" id="L84">    }</span>
 
     /**
      * Return the Date when the &lt;code&gt;Problem&lt;/code&gt; has occurred.
@@ -85,7 +89,7 @@ public class Problem implements Serializable {
      * @return Date when occurred.
      */
     public Date getOccurred() {
-<span class="nc" id="L88">        return new Date(occurred.getTime());</span>
+<span class="nc" id="L92">        return new Date(occurred.getTime());</span>
     }
 
     /**
@@ -94,8 +98,8 @@ public class Problem implements Serializable {
      * @param occurred The Date to set.
      */
     public void setOccurred(Date occurred) {
-<span class="nc" id="L97">        this.occurred = new Date(occurred.getTime());</span>
-<span class="nc" id="L98">    }</span>
+<span class="nc" id="L101">        this.occurred = new Date(occurred.getTime());</span>
+<span class="nc" id="L102">    }</span>
 
     /**
      * Get the messageNo.
@@ -103,7 +107,7 @@ public class Problem implements Serializable {
      * @return The messageNo.
      */
     public int getMessageNo() {
-<span class="nc" id="L106">        return messageNo;</span>
+<span class="nc" id="L110">        return messageNo;</span>
     }
 
     /**
@@ -112,8 +116,8 @@ public class Problem implements Serializable {
      * @param messageNo The messageNo to set.
      */
     public void setMessageNo(int messageNo) {
-<span class="nc" id="L115">        this.messageNo = messageNo;</span>
-<span class="nc" id="L116">    }</span>
+<span class="nc" id="L119">        this.messageNo = messageNo;</span>
+<span class="nc" id="L120">    }</span>
 
     /**
      * Get the message.
@@ -121,7 +125,7 @@ public class Problem implements Serializable {
      * @return The message.
      */
     public String getMessage() {
-<span class="nc" id="L124">        return message;</span>
+<span class="nc" id="L128">        return message;</span>
     }
 
     /**
@@ -130,22 +134,22 @@ public class Problem implements Serializable {
      * @param message The message to set.
      */
     public void setMessage(String message) {
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        this.message = message == null ? message : message.substring(0, DEF_MESSAGE_LENGTH - 1);</span>
-<span class="nc" id="L134">    }</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        this.message = message == null ? message : trim(message);</span>
+<span class="nc" id="L138">    }</span>
 
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (!(o instanceof Problem)) return false;</span>
-<span class="nc" id="L140">        Problem problem = (Problem) o;</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        return messageNo == problem.messageNo &amp;&amp;</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                Objects.equals(occurred, problem.occurred) &amp;&amp;</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">                Objects.equals(message, problem.message);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (!(o instanceof Problem)) return false;</span>
+<span class="nc" id="L144">        Problem problem = (Problem) o;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        return messageNo == problem.messageNo &amp;&amp;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                Objects.equals(occurred, problem.occurred) &amp;&amp;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                Objects.equals(message, problem.message);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L148">        return Objects.hash(occurred, messageNo, message);</span>
+<span class="nc" id="L152">        return Objects.hash(occurred, messageNo, message);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

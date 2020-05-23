@@ -17,7 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.inventory.Product;
+import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.order.OrderState;
 
 import javax.persistence.Column;
@@ -130,21 +130,26 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 <span class="nc" id="L130">        return quantityReceived;</span>
     }
 
+    public Measurable addQuantityReceived(Measurable quantityReceived) {
+<span class="nc" id="L134">        this.quantityReceived = this.quantityReceived.add(quantityReceived);</span>
+<span class="nc" id="L135">        return quantityReceived;</span>
+    }
+
     public void setQuantityReceived(Measurable quantityReceived) {
-<span class="nc" id="L134">        this.quantityReceived = quantityReceived;</span>
-<span class="nc" id="L135">    }</span>
+<span class="nc" id="L139">        this.quantityReceived = quantityReceived;</span>
+<span class="nc" id="L140">    }</span>
 
     public Product getProduct() {
-<span class="nc" id="L138">        return product;</span>
+<span class="nc" id="L143">        return product;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L142">        return latestDueDate;</span>
+<span class="nc" id="L147">        return latestDueDate;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc bnc" id="L147" title="All 2 branches missed.">        return (order == null ? &quot;n/a&quot; : order.getOrderId()) + &quot;/&quot; + posNo;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        return (order == null ? &quot;n/a&quot; : order.getOrderId()) + &quot;/&quot; + posNo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

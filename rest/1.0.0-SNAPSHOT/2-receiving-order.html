@@ -577,7 +577,7 @@ Content-Length: 300
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/986d8ab7-961e-4317-b7e0-37e4e04dbbec/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/34d25185-1f79-4467-bae8-5be3f4708ed2/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -690,7 +690,7 @@ Content-Type: application/json
 Content-Length: 205
 
 [ {
-  "pKey" : "64e04004-cf77-4274-9a96-b3afa35125d5",
+  "pKey" : "07e688d5-42d9-4cf7-afc4-9c816dc21177",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -709,7 +709,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/ffa84bdb-d864-4b1d-ad1b-c2ac408f1dbc/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/c4fc72e8-b671-45d0-a21f-89824aa700aa/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -733,7 +733,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "64e04004-cf77-4274-9a96-b3afa35125d5" ],
+  "obj" : [ "4716", "PROCESSED", "07e688d5-42d9-4cf7-afc4-9c816dc21177" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -784,10 +784,10 @@ that position and the server responds with success:</p>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 500 Internal Server Error
 Content-Type: application/hal+json
-Content-Length: 116
+Content-Length: 122
 
 {
-  "message" : "Received a Product but all ReceivingOrderPositions are already satisfied",
+  "message" : "Received a goods receipt but all ReceivingOrderPositions are already satisfied",
   "httpStatus" : "500"
 }</code></pre>
 </div>
@@ -800,10 +800,10 @@ article and responds with an error:</p>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 500 Internal Server Error
 Content-Type: application/hal+json
-Content-Length: 116
+Content-Length: 122
 
 {
-  "message" : "Received a Product but all ReceivingOrderPositions are already satisfied",
+  "message" : "Received a goods receipt but all ReceivingOrderPositions are already satisfied",
   "httpStatus" : "500"
 }</code></pre>
 </div>
@@ -812,7 +812,7 @@ Content-Length: 116
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-18 21:10:17 UTC
+Last updated 2020-05-23 09:21:23 UTC
 </div>
 </div>
 </body>
