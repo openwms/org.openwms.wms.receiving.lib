@@ -26,6 +26,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -90,6 +91,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
+    @OrderBy
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
     /*~ -------------- Constructors -------------- */
