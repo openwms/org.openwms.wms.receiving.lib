@@ -298,6 +298,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Monitoring -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 3rd party dependencies -->
         <dependency>
             <groupId>io.interface21</groupId>

@@ -15,11 +15,14 @@
  */
 package org.openwms.wms.receiving.app;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,14 +47,16 @@ import javax.servlet.Filter;
 @EnableScheduling
 public class ReceivingModuleConfiguration {
 
+    @Bean MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
+        return registry -> registry.config().commonTags("application", applicationName);
+    }
+
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
-    public @Bean
-    Filter corsFiler() {
+    @Bean Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
     }
 
-    @Bean
-    BeanMapper beanMapper() {
+    @Bean BeanMapper beanMapper() {
         return new DozerMapperImpl("META-INF/dozer/wms-receiving-mappings.xml");
     }
 }
