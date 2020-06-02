@@ -150,6 +150,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
                 throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
             }
+            // FIXME [openwms]: 26.05.20 Question this:
             LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
             throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
         }

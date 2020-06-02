@@ -14,8 +14,8 @@ spring:
       enabled: false
   security:
     user:
-      password: sa
       name: user
+      password: sa
   jpa:
     show-sql: false
     open-in-view: false
@@ -113,6 +113,7 @@ spring:
     locator:
       discovery:
         enabled: true
+
 ---
 spring:
   profiles: HEROKU

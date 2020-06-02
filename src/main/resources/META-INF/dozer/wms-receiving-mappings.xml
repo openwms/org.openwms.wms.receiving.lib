@@ -55,6 +55,10 @@
 			<a is-accessible="true">posNo</a>
 			<b is-accessible="true">positionId</b>
 		</field>
+		<field type="one-way">
+			<a is-accessible="true">state</a>
+			<b is-accessible="true">state</b>
+		</field>
 		<field>
 			<a is-accessible="true">quantityExpected</a>
 			<b is-accessible="true">quantityExpected</b>

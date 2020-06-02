@@ -23,6 +23,7 @@ import org.openwms.core.units.api.Measurable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ReceivingOrderPositionVO.
@@ -36,6 +37,9 @@ public class ReceivingOrderPositionVO implements Serializable {
     @NotEmpty
     @JsonProperty("positionId")
     private String positionId;
+    /** Current position state. Default is {@value} */
+    @JsonProperty("state")
+    private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
     @JsonProperty("quantityExpected")
@@ -96,5 +100,25 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     public String getSupplierPackingUnit() {
         return supplierPackingUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReceivingOrderPositionVO that = (ReceivingOrderPositionVO) o;
+        return Objects.equals(positionId, that.positionId) &&
+                Objects.equals(state, that.state) &&
+                Objects.equals(quantityExpected, that.quantityExpected) &&
+                Objects.equals(product, that.product) &&
+                Objects.equals(startMode, that.startMode) &&
+                Objects.equals(transportUnitId, that.transportUnitId) &&
+                Objects.equals(transportUnitType, that.transportUnitType) &&
+                Objects.equals(supplierPackingUnit, that.supplierPackingUnit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(positionId, state, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);
     }
 }

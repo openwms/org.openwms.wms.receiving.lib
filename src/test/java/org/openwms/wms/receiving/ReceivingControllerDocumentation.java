@@ -141,7 +141,7 @@ class ReceivingControllerDocumentation {
                         get("/v1/receiving-orders")
                 )
                 .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()", greaterThan(0)))
                 .andDo(document("order-find-all", preprocessResponse(prettyPrint())))
         ;
