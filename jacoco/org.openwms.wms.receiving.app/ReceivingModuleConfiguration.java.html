@@ -15,11 +15,14 @@
  */
 package org.openwms.wms.receiving.app;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,17 +45,19 @@ import javax.servlet.Filter;
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling
-<span class="fc" id="L45">public class ReceivingModuleConfiguration {</span>
+<span class="fc" id="L48">public class ReceivingModuleConfiguration {</span>
 
-    @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
-    public @Bean
-    Filter corsFiler() {
-<span class="nc" id="L50">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+    @Bean MeterRegistryCustomizer&lt;MeterRegistry&gt; metricsCommonTags(@Value(&quot;${spring.application.name}&quot;) String applicationName) {
+<span class="fc" id="L51">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
     }
 
-    @Bean
-    BeanMapper beanMapper() {
-<span class="fc" id="L55">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
+    @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
+    @Bean Filter corsFiler() {
+<span class="nc" id="L56">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+    }
+
+    @Bean BeanMapper beanMapper() {
+<span class="fc" id="L60">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

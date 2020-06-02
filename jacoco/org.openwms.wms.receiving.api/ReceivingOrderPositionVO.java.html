@@ -23,6 +23,7 @@ import org.openwms.core.units.api.Measurable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ReceivingOrderPositionVO.
@@ -36,6 +37,9 @@ public class ReceivingOrderPositionVO implements Serializable {
     @NotEmpty
     @JsonProperty(&quot;positionId&quot;)
     private String positionId;
+    /** Current position state. Default is {@value} */
+    @JsonProperty(&quot;state&quot;)
+    private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @NotNull
     @JsonProperty(&quot;quantityExpected&quot;)
@@ -57,45 +61,65 @@ public class ReceivingOrderPositionVO implements Serializable {
     private String supplierPackingUnit;
 
     @JsonCreator
-<span class="fc" id="L60">    ReceivingOrderPositionVO() {</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L64">    ReceivingOrderPositionVO() {</span>
+<span class="fc" id="L65">    }</span>
 
-<span class="fc" id="L63">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotNull ProductVO product) {</span>
-<span class="fc" id="L64">        this.positionId = positionId;</span>
-<span class="fc" id="L65">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L66">        this.product = product;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L67">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotNull ProductVO product) {</span>
+<span class="fc" id="L68">        this.positionId = positionId;</span>
+<span class="fc" id="L69">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L70">        this.product = product;</span>
+<span class="fc" id="L71">    }</span>
 
     public String getPositionId() {
-<span class="fc" id="L70">        return positionId;</span>
+<span class="fc" id="L74">        return positionId;</span>
     }
 
     public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
-<span class="fc" id="L74">        return quantityExpected;</span>
+<span class="fc" id="L78">        return quantityExpected;</span>
     }
 
     public void setQuantityExpected(Measurable&lt;?, ?, ?&gt; quantityExpected) {
-<span class="fc" id="L78">        this.quantityExpected = quantityExpected;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L82">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L83">    }</span>
 
     public ProductVO getProduct() {
-<span class="fc" id="L82">        return product;</span>
+<span class="fc" id="L86">        return product;</span>
     }
 
     public String getStartMode() {
-<span class="fc" id="L86">        return startMode;</span>
+<span class="fc" id="L90">        return startMode;</span>
     }
 
     public String getTransportUnitId() {
-<span class="fc" id="L90">        return transportUnitId;</span>
+<span class="fc" id="L94">        return transportUnitId;</span>
     }
 
     public String getTransportUnitType() {
-<span class="fc" id="L94">        return transportUnitType;</span>
+<span class="fc" id="L98">        return transportUnitType;</span>
     }
 
     public String getSupplierPackingUnit() {
-<span class="fc" id="L98">        return supplierPackingUnit;</span>
+<span class="fc" id="L102">        return supplierPackingUnit;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L109">        ReceivingOrderPositionVO that = (ReceivingOrderPositionVO) o;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        return Objects.equals(positionId, that.positionId) &amp;&amp;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                Objects.equals(state, that.state) &amp;&amp;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">                Objects.equals(quantityExpected, that.quantityExpected) &amp;&amp;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                Objects.equals(product, that.product) &amp;&amp;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                Objects.equals(startMode, that.startMode) &amp;&amp;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                Objects.equals(transportUnitId, that.transportUnitId) &amp;&amp;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                Objects.equals(transportUnitType, that.transportUnitType) &amp;&amp;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                Objects.equals(supplierPackingUnit, that.supplierPackingUnit);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L122">        return Objects.hash(positionId, state, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -577,7 +577,7 @@ Content-Length: 300
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/d5236f64-bd1b-4493-b683-a733320c3ae3/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/5d78f1c0-6ad5-4812-8acb-e6dcf3c4b4ec/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -690,7 +690,7 @@ Content-Type: application/json
 Content-Length: 205
 
 [ {
-  "pKey" : "3a02cdb7-8fea-44a6-a885-12bcd2e07cfb",
+  "pKey" : "815b66f4-d6d9-4174-bcb5-817137c18eff",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -709,7 +709,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/3c9ff87c-3852-404c-8723-100dc9cd57be/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/0a57d95a-9f33-47a8-8bd9-5f316202edeb/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -733,7 +733,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "3a02cdb7-8fea-44a6-a885-12bcd2e07cfb" ],
+  "obj" : [ "4716", "PROCESSED", "815b66f4-d6d9-4174-bcb5-817137c18eff" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -812,7 +812,7 @@ Content-Length: 122
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-25 21:54:26 UTC
+Last updated 2020-06-02 21:19:25 UTC
 </div>
 </div>
 </body>
