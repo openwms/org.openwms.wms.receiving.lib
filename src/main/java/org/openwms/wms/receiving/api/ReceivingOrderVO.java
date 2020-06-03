@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.ameba.http.AbstractBase;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -31,18 +32,18 @@ import java.util.Set;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderVO implements Serializable {
+public class ReceivingOrderVO extends AbstractBase implements Serializable {
 
     /** The persistent identifier. */
     @JsonProperty("pKey")
     private String pKey;
-    /** The unique identifier of an {@code ReceivingOrder}. */
-    @NotEmpty
+    /** The unique identifier of this {@code ReceivingOrder}. */
     @JsonProperty("orderId")
     private String orderId;
+    /** The current state of this {@code ReceivingOrder. */
     @JsonProperty("state")
     private String state;
-    /** A set of {@code ReceivingOrderPosition}s belonging to this order. */
+    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty("positions")
     private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
 

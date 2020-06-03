@@ -44,6 +44,9 @@ public class ReceivingOrderPositionVO implements Serializable {
     @NotNull
     @JsonProperty("quantityExpected")
     private Measurable<?, ?, ?> quantityExpected;
+    /** The already received quantity of the product. */
+    @JsonProperty("quantityReceived")
+    private Measurable<?, ?, ?> quantityReceived;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
     @NotNull
     @JsonProperty("product")
@@ -78,8 +81,12 @@ public class ReceivingOrderPositionVO implements Serializable {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
-        this.quantityExpected = quantityExpected;
+    public Measurable<?, ?, ?> getQuantityReceived() {
+        return quantityReceived;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public ProductVO getProduct() {
@@ -110,6 +117,7 @@ public class ReceivingOrderPositionVO implements Serializable {
         return Objects.equals(positionId, that.positionId) &&
                 Objects.equals(state, that.state) &&
                 Objects.equals(quantityExpected, that.quantityExpected) &&
+                Objects.equals(quantityReceived, that.quantityReceived) &&
                 Objects.equals(product, that.product) &&
                 Objects.equals(startMode, that.startMode) &&
                 Objects.equals(transportUnitId, that.transportUnitId) &&
@@ -119,6 +127,6 @@ public class ReceivingOrderPositionVO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, state, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);
+        return Objects.hash(positionId, state, quantityReceived, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);
     }
 }

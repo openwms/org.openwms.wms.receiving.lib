@@ -63,6 +63,10 @@
 			<a is-accessible="true">quantityExpected</a>
 			<b is-accessible="true">quantityExpected</b>
 		</field>
+		<field>
+			<a is-accessible="true">quantityReceived</a>
+			<b is-accessible="true">quantityReceived</b>
+		</field>
 		<field type="one-way">
 			<a is-accessible="true">product</a>
 			<b is-accessible="true">product</b>

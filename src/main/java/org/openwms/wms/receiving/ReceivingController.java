@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -91,7 +92,8 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
     public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
-        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(""));
+        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId)));
+        order.getPositions().forEach(p -> System.out.println(p));
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
