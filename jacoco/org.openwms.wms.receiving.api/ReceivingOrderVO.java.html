@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.ameba.http.AbstractBase;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -31,43 +32,43 @@ import java.util.Set;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderVO implements Serializable {
+public class ReceivingOrderVO extends AbstractBase implements Serializable {
 
     /** The persistent identifier. */
     @JsonProperty(&quot;pKey&quot;)
     private String pKey;
-    /** The unique identifier of an {@code ReceivingOrder}. */
-    @NotEmpty
+    /** The unique identifier of this {@code ReceivingOrder}. */
     @JsonProperty(&quot;orderId&quot;)
     private String orderId;
+    /** The current state of this {@code ReceivingOrder. */
     @JsonProperty(&quot;state&quot;)
     private String state;
-    /** A set of {@code ReceivingOrderPosition}s belonging to this order. */
+    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty(&quot;positions&quot;)
-<span class="fc" id="L47">    private Set&lt;@Valid ReceivingOrderPositionVO&gt; positions = new HashSet&lt;&gt;(0);</span>
+<span class="fc" id="L48">    private Set&lt;@Valid ReceivingOrderPositionVO&gt; positions = new HashSet&lt;&gt;(0);</span>
 
     @JsonCreator
-<span class="fc" id="L50">    ReceivingOrderVO() {</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L51">    ReceivingOrderVO() {</span>
+<span class="fc" id="L52">    }</span>
 
-<span class="fc" id="L53">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
-<span class="fc" id="L54">        this.orderId = orderId;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L54">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
+<span class="fc" id="L55">        this.orderId = orderId;</span>
+<span class="fc" id="L56">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L58">        return orderId;</span>
+<span class="fc" id="L59">        return orderId;</span>
     }
 
     public void setOrderId(String orderId) {
-<span class="fc" id="L62">        this.orderId = orderId;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L63">        this.orderId = orderId;</span>
+<span class="fc" id="L64">    }</span>
 
      public Set&lt;ReceivingOrderPositionVO&gt; getPositions() {
-<span class="fc" id="L66">        return positions;</span>
+<span class="fc" id="L67">        return positions;</span>
     }
 
     public void setPositions(Set&lt;ReceivingOrderPositionVO&gt; positions) {
-<span class="fc" id="L70">        this.positions = positions;</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L71">        this.positions = positions;</span>
+<span class="fc" id="L72">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

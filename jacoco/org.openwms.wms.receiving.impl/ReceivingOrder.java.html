@@ -91,7 +91,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL}, fetch = FetchType.EAGER)
-    @OrderBy
+    @OrderBy(&quot;posNo&quot;)
 <span class="fc" id="L95">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
 
     /*~ -------------- Constructors -------------- */
