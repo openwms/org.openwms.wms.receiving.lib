@@ -1,10 +1,13 @@
 org.openwms.values
+org.openwms.wms
+org.openwms.wms.commands
 org.openwms.wms.order
 org.openwms.wms.receiving
 org.openwms.wms.receiving.api
 org.openwms.wms.receiving.app
 org.openwms.wms.receiving.impl
 org.openwms.wms.receiving.inventory
+org.openwms.wms.receiving.inventory.impl
 org.openwms.wms.receiving.spi
 org.openwms.wms.receiving.transport
 org.openwms.wms.receiving.transport.api

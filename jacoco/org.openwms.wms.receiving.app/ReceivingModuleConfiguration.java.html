@@ -19,11 +19,15 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
+import org.ameba.i18n.AbstractTranslator;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
+import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,6 +37,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.Filter;
+import java.util.Properties;
 
 /**
  * A ReceivingModuleConfiguration.
@@ -45,19 +50,35 @@ import javax.servlet.Filter;
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling
-<span class="fc" id="L48">public class ReceivingModuleConfiguration {</span>
+<span class="fc" id="L53">public class ReceivingModuleConfiguration {</span>
 
     @Bean MeterRegistryCustomizer&lt;MeterRegistry&gt; metricsCommonTags(@Value(&quot;${spring.application.name}&quot;) String applicationName) {
-<span class="fc" id="L51">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
+<span class="fc" id="L56">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
     }
 
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean Filter corsFiler() {
-<span class="nc" id="L56">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+<span class="nc" id="L61">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
     }
 
     @Bean BeanMapper beanMapper() {
-<span class="fc" id="L60">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
+<span class="fc" id="L65">        return new DozerMapperImpl(&quot;META-INF/dozer/wms-receiving-mappings.xml&quot;);</span>
     }
-}
+
+    @Bean Translator translator() {
+<span class="fc" id="L69">        return new AbstractTranslator() {</span>
+            @Override
+            protected MessageSource getMessageSource() {
+<span class="nc" id="L72">                return messageSource();</span>
+            }
+        };
+    }
+
+    @Bean MessageSource messageSource() {
+<span class="fc" id="L78">        NestedReloadableResourceBundleMessageSource messageSource = new NestedReloadableResourceBundleMessageSource();</span>
+<span class="fc" id="L79">        messageSource.setBasenames(&quot;classpath:/META-INF/i18n/rec&quot;);</span>
+<span class="fc" id="L80">        messageSource.setDefaultEncoding(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L81">        messageSource.setCommonMessages(new Properties());</span>
+<span class="fc" id="L82">        return messageSource;</span>
+    }}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

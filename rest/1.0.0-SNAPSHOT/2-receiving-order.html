@@ -522,7 +522,7 @@ Content-Length: 317
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/c05cc41e-ba55-43e1-ba15-33419291bbc5/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/4ec6886c-106f-4899-9eda-077dc967e7db/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -531,7 +531,15 @@ responds with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+Content-Type: application/hal+json
+Content-Length: 110
+
+{
+  "message" : "Generic validation error",
+  "messageKey" : "core.validation.error",
+  "httpStatus" : "400"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -636,7 +644,7 @@ Content-Length: 239
 
 [ {
   "links" : [ ],
-  "pKey" : "064390d6-e339-4ee4-b4e3-f26f5fcc3af9",
+  "pKey" : "cf07cb51-af77-4663-a71a-b6ea87590803",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -656,7 +664,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/838756d3-03af-40f9-97db-b5e91603948a/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/e868bb27-b5d4-4a6e-a22d-14439eae1883/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -680,7 +688,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "064390d6-e339-4ee4-b4e3-f26f5fcc3af9" ],
+  "obj" : [ "4716", "PROCESSED", "cf07cb51-af77-4663-a71a-b6ea87590803" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -759,7 +767,7 @@ Content-Length: 122
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-08 18:27:42 UTC
+Last updated 2020-06-14 13:32:16 UTC
 </div>
 </div>
 </body>
