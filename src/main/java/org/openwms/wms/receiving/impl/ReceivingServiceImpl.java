@@ -21,6 +21,7 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Piece;
+import org.openwms.wms.commands.EnsureProductExistsCommand;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
@@ -135,6 +136,8 @@ class ReceivingServiceImpl implements ReceivingService {
             @NotEmpty String loadUnitPosition,
             @NotNull Measurable quantityReceived,
             @NotNull @Valid Product product) {
+
+        publisher.publishEvent(new EnsureProductExistsCommand(product.getSku()));
 
         ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         Optional<ReceivingOrderPosition> openPosition = receivingOrder.getPositions().stream()
