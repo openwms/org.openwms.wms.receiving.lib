@@ -68,7 +68,7 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingController.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
                         linkTo(methodOn(ReceivingController.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
-                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", new CaptureRequestVO(), null)).withRel("receiving-order-capture"),
+                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", "EURO", new CaptureRequestVO())).withRel("receiving-order-capture"),
                         linkTo(methodOn(ReceivingController.class).cancelOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-cancel")
                 )
         );
@@ -93,7 +93,6 @@ public class ReceivingController extends AbstractWebController {
     @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
     public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
         ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId)));
-        order.getPositions().forEach(p -> System.out.println(p));
         return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
     }
 
@@ -111,12 +110,14 @@ public class ReceivingController extends AbstractWebController {
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 
-    @PostMapping("/v1/receiving-orders/{pKey}/capture")
+    @PostMapping(value = "/v1/receiving-orders/{pKey}/capture", params = "loadUnitType")
     public ResponseEntity<Void> captureOrder(
             @PathVariable("pKey") String pKey,
-            @Valid @RequestBody CaptureRequestVO request, HttpServletRequest req) {
+            @RequestParam("loadUnitType") String loadUnitType,
+            @Valid @RequestBody CaptureRequestVO request) {
         Product map = mapper.map(request.getProduct(), Product.class);
-        service.capture(pKey, request.getTransportUnitId(), request.getLoadUnitLabel(), request.getQuantityReceived(), map);
+        service.capture(pKey, request.getTransportUnitId(), request.getLoadUnitLabel(), loadUnitType,
+                request.getQuantityReceived(), map);
         return ResponseEntity.noContent().build();
     }
 

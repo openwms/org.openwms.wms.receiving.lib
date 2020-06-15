@@ -134,6 +134,7 @@ class ReceivingServiceImpl implements ReceivingService {
     public @NotNull ReceivingOrder capture(@NotEmpty String pKey,
             @NotEmpty String transportUnitId,
             @NotEmpty String loadUnitPosition,
+            @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
             @NotNull @Valid Product product) {
 
@@ -162,7 +163,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
         );
         LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
-        packagingUnitApi.create(transportUnitId, loadUnitPosition, pu);
+        packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
         ReceivingOrderPosition pos = openPosition.get();
         pos.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);

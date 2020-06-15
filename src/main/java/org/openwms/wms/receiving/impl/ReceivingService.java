@@ -46,12 +46,16 @@ public interface ReceivingService {
      * @param pKey The persistent key of the ReceivingOrder
      * @param transportUnitId The identifier of the TransportUnit to book the Product to
      * @param loadUnitPosition The position of the LoadUnit
+     * @param loadUnitType In case the LoadUnit is created this is type for the LoadUnit
      * @param quantityReceived The received quantity
      * @param product The received Product
      * @return The updated ReceivingOrder instance with updated positions
      */
-    @NotNull ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String transportUnitId,
+    @NotNull ReceivingOrder capture(
+            @NotEmpty String pKey,
+            @NotEmpty String transportUnitId,
             @NotEmpty String loadUnitPosition,
+            @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
             @NotNull @Valid Product product);
 
