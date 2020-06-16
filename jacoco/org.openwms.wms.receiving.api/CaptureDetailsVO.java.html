@@ -17,9 +17,6 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.DimensionUnit;
-import org.openwms.core.units.api.Measurable;
-import org.openwms.core.units.api.WeightUnit;
 
 import java.io.Serializable;
 
@@ -29,47 +26,57 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-<span class="nc" id="L32">public class CaptureDetailsVO implements Serializable {</span>
+<span class="nc" id="L29">public class CaptureDetailsVO implements Serializable {</span>
 
     @JsonProperty(&quot;length&quot;)
-    private Measurable&lt;Long, ?, DimensionUnit&gt; length;
+    private Integer length;
     @JsonProperty(&quot;height&quot;)
-    private Measurable&lt;Long, ?, DimensionUnit&gt; height;
+    private Integer height;
     @JsonProperty(&quot;width&quot;)
-    private Measurable&lt;Long, ?, DimensionUnit&gt; width;
+    private Integer width;
     @JsonProperty(&quot;weight&quot;)
-    private Measurable&lt;Long, ?, WeightUnit&gt; weight;
+    private Integer weight;
+    @JsonProperty(&quot;message&quot;)
+    private String messageText;
 
-    public Measurable&lt;Long, ?, DimensionUnit&gt; getLength() {
-<span class="nc" id="L44">        return length;</span>
+    public Integer getLength() {
+<span class="nc" id="L43">        return length;</span>
     }
 
-    public void setLength(Measurable&lt;Long, ?, DimensionUnit&gt; length) {
-<span class="nc" id="L48">        this.length = length;</span>
-<span class="nc" id="L49">    }</span>
+    public void setLength(Integer length) {
+<span class="nc" id="L47">        this.length = length;</span>
+<span class="nc" id="L48">    }</span>
 
-    public Measurable&lt;Long, ?, DimensionUnit&gt; getHeight() {
-<span class="nc" id="L52">        return height;</span>
+    public Integer getHeight() {
+<span class="nc" id="L51">        return height;</span>
     }
 
-    public void setHeight(Measurable&lt;Long, ?, DimensionUnit&gt; height) {
-<span class="nc" id="L56">        this.height = height;</span>
-<span class="nc" id="L57">    }</span>
+    public void setHeight(Integer height) {
+<span class="nc" id="L55">        this.height = height;</span>
+<span class="nc" id="L56">    }</span>
 
-    public Measurable&lt;Long, ?, DimensionUnit&gt; getWidth() {
-<span class="nc" id="L60">        return width;</span>
+    public Integer getWidth() {
+<span class="nc" id="L59">        return width;</span>
     }
 
-    public void setWidth(Measurable&lt;Long, ?, DimensionUnit&gt; width) {
-<span class="nc" id="L64">        this.width = width;</span>
-<span class="nc" id="L65">    }</span>
+    public void setWidth(Integer width) {
+<span class="nc" id="L63">        this.width = width;</span>
+<span class="nc" id="L64">    }</span>
 
-    public Measurable&lt;Long, ?, WeightUnit&gt; getWeight() {
-<span class="nc" id="L68">        return weight;</span>
+    public Integer getWeight() {
+<span class="nc" id="L67">        return weight;</span>
     }
 
-    public void setWeight(Measurable&lt;Long, ?, WeightUnit&gt; weight) {
-<span class="nc" id="L72">        this.weight = weight;</span>
-<span class="nc" id="L73">    }</span>
+    public void setWeight(Integer weight) {
+<span class="nc" id="L71">        this.weight = weight;</span>
+<span class="nc" id="L72">    }</span>
+
+    public String getMessageText() {
+<span class="nc" id="L75">        return messageText;</span>
+    }
+
+    public void setMessageText(String messageText) {
+<span class="nc" id="L79">        this.messageText = messageText;</span>
+<span class="nc" id="L80">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
