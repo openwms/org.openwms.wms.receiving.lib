@@ -20,11 +20,11 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.units.api.Piece;
-import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
+import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -116,8 +116,14 @@ public class ReceivingController extends AbstractWebController {
             @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody CaptureRequestVO request) {
         Product map = mapper.map(request.getProduct(), Product.class);
-        service.capture(pKey, request.getTransportUnitId(), request.getLoadUnitLabel(), loadUnitType,
-                request.getQuantityReceived(), map);
+        service.capture(
+                pKey,
+                request.getTransportUnitId(),
+                request.getLoadUnitLabel(),
+                loadUnitType,
+                request.getQuantityReceived(),
+                request.getDetails(),
+                map);
         return ResponseEntity.noContent().build();
     }
 

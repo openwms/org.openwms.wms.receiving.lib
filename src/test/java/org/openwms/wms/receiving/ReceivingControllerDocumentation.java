@@ -31,6 +31,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -63,6 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 //@ActiveProfiles(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @ReceivingApplicationTest
+@TestPropertySource(properties = "owms.receiving.unexpected-receipts-allowed=false")
 class ReceivingControllerDocumentation {
 
     @Autowired
@@ -129,7 +131,8 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
                                 fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),
                                 fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
-                                fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"))
+                                fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"),
+                                fieldWithPath("links").description("Further action links provided on the ReceivingOrder resource"))
                         )
                 )
         ;
@@ -162,8 +165,13 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity to be received"),
-                                fieldWithPath("positions[].quantityExpected.unitType").description("The expected type"),
+                                fieldWithPath("positions[].quantityExpected.magnitude").description("The expected quantity amount"),
+                                fieldWithPath("positions[].quantityExpected.unitType").description("The expected quantity type"),
                                 fieldWithPath("positions[].quantityExpected.*").ignored(),
+                                fieldWithPath("positions[].quantityReceived").description("The already received quantity"),
+                                fieldWithPath("positions[].quantityReceived.magnitude").description("The received quantity amount"),
+                                fieldWithPath("positions[].quantityReceived.unitType").description("The received quantity type"),
+                                fieldWithPath("positions[].quantityReceived.*").ignored(),
                                 fieldWithPath("positions[].product").description("The expected Product to be received"),
                                 fieldWithPath("positions[].product.*").ignored()
                         )
@@ -247,6 +255,7 @@ class ReceivingControllerDocumentation {
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                                .param("loadUnitType", "EURO")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(vo))
                 )
@@ -255,24 +264,26 @@ class ReceivingControllerDocumentation {
         ;
     }
 
-    @Transactional
-    @Rollback
-    @Test void shall_capture_order_INSUFFISIENT() throws Exception {
-        CaptureRequestVO vo = new CaptureRequestVO();
-        vo.setTransportUnitId("4711");
-        vo.setLoadUnitLabel("1");
-        vo.setQuantityReceived(Piece.of(2));
-        vo.setProduct(new ProductVO("C1"));
-        mockMvc
-                .perform(
-                        post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(vo))
-                )
-                .andDo(document("order-capture-500", preprocessResponse(prettyPrint())))
-                .andExpect(status().isInternalServerError())
-        ;
-    }
+        @Transactional
+        @Rollback
+        @Test void shall_capture_order_INSUFFISIENT() throws Exception {
+            CaptureRequestVO vo = new CaptureRequestVO();
+            vo.setTransportUnitId("4711");
+            vo.setLoadUnitLabel("1");
+            vo.setQuantityReceived(Piece.of(2));
+            vo.setProduct(new ProductVO("C1"));
+            mockMvc
+                    .perform(
+                            post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                                    .param("loadUnitType", "EURO")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(om.writeValueAsString(vo))
+                    )
+                    .andDo(document("order-capture-500", preprocessResponse(prettyPrint())))
+                    .andExpect(status().isInternalServerError())
+            ;
+        }
+
 
     public String createOrder(String orderId) throws Exception {
         MvcResult result = mockMvc

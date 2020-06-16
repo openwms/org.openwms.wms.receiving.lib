@@ -17,9 +17,6 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.DimensionUnit;
-import org.openwms.core.units.api.Measurable;
-import org.openwms.core.units.api.WeightUnit;
 
 import java.io.Serializable;
 
@@ -32,43 +29,53 @@ import java.io.Serializable;
 public class CaptureDetailsVO implements Serializable {
 
     @JsonProperty("length")
-    private Measurable<Long, ?, DimensionUnit> length;
+    private Integer length;
     @JsonProperty("height")
-    private Measurable<Long, ?, DimensionUnit> height;
+    private Integer height;
     @JsonProperty("width")
-    private Measurable<Long, ?, DimensionUnit> width;
+    private Integer width;
     @JsonProperty("weight")
-    private Measurable<Long, ?, WeightUnit> weight;
+    private Integer weight;
+    @JsonProperty("message")
+    private String messageText;
 
-    public Measurable<Long, ?, DimensionUnit> getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(Measurable<Long, ?, DimensionUnit> length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
-    public Measurable<Long, ?, DimensionUnit> getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(Measurable<Long, ?, DimensionUnit> height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 
-    public Measurable<Long, ?, DimensionUnit> getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    public void setWidth(Measurable<Long, ?, DimensionUnit> width) {
+    public void setWidth(Integer width) {
         this.width = width;
     }
 
-    public Measurable<Long, ?, WeightUnit> getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Measurable<Long, ?, WeightUnit> weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 }

@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.inventory.Product;
 
 import javax.validation.Valid;
@@ -57,6 +58,7 @@ public interface ReceivingService {
             @NotEmpty String loadUnitPosition,
             @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
+            CaptureDetailsVO details,
             @NotNull @Valid Product product);
 
     /**

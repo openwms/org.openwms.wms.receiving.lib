@@ -21,12 +21,15 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Piece;
+import org.openwms.core.units.api.Weight;
+import org.openwms.core.units.api.WeightUnit;
 import org.openwms.wms.commands.EnsureProductExistsCommand;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
+import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +44,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.openwms.wms.order.OrderState.CANCELED;
@@ -131,41 +135,63 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public @NotNull ReceivingOrder capture(@NotEmpty String pKey,
+    public @NotNull ReceivingOrder capture(
+            @NotEmpty String pKey,
             @NotEmpty String transportUnitId,
             @NotEmpty String loadUnitPosition,
             @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
+            CaptureDetailsVO details,
             @NotNull @Valid Product product) {
 
         publisher.publishEvent(new EnsureProductExistsCommand(product.getSku()));
 
         ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
-        Optional<ReceivingOrderPosition> openPosition = receivingOrder.getPositions().stream()
+        List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(p -> p.getProduct().equals(product))
+                .collect(Collectors.toList());
+
+        if (openPositions.isEmpty()) {
+            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
+            throw new ProcessingException("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
+        }
+
+        Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
                 .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
                 .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
                 .findFirst();
+        ReceivingOrderPosition position;
+        // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
+            if (overbookingAllowed) {
 
-            // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
-            if (!overbookingAllowed) {
+                position = openPositions.get(0);
+            } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
                 throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
             }
-            // FIXME [openwms]: 26.05.20 Question this:
-            LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
-            throw new ProcessingException("Received a goods receipt but all ReceivingOrderPositions are already satisfied");
+        } else {
+            position = openPosition.get();
         }
+        // FIXME [openwms]: 26.05.20 Question this:
+
         PackagingUnitVO pu = new PackagingUnitVO(
                 ProductVO.newBuilder().sku(product.getSku()).build(),
                 Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
         );
+        if (details != null) {
+            pu.setLength(details.getLength());
+            pu.setWidth(details.getWidth());
+            pu.setHeight(details.getHeight());
+            if (details.getWeight() != null) {
+                pu.setWeight(Weight.of(details.getWeight(), WeightUnit.G));
+            }
+            pu.setMessage(details.getMessageText());
+        }
         LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
         packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
-        ReceivingOrderPosition pos = openPosition.get();
-        pos.addQuantityReceived(quantityReceived);
+        position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);
     }
 
