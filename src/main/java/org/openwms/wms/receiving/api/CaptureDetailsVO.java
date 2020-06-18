@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.core.units.api.Weight;
 
 import java.io.Serializable;
 
@@ -35,7 +36,7 @@ public class CaptureDetailsVO implements Serializable {
     @JsonProperty("width")
     private Integer width;
     @JsonProperty("weight")
-    private Integer weight;
+    private Weight weight;
     @JsonProperty("message")
     private String messageText;
 
@@ -63,11 +64,11 @@ public class CaptureDetailsVO implements Serializable {
         this.width = width;
     }
 
-    public Integer getWeight() {
+    public Weight getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Weight weight) {
         this.weight = weight;
     }
 

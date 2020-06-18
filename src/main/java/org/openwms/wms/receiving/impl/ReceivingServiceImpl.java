@@ -21,8 +21,6 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Piece;
-import org.openwms.core.units.api.Weight;
-import org.openwms.core.units.api.WeightUnit;
 import org.openwms.wms.commands.EnsureProductExistsCommand;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
@@ -185,7 +183,7 @@ class ReceivingServiceImpl implements ReceivingService {
             pu.setWidth(details.getWidth());
             pu.setHeight(details.getHeight());
             if (details.getWeight() != null) {
-                pu.setWeight(Weight.of(details.getWeight(), WeightUnit.G));
+                pu.setWeight(details.getWeight());
             }
             pu.setMessage(details.getMessageText());
         }
