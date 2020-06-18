@@ -172,8 +172,6 @@ class ReceivingServiceImpl implements ReceivingService {
         } else {
             position = openPosition.get();
         }
-        // FIXME [openwms]: 26.05.20 Question this:
-
         PackagingUnitVO pu = new PackagingUnitVO(
                 ProductVO.newBuilder().sku(product.getSku()).build(),
                 Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
@@ -188,6 +186,7 @@ class ReceivingServiceImpl implements ReceivingService {
             pu.setMessage(details.getMessageText());
         }
         LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
+        // FIXME [openwms]: 19.06.20 do this asynchronously
         packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
         position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);
