@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.core.units.api.Weight;
 
 import java.io.Serializable;
 
@@ -26,7 +27,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-<span class="nc" id="L29">public class CaptureDetailsVO implements Serializable {</span>
+<span class="nc" id="L30">public class CaptureDetailsVO implements Serializable {</span>
 
     @JsonProperty(&quot;length&quot;)
     private Integer length;
@@ -35,48 +36,48 @@ import java.io.Serializable;
     @JsonProperty(&quot;width&quot;)
     private Integer width;
     @JsonProperty(&quot;weight&quot;)
-    private Integer weight;
+    private Weight weight;
     @JsonProperty(&quot;message&quot;)
     private String messageText;
 
     public Integer getLength() {
-<span class="nc" id="L43">        return length;</span>
+<span class="nc" id="L44">        return length;</span>
     }
 
     public void setLength(Integer length) {
-<span class="nc" id="L47">        this.length = length;</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L48">        this.length = length;</span>
+<span class="nc" id="L49">    }</span>
 
     public Integer getHeight() {
-<span class="nc" id="L51">        return height;</span>
+<span class="nc" id="L52">        return height;</span>
     }
 
     public void setHeight(Integer height) {
-<span class="nc" id="L55">        this.height = height;</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L56">        this.height = height;</span>
+<span class="nc" id="L57">    }</span>
 
     public Integer getWidth() {
-<span class="nc" id="L59">        return width;</span>
+<span class="nc" id="L60">        return width;</span>
     }
 
     public void setWidth(Integer width) {
-<span class="nc" id="L63">        this.width = width;</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L64">        this.width = width;</span>
+<span class="nc" id="L65">    }</span>
 
-    public Integer getWeight() {
-<span class="nc" id="L67">        return weight;</span>
+    public Weight getWeight() {
+<span class="nc" id="L68">        return weight;</span>
     }
 
-    public void setWeight(Integer weight) {
-<span class="nc" id="L71">        this.weight = weight;</span>
-<span class="nc" id="L72">    }</span>
+    public void setWeight(Weight weight) {
+<span class="nc" id="L72">        this.weight = weight;</span>
+<span class="nc" id="L73">    }</span>
 
     public String getMessageText() {
-<span class="nc" id="L75">        return messageText;</span>
+<span class="nc" id="L76">        return messageText;</span>
     }
 
     public void setMessageText(String messageText) {
-<span class="nc" id="L79">        this.messageText = messageText;</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L80">        this.messageText = messageText;</span>
+<span class="nc" id="L81">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
