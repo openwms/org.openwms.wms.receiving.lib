@@ -172,25 +172,24 @@ class ReceivingServiceImpl implements ReceivingService {
         } else {
 <span class="nc" id="L173">            position = openPosition.get();</span>
         }
-        // FIXME [openwms]: 26.05.20 Question this:
-
-<span class="nc" id="L177">        PackagingUnitVO pu = new PackagingUnitVO(</span>
-<span class="nc" id="L178">                ProductVO.newBuilder().sku(product.getSku()).build(),</span>
-<span class="nc" id="L179">                Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))</span>
+<span class="nc" id="L175">        PackagingUnitVO pu = new PackagingUnitVO(</span>
+<span class="nc" id="L176">                ProductVO.newBuilder().sku(product.getSku()).build(),</span>
+<span class="nc" id="L177">                Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))</span>
         );
-<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (details != null) {</span>
-<span class="nc" id="L182">            pu.setLength(details.getLength());</span>
-<span class="nc" id="L183">            pu.setWidth(details.getWidth());</span>
-<span class="nc" id="L184">            pu.setHeight(details.getHeight());</span>
-<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (details.getWeight() != null) {</span>
-<span class="nc" id="L186">                pu.setWeight(details.getWeight());</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (details != null) {</span>
+<span class="nc" id="L180">            pu.setLength(details.getLength());</span>
+<span class="nc" id="L181">            pu.setWidth(details.getWidth());</span>
+<span class="nc" id="L182">            pu.setHeight(details.getHeight());</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (details.getWeight() != null) {</span>
+<span class="nc" id="L184">                pu.setWeight(details.getWeight());</span>
             }
-<span class="nc" id="L188">            pu.setMessage(details.getMessageText());</span>
+<span class="nc" id="L186">            pu.setMessage(details.getMessageText());</span>
         }
-<span class="nc" id="L190">        LOGGER.info(&quot;Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]&quot;, pu, transportUnitId, loadUnitPosition);</span>
-<span class="nc" id="L191">        packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);</span>
-<span class="nc" id="L192">        position.addQuantityReceived(quantityReceived);</span>
-<span class="nc" id="L193">        return repository.save(receivingOrder);</span>
+<span class="nc" id="L188">        LOGGER.info(&quot;Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]&quot;, pu, transportUnitId, loadUnitPosition);</span>
+        // FIXME [openwms]: 19.06.20 do this asynchronously
+<span class="nc" id="L190">        packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);</span>
+<span class="nc" id="L191">        position.addQuantityReceived(quantityReceived);</span>
+<span class="nc" id="L192">        return repository.save(receivingOrder);</span>
     }
 
     /**
@@ -199,9 +198,9 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey) {
-<span class="fc" id="L202">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
-<span class="fc" id="L203">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
-<span class="fc" id="L204">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+<span class="fc" id="L201">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
+<span class="fc" id="L202">        Optional&lt;ReceivingOrder&gt; order = repository.findBypKey(pKey);</span>
+<span class="fc" id="L203">        return order.orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
@@ -210,7 +209,7 @@ class ReceivingServiceImpl implements ReceivingService {
     @Measured
     @Override
     public Optional&lt;ReceivingOrder&gt; findByOrderId(@NotEmpty String orderId) {
-<span class="fc" id="L213">        return repository.findByOrderId(orderId);</span>
+<span class="fc" id="L212">        return repository.findByOrderId(orderId);</span>
     }
 
     /**
@@ -219,25 +218,25 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public void cancelOrder(@NotEmpty String pKey) {
-<span class="fc" id="L222">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
-<span class="pc" id="L223">        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
-<span class="fc" id="L224">        LOGGER.info(&quot;Cancelling ReceivingOrder [{}] in state [{}]&quot;, order.getOrderId(), order.getOrderState());</span>
-<span class="fc bfc" id="L225" title="All 2 branches covered.">        if (order.getOrderState() == CANCELED) {</span>
-<span class="fc" id="L226">            throw new AlreadyCancelledException(</span>
-<span class="fc" id="L227">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
-<span class="fc" id="L228">                    ALREADY_CANCELLED,</span>
-<span class="fc" id="L229">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
+<span class="fc" id="L221">        Assert.hasText(pKey, &quot;pKey must not be null&quot;);</span>
+<span class="pc" id="L222">        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;ReceivingOrder with pKey [%s] does not exist&quot;, pKey)));</span>
+<span class="fc" id="L223">        LOGGER.info(&quot;Cancelling ReceivingOrder [{}] in state [{}]&quot;, order.getOrderId(), order.getOrderState());</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (order.getOrderState() == CANCELED) {</span>
+<span class="fc" id="L225">            throw new AlreadyCancelledException(</span>
+<span class="fc" id="L226">                    format(&quot;ReceivingOrder [%s] is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
+<span class="fc" id="L227">                    ALREADY_CANCELLED,</span>
+<span class="fc" id="L228">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
             );
         }
-<span class="pc bpc" id="L232" title="1 of 4 branches missed.">        if (order.getOrderState() != UNDEFINED &amp;&amp; order.getOrderState() != CREATED) {</span>
-<span class="fc" id="L233">            throw new CancellationDeniedException(</span>
-<span class="fc" id="L234">                    format(&quot;Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
-<span class="fc" id="L235">                    CANCELLATION_DENIED,</span>
-<span class="fc" id="L236">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
+<span class="pc bpc" id="L231" title="1 of 4 branches missed.">        if (order.getOrderState() != UNDEFINED &amp;&amp; order.getOrderState() != CREATED) {</span>
+<span class="fc" id="L232">            throw new CancellationDeniedException(</span>
+<span class="fc" id="L233">                    format(&quot;Cancellation of ReceivingOrder [%s] is not allowed because order is already in state [%s]&quot;, order.getOrderId(), order.getOrderState()),</span>
+<span class="fc" id="L234">                    CANCELLATION_DENIED,</span>
+<span class="fc" id="L235">                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()}</span>
             );
         }
-<span class="fc" id="L239">        order.setOrderState(CANCELED);</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L238">        order.setOrderState(CANCELED);</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * {@inheritDoc}
@@ -245,9 +244,9 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull List&lt;ReceivingOrder&gt; findAll() {
-<span class="fc" id="L248">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
-<span class="fc" id="L249">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
-<span class="fc" id="L250">        return all;</span>
+<span class="fc" id="L247">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
+<span class="fc" id="L248">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
+<span class="fc" id="L249">        return all;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
