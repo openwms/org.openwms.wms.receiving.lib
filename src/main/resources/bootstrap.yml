@@ -12,6 +12,8 @@ spring:
         max-attempts: 120
     discovery:
       enabled: false
+  config:
+    location: classpath:application.yml
   security:
     user:
       name: user
@@ -123,6 +125,9 @@ spring:
     config:
       discovery:
         enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
       enabled: true
 
 owms:
