@@ -123,7 +123,7 @@ class ReceivingServiceImpl implements ReceivingService {
 <span class="fc" id="L123">        order = repository.save(order);</span>
 <span class="fc" id="L124">        publisher.publishEvent(new ReceivingOrderCreatedEvent(order));</span>
 <span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (LOGGER.isInfoEnabled()) {</span>
-<span class="fc" id="L126">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
+<span class="nc" id="L126">            LOGGER.info(&quot;ReceivingOrder with orderId [{}] saved&quot;, order.getOrderId());</span>
         }
 <span class="fc" id="L128">        return order;</span>
     }
