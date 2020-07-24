@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving;
 
+import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,13 +29,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @author Heiko Scherrer
  */
 @RestController(&quot;receivingIndexController&quot;)
-<span class="fc" id="L31">class IndexController {</span>
+<span class="fc" id="L32">class IndexController {</span>
 
     @GetMapping(&quot;/index&quot;)
     public ResponseEntity&lt;Index&gt; getIndex() {
-<span class="fc" id="L35">        return ResponseEntity.ok(</span>
-<span class="fc" id="L36">                new Index(</span>
-<span class="fc" id="L37">                        linkTo(methodOn(ReceivingController.class).index()).withRel(&quot;receiving-order-index&quot;)</span>
+<span class="fc" id="L36">        return ResponseEntity.ok(</span>
+<span class="fc" id="L37">                new Index(</span>
+<span class="fc" id="L38">                        linkTo(methodOn(ReceivingController.class).index()).withRel(&quot;receiving-order-index&quot;)</span>
                 )
         );
     }

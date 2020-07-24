@@ -27,7 +27,6 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,OrderProcessor
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController.AjcClosure5,0,17,0,0,0,1,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController.AjcClosure1,0,13,0,0,0,1,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController.AjcClosure3,0,17,0,0,0,1,0,2,0,2
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,Index,0,7,0,0,0,3,0,1,0,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController,25,221,0,0,5,32,2,9,2,9
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingRunner,5,3,0,0,2,1,1,1,1,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ProcessingException,5,4,0,0,2,2,1,1,1,1
