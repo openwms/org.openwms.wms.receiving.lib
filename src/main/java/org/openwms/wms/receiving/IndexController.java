@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving;
 
+import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

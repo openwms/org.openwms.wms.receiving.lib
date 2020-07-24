@@ -22,12 +22,12 @@ This guide describes the RESTful API of the OpenWMS.org WMS Receiving Service mo
 explained and declared in the first part of the document whereas in the second part the usage of the API is shown in a more use-case-driven
 approach.
 
+include::0-preambel.adoc[]
+
 [[resources-prg]]
 = Resources
 
 A description of all used API resources.
-
-include::0-preambel.adoc[]
 
 include::1-index.adoc[]
 
