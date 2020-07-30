@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.8">
-<meta name="author" content="(1.0.0-SNAPSHOT-78)">
+<meta name="author" content="(1.0.0-SNAPSHOT-79)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -436,7 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-78)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-79)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -868,7 +868,7 @@ Content-Length: 317
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/4983a4d0-1da1-4198-b3e5-efea3ed96c4f/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/a8f5d6c1-297c-4935-870c-a961b767f699/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -990,7 +990,7 @@ Content-Length: 239
 
 [ {
   "links" : [ ],
-  "pKey" : "c52e75f3-a65f-4dcf-9908-0ae408184154",
+  "pKey" : "04bb326b-6af6-48e3-a569-967f740b7f9d",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -1010,7 +1010,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving-orders/c509db41-01c1-4e31-aab4-9d7347625bd1/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/receiving-orders/a8a26af3-05a0-43a4-8f5a-5ab4e5aadc20/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1034,7 +1034,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "c52e75f3-a65f-4dcf-9908-0ae408184154" ],
+  "obj" : [ "4716", "PROCESSED", "04bb326b-6af6-48e3-a569-967f740b7f9d" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1115,7 +1115,7 @@ Content-Length: 136
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-24 06:46:33 UTC
+Last updated 2020-07-30 08:17:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
