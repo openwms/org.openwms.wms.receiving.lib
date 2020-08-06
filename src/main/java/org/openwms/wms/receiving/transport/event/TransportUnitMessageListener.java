@@ -19,12 +19,14 @@ import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.common.transport.api.ValidationGroups;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
+import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.transport.TransportUnit;
 import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,7 @@ import static org.ameba.system.ValidationUtil.validate;
  *
  * @author Heiko Scherrer
  */
+@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
 class TransportUnitMessageListener {
 
@@ -75,6 +78,7 @@ class TransportUnitMessageListener {
                 }
             }
         } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);
         }
     }
