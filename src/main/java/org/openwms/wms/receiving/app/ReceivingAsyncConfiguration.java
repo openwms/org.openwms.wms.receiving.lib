@@ -99,4 +99,22 @@ public class ReceivingAsyncConfiguration {
                 .to(tuExchange)
                 .with(routingKey);
     }
+
+    @Bean
+    TopicExchange inventoryExchange(@Value("${owms.events.inventory.exchange-name}") String exchangeName) {
+        return new TopicExchange(exchangeName, true, false);
+    }
+
+    @Bean
+    Queue inventoryProductsQueue(@Value("${owms.events.inventory.products.queue-name}") String queueName) {
+        return new Queue(queueName, true);
+    }
+
+    @Bean
+    Binding inventoryProductsBinding(TopicExchange inventoryExchange, Queue inventoryProductsQueue, @Value("${owms.events.inventory.products.routing-key}") String routingKey) {
+        return BindingBuilder
+                .bind(inventoryProductsQueue)
+                .to(inventoryExchange)
+                .with(routingKey);
+    }
 }

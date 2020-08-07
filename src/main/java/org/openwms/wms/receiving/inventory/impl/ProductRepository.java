@@ -27,5 +27,7 @@ import java.util.Optional;
  */
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    Optional<Product> findBypKey(String persistentKey);
+
     Optional<Product> findBySku(String sku);
 }

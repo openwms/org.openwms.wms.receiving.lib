@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.inventory;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -30,5 +32,11 @@ public interface ProductService {
      * @param sku The identifying SKU
      * @return The instance
      */
-    Optional<Product> findBySku(String sku);
+    Optional<Product> findBySku(@NotEmpty String sku);
+
+    void create(@NotNull Product product);
+
+    Product update(@NotNull Product product);
+
+    void delete(@NotEmpty String pKey);
 }

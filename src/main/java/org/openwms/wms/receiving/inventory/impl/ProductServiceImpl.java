@@ -15,10 +15,13 @@
  */
 package org.openwms.wms.receiving.inventory.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -39,7 +42,35 @@ class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Product> findBySku(String sku) {
+    @Measured
+    public Optional<Product> findBySku(@NotEmpty String sku) {
         return repository.findBySku(sku);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void create(@NotNull Product product) {
+        repository.save(product);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public Product update(@NotNull Product product) {
+        return repository.save(product);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void delete(@NotEmpty String pKey) {
+        repository.findBypKey(pKey).ifPresent(repository::delete);
     }
 }

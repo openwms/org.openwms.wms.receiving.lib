@@ -49,6 +49,11 @@ owms:
       tu:
         exchange-name: common.tu.commands
   events:
+    inventory:
+      exchange-name: inventory
+      products:
+        queue-name: wms-receiving-products
+        routing-key: "product.event.*"
     common:
       tu:
         exchange-name: common.tu
