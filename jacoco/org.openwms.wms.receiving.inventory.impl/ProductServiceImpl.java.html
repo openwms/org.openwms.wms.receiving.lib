@@ -15,10 +15,13 @@
  */
 package org.openwms.wms.receiving.inventory.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -31,16 +34,44 @@ class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
 
-<span class="fc" id="L34">    ProductServiceImpl(ProductRepository repository) {</span>
-<span class="fc" id="L35">        this.repository = repository;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L37">    ProductServiceImpl(ProductRepository repository) {</span>
+<span class="fc" id="L38">        this.repository = repository;</span>
+<span class="fc" id="L39">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional&lt;Product&gt; findBySku(String sku) {
-<span class="fc" id="L43">        return repository.findBySku(sku);</span>
+    @Measured
+    public Optional&lt;Product&gt; findBySku(@NotEmpty String sku) {
+<span class="fc" id="L47">        return repository.findBySku(sku);</span>
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void create(@NotNull Product product) {
+<span class="nc" id="L56">        repository.save(product);</span>
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public Product update(@NotNull Product product) {
+<span class="nc" id="L65">        return repository.save(product);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void delete(@NotEmpty String pKey) {
+<span class="nc" id="L74">        repository.findBypKey(pKey).ifPresent(repository::delete);</span>
+<span class="nc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

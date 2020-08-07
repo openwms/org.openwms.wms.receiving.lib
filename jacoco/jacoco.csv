@@ -8,13 +8,14 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.inventory,Product,6
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.inventory,InventoryCommandListener,14,21,0,0,4,7,1,2,1,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.commands,EnsureProductExistsCommand,0,4,0,0,0,2,0,1,0,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.transport,TransportUnit,3,22,0,0,1,10,1,5,1,5
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.inventory.impl,ProductServiceImpl,0,11,0,0,0,4,0,2,0,2
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.inventory.impl,ProductEventListener,28,6,4,0,7,3,4,1,1,1
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.inventory.impl,ProductServiceImpl,24,11,0,0,5,4,3,2,3,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.spi,DefaultOrderPositionProcessor,29,8,0,0,1,4,1,2,1,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.spi,DefaultOrderPositionProcessor.AjcClosure1,22,0,0,0,1,0,2,0,2,0
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.transport.event,TransportUnitMessageListener,88,16,10,0,17,6,6,2,1,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingModuleConfiguration.new AbstractTranslator() {...},4,6,0,0,1,1,1,1,1,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingModuleConfiguration,7,54,0,0,1,9,1,6,1,6
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingAsyncConfiguration,9,69,0,0,3,21,1,7,1,7
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingAsyncConfiguration,9,89,0,0,3,27,1,10,1,10
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.app,ReceivingFeignConfiguration,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPosition,63,6,2,0,16,2,14,1,13,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPositionDetails,36,3,6,0,13,1,10,1,7,1
@@ -37,3 +38,7 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,CaptureRequestV
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ReceivingOrderPositionVO,75,91,24,0,12,17,13,12,1,12
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,CaptureDetailsVO,38,0,0,0,16,0,11,0,11,0
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.api,ProductVO,4,19,0,0,2,9,1,5,1,5
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.events,ProductEvent.TYPE,34,0,0,0,2,0,1,0,1,0
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.events,InventoryEventListener,69,13,4,0,15,5,4,2,1,2
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.events,ProductMO,31,0,0,0,13,0,9,0,9,0
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.events,ProductEvent,14,0,0,0,6,0,3,0,3,0

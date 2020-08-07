@@ -99,5 +99,23 @@ import static org.ameba.LoggingCategories.BOOT;
 <span class="fc" id="L99">                .to(tuExchange)</span>
 <span class="fc" id="L100">                .with(routingKey);</span>
     }
+
+    @Bean
+    TopicExchange inventoryExchange(@Value(&quot;${owms.events.inventory.exchange-name}&quot;) String exchangeName) {
+<span class="fc" id="L105">        return new TopicExchange(exchangeName, true, false);</span>
+    }
+
+    @Bean
+    Queue inventoryProductsQueue(@Value(&quot;${owms.events.inventory.products.queue-name}&quot;) String queueName) {
+<span class="fc" id="L110">        return new Queue(queueName, true);</span>
+    }
+
+    @Bean
+    Binding inventoryProductsBinding(TopicExchange inventoryExchange, Queue inventoryProductsQueue, @Value(&quot;${owms.events.inventory.products.routing-key}&quot;) String routingKey) {
+<span class="fc" id="L115">        return BindingBuilder</span>
+<span class="fc" id="L116">                .bind(inventoryProductsQueue)</span>
+<span class="fc" id="L117">                .to(inventoryExchange)</span>
+<span class="fc" id="L118">                .with(routingKey);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
