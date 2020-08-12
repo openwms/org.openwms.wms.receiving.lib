@@ -21,8 +21,8 @@ OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrder
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrderPositionDetails,36,3,6,0,13,1,10,1,7,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,OrderProcessor.AjcClosure1,0,18,0,0,0,1,0,2,0,2
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,CancellationDeniedException,0,6,0,0,0,2,0,1,0,1
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingServiceImpl,182,251,18,8,27,45,17,12,6,10
-OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrder,23,51,1,1,7,14,8,7,7,7
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingServiceImpl,170,263,17,9,26,46,16,13,6,10
+OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,ReceivingOrder,20,54,1,1,6,15,7,8,6,8
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,AlreadyCancelledException,0,6,0,0,0,2,0,1,0,1
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving.impl,OrderProcessor,6,37,0,0,1,6,1,3,1,3
 OpenWMS.org WMS: Receiving Service,org.openwms.wms.receiving,ReceivingController.AjcClosure5,0,17,0,0,0,1,0,2,0,2
