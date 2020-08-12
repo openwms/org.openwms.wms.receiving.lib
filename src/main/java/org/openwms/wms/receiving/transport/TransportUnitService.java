@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.transport;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * A TransportUnitService.
  *
@@ -28,5 +30,5 @@ public interface TransportUnitService {
      * @param transportUnit Instance to save
      * @return Saved instance
      */
-    TransportUnit upsert(TransportUnit transportUnit);
+    TransportUnit upsert(@NotNull TransportUnit transportUnit);
 }

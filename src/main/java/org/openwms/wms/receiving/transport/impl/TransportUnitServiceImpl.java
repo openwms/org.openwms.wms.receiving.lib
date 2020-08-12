@@ -19,12 +19,16 @@ import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.transport.TransportUnit;
 import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A TransportUnitServiceImpl.
  *
  * @author Heiko Scherrer
  */
+@Validated
 @TxService
 class TransportUnitServiceImpl implements TransportUnitService {
 
@@ -35,7 +39,7 @@ class TransportUnitServiceImpl implements TransportUnitService {
     }
 
     @Override
-    public TransportUnit upsert(TransportUnit transportUnit) {
+    public TransportUnit upsert(@NotNull TransportUnit transportUnit) {
         Assert.notNull(transportUnit, "transportUnit must not be null");
         Assert.hasText(transportUnit.getBarcode(), "barcode of TransportUnit must be set before saving");
         TransportUnit merged = repository.findByBarcode(transportUnit.getBarcode()).orElse(transportUnit);

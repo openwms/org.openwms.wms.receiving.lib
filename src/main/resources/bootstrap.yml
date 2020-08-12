@@ -53,11 +53,11 @@ owms:
       exchange-name: inventory
       products:
         queue-name: wms-receiving-products
-        routing-key: "product.event.*"
+        routing-key: product.event.*
     common:
       tu:
         exchange-name: common.tu
-        routing-key: tu.event.*.*
+        routing-key: tu.event.*
         queue-name: wms-receiving-common-tu
   receiving:
     serialization: json
