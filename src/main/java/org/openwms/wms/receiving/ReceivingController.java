@@ -116,7 +116,7 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody CaptureRequestVO request) {
-        Product map = mapper.map(request.getProduct(), Product.class);
+        Product product = mapper.map(request.getProduct(), Product.class);
         service.capture(
                 pKey,
                 request.getTransportUnitId(),
@@ -124,7 +124,7 @@ public class ReceivingController extends AbstractWebController {
                 loadUnitType,
                 request.getQuantityReceived(),
                 request.getDetails(),
-                map);
+                product);
         return ResponseEntity.noContent().build();
     }
 

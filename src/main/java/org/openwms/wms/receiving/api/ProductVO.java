@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -35,6 +36,8 @@ public class ProductVO implements Serializable {
     private String sku;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("baseUnit")
+    private Measurable baseUnit;
 
     @JsonCreator
     ProductVO() {
@@ -58,5 +61,13 @@ public class ProductVO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Measurable getBaseUnit() {
+        return baseUnit;
+    }
+
+    public void setBaseUnit(Measurable baseUnit) {
+        this.baseUnit = baseUnit;
     }
 }

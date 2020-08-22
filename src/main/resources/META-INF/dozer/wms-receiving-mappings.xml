@@ -46,6 +46,10 @@
 			<a is-accessible="false">positions</a>
 			<b is-accessible="false">positions</b>
 		</field>
+		<field>
+			<a is-accessible="false">details</a>
+			<b is-accessible="false">details</b>
+		</field>
 	</mapping>
 
 	<mapping>
@@ -87,6 +91,10 @@
 		<field>
 			<a is-accessible="true">description</a>
 			<b is-accessible="true">description</b>
+		</field>
+		<field>
+			<a is-accessible="true">baseUnit</a>
+			<b is-accessible="true">baseUnit</b>
 		</field>
 	</mapping>
 

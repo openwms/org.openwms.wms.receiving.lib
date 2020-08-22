@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.events;
 
+import org.openwms.core.units.api.Measurable;
+
 import java.io.Serializable;
 
 /**
@@ -26,7 +28,7 @@ public class ProductMO implements Serializable {
 
     private String pKey;
     private String sku;
-    private String baseUnit;
+    private Measurable baseUnit;
     private String description;
 
     public String getpKey() {
@@ -45,11 +47,11 @@ public class ProductMO implements Serializable {
         this.sku = sku;
     }
 
-    public String getBaseUnit() {
+    public Measurable getBaseUnit() {
         return baseUnit;
     }
 
-    public void setBaseUnit(String baseUnit) {
+    public void setBaseUnit(Measurable baseUnit) {
         this.baseUnit = baseUnit;
     }
 

@@ -19,9 +19,9 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
+import org.ameba.i18n.Translator;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.core.units.api.Piece;
-import org.openwms.wms.commands.EnsureProductExistsCommand;
+import org.openwms.wms.ReceivingConstants;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
@@ -29,6 +29,7 @@ import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.inventory.Product;
+import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,15 +63,19 @@ class ReceivingServiceImpl implements ReceivingService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
+    private final Translator translator;
     private final ReceivingOrderRepository repository;
+    private final ProductService service;
     private final ApplicationEventPublisher publisher;
     private final PackagingUnitApi packagingUnitApi;
 
     ReceivingServiceImpl(
-            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, ReceivingOrderRepository repository,
-            ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
+            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, ReceivingOrderRepository repository,
+            ProductService service, ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
+        this.translator = translator;
         this.repository = repository;
+        this.service = service;
         this.publisher = publisher;
         this.packagingUnitApi = packagingUnitApi;
     }
@@ -140,14 +144,22 @@ class ReceivingServiceImpl implements ReceivingService {
             @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
             CaptureDetailsVO details,
-            @NotNull @Valid Product product) {
+            final @NotNull @Valid Product product) {
 
-        publisher.publishEvent(new EnsureProductExistsCommand(product.getSku()));
+        //publisher.publishEvent(new EnsureProductExistsCommand(product.getSku()));
+        String sku = product.getSku();
+        final Product existingProduct = service.findBySku(sku).orElseThrow(
+                () -> new NotFoundException(
+                        translator,
+                        ReceivingConstants.PRODUCT_NOT_FOUND,
+                        sku
+                )
+        );
 
         ReceivingOrder receivingOrder = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
-                .filter(p -> p.getProduct().equals(product))
+                .filter(p -> p.getProduct().equals(existingProduct))
                 .collect(Collectors.toList());
 
         if (openPositions.isEmpty()) {
@@ -172,22 +184,26 @@ class ReceivingServiceImpl implements ReceivingService {
         } else {
             position = openPosition.get();
         }
-        PackagingUnitVO pu = new PackagingUnitVO(
-                ProductVO.newBuilder().sku(product.getSku()).build(),
-                Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
-        );
-        if (details != null) {
-            pu.setLength(details.getLength());
-            pu.setWidth(details.getWidth());
-            pu.setHeight(details.getHeight());
-            if (details.getWeight() != null) {
-                pu.setWeight(details.getWeight());
+
+        for (int i = 0; i < quantityReceived.getMagnitude().intValue(); i++) {
+            PackagingUnitVO pu = new PackagingUnitVO(
+                    ProductVO.newBuilder().sku(sku).build(),
+                    existingProduct.getBaseUnit()
+//                    Piece.of(BigDecimal.valueOf(quantityReceived.getMagnitude().intValue()))
+            );
+            if (details != null) {
+                pu.setLength(details.getLength());
+                pu.setWidth(details.getWidth());
+                pu.setHeight(details.getHeight());
+                if (details.getWeight() != null) {
+                    pu.setWeight(details.getWeight());
+                }
+                pu.setMessage(details.getMessageText());
             }
-            pu.setMessage(details.getMessageText());
+            LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
+            // FIXME [openwms]: 19.06.20 do this asynchronously
+            packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
         }
-        LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
-        // FIXME [openwms]: 19.06.20 do this asynchronously
-        packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
         position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);
     }

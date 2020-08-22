@@ -173,6 +173,9 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("positions[].quantityReceived.unitType").description("The received quantity type"),
                                 fieldWithPath("positions[].quantityReceived.*").ignored(),
                                 fieldWithPath("positions[].product").description("The expected Product to be received"),
+                                fieldWithPath("positions[].product.baseUnit").description("The default unit and quantity the Product is shipped"),
+                                fieldWithPath("positions[].product.baseUnit.unitType").description("The default unit type of the Product"),
+                                fieldWithPath("positions[].product.baseUnit.*").ignored(),
                                 fieldWithPath("positions[].product.*").ignored()
                         )
                 ))

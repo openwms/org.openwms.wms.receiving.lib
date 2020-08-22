@@ -23,7 +23,10 @@ import org.ameba.http.AbstractBase;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -46,6 +49,9 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
     /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty("positions")
     private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
+    /** Arbitrary detail information stored along an order. */
+    @JsonProperty("details")
+    private Map<String, String> details = new HashMap<>();
 
     @JsonCreator
     ReceivingOrderVO() {
@@ -69,5 +75,36 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
 
     public void setPositions(Set<ReceivingOrderPositionVO> positions) {
         this.positions = positions;
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ReceivingOrderVO that = (ReceivingOrderVO) o;
+        return Objects.equals(pKey, that.pKey) &&
+                Objects.equals(orderId, that.orderId) &&
+                Objects.equals(state, that.state) &&
+                Objects.equals(positions, that.positions) &&
+                Objects.equals(details, that.details);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pKey, orderId, state, positions, details);
+    }
+
+    @Override
+    public String toString() {
+        return orderId;
     }
 }

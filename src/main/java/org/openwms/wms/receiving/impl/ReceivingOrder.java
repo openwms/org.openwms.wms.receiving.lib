@@ -19,12 +19,17 @@ import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
 import org.openwms.wms.order.OrderState;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
@@ -34,6 +39,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -94,6 +100,17 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @OrderBy("posNo")
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "WMS_REC_ORDER_DETAILS",
+            joinColumns = {
+                    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID")
+            },
+            foreignKey = @ForeignKey(name = "FK_DETAILS_RO")
+    )
+    @MapKeyColumn(name = "C_KEY")
+    @Column(name = "C_VALUE")
+    private Map<String, String> details;
+
     /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */
     protected ReceivingOrder() {}
@@ -145,6 +162,14 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
     public Set<ReceivingOrderPosition> getPositions() {
         return positions == null ? Collections.emptySet() : positions;
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
     }
 
     @Override

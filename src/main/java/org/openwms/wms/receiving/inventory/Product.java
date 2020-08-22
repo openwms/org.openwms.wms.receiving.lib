@@ -18,7 +18,8 @@ package org.openwms.wms.receiving.inventory;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
-import org.openwms.core.units.api.BaseUnit;
+import org.openwms.core.units.UnitConstants;
+import org.openwms.core.units.api.Measurable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,9 +50,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     private String description;
 
     /** Products may be defined with different base units. */
-    @Type(type = "org.openwms.core.units.persistence.BaseUnitUserType")
-    @Columns(columns = @Column(name = "C_BASE_UNIT", nullable = false))
-    private BaseUnit baseUnit;
+    @Type(type = "org.openwms.core.units.persistence.UnitUserType")
+    @Columns(columns = {
+            @Column(name = "C_BASE_UNIT_TYPE", nullable = false),
+            @Column(name = "C_BASE_UNIT_QTY", length = UnitConstants.QUANTITY_LENGTH, nullable = false)
+    })
+    //problems when mapping
+    //@NotNull
+    private Measurable baseUnit;
 
     /** Dear JPA ... */
     protected Product() {
@@ -87,11 +93,11 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.description = description;
     }
 
-    public BaseUnit getBaseUnit() {
+    public Measurable getBaseUnit() {
         return baseUnit;
     }
 
-    public void setBaseUnit(BaseUnit baseUnit) {
+    public void setBaseUnit(Measurable baseUnit) {
         this.baseUnit = baseUnit;
     }
 
