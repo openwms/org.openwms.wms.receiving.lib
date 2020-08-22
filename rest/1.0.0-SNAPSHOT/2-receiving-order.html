@@ -589,7 +589,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/c617c78a-71b3-4358-8c24-85b69b99225c/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/ff1bde6a-e3da-4eea-93b2-fcbe70dcaac5/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -711,7 +711,7 @@ Content-Length: 239
 
 [ {
   "links" : [ ],
-  "pKey" : "9e6093c1-b3af-4a2c-bd2c-da909868af3a",
+  "pKey" : "bc8ce55f-bb8c-4f6d-b9e8-3b56421fc590",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -731,7 +731,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/8db468c4-d755-4b0c-8cb2-5ac82c8d34c9/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/19ec4dfb-0dce-4fb0-a566-6bc170040584/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -755,7 +755,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "9e6093c1-b3af-4a2c-bd2c-da909868af3a" ],
+  "obj" : [ "4716", "PROCESSED", "bc8ce55f-bb8c-4f6d-b9e8-3b56421fc590" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -804,13 +804,14 @@ that position and the server responds with success:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 500 Internal Server Error
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/hal+json
-Content-Length: 136
+Content-Length: 124
 
 {
-  "message" : "Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist",
-  "httpStatus" : "500"
+  "message" : "Product with SKU [C1] does not exist",
+  "messageKey" : "owms.wms.rec.product404",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -820,13 +821,14 @@ article and responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 500 Internal Server Error
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/hal+json
-Content-Length: 136
+Content-Length: 124
 
 {
-  "message" : "Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist",
-  "httpStatus" : "500"
+  "message" : "Product with SKU [C1] does not exist",
+  "messageKey" : "owms.wms.rec.product404",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -834,7 +836,7 @@ Content-Length: 136
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-12 18:46:46 UTC
+Last updated 2020-08-22 21:54:01 UTC
 </div>
 </div>
 </body>

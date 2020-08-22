@@ -19,12 +19,17 @@ import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
 import org.openwms.wms.order.OrderState;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
@@ -34,6 +39,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -56,7 +62,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Current state of this order. */
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;C_ORDER_STATE&quot;)
-<span class="fc" id="L59">    private OrderState orderState = OrderState.UNDEFINED;</span>
+<span class="fc" id="L65">    private OrderState orderState = OrderState.UNDEFINED;</span>
 
     /**
      * Property to lock/unlock an order.
@@ -67,7 +73,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
      * Default is {@value}
      */
     @Column(name = &quot;C_LOCKED&quot;)
-<span class="fc" id="L70">    private boolean locked = false;</span>
+<span class="fc" id="L76">    private boolean locked = false;</span>
 
     /** Current priority of the order. */
     @Column(name = &quot;C_PRIORITY&quot;)
@@ -92,64 +98,83 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = &quot;order&quot;, cascade = {ALL}, fetch = FetchType.EAGER)
     @OrderBy(&quot;posNo&quot;)
-<span class="fc" id="L95">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L101">    private Set&lt;ReceivingOrderPosition&gt; positions = new HashSet&lt;&gt;();</span>
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = &quot;WMS_REC_ORDER_DETAILS&quot;,
+            joinColumns = {
+                    @JoinColumn(name = &quot;C_ORDER_ID&quot;, referencedColumnName = &quot;C_ORDER_ID&quot;)
+            },
+            foreignKey = @ForeignKey(name = &quot;FK_DETAILS_RO&quot;)
+    )
+    @MapKeyColumn(name = &quot;C_KEY&quot;)
+    @Column(name = &quot;C_VALUE&quot;)
+    private Map&lt;String, String&gt; details;
 
     /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */
-<span class="fc" id="L99">    protected ReceivingOrder() {}</span>
+<span class="fc" id="L116">    protected ReceivingOrder() {}</span>
 
-<span class="fc" id="L101">    protected ReceivingOrder(String orderId) {</span>
-<span class="fc" id="L102">        this.orderId = orderId;</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L118">    protected ReceivingOrder(String orderId) {</span>
+<span class="fc" id="L119">        this.orderId = orderId;</span>
+<span class="fc" id="L120">    }</span>
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
-<span class="fc" id="L107">        this.orderState = OrderState.CREATED;</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L124">        this.orderState = OrderState.CREATED;</span>
+<span class="fc" id="L125">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L111">        return orderId;</span>
+<span class="fc" id="L128">        return orderId;</span>
     }
 
     public OrderState getOrderState() {
-<span class="fc" id="L115">        return orderState;</span>
+<span class="fc" id="L132">        return orderState;</span>
     }
 
     public void setOrderState(OrderState orderState) {
-<span class="fc" id="L119">        this.orderState = orderState;</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L136">        this.orderState = orderState;</span>
+<span class="fc" id="L137">    }</span>
 
     public boolean isLocked() {
-<span class="nc" id="L123">        return locked;</span>
+<span class="nc" id="L140">        return locked;</span>
     }
 
     public int getPriority() {
-<span class="nc" id="L127">        return priority;</span>
+<span class="nc" id="L144">        return priority;</span>
     }
 
     public ZonedDateTime getLatestDueDate() {
-<span class="nc" id="L131">        return latestDueDate;</span>
+<span class="nc" id="L148">        return latestDueDate;</span>
     }
 
     public ZonedDateTime getStartDate() {
-<span class="nc" id="L135">        return startDate;</span>
+<span class="nc" id="L152">        return startDate;</span>
     }
 
     public ZonedDateTime getNextAllocationDate() {
-<span class="nc" id="L139">        return nextAllocationDate;</span>
+<span class="nc" id="L156">        return nextAllocationDate;</span>
     }
 
     public Problem getProblem() {
-<span class="nc" id="L143">        return problem;</span>
+<span class="nc" id="L160">        return problem;</span>
     }
 
     public Set&lt;ReceivingOrderPosition&gt; getPositions() {
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        return positions == null ? Collections.emptySet() : positions;</span>
     }
+
+    public Map&lt;String, String&gt; getDetails() {
+<span class="fc" id="L168">        return details;</span>
+    }
+
+    public void setDetails(Map&lt;String, String&gt; details) {
+<span class="fc" id="L172">        this.details = details;</span>
+<span class="fc" id="L173">    }</span>
 
     @Override
     public String toString() {
-<span class="fc" id="L152">        return orderId;</span>
+<span class="fc" id="L177">        return orderId;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

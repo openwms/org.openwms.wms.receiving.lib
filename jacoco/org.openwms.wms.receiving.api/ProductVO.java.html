@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.core.units.api.Measurable;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -35,29 +36,39 @@ public class ProductVO implements Serializable {
     private String sku;
     @JsonProperty(&quot;description&quot;)
     private String description;
+    @JsonProperty(&quot;baseUnit&quot;)
+    private Measurable baseUnit;
 
     @JsonCreator
-<span class="fc" id="L40">    ProductVO() {</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L43">    ProductVO() {</span>
+<span class="fc" id="L44">    }</span>
 
-<span class="fc" id="L43">    public ProductVO(@NotEmpty String sku) {</span>
-<span class="fc" id="L44">        this.sku = sku;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">    public ProductVO(@NotEmpty String sku) {</span>
+<span class="fc" id="L47">        this.sku = sku;</span>
+<span class="fc" id="L48">    }</span>
 
     public String getSku() {
-<span class="fc" id="L48">        return sku;</span>
+<span class="fc" id="L51">        return sku;</span>
     }
 
     public String getDescription() {
-<span class="fc" id="L52">        return description;</span>
+<span class="fc" id="L55">        return description;</span>
     }
 
     public void setSku(String sku) {
-<span class="fc" id="L56">        this.sku = sku;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L59">        this.sku = sku;</span>
+<span class="fc" id="L60">    }</span>
 
     public void setDescription(String description) {
-<span class="nc" id="L60">        this.description = description;</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L63">        this.description = description;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Measurable getBaseUnit() {
+<span class="fc" id="L67">        return baseUnit;</span>
+    }
+
+    public void setBaseUnit(Measurable baseUnit) {
+<span class="nc" id="L71">        this.baseUnit = baseUnit;</span>
+<span class="nc" id="L72">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

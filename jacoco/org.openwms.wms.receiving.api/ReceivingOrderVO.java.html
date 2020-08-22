@@ -23,7 +23,10 @@ import org.ameba.http.AbstractBase;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -45,30 +48,64 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
     private String state;
     /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty(&quot;positions&quot;)
-<span class="fc" id="L48">    private Set&lt;@Valid ReceivingOrderPositionVO&gt; positions = new HashSet&lt;&gt;(0);</span>
+<span class="fc" id="L51">    private Set&lt;@Valid ReceivingOrderPositionVO&gt; positions = new HashSet&lt;&gt;(0);</span>
+    /** Arbitrary detail information stored along an order. */
+    @JsonProperty(&quot;details&quot;)
+<span class="fc" id="L54">    private Map&lt;String, String&gt; details = new HashMap&lt;&gt;();</span>
 
     @JsonCreator
-<span class="fc" id="L51">    ReceivingOrderVO() {</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L57">    ReceivingOrderVO() {</span>
+<span class="fc" id="L58">    }</span>
 
-<span class="fc" id="L54">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
-<span class="fc" id="L55">        this.orderId = orderId;</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L60">    public ReceivingOrderVO(@NotEmpty String orderId) {</span>
+<span class="fc" id="L61">        this.orderId = orderId;</span>
+<span class="fc" id="L62">    }</span>
 
     public String getOrderId() {
-<span class="fc" id="L59">        return orderId;</span>
+<span class="fc" id="L65">        return orderId;</span>
     }
 
     public void setOrderId(String orderId) {
-<span class="fc" id="L63">        this.orderId = orderId;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L69">        this.orderId = orderId;</span>
+<span class="fc" id="L70">    }</span>
 
      public Set&lt;ReceivingOrderPositionVO&gt; getPositions() {
-<span class="fc" id="L67">        return positions;</span>
+<span class="fc" id="L73">        return positions;</span>
     }
 
     public void setPositions(Set&lt;ReceivingOrderPositionVO&gt; positions) {
-<span class="fc" id="L71">        this.positions = positions;</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L77">        this.positions = positions;</span>
+<span class="fc" id="L78">    }</span>
+
+    public Map&lt;String, String&gt; getDetails() {
+<span class="fc" id="L81">        return details;</span>
+    }
+
+    public void setDetails(Map&lt;String, String&gt; details) {
+<span class="nc" id="L85">        this.details = details;</span>
+<span class="nc" id="L86">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc" id="L93">        ReceivingOrderVO that = (ReceivingOrderVO) o;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                Objects.equals(orderId, that.orderId) &amp;&amp;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                Objects.equals(state, that.state) &amp;&amp;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                Objects.equals(positions, that.positions) &amp;&amp;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                Objects.equals(details, that.details);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L103">        return Objects.hash(super.hashCode(), pKey, orderId, state, positions, details);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L108">        return orderId;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

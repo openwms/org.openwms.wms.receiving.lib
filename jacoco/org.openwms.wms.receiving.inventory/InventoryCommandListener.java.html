@@ -40,13 +40,13 @@ class InventoryCommandListener {
 
     @EventListener
     public void onEnsureProductExistsCommand(EnsureProductExistsCommand command) {
-<span class="fc" id="L43">        service.findBySku((String) command.getSource()).orElseThrow(</span>
-<span class="pc" id="L44">                () -&gt; new NotFoundException(</span>
+<span class="nc" id="L43">        service.findBySku((String) command.getSource()).orElseThrow(</span>
+<span class="nc" id="L44">                () -&gt; new NotFoundException(</span>
 <span class="nc" id="L45">                        translator,</span>
 <span class="nc" id="L46">                        ReceivingConstants.PRODUCT_NOT_FOUND,</span>
 <span class="nc" id="L47">                        command.getSource()</span>
 <span class="nc" id="L48">                )</span>
         );
-<span class="fc" id="L50">    }</span>
+<span class="nc" id="L50">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
