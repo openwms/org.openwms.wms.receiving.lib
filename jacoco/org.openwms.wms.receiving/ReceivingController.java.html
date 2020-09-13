@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving Service</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving</a> &gt; <span class="el_source">ReceivingController.java</span></div><h1>ReceivingController.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/*</span>
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.receiving;
+
+import org.ameba.exception.NotFoundException;
+import org.ameba.http.MeasuredRestController;
+import org.ameba.mapping.BeanMapper;
+import org.openwms.core.http.AbstractWebController;
+import org.openwms.core.http.Index;
+import org.openwms.core.units.api.Piece;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.wms.receiving.impl.ReceivingService;
+import org.openwms.wms.receiving.inventory.Product;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+/**
+ * A ReceivingController.
+ *
+ * @author Heiko Scherrer
+ */
+@Validated
+@MeasuredRestController
+public class ReceivingController extends AbstractWebController {
+
+    private final ReceivingService service;
+    private final BeanMapper mapper;
+
+<span class="fc" id="L59">    ReceivingController(ReceivingService service, BeanMapper mapper) {</span>
+<span class="fc" id="L60">        this.service = service;</span>
+<span class="fc" id="L61">        this.mapper = mapper;</span>
+<span class="fc" id="L62">    }</span>
+
+    @GetMapping(&quot;/v1/receiving-orders/index&quot;)
+    public ResponseEntity&lt;Index&gt; index() {
+<span class="fc" id="L66">        return ResponseEntity.ok(</span>
+<span class="fc" id="L67">                new Index(</span>
+<span class="fc" id="L68">                        linkTo(methodOn(ReceivingController.class).findAll()).withRel(&quot;receiving-order-findall&quot;),</span>
+<span class="fc" id="L69">                        linkTo(methodOn(ReceivingController.class).findOrder(&quot;b65a7658-c53c-4a81-8abb-75ab67783f47&quot;)).withRel(&quot;receiving-order-findbypkey&quot;),</span>
+<span class="fc" id="L70">                        linkTo(methodOn(ReceivingController.class).findOrderByOrderId(&quot;4711&quot;)).withRel(&quot;receiving-order-findbyorderid&quot;),</span>
+<span class="fc" id="L71">                        linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO(&quot;4711&quot;), null)).withRel(&quot;receiving-order-create&quot;),</span>
+<span class="fc" id="L72">                        linkTo(methodOn(ReceivingController.class).captureOrder(&quot;b65a7658-c53c-4a81-8abb-75ab67783f47&quot;, &quot;EURO&quot;, new CaptureRequestVO())).withRel(&quot;receiving-order-capture&quot;),</span>
+<span class="fc" id="L73">                        linkTo(methodOn(ReceivingController.class).cancelOrder(&quot;b65a7658-c53c-4a81-8abb-75ab67783f47&quot;)).withRel(&quot;receiving-order-cancel&quot;)</span>
+                )
+        );
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(&quot;/v1/receiving-orders&quot;)
+<span class="fc" id="L80">    public ResponseEntity&lt;List&lt;ReceivingOrderVO&gt;&gt; findAll() {</span>
+        List&lt;ReceivingOrder&gt; orders = service.findAll();
+        List&lt;ReceivingOrderVO&gt; result = mapper.map(orders, ReceivingOrderVO.class);
+        return ResponseEntity.ok(result);
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(&quot;/v1/receiving-orders/{pKey}&quot;)
+<span class="fc" id="L88">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrder(@PathVariable(&quot;pKey&quot;) String pKey) {</span>
+        ReceivingOrder order = service.findByPKey(pKey);
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(value = &quot;/v1/receiving-orders&quot;, params = {&quot;orderId&quot;})
+<span class="fc" id="L95">    public ResponseEntity&lt;ReceivingOrderVO&gt; findOrderByOrderId(@RequestParam(&quot;orderId&quot;) String orderId) {</span>
+<span class="nc" id="L96">        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -&gt; new NotFoundException(format(&quot;No ReceivingOrder with orderId [%s] exists&quot;, orderId)));</span>
+        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+    }
+
+    @PostMapping(&quot;/v1/receiving-orders&quot;)
+    public ResponseEntity&lt;Void&gt; createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
+        // FIXME [openwms]:
+<span class="fc" id="L103">        orderVO.getPositions().clear();</span>
+<span class="fc" id="L104">        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);</span>
+        // FIXME [openwms]:
+<span class="fc" id="L106">        order.getPositions().forEach(p -&gt; {</span>
+<span class="nc" id="L107">            p.setQuantityReceived(Piece.ZERO);</span>
+<span class="nc" id="L108">            p.setQuantityExpected(Piece.of(1));</span>
+<span class="nc" id="L109">        });</span>
+<span class="fc" id="L110">        ReceivingOrder saved = service.createOrder(order);</span>
+<span class="fc" id="L111">        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();</span>
+    }
+
+    @PostMapping(value = &quot;/v1/receiving-orders/{pKey}/capture&quot;, params = &quot;loadUnitType&quot;)
+    public ResponseEntity&lt;Void&gt; captureOrder(
+            @PathVariable(&quot;pKey&quot;) String pKey,
+            @RequestParam(&quot;loadUnitType&quot;) String loadUnitType,
+            @Valid @RequestBody CaptureRequestVO request) {
+<span class="fc" id="L119">        Product product = mapper.map(request.getProduct(), Product.class);</span>
+<span class="pc" id="L120">        service.capture(</span>
+<span class="fc" id="L121">                pKey,</span>
+<span class="fc" id="L122">                request.getTransportUnitId(),</span>
+<span class="fc" id="L123">                request.getLoadUnitLabel(),</span>
+<span class="fc" id="L124">                loadUnitType,</span>
+<span class="fc" id="L125">                request.getQuantityReceived(),</span>
+<span class="fc" id="L126">                request.getDetails(),</span>
+<span class="fc" id="L127">                product);</span>
+<span class="nc" id="L128">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @DeleteMapping(&quot;/v1/receiving-orders/{pKey}&quot;)
+    public ResponseEntity&lt;Void&gt; cancelOrder(@PathVariable(&quot;pKey&quot;) String pKey){
+<span class="fc" id="L133">        service.cancelOrder(pKey);</span>
+<span class="fc" id="L134">        return ResponseEntity.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

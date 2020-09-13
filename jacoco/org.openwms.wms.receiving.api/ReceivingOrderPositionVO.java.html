@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivingOrderPositionVO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org WMS: Receiving Service</a> &gt; <a href="index.source.html" class="el_package">org.openwms.wms.receiving.api</a> &gt; <span class="el_source">ReceivingOrderPositionVO.java</span></div><h1>ReceivingOrderPositionVO.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.receiving.api;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.core.units.api.Measurable;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A ReceivingOrderPositionVO.
+ *
+ * @author Heiko Scherrer
+ */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ReceivingOrderPositionVO implements Serializable {
+
+    /** The unique position ID within an ReceivingOrder - must not be empty. */
+    @NotEmpty
+    @JsonProperty(&quot;positionId&quot;)
+    private String positionId;
+    /** Current position state. Default is {@value} */
+    @JsonProperty(&quot;state&quot;)
+    private String state;
+    /** The expected quantity of the expected product - must not be {@literal null}. */
+    @NotNull
+    @JsonProperty(&quot;quantityExpected&quot;)
+    private Measurable&lt;?, ?, ?&gt; quantityExpected;
+    /** The already received quantity of the product. */
+    @JsonProperty(&quot;quantityReceived&quot;)
+    private Measurable&lt;?, ?, ?&gt; quantityReceived;
+    /** The unique SKU of the expected {@code Product} - must not be empty. */
+    @NotNull
+    @JsonProperty(&quot;product&quot;)
+    private ProductVO product;
+    /** Optional: How the position should be processed, manually oder automatically. */
+    @JsonProperty(&quot;startMode&quot;)
+    private String startMode;
+    /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
+    @JsonProperty(&quot;transportUnitId&quot;)
+    private String transportUnitId;
+    /** Optional: The suppliers type of {@code TransportUnit}. */
+    @JsonProperty(&quot;transportUnitType&quot;)
+    private String transportUnitType;
+    @JsonProperty(&quot;supplierPackingUnit&quot;)
+    private String supplierPackingUnit;
+
+    @JsonCreator
+<span class="fc" id="L67">    ReceivingOrderPositionVO() {</span>
+<span class="fc" id="L68">    }</span>
+
+<span class="fc" id="L70">    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable&lt;?, ?, ?&gt; quantityExpected, @NotNull ProductVO product) {</span>
+<span class="fc" id="L71">        this.positionId = positionId;</span>
+<span class="fc" id="L72">        this.quantityExpected = quantityExpected;</span>
+<span class="fc" id="L73">        this.product = product;</span>
+<span class="fc" id="L74">    }</span>
+
+    public String getPositionId() {
+<span class="fc" id="L77">        return positionId;</span>
+    }
+
+    public Measurable&lt;?, ?, ?&gt; getQuantityExpected() {
+<span class="fc" id="L81">        return quantityExpected;</span>
+    }
+
+    public Measurable&lt;?, ?, ?&gt; getQuantityReceived() {
+<span class="fc" id="L85">        return quantityReceived;</span>
+    }
+
+    public String getState() {
+<span class="fc" id="L89">        return state;</span>
+    }
+
+    public ProductVO getProduct() {
+<span class="fc" id="L93">        return product;</span>
+    }
+
+    public String getStartMode() {
+<span class="fc" id="L97">        return startMode;</span>
+    }
+
+    public String getTransportUnitId() {
+<span class="fc" id="L101">        return transportUnitId;</span>
+    }
+
+    public String getTransportUnitType() {
+<span class="fc" id="L105">        return transportUnitType;</span>
+    }
+
+    public String getSupplierPackingUnit() {
+<span class="fc" id="L109">        return supplierPackingUnit;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L116">        ReceivingOrderPositionVO that = (ReceivingOrderPositionVO) o;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        return Objects.equals(positionId, that.positionId) &amp;&amp;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                Objects.equals(state, that.state) &amp;&amp;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                Objects.equals(quantityExpected, that.quantityExpected) &amp;&amp;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                Objects.equals(quantityReceived, that.quantityReceived) &amp;&amp;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                Objects.equals(product, that.product) &amp;&amp;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                Objects.equals(startMode, that.startMode) &amp;&amp;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                Objects.equals(transportUnitId, that.transportUnitId) &amp;&amp;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                Objects.equals(transportUnitType, that.transportUnitType) &amp;&amp;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                Objects.equals(supplierPackingUnit, that.supplierPackingUnit);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L130">        return Objects.hash(positionId, state, quantityReceived, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
