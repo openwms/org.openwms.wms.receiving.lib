@@ -70,7 +70,7 @@
         <core.version>1.8.0</core.version>
         <core.units.version>0.4.0-SNAPSHOT</core.units.version>
         <inventory.version>1.1.0-SNAPSHOT</inventory.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>30.0-jre</guava.version>
 		<spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
     </properties>
 
