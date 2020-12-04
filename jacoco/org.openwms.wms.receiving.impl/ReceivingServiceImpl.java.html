@@ -261,8 +261,7 @@ class ReceivingServiceImpl implements ReceivingService {
     @Measured
     public @NotNull List&lt;ReceivingOrder&gt; findAll() {
 <span class="fc" id="L263">        List&lt;ReceivingOrder&gt; all = repository.findAll();</span>
-<span class="fc" id="L264">        all.forEach(o -&gt; System.out.println(o.getOrderId()+o.getPositions()));</span>
-<span class="fc" id="L265">        return all;</span>
+<span class="fc" id="L264">        return all;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
