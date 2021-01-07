@@ -118,6 +118,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return state;
     }
 
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
     public Measurable getQuantityExpected() {
         return quantityExpected;
     }
