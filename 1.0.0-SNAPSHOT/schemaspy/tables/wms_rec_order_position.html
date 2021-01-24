@@ -89,7 +89,16 @@
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
  <td class='detail'></td>
- <td class='detail'></td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative odd' valign='top'>
+    <td class='relatedTable detail' title="wms_rec_order_position_map.c_order_pos_pk refs wms_rec_order_position.c_pk via fk_details_rop"><a href='wms_rec_order_position_map.html'>wms_rec_order_position_map</a><span class='relatedKey'>.c_order_pos_pk</span>
+    </td>
+    <td class='constraint detail'>fk_details_rop<span title='Restrict delete:
+ Parent cannot be deleted if children exist'>&nbsp;R</span></td>
+   </tr>
+  </table>
+</td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
@@ -215,26 +224,6 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>c_details_pk</td>
- <td class='detail'>int8</td>
- <td class='detail' align='right'>19</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'>
-  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
-    <td class='relatedTable detail' title="wms_rec_order_position.c_details_pk refs wms_rec_order_position_details.c_pk via fk_rec_pos_details"><a href='wms_rec_order_position_details.html'>wms_rec_order_position_details</a><span class='relatedKey'>.c_pk</span>
-    </td>
-    <td class='constraint detail'>fk_rec_pos_details<span title='Restrict delete:
- Parent cannot be deleted if children exist'>&nbsp;R</span></td>
-   </tr>
-  </table>
- </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
  <td class='indexedColumn' title='Indexed'>c_order_id</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -244,10 +233,30 @@
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
+   <tr class='relative odd' valign='top'>
     <td class='relatedTable detail' title="wms_rec_order_position.c_order_id refs wms_rec_order.c_order_id via fk_rec_pos_order_id"><a href='wms_rec_order.html'>wms_rec_order</a><span class='relatedKey'>.c_order_id</span>
     </td>
     <td class='constraint detail'>fk_rec_pos_order_id<span title='Restrict delete:
+ Parent cannot be deleted if children exist'>&nbsp;R</span></td>
+   </tr>
+  </table>
+ </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>c_details_pk</td>
+ <td class='detail'>int8</td>
+ <td class='detail' align='right'>19</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative even' valign='top'>
+    <td class='relatedTable detail' title="wms_rec_order_position.c_details_pk refs wms_rec_order_position_details.c_pk via fk_rec_pos_details"><a href='wms_rec_order_position_details.html'>wms_rec_order_position_details</a><span class='relatedKey'>.c_pk</span>
+    </td>
+    <td class='constraint detail'>fk_rec_pos_details<span title='Restrict delete:
  Parent cannot be deleted if children exist'>&nbsp;R</span></td>
    </tr>
   </table>
@@ -275,7 +284,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='15 columns'>Table contained 0 rows at Fri Dec 04 10:17 UTC 2020<p/>
+<p title='15 columns'>Table contained 2 rows at Sun Jan 24 21:08 GMT 2021<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -305,10 +314,11 @@
 </div>
 <table width='100%' border='0'><tr><td class='container'>
 <br><form action='get'><b>Close relationships:</b></form><map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="312,151,640,575">
-<area shape="rect" id="node2" href="wms_rec_order_position_details.html" title="wms_rec_order_position_details" alt="" coords="5,5,268,256">
-<area shape="rect" id="node3" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="33,273,240,692">
-<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="56,709,217,984">
+<area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="252,127,493,551">
+<area shape="rect" id="node2" href="wms_rec_order_position_details.html" title="wms_rec_order_position_details" alt="" coords="5,441,208,692">
+<area shape="rect" id="node3" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="29,5,184,424">
+<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="45,709,168,984">
+<area shape="rect" id="node5" href="wms_rec_order_position_map.html" title="wms_rec_order_position_map" alt="" coords="537,129,725,260">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/wms_rec_order_position.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 </td></tr></table>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-88)">
+<meta name="author" content="(1.0.0-SNAPSHOT-3)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-88)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-3)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -787,7 +787,7 @@ Content-Length: 778
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /v1/receiving-orders HTTP/1.1
 Content-Type: application/json
-Content-Length: 317
+Content-Length: 360
 Host: localhost:8080
 
 {
@@ -802,6 +802,9 @@ Host: localhost:8080
     },
     "product" : {
       "sku" : "SKU001"
+    },
+    "details" : {
+      "p1" : "v1"
     }
   } ]
 }</code></pre>
@@ -862,6 +865,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">The SKU of the expected Product</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].details</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Some arbitrary detail information of the position</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>links</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Further action links provided on the ReceivingOrder resource</p></td>
@@ -874,7 +882,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/5666907a-d897-411a-92ab-acc1a1cb12ad/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/8483ea85-921b-4e3e-8904-11a454fe71e5/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -907,7 +915,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Unresolved directive in 2-receiving-order.adoc - include::/home/travis/build/openwms/org.openwms.wms.receiving/target/generated-snippets/order-find/request-fields.adoc[]</p>
+<p>Unresolved directive in 2-receiving-order.adoc - include::/home/runner/work/org.openwms.wms.receiving/org.openwms.wms.receiving/target/generated-snippets/order-find/request-fields.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the <code>ReceivingOrder</code> has been found, the server returns the order instance in the response body:</p>
@@ -916,12 +924,57 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 99
+Content-Length: 1475
 
 {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
   "orderId" : "T4711",
-  "state" : "CREATED"
+  "state" : "CREATED",
+  "positions" : [ {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -960,12 +1013,57 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 99
+Content-Length: 1475
 
 {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
   "orderId" : "T4711",
-  "state" : "CREATED"
+  "state" : "CREATED",
+  "positions" : [ {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -992,18 +1090,63 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 239
+Content-Length: 1615
 
 [ {
   "links" : [ ],
-  "pKey" : "ae9197ee-a26b-4490-8022-b588fe317f75",
+  "pKey" : "82727ec8-c544-4567-b068-d27535268e8b",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
   "links" : [ ],
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
   "orderId" : "T4711",
-  "state" : "CREATED"
+  "state" : "CREATED",
+  "positions" : [ {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  } ]
 } ]</code></pre>
 </div>
 </div>
@@ -1016,7 +1159,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /v1/receiving-orders/f5a03cf3-d0c9-48a8-9fcb-cfceb2631833/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /v1/receiving-orders/49846814-85f6-4a17-905a-13e73eb56f1e/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1040,7 +1183,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "ae9197ee-a26b-4490-8022-b588fe317f75" ],
+  "obj" : [ "4716", "PROCESSED", "82727ec8-c544-4567-b068-d27535268e8b" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1089,15 +1232,7 @@ that position and the server responds with success:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Content-Type: application/hal+json
-Content-Length: 124
-
-{
-  "message" : "Product with SKU [C1] does not exist",
-  "messageKey" : "owms.wms.rec.product404",
-  "httpStatus" : "404"
-}</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1106,14 +1241,13 @@ article and responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 500 Internal Server Error
 Content-Type: application/hal+json
-Content-Length: 124
+Content-Length: 162
 
 {
-  "message" : "Product with SKU [C1] does not exist",
-  "messageKey" : "owms.wms.rec.product404",
-  "httpStatus" : "404"
+  "message" : "Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed",
+  "httpStatus" : "500"
 }</code></pre>
 </div>
 </div>
@@ -1123,7 +1257,7 @@ Content-Length: 124
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-12-04 10:13:15 UTC
+Last updated 2021-01-24 20:57:39 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
