@@ -6,12 +6,13 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>17</version>
+        <version>19</version>
         <relativePath/>
     </parent>
 	<artifactId>org.openwms.wms.receiving</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>OpenWMS.org WMS: Receiving Service</name>
+    <description>Manages good receipts aka ReceivingOrders</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
@@ -64,13 +65,15 @@
     </ciManagement>
 
     <properties>
-        <ameba-lib.version>2.5-SNAPSHOT</ameba-lib.version>
+        <commons-configuration.version>1.10</commons-configuration.version>
         <ameba-cloud.version>2.0</ameba-cloud.version>
         <common.version>1.7.0-SNAPSHOT</common.version>
-        <core.version>1.8.0</core.version>
+		<core.version>1.9.0-SNAPSHOT</core.version>
         <core.units.version>0.4.0-SNAPSHOT</core.units.version>
         <guava.version>30.0-jre</guava.version>
-		<spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
+        <HdrHistogram.version>2.1.12</HdrHistogram.version>
+        <joda-time.version>2.10.8</joda-time.version>
+		<spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -149,8 +152,8 @@
                 </executions>
                 <configuration>
                     <layers>
-                        <enabled>true</enabled>
                         <configuration>${project.basedir}/src/layers.xml</configuration>
+                        <enabled>true</enabled>
                     </layers>
                 </configuration>
             </plugin>
@@ -161,8 +164,9 @@
         <dependencies>
             <dependency>
                 <groupId>org.openwms</groupId>
-                <artifactId>org.openwms.core.util</artifactId>
-                <version>${core.version}</version>
+                <artifactId>org.openwms.common.service</artifactId>
+                <version>${common.version}</version>
+                <classifier>client</classifier>
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
@@ -171,14 +175,8 @@
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
-                <artifactId>org.openwms.common.service</artifactId>
-                <version>${common.version}</version>
-                <classifier>client</classifier>
-            </dependency>
-            <dependency>
-                <groupId>io.interface21</groupId>
-                <artifactId>ameba-lib</artifactId>
-                <version>${ameba-lib.version}</version>
+                <artifactId>org.openwms.core.util</artifactId>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -186,16 +184,22 @@
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.sf.dozer</groupId>
-                <artifactId>dozer</artifactId>
-                <version>${dozer.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- bites with netflix-ribbon -->
-                        <groupId>commons-collections</groupId>
-                        <artifactId>commons-collections</artifactId>
-                    </exclusion>
-                </exclusions>
+                <!-- com.netflix.eureka:eureka has an internal clash -->
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration.version}</version>
+			</dependency>
+			<dependency>
+                <!-- Mismatch between Eureka Client and Envers -->
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <!-- com.netflix.eureka:eureka has an internal clash -->
+                <groupId>org.hdrhistogram</groupId>
+                <artifactId>HdrHistogram</artifactId>
+                <version>${HdrHistogram.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -211,7 +215,8 @@
         <!-- Project Dependencies -->
         <dependency>
             <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.core.util</artifactId>
+            <artifactId>org.openwms.common.service</artifactId>
+            <classifier>client</classifier>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -221,8 +226,7 @@
         </dependency>
         <dependency>
             <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.common.service</artifactId>
-            <classifier>client</classifier>
+            <artifactId>org.openwms.core.util</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -266,40 +270,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <!-- Bites with Spring Data Envers -->
-                    <groupId>joda-time</groupId>
-                    <artifactId>joda-time</artifactId>
-                </exclusion>
-                <exclusion>
-                    <!-- Bites with Guava -->
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>jsr305</artifactId>
-                </exclusion>
-                <exclusion>
-                    <!-- Several versions of Guava used internally, exclude all -->
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <!-- Has a conflict internally -->
-                    <groupId>commons-configuration</groupId>
-                    <artifactId>commons-configuration</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <!-- Take the newer patch from actuator -->
-                    <groupId>org.hdrhistogram</groupId>
-                    <artifactId>HdrHistogram</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -331,15 +306,9 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Fix Exclusions -->
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.10</version>
-        </dependency>
-
         <!-- 3rd party dependencies -->
         <dependency>
+            <!-- Need to upgrade Guava from version 11 because of CVE -->
             <!-- Required by eureka-client -->
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -371,7 +340,7 @@
         <dependency>
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
-            <scope>compile</scope> <!-- Fix the scope -->
+			<scope>compile</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -400,6 +369,11 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
@@ -410,7 +384,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -436,6 +410,43 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
+		</repository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Staging Repository</name>
+            <url>https://oss.sonatype.org/content/groups/staging/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

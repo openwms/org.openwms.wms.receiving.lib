@@ -96,11 +96,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     @JoinColumn(name = "C_DETAILS_PK", foreignKey = @ForeignKey(name = "FK_REC_POS_DETAILS"))
     private ReceivingOrderPositionDetails positionDetails;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "WMS_REC_ORDER_POS_DETAILS",
+    @ElementCollection
+    @CollectionTable(name = "WMS_REC_ORDER_POSITION_MAP",
             joinColumns = {
-                    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
-                    @JoinColumn(name = "C_POS_NO", referencedColumnName = "C_POS_NO")
+                    @JoinColumn(name = "C_ORDER_POS_PK", referencedColumnName = "C_PK")
             },
             foreignKey = @ForeignKey(name = "FK_DETAILS_ROP")
     )
