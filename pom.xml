@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -51,6 +50,8 @@
         </developer>
     </developers>
 
+	<contributors></contributors>
+
     <ciManagement>
         <system>travis</system>
         <url>https://travis-ci.com/openwms/${project.artifactId}</url>
@@ -66,7 +67,6 @@
 
     <properties>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <ameba-cloud.version>2.0</ameba-cloud.version>
         <common.version>1.7.0-SNAPSHOT</common.version>
 		<core.version>1.9.0-SNAPSHOT</core.version>
         <core.units.version>0.4.0-SNAPSHOT</core.units.version>
@@ -164,12 +164,6 @@
         <dependencies>
             <dependency>
                 <groupId>org.openwms</groupId>
-                <artifactId>org.openwms.common.service</artifactId>
-                <version>${common.version}</version>
-                <classifier>client</classifier>
-            </dependency>
-            <dependency>
-                <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.units</artifactId>
                 <version>${core.units.version}</version>
             </dependency>
@@ -177,6 +171,12 @@
                 <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.util</artifactId>
                 <version>${core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openwms</groupId>
+                <artifactId>org.openwms.common.service</artifactId>
+                <version>${common.version}</version>
+                <classifier>client</classifier>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -215,18 +215,18 @@
         <!-- Project Dependencies -->
         <dependency>
             <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.common.service</artifactId>
-            <classifier>client</classifier>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.openwms</groupId>
             <artifactId>org.openwms.core.units</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.openwms</groupId>
             <artifactId>org.openwms.core.util</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.common.service</artifactId>
+            <classifier>client</classifier>
             <optional>true</optional>
         </dependency>
 
@@ -326,9 +326,9 @@
             <artifactId>feign-httpclient</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>io.interface21</groupId>
-            <artifactId>ameba-lib</artifactId>
+		<dependency>
+			<groupId>io.interface21</groupId>
+			<artifactId>ameba-lib</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -398,6 +398,45 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<properties>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+				<sonar.organization>openwms-github</sonar.organization>
+				<sonar.projectKey>openwms_org.openwms.wms.receiving</sonar.projectKey>
+				<sonar.sources>src/main/java/</sonar.sources>
+				<sonar.java.binaries>target/classes</sonar.java.binaries>
+				<sonar.java.source>${java.version}</sonar.java.source>
+				<enforcer.skip>true</enforcer.skip>
+				<asciidoc.skip>true</asciidoc.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.5</version>
+						<executions>
+							<execution>
+								<id>prepare-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
     <repositories>
         <repository>
