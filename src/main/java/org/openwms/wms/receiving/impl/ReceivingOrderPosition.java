@@ -20,7 +20,9 @@ import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.order.OrderState;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,12 +30,15 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A ReceivingOrderPosition.
@@ -89,7 +94,19 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     /** Some more detail information on this position, could by populated with ERP information. */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_DETAILS_PK", foreignKey = @ForeignKey(name = "FK_REC_POS_DETAILS"))
-    private ReceivingOrderPositionDetails details;
+    private ReceivingOrderPositionDetails positionDetails;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "WMS_REC_ORDER_POS_DETAILS",
+            joinColumns = {
+                    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
+                    @JoinColumn(name = "C_POS_NO", referencedColumnName = "C_POS_NO")
+            },
+            foreignKey = @ForeignKey(name = "FK_DETAILS_ROP")
+    )
+    @MapKeyColumn(name = "C_KEY")
+    @Column(name = "C_VALUE")
+    private Map<String, String> details;
 
     /** Latest date this position can be processed. */
     @Column(name = "C_LATEST_DUE")
@@ -102,8 +119,8 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return transportUnitBK;
     }
 
-    public ReceivingOrderPositionDetails getDetails() {
-        return details;
+    public ReceivingOrderPositionDetails getPositionDetails() {
+        return positionDetails;
     }
 
     public ReceivingOrder getOrder() {
@@ -145,6 +162,18 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public Product getProduct() {
         return product;
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
+
+    public ReceivingOrderPosition addDetail(String key, String value) {
+        if (details == null) {
+            details = new HashMap<>();
+        }
+        details.put(key, value);
+        return this;
     }
 
     public ZonedDateTime getLatestDueDate() {

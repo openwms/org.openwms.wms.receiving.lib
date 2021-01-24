@@ -23,6 +23,8 @@ import org.openwms.core.units.api.Measurable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -62,6 +64,8 @@ public class ReceivingOrderPositionVO implements Serializable {
     private String transportUnitType;
     @JsonProperty("supplierPackingUnit")
     private String supplierPackingUnit;
+    @JsonProperty("details")
+    private Map<String, String> details;
 
     @JsonCreator
     ReceivingOrderPositionVO() {
@@ -109,6 +113,17 @@ public class ReceivingOrderPositionVO implements Serializable {
         return supplierPackingUnit;
     }
 
+    public Map<String, String> getDetails() {
+        if (details == null) {
+            details = new HashMap<>();
+        }
+        return details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,11 +137,12 @@ public class ReceivingOrderPositionVO implements Serializable {
                 Objects.equals(startMode, that.startMode) &&
                 Objects.equals(transportUnitId, that.transportUnitId) &&
                 Objects.equals(transportUnitType, that.transportUnitType) &&
-                Objects.equals(supplierPackingUnit, that.supplierPackingUnit);
+                Objects.equals(supplierPackingUnit, that.supplierPackingUnit) &&
+                Objects.equals(details, that.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, state, quantityReceived, quantityExpected, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit);
+        return Objects.hash(positionId, state, quantityExpected, quantityReceived, product, startMode, transportUnitId, transportUnitType, supplierPackingUnit, details);
     }
 }

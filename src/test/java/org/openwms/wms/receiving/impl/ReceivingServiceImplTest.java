@@ -18,10 +18,14 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
+import org.openwms.core.units.api.Piece;
+import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,5 +54,25 @@ class ReceivingServiceImplTest {
 
         ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4710")));
         assertThat(ex.getMessage()).containsIgnoringCase("exists");
+    }
+
+    @Test void createOrderFull() {
+        ReceivingOrder ro = new ReceivingOrder("4710");
+        ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));
+        ReceivingOrderPosition rop = new ReceivingOrderPosition();
+        rop.setQuantityExpected(Piece.of(2));
+        rop.setQuantityReceived(Piece.of(1));
+        rop.addDetail("p1", "v1").addDetail("p2", "v2");
+        ro.getPositions().add(rop);
+        ReceivingOrder order = service.createOrder(ro);
+
+        assertThat(order.isNew()).isFalse();
+        assertThat(order.getOrderState()).isEqualTo(OrderState.CREATED);
+        assertThat(order.getDetails()).hasSize(3);
+        assertThat(order.getDetails()).hasSize(3);
+        ReceivingOrderPosition next = order.getPositions().iterator().next();
+        assertThat(next.getQuantityExpected()).isEqualTo(Piece.of(2));
+        assertThat(next.getQuantityReceived()).isEqualTo(Piece.of(1));
+        assertThat(next.getDetails()).hasSize(2);
     }
 }

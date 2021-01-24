@@ -112,7 +112,9 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", Piece.of(1), new ProductVO("SKU001")));
+        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO("1", Piece.of(1), new ProductVO("SKU001"));
+        sku001.getDetails().put("p1", "v1");
+        orderVO.getPositions().add(sku001);
         mockMvc
                 .perform(
                         post("/v1/receiving-orders")
@@ -132,6 +134,8 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),
                                 fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
                                 fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"),
+                                fieldWithPath("positions[].details").description("Some arbitrary detail information of the position"),
+                                fieldWithPath("positions[].details.p1").ignored(),
                                 fieldWithPath("links").description("Further action links provided on the ReceivingOrder resource"))
                         )
                 )

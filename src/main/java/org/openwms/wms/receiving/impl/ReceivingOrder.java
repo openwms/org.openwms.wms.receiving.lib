@@ -118,12 +118,14 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     protected ReceivingOrder(String orderId) {
         this.orderId = orderId;
     }
+
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
         this.orderState = OrderState.CREATED;
     }
 
+    /*~ --------------- Accessors ---------------- */
     public String getOrderId() {
         return orderId;
     }

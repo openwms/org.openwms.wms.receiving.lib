@@ -45,10 +45,10 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {
         TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
-                .type(orderPosition.getDetails().getTransportUnitType());
-        orderPosition.getDetails().setHeightIfExists(type::height);
-        orderPosition.getDetails().setWidthIfExists(type::width);
-        orderPosition.getDetails().setLengthIfExists(type::length);
+                .type(orderPosition.getPositionDetails().getTransportUnitType());
+        orderPosition.getPositionDetails().setHeightIfExists(type::height);
+        orderPosition.getPositionDetails().setWidthIfExists(type::width);
+        orderPosition.getPositionDetails().setLengthIfExists(type::length);
         transportUnitApi.process(
                 TUCommand.newBuilder(TUCommand.Type.CREATE)
                         .withTransportUnit(TransportUnitMO.newBuilder()
