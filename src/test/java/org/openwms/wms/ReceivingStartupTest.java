@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.spi;
+package org.openwms.wms;
 
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
-import org.openwms.wms.receiving.impl.OrderPositionProcessor;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * A SPITestConfiguration.
+ * A ReceivingStartupTest.
  *
  * @author Heiko Scherrer
  */
-//@Configuration
-public class SPITestConfiguration {
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+class ReceivingStartupTest {
 
-  //  @Bean
-    OrderPositionProcessor orderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {
-        return new DefaultOrderPositionProcessor(transportUnitApi);
+    @Test void contextLoads() {
+        // just to verify the app starts up
     }
 }
