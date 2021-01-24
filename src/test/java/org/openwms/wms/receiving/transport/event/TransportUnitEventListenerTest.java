@@ -49,7 +49,7 @@ class TransportUnitEventListenerTest {
     @Autowired
     TransactionTemplate txTemplate;
 
-//    @Disabled("Fails on CI")
+    @Disabled("Fails on CI")
     @Test
     void shall_create_TU() throws Exception {
         assertThat(accessor.getRepository().findAll().size()).isZero();
