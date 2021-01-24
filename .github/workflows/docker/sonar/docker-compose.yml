@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+
+  backend:
+    container_name: backend
+    build:
+      context: ../../../../
+      dockerfile: .github/workflows/docker/sonar/Dockerfile
+      args:
+        ARGGITHUB_RUN_NUMBER: $GITHUB_RUN_NUMBER
+        ARGSONAR_TOKEN: $SONAR_TOKEN
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  postgres:
+    container_name: postgres
+    image: openwms/postgres-image:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.8
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
