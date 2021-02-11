@@ -1,4 +1,4 @@
-// dot 2.42.3 on Linux 5.4.0-1032-azure
+// dot 2.42.3 on Linux 5.4.0-1039-azure
 // SchemaSpy rev Unknown
 digraph "wms_rec_order_details" {
   graph [
