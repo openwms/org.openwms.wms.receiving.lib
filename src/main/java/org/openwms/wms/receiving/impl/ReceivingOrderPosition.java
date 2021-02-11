@@ -37,6 +37,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -163,10 +164,22 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return product;
     }
 
+    /**
+     * Get all the details of this {@link ReceivingOrderPosition}.
+     *
+     * @return As Map
+     */
     public Map<String, String> getDetails() {
-        return details;
+        return details == null ? Collections.emptyMap() : details;
     }
 
+    /**
+     * Add a new detail to the {@link ReceivingOrderPosition}.
+     *
+     * @param key The unique key of the detail
+     * @param value The value as String
+     * @return This instance
+     */
     public ReceivingOrderPosition addDetail(String key, String value) {
         if (details == null) {
             details = new HashMap<>();

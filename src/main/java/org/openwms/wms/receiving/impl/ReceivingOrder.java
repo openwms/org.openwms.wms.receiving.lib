@@ -167,7 +167,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     public Map<String, String> getDetails() {
-        return details;
+        return details == null ? Collections.emptyMap() : details;
     }
 
     public void setDetails(Map<String, String> details) {
