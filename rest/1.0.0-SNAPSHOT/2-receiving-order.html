@@ -597,7 +597,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/77f21c8b-2eb3-4035-b57b-4a750cbfe715/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/05216c01-34f6-4a4a-8638-d15f140ff68f/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -809,7 +809,7 @@ Content-Length: 1615
 
 [ {
   "links" : [ ],
-  "pKey" : "27dfef36-07a6-4360-b94c-6da459a61443",
+  "pKey" : "d7fc5933-9842-44fc-b108-46e08b14493e",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -818,28 +818,6 @@ Content-Length: 1615
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "2",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "1",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -861,6 +839,28 @@ Content-Length: 1615
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 } ]</code></pre>
 </div>
@@ -874,7 +874,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/6386c516-da3b-4435-9e18-2ab429ae44dc/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/32f7740a-b65b-44cc-9e70-3432e35fb3e0/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -898,7 +898,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "27dfef36-07a6-4360-b94c-6da459a61443" ],
+  "obj" : [ "4716", "PROCESSED", "d7fc5933-9842-44fc-b108-46e08b14493e" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -970,7 +970,7 @@ Content-Length: 162
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-23 23:51:30 UTC
+Last updated 2021-02-24 21:15:03 UTC
 </div>
 </div>
 </body>
