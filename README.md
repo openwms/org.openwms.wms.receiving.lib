@@ -1,10 +1,9 @@
 # Purpose
-
 This service is responsible to handle incoming orders, so called receiving orders, aka expected receipts or receiving notices. Before a
-pallet or box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier and some other
-characteristics that may differ between projects.
+pallet or box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier, and some
+other characteristics that may differ between projects.
 
-# Build and Run locally
+# Build
 The service can be built and run locally without any other services.
 
 Build the code: 
@@ -12,11 +11,13 @@ Build the code:
 $ ./mvnw package
 ```
 
+# Run Standalone
 Run in standalone mode:
 ```
 $ java -jar target/openwms-wms-receiving-exec.jar 
 ```
 
+# Run Distributed
 Or additionally run in a distributed environment with an already running Service Registry, Configuration Server and a RabbitMQ broker:
 ```
 $ java -Dspring.profiles.active=ASYNCHRONOUS,DEMO -jar target/openwms-wms-receiving-exec.jar 
