@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-7)">
+<meta name="author" content="(1.0.0-SNAPSHOT-8)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-7)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-8)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -484,7 +484,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright © 2005-2020</p>
+<p>Copyright © 2005-2021</p>
 </div>
 <div class="paragraph">
 <p>Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies
@@ -882,7 +882,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/05216c01-34f6-4a4a-8638-d15f140ff68f/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/092c1132-1753-4c6a-92ec-6c4c5fccd819/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1020,28 +1020,6 @@ Content-Length: 1475
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "1",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C1",
-      "description" : "Skateboard gearings 608ZZ",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "2",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -1057,6 +1035,28 @@ Content-Length: 1475
     "product" : {
       "sku" : "C2",
       "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1094,7 +1094,7 @@ Content-Length: 1615
 
 [ {
   "links" : [ ],
-  "pKey" : "d7fc5933-9842-44fc-b108-46e08b14493e",
+  "pKey" : "57edaf91-24e7-4beb-95b6-5c45c6d62607",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -1103,28 +1103,6 @@ Content-Length: 1615
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "1",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C1",
-      "description" : "Skateboard gearings 608ZZ",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "2",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -1146,6 +1124,28 @@ Content-Length: 1615
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 } ]</code></pre>
 </div>
@@ -1159,7 +1159,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /v1/receiving-orders/32f7740a-b65b-44cc-9e70-3432e35fb3e0/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /v1/receiving-orders/185d36e8-4f31-4ba4-8743-2f40e1406e25/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1183,7 +1183,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "d7fc5933-9842-44fc-b108-46e08b14493e" ],
+  "obj" : [ "4716", "PROCESSED", "57edaf91-24e7-4beb-95b6-5c45c6d62607" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1257,7 +1257,7 @@ Content-Length: 162
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-24 21:15:03 UTC
+Last updated 2021-02-25 22:56:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
