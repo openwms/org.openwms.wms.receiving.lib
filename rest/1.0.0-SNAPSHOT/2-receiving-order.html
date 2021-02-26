@@ -597,7 +597,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/092c1132-1753-4c6a-92ec-6c4c5fccd819/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/baf9c56d-e14f-45a9-bb15-3f2ca584e7e7/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -735,28 +735,6 @@ Content-Length: 1475
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "2",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "1",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -772,6 +750,28 @@ Content-Length: 1475
     "product" : {
       "sku" : "C1",
       "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -809,7 +809,7 @@ Content-Length: 1615
 
 [ {
   "links" : [ ],
-  "pKey" : "57edaf91-24e7-4beb-95b6-5c45c6d62607",
+  "pKey" : "be9bd47f-f300-4b36-9758-66207d87d4d6",
   "orderId" : "4716",
   "state" : "PROCESSED"
 }, {
@@ -874,7 +874,7 @@ identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/185d36e8-4f31-4ba4-8743-2f40e1406e25/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/4eaf20d7-cf18-42d5-a267-d5313a85c102/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -898,7 +898,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "57edaf91-24e7-4beb-95b6-5c45c6d62607" ],
+  "obj" : [ "4716", "PROCESSED", "be9bd47f-f300-4b36-9758-66207d87d4d6" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -970,7 +970,7 @@ Content-Length: 162
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-25 22:56:44 UTC
+Last updated 2021-02-26 01:19:11 UTC
 </div>
 </div>
 </body>
