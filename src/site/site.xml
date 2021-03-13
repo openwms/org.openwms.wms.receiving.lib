@@ -35,7 +35,6 @@
             <item name="Confluence Wiki" href="https://openwms.atlassian.net/l/c/d11p3GgQ" />
             <item name="Database Schema" href="${project.version}/schemaspy/relationships.html" />
             <item name="Sonarcloud" href="https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving" />
-            <item name="Jacoco" href="jacoco/index.html" />
         </menu>
         <menu name="Project" ref="reports" />
     </body>
