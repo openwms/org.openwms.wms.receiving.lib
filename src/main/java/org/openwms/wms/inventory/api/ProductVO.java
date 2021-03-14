@@ -32,6 +32,7 @@ public class ProductVO extends AbstractBase implements Serializable {
 
     @JsonProperty("pKey")
     private String pKey;
+    /** The product id is part of the unique business key. */
     @JsonProperty("sku")
     private String sku;
 

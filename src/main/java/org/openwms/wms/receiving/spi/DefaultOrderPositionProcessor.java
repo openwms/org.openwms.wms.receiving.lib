@@ -28,7 +28,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * A DefaultOrderPositionProcessor.
+ * A DefaultOrderPositionProcessor creates expected {@code TransportUnit}s when the {@code transportUnitBK} and the
+ * {@code transportUnitTypeName} are given.
  *
  * @author Heiko Scherrer
  */
@@ -44,19 +45,18 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {
-        TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
-                .type(orderPosition.getPositionDetails().getTransportUnitType());
-        orderPosition.getPositionDetails().setHeightIfExists(type::height);
-        orderPosition.getPositionDetails().setWidthIfExists(type::width);
-        orderPosition.getPositionDetails().setLengthIfExists(type::length);
-        transportUnitApi.process(
-                TUCommand.newBuilder(TUCommand.Type.CREATE)
-                        .withTransportUnit(TransportUnitMO.newBuilder()
-                                .withBarcode(orderPosition.getTransportUnitBK())
-                                .withTransportUnitType(type.build())
-                                .build()
-                        )
-                        .build()
-        );
+        if (orderPosition.getDetails().containsKey("transportUnitTypeName")) {
+            TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
+                    .type(orderPosition.getDetails().get("transportUnitTypeName"));
+            transportUnitApi.process(
+                    TUCommand.newBuilder(TUCommand.Type.CREATE)
+                            .withTransportUnit(TransportUnitMO.newBuilder()
+                                    .withBarcode(orderPosition.getTransportUnitBK())
+                                    .withTransportUnitType(type.build())
+                                    .build()
+                            )
+                            .build()
+            );
+        }
     }
 }

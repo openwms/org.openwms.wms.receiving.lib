@@ -32,19 +32,23 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CaptureRequestVO implements Serializable {
 
-    /** The unique identifier of an {@code ReceivingOrder}. */
+    /** The quantity that has been received during the capturing Goods In process. */
     @NotNull
     @JsonProperty("quantityReceived")
     private Measurable quantityReceived;
+    /** The Product captured during the Goods In process. */
     @NotNull
     @JsonProperty("product")
     private ProductVO product;
+    /** The business key of the captured TransportUnit. */
     @NotEmpty
     @JsonProperty("barcode")
     private String transportUnitId;
+    /** The unique */
     @NotEmpty
     @JsonProperty("loadUnitLabel")
     private String loadUnitLabel;
+    /** A key/value dictionary of arbitrary values captured on the position. */
     @JsonProperty("details")
     private CaptureDetailsVO details;
 

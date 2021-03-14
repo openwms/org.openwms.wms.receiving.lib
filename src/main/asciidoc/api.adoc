@@ -27,7 +27,68 @@ include::0-preambel.adoc[]
 [[resources-prg]]
 = Resources
 
-A description of all used API resources.
+The API manages resources typically used in Goods In or Goods Receipt processing. All resources with their attributes are shown and
+described here.
+
+image::images/resources.drawio.svg[]
+
+.ProductVO
+|===
+| Attribute | Description
+
+| description     | Textual descriptive text
+| baseUnit        | The http status of the error
+| sku             | The product id is part of the unique business key
+|===
+
+.ReceivingOrderVO
+|===
+| Attribute | Description
+
+| pKey      | The unique persistent identifier of the order
+| state     | The current state
+| orderId   | The unique business key
+| positions | An array of positions belonging to the order
+| details   | A key/value dictionary of arbitrary values of the order
+|===
+
+.ReceivingOrderPositionVO
+|===
+| Attribute | Description
+
+| positionId            | The unique persistent identifier of the order
+| product               | The expected Product
+| state                 | The current state
+| quantityReceived      | The quantity that has been received actually
+| startMode             | Whether the position shall be processed `AUTOMATIC` or `MANUAL`
+| transportUnitType     | The expected type of TransportUnit
+| quantityExpected      | The expected/demanded quantity
+| supplierPackagingUnit | The expected PackagingUnit type
+| details               | A key/value dictionary of arbitrary values of the position
+| transportUnitId       | The business key of the expected TransportUnit
+|===
+
+.CaptureRequestVO
+|===
+| Attribute | Description
+
+| product               | The Product received during the Goods In process
+| details               | A key/value dictionary of arbitrary values captured during the Goods In process and stored on the position
+| quantityReceived      | The quantity that has been received
+| loadUnitLabel         | The unique identifier of the LoadUnit within the TransportUnit where the Product has been stored
+| barcode               | The business key of the captured TransportUnit
+|===
+
+.CaptureDetailsVO
+|===
+| Attribute | Description
+
+| height      | The current measured height of the captured PackagingUnit
+| width       | The current measured width of the captured PackagingUnit
+| length      | The current measured length of the captured PackagingUnit
+| weight      | The current measured weight of the captured PackagingUnit
+| messageText | Some arbitrary comment for the capture
+|===
 
 include::1-index.adoc[]
 

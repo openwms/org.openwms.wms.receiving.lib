@@ -31,11 +31,14 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ProductVO implements Serializable {
 
+    /** The product id is part of the unique business key. */
     @NotEmpty(groups = ValidationGroups.Capture.class)
     @JsonProperty("sku")
     private String sku;
+    /** Textual descriptive text. */
     @JsonProperty("description")
     private String description;
+    /** Products may be defined with different base units. */
     @JsonProperty("baseUnit")
     private Measurable baseUnit;
 

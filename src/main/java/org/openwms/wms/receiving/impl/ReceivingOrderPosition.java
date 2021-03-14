@@ -17,8 +17,8 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.inventory.Product;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -26,12 +26,10 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -93,10 +91,6 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     private String transportUnitBK;
 
     /** Some more detail information on this position, could by populated with ERP information. */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "C_DETAILS_PK", foreignKey = @ForeignKey(name = "FK_REC_POS_DETAILS"))
-    private ReceivingOrderPositionDetails positionDetails;
-
     @ElementCollection
     @CollectionTable(name = "WMS_REC_ORDER_POSITION_MAP",
             joinColumns = {
@@ -117,10 +111,6 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public String getTransportUnitBK() {
         return transportUnitBK;
-    }
-
-    public ReceivingOrderPositionDetails getPositionDetails() {
-        return positionDetails;
     }
 
     public ReceivingOrder getOrder() {

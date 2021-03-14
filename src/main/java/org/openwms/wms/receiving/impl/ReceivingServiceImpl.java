@@ -127,9 +127,6 @@ class ReceivingServiceImpl implements ReceivingService {
         }
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("ReceivingOrder with orderId [{}] saved", order.getOrderId());
-        }
         return order;
     }
 
