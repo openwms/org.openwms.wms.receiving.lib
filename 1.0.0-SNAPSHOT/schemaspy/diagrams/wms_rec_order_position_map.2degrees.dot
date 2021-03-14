@@ -19,7 +19,6 @@ digraph "twoDegreesRelationshipsDiagram" {
   edge [
     arrowsize="0.8"
   ];
-  "wms_rec_order_position":"c_details_pk":w -> "wms_rec_order_position_details":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "wms_rec_order_position":"c_order_id":w -> "wms_rec_order":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "wms_rec_order_position":"c_sku":w -> "wms_rec_product":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "wms_rec_order_position_map":"c_order_pos_pk":w -> "wms_rec_order_position":"c_pk":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -50,22 +49,11 @@ digraph "twoDegreesRelationshipsDiagram" {
       <TR><TD PORT="c_state" COLSPAN="3" ALIGN="LEFT">c_state</TD></TR>
       <TR><TD PORT="c_transport_unit_bk" COLSPAN="3" ALIGN="LEFT">c_transport_unit_bk</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD></TR>
-      <TR><TD PORT="c_details_pk" COLSPAN="3" ALIGN="LEFT">c_details_pk</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="3" ALIGN="LEFT">c_sku</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
     </TABLE>>
     URL="wms_rec_order_position.html"
     tooltip="wms_rec_order_position"
-  ];
-  "wms_rec_order_position_details" [
-    label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">wms_rec_order_position_details</TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="wms_rec_order_position_details.html"
-    tooltip="wms_rec_order_position_details"
   ];
   "wms_rec_order_position_map" [
     label=<

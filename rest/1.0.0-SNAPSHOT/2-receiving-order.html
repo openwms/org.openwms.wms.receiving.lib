@@ -443,9 +443,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="resources-receiving-order">ReceivingOrder</h4>
 <div class="paragraph">
-<p>A <code>ReceivingOrder</code> represents an announcement of receiving goods into the warehouse. Usually these kind of orders are sent by the ERP system
-prior to the actual goods receipt. A <code>ReceivingOrder</code> is just the envelope that contains <code>ReceivingOrderPositions</code>, where each position
-determines the expected product to receive in its quantity.</p>
+<p>A <code>ReceivingOrder</code> represents an announcement of goods the are expected to be received at the warehouse. Usually these kind of orders are
+sent by the ERP system prior to the actual physical goods receipt. A <code>ReceivingOrder</code> is just the envelope that contains
+<code>ReceivingOrderPositions</code>, where each position determines the expected product and a quantity.</p>
 </div>
 </div>
 <div class="sect2">
@@ -496,7 +496,7 @@ Content-Length: 778
 <div class="sect2">
 <h3 id="_create_a_receivingorder">Create a ReceivingOrder</h3>
 <div class="paragraph">
-<p>The POST operation take a flat structure of a simple <code>ReceivingOrder</code> to create.</p>
+<p>The <code>POST</code> operation take a flat structure of a simple <code>ReceivingOrder</code> to create.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -592,12 +592,12 @@ Host: localhost:8080
 </tbody>
 </table>
 <div class="paragraph">
-<p>If the <code>ReceivingOrder</code> has been created successfully, the server returns the URI to the created resource:</p>
+<p>If the <code>ReceivingOrder</code> has been created successfully, the server returns the URI to the created resource in the <code>Location</code> header:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/d1bc33f0-e851-4901-9dac-396a2209557e/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/876a72c3-88b9-493b-8694-25e8ccc01f71/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -621,16 +621,13 @@ Content-Length: 110
 <div class="sect2">
 <h3 id="resources-receiving-order-find">Find a ReceivingOrder by Persistent Key</h3>
 <div class="paragraph">
-<p>A HTTP GET request is required to lookup a <code>ReceivingOrder</code> by its synthetic persistent key.</p>
+<p>A HTTP <code>GET request is required to lookup a `ReceivingOrder</code> by its synthetic persistent key.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/receiving-orders/d8099b89-bdb6-40d3-9580-d56aeadd578f HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in 2-receiving-order.adoc - include::/home/runner/work/org.openwms.wms.receiving/org.openwms.wms.receiving/target/generated-snippets/order-find/request-fields.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the <code>ReceivingOrder</code> has been found, the server returns the order instance in the response body:</p>
@@ -646,28 +643,6 @@ Content-Length: 1475
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "2",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "1",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -689,12 +664,120 @@ Content-Length: 1475
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : "2",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 }</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pKey</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The synthetic unique identifier of the ReceivingOrder</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>orderId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the ReceivingOrder</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>state</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The current state of the ReceivingOrder</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].positionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The position of the ReceivingOrderPosition</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].state</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The state of the ReceivingOrderPosition</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity to be received</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.magnitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity amount</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.unitType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityReceived</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The already received quantity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityReceived.magnitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The received quantity amount</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityReceived.unitType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The received quantity type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The expected Product to be received</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product.baseUnit</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default unit and quantity the Product is shipped</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product.baseUnit.unitType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default unit type of the Product</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p>In case the order does not exist, the server responds with a error of the client family because the <code>pKey</code> is expected to exist:</p>
+<p>In case the order does not exist, the server responds with a error of the 4xx-client family because the <code>pKey</code> is expected to exist:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -713,7 +796,7 @@ Content-Length: 123
 <div class="sect2">
 <h3 id="resources-receiving-order-findby-orderid">Find a ReceivingOrder by Order ID</h3>
 <div class="paragraph">
-<p>A HTTP GET request is required to find a <code>ReceivingOrder</code> by it&#8217;s identifying business key, the order ID.</p>
+<p>A HTTP <code>GET</code> request is required to find a <code>ReceivingOrder</code> by it&#8217;s identifying business key, the order ID.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -735,28 +818,6 @@ Content-Length: 1475
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : "1",
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C1",
-      "description" : "Skateboard gearings 608ZZ",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : "2",
     "state" : "CREATED",
     "quantityExpected" : {
@@ -778,6 +839,28 @@ Content-Length: 1475
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : "1",
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 }</code></pre>
 </div>
@@ -789,7 +872,7 @@ Content-Length: 1475
 <div class="sect2">
 <h3 id="_find_all_receivingorders">Find all ReceivingOrders</h3>
 <div class="paragraph">
-<p>A HTTP GET request to the primary resource is required to find all <code>ReceivingOrders</code>. Notice, this method is foreseen for UI applications
+<p>A HTTP <code>GET request to the primary resource is required to find all `ReceivingOrders</code>. Notice, this method is foreseen for UI applications
 and may change in future API versions.</p>
 </div>
 <div class="listingblock">
@@ -859,7 +942,7 @@ Content-Length: 1615
   } ]
 }, {
   "links" : [ ],
-  "pKey" : "3a0dce03-536e-48dd-9a47-f27fb8c9e0ee",
+  "pKey" : "eb7af481-a089-400d-a12c-aadfb934b20c",
   "orderId" : "4716",
   "state" : "PROCESSED"
 } ]</code></pre>
@@ -869,17 +952,17 @@ Content-Length: 1615
 <div class="sect2">
 <h3 id="_cancel_a_receivingorder">Cancel a ReceivingOrder</h3>
 <div class="paragraph">
-<p>An earlier posted <code>ReceivingOrder</code> can be cancelled for further processing. The client needs to send a HTTP DELETE request with the unique
-identifier of the order.</p>
+<p>An earlier created <code>ReceivingOrder</code> can be cancelled for further processing. The client needs to send a HTTP `DELETE request with the
+unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/bd43b044-8b16-4059-8c1b-a64740f1ad1e/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/4b5a72b8-d1dd-419a-ab9d-82ac06a12d37/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the <code>ReceivingOrder</code> has been cancelled, the server returns the order as part of the response body:</p>
+<p>If the <code>ReceivingOrder</code> has been cancelled, the server returns with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -898,7 +981,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "3a0dce03-536e-48dd-9a47-f27fb8c9e0ee" ],
+  "obj" : [ "4716", "PROCESSED", "eb7af481-a089-400d-a12c-aadfb934b20c" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -908,13 +991,13 @@ Content-Length: 279
 <div class="sect2">
 <h3 id="_capture_receivings">Capture Receivings</h3>
 <div class="paragraph">
-<p>When products arrive at the warehouse they were usually preregistered with a <code>ReceivingOrder</code> and its <code>ReceivingOrderPositions</code>. This is
+<p>When products arrive at the warehouse they were usually announced with a <code>ReceivingOrder</code> and its <code>ReceivingOrderPositions</code>. This is
 called an expected receipt. Also unexpected receipts may occur, any unplanned material that needs to be stored in the warehouse without any
 previously received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more of a
 product that was previously announced in a <code>ReceivingOrderPosition</code>.</p>
 </div>
 <div class="paragraph">
-<p>Capturing receipts happens at goods in, where the material arrives and is scanned (captured). The scanned articles are assigned to <code>ReceivingOrderPositions</code>
+<p>Capturing receipts happen at Goods Nn, where material arrives and is scanned (captured). The scanned articles are assigned to <code>ReceivingOrderPositions</code>
 and basically assigned to a <code>TransportUnit</code> (with all its logical compartments on top).</p>
 </div>
 <div class="paragraph">
@@ -951,8 +1034,8 @@ that position and the server responds with success:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If no open positions exist in the <code>ReceivingOrder</code> or the <code>Product</code> does not fit to the demanded <code>Products</code>, the server cannot capture the
-article and responds with an error:</p>
+<p>If no open positions exist in the <code>ReceivingOrder</code> or the <code>Product</code> does not fit to the list of demanded <code>Products</code>, the server cannot
+capture the article and responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -970,7 +1053,7 @@ Content-Length: 162
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-13 22:52:10 UTC
+Last updated 2021-03-14 22:25:59 UTC
 </div>
 </div>
 </body>

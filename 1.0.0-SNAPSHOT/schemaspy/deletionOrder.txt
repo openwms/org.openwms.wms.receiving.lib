@@ -1,7 +1,7 @@
 wms_rec_transport_unit
+wms_rec_order_position_details
 wms_rec_order_details
 wms_rec_order_position_map
 wms_rec_order_position
 wms_rec_product
-wms_rec_order_position_details
 wms_rec_order
