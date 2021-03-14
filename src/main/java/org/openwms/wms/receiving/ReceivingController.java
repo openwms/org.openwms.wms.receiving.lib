@@ -20,10 +20,10 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
-import org.openwms.core.units.api.Piece;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -99,14 +100,13 @@ public class ReceivingController extends AbstractWebController {
 
     @PostMapping("/v1/receiving-orders")
     public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
-        // FIXME [openwms]:
-        orderVO.getPositions().clear();
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
-        // FIXME [openwms]:
-        order.getPositions().forEach(p -> {
-            p.setQuantityReceived(Piece.ZERO);
-            p.setQuantityExpected(Piece.of(1));
-        });
+        order.getPositions().clear();
+        order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
+            ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
+            rop.setOrder(order);
+            return rop;
+        }).collect(Collectors.toList()));
         ReceivingOrder saved = service.createOrder(order);
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }

@@ -120,7 +120,6 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order) {
-        Assert.notNull(order, "order to create must not be null");
         Optional<ReceivingOrder> opt = repository.findByOrderId(order.getOrderId());
         if (opt.isPresent()) {
             throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));

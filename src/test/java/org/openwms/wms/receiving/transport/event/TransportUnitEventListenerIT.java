@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @ReceivingApplicationTest
-class TransportUnitEventListenerTest {
+class TransportUnitEventListenerIT {
 
     @Autowired
     private AmqpTemplate template;

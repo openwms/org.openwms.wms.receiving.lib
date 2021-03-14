@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ReceivingApplicationTest
 @Transactional
 @Rollback
-class ReceivingServiceImplTest {
+class ReceivingServiceImplIT {
 
     @Autowired
     private ReceivingServiceImpl service;

@@ -100,7 +100,7 @@ class ReceivingControllerDocumentation {
     @Rollback
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        orderVO.getPositions().add(new ReceivingOrderPositionVO("1", null, null));
+        orderVO.getPositions().add(new ReceivingOrderPositionVO(1, null, null));
         mockMvc
                 .perform(
                         post("/v1/receiving-orders")
@@ -112,7 +112,7 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO("1", Piece.of(1), new ProductVO("SKU001"));
+        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO("SKU001"));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc

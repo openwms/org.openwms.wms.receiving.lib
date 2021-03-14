@@ -117,6 +117,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         return order;
     }
 
+    public void setOrder(ReceivingOrder order) {
+        this.order = order;
+    }
+
     public int getPosNo() {
         return posNo;
     }

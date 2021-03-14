@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Heiko Scherrer
  */
 @SpringBootTest
-class TransportUnitServiceImplTest {
+class TransportUnitServiceImplIT {
 
     @Autowired
     private TransportUnitService service;

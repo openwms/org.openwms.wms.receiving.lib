@@ -36,9 +36,9 @@ import java.util.Objects;
 public class ReceivingOrderPositionVO implements Serializable {
 
     /** The unique position ID within an ReceivingOrder - must not be empty. */
-    @NotEmpty
+    @NotNull
     @JsonProperty("positionId")
-    private String positionId;
+    private Integer positionId;
     /** Current position state. Default is {@value} */
     @JsonProperty("state")
     private String state;
@@ -71,13 +71,13 @@ public class ReceivingOrderPositionVO implements Serializable {
     ReceivingOrderPositionVO() {
     }
 
-    public ReceivingOrderPositionVO(@NotEmpty String positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected, @NotNull ProductVO product) {
+    public ReceivingOrderPositionVO(@NotEmpty Integer positionId, @NotEmpty Measurable<?, ?, ?> quantityExpected, @NotNull ProductVO product) {
         this.positionId = positionId;
         this.quantityExpected = quantityExpected;
         this.product = product;
     }
 
-    public String getPositionId() {
+    public Integer getPositionId() {
         return positionId;
     }
 

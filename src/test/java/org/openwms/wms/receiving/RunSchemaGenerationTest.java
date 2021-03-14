@@ -16,20 +16,20 @@
 package org.openwms.wms.receiving;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * A ReceivingStartupTest.
+ * A RunSchemaGenerationTest is an empty test class to bootstrap the test ApplicationContext and run the database schema generation. It is
+ * a Unit test and is executed with the surefire plugin.
  *
  * @author Heiko Scherrer
  */
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-class ReceivingStartupTest {
+@ReceivingApplicationTest
+class RunSchemaGenerationTest {
 
-    @Test void contextLoads() {
-        // just to verify the app starts up
+    @Test
+    void runSchemaGeneration() {
+        assertEquals(this.getClass(), (RunSchemaGenerationTest.class));
     }
 }
