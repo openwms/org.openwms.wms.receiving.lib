@@ -597,7 +597,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/845ef2a4-cc49-4d74-a994-ebfd8bebc7b2/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/0f50f74c-d608-41ba-91d3-97cf1146df84/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -896,28 +896,6 @@ Content-Length: 1611
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : 1,
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C1",
-      "description" : "Skateboard gearings 608ZZ",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : 2,
     "state" : "CREATED",
     "quantityExpected" : {
@@ -939,10 +917,32 @@ Content-Length: 1611
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : 1,
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 }, {
   "links" : [ ],
-  "pKey" : "89c20268-99f0-4248-acbf-ba1fe3f503ae",
+  "pKey" : "6233d442-8d43-45af-87f5-0d793413a347",
   "orderId" : "4716",
   "state" : "PROCESSED"
 } ]</code></pre>
@@ -957,7 +957,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/fa88ecd8-2630-4b5f-bf3a-4f6ccda22c8a/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/b3e96140-f2bd-4c1f-9f41-6c2366e8c40a/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -981,7 +981,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "89c20268-99f0-4248-acbf-ba1fe3f503ae" ],
+  "obj" : [ "4716", "PROCESSED", "6233d442-8d43-45af-87f5-0d793413a347" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1053,7 +1053,7 @@ Content-Length: 162
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-15 00:04:20 UTC
+Last updated 2021-03-17 22:33:54 UTC
 </div>
 </div>
 </body>
