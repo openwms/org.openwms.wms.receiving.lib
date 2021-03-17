@@ -440,13 +440,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 </div>
 <div id="content">
-<div class="sect3">
-<h4 id="resources-receiving-order">ReceivingOrder</h4>
+<div class="sect1">
+<h2 id="resources-receiving-order">ReceivingOrder</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>A <code>ReceivingOrder</code> represents an announcement of goods the are expected to be received at the warehouse. Usually these kind of orders are
 sent by the ERP system prior to the actual physical goods receipt. A <code>ReceivingOrder</code> is just the envelope that contains
 <code>ReceivingOrderPositions</code>, where each position determines the expected product and a quantity.</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_receivingorder_index">ReceivingOrder Index</h3>
@@ -597,7 +597,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/0f50f74c-d608-41ba-91d3-97cf1146df84/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/d3b7a75a-97ea-46ec-ba95-7a1213b24c26/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -643,28 +643,6 @@ Content-Length: 1471
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : 2,
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : 1,
     "state" : "CREATED",
     "quantityExpected" : {
@@ -680,6 +658,28 @@ Content-Length: 1471
     "product" : {
       "sku" : "C1",
       "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : 2,
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -896,28 +896,6 @@ Content-Length: 1611
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : 2,
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : 1,
     "state" : "CREATED",
     "quantityExpected" : {
@@ -939,10 +917,32 @@ Content-Length: 1611
         "magnitude" : 1
       }
     }
+  }, {
+    "positionId" : 2,
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
   } ]
 }, {
   "links" : [ ],
-  "pKey" : "6233d442-8d43-45af-87f5-0d793413a347",
+  "pKey" : "24385c7b-4bdf-4593-b325-3da0e0af3c34",
   "orderId" : "4716",
   "state" : "PROCESSED"
 } ]</code></pre>
@@ -957,7 +957,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/b3e96140-f2bd-4c1f-9f41-6c2366e8c40a/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/receiving-orders/c7529674-b6fe-4d31-9750-3eaf1e8a694a/ HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -981,7 +981,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "6233d442-8d43-45af-87f5-0d793413a347" ],
+  "obj" : [ "4716", "PROCESSED", "24385c7b-4bdf-4593-b325-3da0e0af3c34" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1051,9 +1051,11 @@ Content-Length: 162
 </div>
 </div>
 </div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-17 22:33:54 UTC
+Last updated 2021-03-17 22:36:36 UTC
 </div>
 </div>
 </body>
