@@ -4,7 +4,6 @@ pallet or box enters a warehouse it must be announced beforehand. The box must b
 other characteristics that may differ between projects.
 
 # Resources
-
 [![Build status](https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml/badge.svg)](https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml)
 [![Quality](https://sonarcloud.io/api/project_badges/measure?project=org.openwms:org.openwms.wms.receiving&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
