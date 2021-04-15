@@ -15,7 +15,7 @@
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
-        <system>github</system>
+        <system>GitHub</system>
         <url>https://github.com/openwms/${project.artifactId}/issues</url>
     </issueManagement>
 
@@ -50,11 +50,9 @@
         </developer>
     </developers>
 
-	<contributors></contributors>
-
     <ciManagement>
-        <system>travis</system>
-        <url>https://travis-ci.com/openwms/${project.artifactId}</url>
+        <system>GitHub</system>
+        <url>https://github.com/openwms/${project.artifactId}/actions</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
@@ -73,7 +71,7 @@
         <guava.version>30.0-jre</guava.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <joda-time.version>2.10.8</joda-time.version>
-		<spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
+		<spring-cloud-dependencies.version>Hoxton.SR10</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -408,45 +406,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-	<profiles>
-		<profile>
-			<id>coverage</id>
-			<properties>
-				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-				<sonar.organization>openwms-github</sonar.organization>
-				<sonar.projectKey>openwms_org.openwms.wms.receiving</sonar.projectKey>
-				<sonar.sources>src/main/java/</sonar.sources>
-				<sonar.java.binaries>target/classes</sonar.java.binaries>
-				<sonar.java.source>${java.version}</sonar.java.source>
-				<enforcer.skip>true</enforcer.skip>
-				<asciidoc.skip>true</asciidoc.skip>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.8.5</version>
-						<executions>
-							<execution>
-								<id>prepare-agent</id>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>report</id>
-								<goals>
-									<goal>report</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
     <repositories>
         <repository>
