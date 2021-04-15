@@ -82,6 +82,15 @@ eureka:
       zone: ${owms.eureka.zone}
       config-protocol: http # The protocol used to access the config server
 
+info:
+  scm-url: "@scm.url@"
+  build-url: "https://github.com/openwms/@project.artifactId@/actions"
+
+logging:
+  file:
+    name: BOOT-WMS-Receiving.log
+    path: "/tmp/owms"
+
 management:
   endpoints:
     web:
@@ -90,11 +99,6 @@ management:
   health:
     rabbit:
       enabled: false
-
-logging:
-  file:
-    name: BOOT-WMS-Receiving.log
-    path: "/tmp/owms"
 
 ---
 spring:
