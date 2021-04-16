@@ -38,6 +38,7 @@ class InventoryCommandListener {
         this.service = service;
     }
 
+    @SuppressWarnings("squid:S2201")
     @EventListener
     public void onEnsureProductExistsCommand(EnsureProductExistsCommand command) {
         service.findBySku((String) command.getSource()).orElseThrow(
