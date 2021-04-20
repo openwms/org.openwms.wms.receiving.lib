@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.inventory.Product;
 
@@ -68,6 +69,15 @@ public interface ReceivingService {
      * @throws CancellationDeniedException in case the cancellation is not allowed
      */
     void cancelOrder(@NotEmpty String pKey);
+
+    /**
+     * Change the state of a {@link ReceivingOrder}.
+     *
+     * @param pKey The synthetic persistent key
+     * @param state The new state
+     * @throws CancellationDeniedException in case the state change is not allowed
+     */
+    void changeState(@NotEmpty String pKey, @NotNull OrderState state);
 
     /**
      * Find and return all existing {@link ReceivingOrder}s.

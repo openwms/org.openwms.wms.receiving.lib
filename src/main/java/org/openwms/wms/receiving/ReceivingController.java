@@ -20,6 +20,7 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
+import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -131,6 +133,16 @@ public class ReceivingController extends AbstractWebController {
     @DeleteMapping("/v1/receiving-orders/{pKey}")
     public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
         service.cancelOrder(pKey);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/v1/receiving-orders/{pKey}", params = "state")
+    public ResponseEntity<Void> completeOrder(
+            @PathVariable("pKey") String pKey,
+            @RequestParam("state") String state
+    ){
+        OrderState orderState = OrderState.valueOf(state.toUpperCase());
+        service.changeState(pKey, orderState);
         return ResponseEntity.noContent().build();
     }
 }

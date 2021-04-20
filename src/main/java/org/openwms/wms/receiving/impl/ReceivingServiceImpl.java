@@ -25,6 +25,7 @@ import org.openwms.wms.ReceivingConstants;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
+import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
@@ -249,6 +250,17 @@ class ReceivingServiceImpl implements ReceivingService {
             );
         }
         order.setOrderState(CANCELED);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void changeState(@NotEmpty String pKey, @NotNull OrderState state) {
+        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+        LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getOrderId(), state);
+        order.setOrderState(state);
     }
 
     /**
