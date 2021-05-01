@@ -29,25 +29,27 @@ import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
+import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.openwms.wms.order.OrderState.CANCELED;
+import static org.openwms.wms.order.OrderState.COMPLETED;
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.order.OrderState.UNDEFINED;
@@ -125,6 +127,10 @@ class ReceivingServiceImpl implements ReceivingService {
         if (opt.isPresent()) {
             throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));
         }
+        order.getPositions().forEach(p -> {
+            Product product = service.findBySku(p.getProduct().getSku()).orElseThrow(() -> new NotFoundException(format("Product with SKU [%s] does not exist", p.getProduct().getSku())));
+            p.setProduct(product);
+        });
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
         return order;
@@ -210,6 +216,7 @@ class ReceivingServiceImpl implements ReceivingService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     @Measured
     public @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey) {
         Assert.hasText(pKey, "pKey must not be null");
@@ -221,6 +228,7 @@ class ReceivingServiceImpl implements ReceivingService {
      * {@inheritDoc}
      */
     @Measured
+    @Transactional(readOnly = true)
     @Override
     public Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId) {
         return repository.findByOrderId(orderId);
@@ -229,9 +237,20 @@ class ReceivingServiceImpl implements ReceivingService {
     /**
      * {@inheritDoc}
      */
+    @Measured
+    @Override
+    public ReceivingOrder update(String pKey, ReceivingOrderVO receivingOrder) {
+        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+        LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
+        return order;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Measured
-    public void cancelOrder(@NotEmpty String pKey) {
+    public ReceivingOrder cancelOrder(@NotEmpty String pKey) {
         Assert.hasText(pKey, "pKey must not be null");
         ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
@@ -250,6 +269,7 @@ class ReceivingServiceImpl implements ReceivingService {
             );
         }
         order.setOrderState(CANCELED);
+        return order;
     }
 
     /**
@@ -257,10 +277,16 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public void changeState(@NotEmpty String pKey, @NotNull OrderState state) {
+    public ReceivingOrder changeState(@NotEmpty String pKey, @NotNull OrderState state) {
         ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getOrderId(), state);
+        if (state == COMPLETED) {
+
+            // Set all positions to COMPLETED
+            order.getPositions().forEach(p -> p.setState(COMPLETED));
+        }
         order.setOrderState(state);
+        return order;
     }
 
     /**
@@ -269,11 +295,6 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull List<ReceivingOrder> findAll() {
-        try {
-            return repository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
+         return repository.findAll();
     }
 }

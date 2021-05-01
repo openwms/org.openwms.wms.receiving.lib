@@ -30,8 +30,8 @@ import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -72,8 +73,9 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingController.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
                         linkTo(methodOn(ReceivingController.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
-                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", "EURO", new CaptureRequestVO())).withRel("receiving-order-capture"),
-                        linkTo(methodOn(ReceivingController.class).cancelOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-cancel")
+                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", "EURO", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
+                        linkTo(methodOn(ReceivingController.class).saveOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", null)).withRel("receiving-order-save"),
+                        linkTo(methodOn(ReceivingController.class).patchOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", null)).withRel("receiving-order-patch")
                 )
         );
     }
@@ -107,6 +109,7 @@ public class ReceivingController extends AbstractWebController {
         order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
             ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
             rop.setOrder(order);
+            rop.setProduct(mapper.map(p.getProduct(), Product.class));
             return rop;
         }).collect(Collectors.toList()));
         ReceivingOrder saved = service.createOrder(order);
@@ -114,35 +117,47 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @PostMapping(value = "/v1/receiving-orders/{pKey}/capture", params = "loadUnitType")
-    public ResponseEntity<Void> captureOrder(
+    public ResponseEntity<ReceivingOrderVO> captureOrder(
             @PathVariable("pKey") String pKey,
             @RequestParam("loadUnitType") String loadUnitType,
-            @Valid @RequestBody CaptureRequestVO request) {
-        Product product = mapper.map(request.getProduct(), Product.class);
-        service.capture(
-                pKey,
-                request.getTransportUnitId(),
-                request.getLoadUnitLabel(),
-                loadUnitType,
-                request.getQuantityReceived(),
-                request.getDetails(),
-                product);
-        return ResponseEntity.noContent().build();
+            @Valid @RequestBody List<CaptureRequestVO> requests) {
+        ReceivingOrder result = null;
+        for (CaptureRequestVO request : requests) {
+            Product product = mapper.map(request.getProduct(), Product.class);
+            result = service.capture(
+                    pKey,
+                    request.getTransportUnitId(),
+                    request.getLoadUnitLabel(),
+                    loadUnitType,
+                    request.getQuantityReceived(),
+                    request.getDetails(),
+                    product);
+        }
+        return ResponseEntity.ok(mapper.map(result, ReceivingOrderVO.class));
     }
 
-    @DeleteMapping("/v1/receiving-orders/{pKey}")
-    public ResponseEntity<Void> cancelOrder(@PathVariable("pKey") String pKey){
-        service.cancelOrder(pKey);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping(value = "/v1/receiving-orders/{pKey}", params = "state")
-    public ResponseEntity<Void> completeOrder(
+    @PutMapping(value = "/v1/receiving-orders/{pKey}")
+    public ResponseEntity<ReceivingOrderVO> saveOrder(
             @PathVariable("pKey") String pKey,
-            @RequestParam("state") String state
+            @Valid @RequestBody ReceivingOrderVO receivingOrder
     ){
-        OrderState orderState = OrderState.valueOf(state.toUpperCase());
-        service.changeState(pKey, orderState);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(mapper.map(service.update(pKey, receivingOrder), ReceivingOrderVO.class));
+    }
+
+    @PatchMapping(value = "/v1/receiving-orders/{pKey}")
+    public ResponseEntity<ReceivingOrderVO> patchOrder(
+            @PathVariable("pKey") String pKey,
+            @Valid @RequestBody ReceivingOrderVO receivingOrder
+    ){
+        ReceivingOrder updated = mapper.map(receivingOrder, ReceivingOrder.class);
+        if (receivingOrder.hasState()) {
+            OrderState state = OrderState.valueOf(receivingOrder.getState());
+            if (state == OrderState.CANCELED) {
+                updated = service.cancelOrder(pKey);
+            } else {
+                updated = service.changeState(pKey, state);
+            }
+        }
+        return ResponseEntity.ok(mapper.map(updated, ReceivingOrderVO.class));
     }
 }

@@ -38,6 +38,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
@@ -45,12 +46,12 @@ import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -62,7 +63,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Heiko Scherrer
  */
-//@ActiveProfiles(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @ReceivingApplicationTest
 @TestPropertySource(properties = "owms.receiving.unexpected-receipts-allowed=false")
 class ReceivingControllerDocumentation {
@@ -212,7 +212,7 @@ class ReceivingControllerDocumentation {
         String toLocation = createOrder("4714");
         mockMvc
                 .perform(
-                        delete(toLocation)
+                        patch(toLocation)
                 )
                 .andExpect(status().isNoContent())
                 .andDo(document("order-cancel", preprocessResponse(prettyPrint())))
@@ -225,13 +225,13 @@ class ReceivingControllerDocumentation {
         String toLocation = createOrder("4715");
         mockMvc
                 .perform(
-                        delete(toLocation)
+                        patch(toLocation)
                 )
                 .andExpect(status().isNoContent())
         ;
         mockMvc
                 .perform(
-                        delete(toLocation)
+                        patch(toLocation)
                 )
                 .andExpect(status().isGone())
                 .andExpect(jsonPath("messageKey", is(ReceivingMessages.ALREADY_CANCELLED)))
@@ -243,7 +243,7 @@ class ReceivingControllerDocumentation {
         String toLocation = createOrder("4716");
         mockMvc
                 .perform(
-                        delete(toLocation)
+                        patch(toLocation)
                 )
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("messageKey", is(ReceivingMessages.CANCELLATION_DENIED)))
@@ -264,7 +264,7 @@ class ReceivingControllerDocumentation {
                         post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
                                 .param("loadUnitType", "EURO")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(vo))
+                        .content(om.writeValueAsString(asList(vo)))
                 )
                 .andDo(document("order-capture", preprocessResponse(prettyPrint())))
                 .andExpect(status().isNoContent())

@@ -63,11 +63,11 @@
 			<a is-accessible="true">state</a>
 			<b is-accessible="true">state</b>
 		</field>
-		<field>
+		<field custom-converter="org.openwms.core.units.converter.MeasurableConverter">
 			<a is-accessible="true">quantityExpected</a>
 			<b is-accessible="true">quantityExpected</b>
 		</field>
-		<field>
+		<field custom-converter="org.openwms.core.units.converter.MeasurableConverter">
 			<a is-accessible="true">quantityReceived</a>
 			<b is-accessible="true">quantityReceived</b>
 		</field>

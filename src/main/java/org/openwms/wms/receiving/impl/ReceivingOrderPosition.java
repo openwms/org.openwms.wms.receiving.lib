@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.openwms.wms.order.OrderState.COMPLETED;
+
 /**
  * A ReceivingOrderPosition.
  * 
@@ -90,13 +92,13 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     @Column(name = "C_TRANSPORT_UNIT_BK")
     private String transportUnitBK;
 
-    /** Some more detail information on this position, could by populated with ERP information. */
+    /** Arbitrary detail information on this position, might by populated with ERP information. */
     @ElementCollection
     @CollectionTable(name = "WMS_REC_ORDER_POSITION_MAP",
             joinColumns = {
                     @JoinColumn(name = "C_ORDER_POS_PK", referencedColumnName = "C_PK")
             },
-            foreignKey = @ForeignKey(name = "FK_DETAILS_ROP")
+            foreignKey = @ForeignKey(name = "FK_REC_ORDER_DETAILS_ROP")
     )
     @MapKeyColumn(name = "C_KEY")
     @Column(name = "C_VALUE")
@@ -130,6 +132,9 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     }
 
     public void setState(OrderState state) {
+        if (state == COMPLETED) {
+            this.quantityReceived = this.quantityExpected;
+        }
         this.state = state;
     }
 
@@ -156,6 +161,10 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     public Product getProduct() {
         return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     /**

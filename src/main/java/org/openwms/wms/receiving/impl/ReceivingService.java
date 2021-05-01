@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
+import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.inventory.Product;
 
 import javax.validation.Valid;
@@ -67,8 +68,9 @@ public interface ReceivingService {
      *
      * @param pKey The synthetic persistent key
      * @throws CancellationDeniedException in case the cancellation is not allowed
+     * @return The cancelled instance
      */
-    void cancelOrder(@NotEmpty String pKey);
+    ReceivingOrder cancelOrder(@NotEmpty String pKey);
 
     /**
      * Change the state of a {@link ReceivingOrder}.
@@ -76,8 +78,9 @@ public interface ReceivingService {
      * @param pKey The synthetic persistent key
      * @param state The new state
      * @throws CancellationDeniedException in case the state change is not allowed
+     * @return The updated instance
      */
-    void changeState(@NotEmpty String pKey, @NotNull OrderState state);
+    ReceivingOrder changeState(@NotEmpty String pKey, @NotNull OrderState state);
 
     /**
      * Find and return all existing {@link ReceivingOrder}s.
@@ -102,4 +105,14 @@ public interface ReceivingService {
      * @return The order instance
      */
     Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId);
+
+    /**
+     * Update an existing {@link ReceivingOrder} with the given data.
+     *
+     * @param pKey The synthetic persistent key
+     * @param receivingOrder The representation to update
+     * @throws org.ameba.exception.NotFoundException if not found
+     * @return The updated instance
+     */
+    ReceivingOrder update(@NotEmpty String pKey, @NotNull ReceivingOrderVO receivingOrder);
 }

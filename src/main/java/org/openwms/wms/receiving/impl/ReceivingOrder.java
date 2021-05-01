@@ -51,7 +51,9 @@ import static javax.persistence.CascadeType.ALL;
  */
 @Entity
 @Table(name = "WMS_REC_ORDER",
-        uniqueConstraints = @UniqueConstraint(name = "UC_REC_ORDER_ID", columnNames = { "C_ORDER_ID" })
+        uniqueConstraints = {
+        @UniqueConstraint(name = "UC_REC_ORDER_ID", columnNames = { "C_ORDER_ID" }),
+        }
 )
 public class ReceivingOrder extends ApplicationEntity implements Serializable {
 
@@ -100,10 +102,11 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @OrderBy("posNo")
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
+    /** Arbitrary detail information on this order, might by populated with ERP information. */
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "WMS_REC_ORDER_DETAILS",
+    @CollectionTable(name = "WMS_REC_ORDER_DETAIL",
             joinColumns = {
-                    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID")
+                    @JoinColumn(name = "C_ORDER_PK", referencedColumnName = "C_PK")
             },
             foreignKey = @ForeignKey(name = "FK_DETAILS_RO")
     )
