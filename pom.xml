@@ -225,12 +225,6 @@
             <artifactId>org.openwms.core.util</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.common.service</artifactId>
-            <classifier>client</classifier>
-            <optional>true</optional>
-        </dependency>
 
         <!-- Spring Dependencies -->
         <dependency>
