@@ -42,6 +42,7 @@ owms:
     url: http://user:sa@localhost:8761
     zone: ${owms.eureka.url}/eureka/
   srv:
+    prefix: common
     protocol: http
     hostname: localhost
   commands:
@@ -57,7 +58,7 @@ owms:
     common:
       tu:
         exchange-name: common.tu
-        routing-key: tu.event.*
+        routing-key: tu.event.#
         queue-name: wms-receiving-common-tu
   receiving:
     serialization: json
