@@ -61,6 +61,10 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
         this.orderId = orderId;
     }
 
+    public String getpKey() {
+        return pKey;
+    }
+
     public String getOrderId() {
         return orderId;
     }
@@ -83,6 +87,18 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
 
     public void setDetails(Map<String, String> details) {
         this.details = details;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public boolean hasState() {
+        return state != null;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     @Override

@@ -57,7 +57,7 @@ public class ReceivingOrderPositionVO implements Serializable {
     @JsonProperty("startMode")
     private String startMode;
     /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
-    @JsonProperty("transportUnitId")
+    @JsonProperty("transportUnitBK")
     private String transportUnitId;
     /** Optional: The suppliers type of {@code TransportUnit}. */
     @JsonProperty("transportUnitType")
