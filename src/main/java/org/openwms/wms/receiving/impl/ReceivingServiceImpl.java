@@ -20,6 +20,7 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
+import org.ameba.mapping.BeanMapper;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.ReceivingConstants;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
@@ -29,6 +30,7 @@ import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -68,16 +70,18 @@ class ReceivingServiceImpl implements ReceivingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
     private final Translator translator;
+    private final BeanMapper mapper;
     private final ReceivingOrderRepository repository;
     private final ProductService service;
     private final ApplicationEventPublisher publisher;
     private final PackagingUnitApi packagingUnitApi;
 
     ReceivingServiceImpl(
-            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, ReceivingOrderRepository repository,
+            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, BeanMapper mapper, ReceivingOrderRepository repository,
             ProductService service, ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
+        this.mapper = mapper;
         this.repository = repository;
         this.service = service;
         this.publisher = publisher;
@@ -136,22 +140,16 @@ class ReceivingServiceImpl implements ReceivingService {
         return order;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public @NotNull ReceivingOrder capture(
+    private @NotNull ReceivingOrder capture(
             @NotEmpty String pKey,
             @NotEmpty String transportUnitId,
             @NotEmpty String loadUnitPosition,
             @NotEmpty String loadUnitType,
             @NotNull Measurable quantityReceived,
             CaptureDetailsVO details,
-            final @NotNull @Valid Product product) {
+            @NotEmpty String sku) {
 
         //publisher.publishEvent(new EnsureProductExistsCommand(product.getSku()));
-        String sku = product.getSku();
         final Product existingProduct = service.findBySku(sku).orElseThrow(
                 () -> new NotFoundException(
                         translator,
@@ -210,6 +208,27 @@ class ReceivingServiceImpl implements ReceivingService {
         }
         position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
+            @NotNull List<CaptureRequestVO> requests) {
+        ReceivingOrder result = null;
+        for (CaptureRequestVO request : requests) {
+            result = this.capture(
+                    pKey,
+                    request.getTransportUnitId(),
+                    request.getLoadUnitLabel(),
+                    loadUnitType,
+                    request.getQuantityReceived(),
+                    request.getDetails(),
+                    request.getProduct().getSku());
+        }
+        return result;
     }
 
     /**

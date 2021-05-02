@@ -19,12 +19,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.inventory.api.PackagingUnitVO;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * A CaptureRequestVO.
@@ -34,10 +32,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CaptureRequestVO implements Serializable {
 
-    /** The . */
-    @NotNull
-    @JsonProperty("packagingUnits")
-    private List<PackagingUnitVO> packagingUnits;
     /** The quantity that has been received during the capturing Goods In process. */
     @NotNull
     @JsonProperty("quantity")

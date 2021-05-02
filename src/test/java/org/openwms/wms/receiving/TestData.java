@@ -26,6 +26,8 @@ public final class TestData {
 
     public static final String ORDER1_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578f";
 
+    public static final String PRODUCT1_SKU = "C1";
+
     public static String extractPKey(String locationURI) {
         String result = locationURI.substring(0, locationURI.length() - 1);
         return result.substring(result.lastIndexOf("/") + 1);

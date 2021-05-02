@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
+import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
 
 /**
  * A ReceivingServiceImplTest.
@@ -59,8 +61,7 @@ class ReceivingServiceImplIT {
     @Test void createOrderFull() {
         ReceivingOrder ro = new ReceivingOrder("4710");
         ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));
-        ReceivingOrderPosition rop = new ReceivingOrderPosition();
-        rop.setQuantityExpected(Piece.of(2));
+        ReceivingOrderPosition rop = new ReceivingOrderPosition(1, Piece.of(2), new Product(PRODUCT1_SKU));
         rop.setQuantityReceived(Piece.of(1));
         rop.addDetail("p1", "v1").addDetail("p2", "v2");
         ro.getPositions().add(rop);

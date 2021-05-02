@@ -15,11 +15,9 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
-import org.openwms.wms.receiving.api.CaptureDetailsVO;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.inventory.Product;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -47,21 +45,11 @@ public interface ReceivingService {
      * to the {@code TransportUnit} identified by the {@code transportUnitId}.
      *
      * @param pKey The persistent key of the ReceivingOrder
-     * @param transportUnitId The identifier of the TransportUnit to book the Product to
-     * @param loadUnitPosition The position of the LoadUnit
      * @param loadUnitType In case the LoadUnit is created this is type for the LoadUnit
-     * @param quantityReceived The received quantity
-     * @param product The received Product
+     * @param requests all captures to process
      * @return The updated ReceivingOrder instance with updated positions
      */
-    @NotNull ReceivingOrder capture(
-            @NotEmpty String pKey,
-            @NotEmpty String transportUnitId,
-            @NotEmpty String loadUnitPosition,
-            @NotEmpty String loadUnitType,
-            @NotNull Measurable quantityReceived,
-            CaptureDetailsVO details,
-            @NotNull @Valid Product product);
+    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull List<CaptureRequestVO> requests);
 
     /**
      * Cancel a {@link ReceivingOrder}.

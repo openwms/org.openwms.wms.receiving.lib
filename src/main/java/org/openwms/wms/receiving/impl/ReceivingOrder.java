@@ -35,9 +35,11 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -100,6 +102,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** All ReceivingOrderPosition this order has. */
     @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
     @OrderBy("posNo")
+    @Valid
     private Set<ReceivingOrderPosition> positions = new HashSet<>();
 
     /** Arbitrary detail information on this order, might by populated with ERP information. */
@@ -169,8 +172,12 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return positions == null ? Collections.emptySet() : positions;
     }
 
+    public void setPositions(Set<ReceivingOrderPosition> positions) {
+        this.positions = positions;
+    }
+
     public Map<String, String> getDetails() {
-        return details == null ? Collections.emptyMap() : details;
+        return details == null ? new HashMap<>() : details;
     }
 
     public void setDetails(Map<String, String> details) {

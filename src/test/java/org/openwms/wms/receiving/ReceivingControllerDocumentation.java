@@ -38,11 +38,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.assertj.core.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.mock;
+import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -112,7 +112,7 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO("SKU001"));
+        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc
@@ -210,11 +210,15 @@ class ReceivingControllerDocumentation {
     @Rollback
     @Test void shall_cancel_order() throws Exception {
         String toLocation = createOrder("4714");
+        ReceivingOrderVO value = new ReceivingOrderVO("4714");
+        value.setState("CANCELED");
         mockMvc
                 .perform(
                         patch(toLocation)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(value))
                 )
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("order-cancel", preprocessResponse(prettyPrint())))
         ;
     }
@@ -223,15 +227,21 @@ class ReceivingControllerDocumentation {
     @Rollback
     @Test void shall_cancel_cancelled_order() throws Exception {
         String toLocation = createOrder("4715");
+        ReceivingOrderVO value = new ReceivingOrderVO("4715");
+        value.setState("CANCELED");
         mockMvc
                 .perform(
                         patch(toLocation)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(value))
                 )
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
         ;
         mockMvc
                 .perform(
                         patch(toLocation)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(value))
                 )
                 .andExpect(status().isGone())
                 .andExpect(jsonPath("messageKey", is(ReceivingMessages.ALREADY_CANCELLED)))
@@ -241,9 +251,13 @@ class ReceivingControllerDocumentation {
 
     @Test void shall_NOT_cancel_order() throws Exception {
         String toLocation = createOrder("4716");
+        ReceivingOrderVO value = new ReceivingOrderVO("4716");
+        value.setState("CANCELED");
         mockMvc
                 .perform(
                         patch(toLocation)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(value))
                 )
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("messageKey", is(ReceivingMessages.CANCELLATION_DENIED)))
@@ -264,10 +278,10 @@ class ReceivingControllerDocumentation {
                         post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
                                 .param("loadUnitType", "EURO")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(asList(vo)))
+                        .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
                 )
                 .andDo(document("order-capture", preprocessResponse(prettyPrint())))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
         ;
     }
 

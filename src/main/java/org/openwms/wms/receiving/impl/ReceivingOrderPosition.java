@@ -76,10 +76,9 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_RECEIVED_TYPE", nullable = false),
-            @Column(name = "C_QTY_RECEIVED", nullable = false)
+            @Column(name = "C_QTY_RECEIVED_TYPE", nullable = true),
+            @Column(name = "C_QTY_RECEIVED", nullable = true)
     })
-    @NotNull
     private Measurable quantityReceived;
 
     /** The ordered {@link Product} identified by it's SKU. */
@@ -94,7 +93,7 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     /** Arbitrary detail information on this position, might by populated with ERP information. */
     @ElementCollection
-    @CollectionTable(name = "WMS_REC_ORDER_POSITION_MAP",
+    @CollectionTable(name = "WMS_REC_ORDER_POSITION_DETAIL",
             joinColumns = {
                     @JoinColumn(name = "C_ORDER_POS_PK", referencedColumnName = "C_PK")
             },
@@ -110,6 +109,12 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
 
     /** Used by the JPA provider. */
     protected ReceivingOrderPosition() {}
+
+    public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
+        this.posNo = posNo;
+        this.quantityExpected = quantityExpected;
+        this.product = product;
+    }
 
     public String getTransportUnitBK() {
         return transportUnitBK;
