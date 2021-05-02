@@ -1,3 +1,6 @@
+org.openwms.common.transport.api
+org.openwms.common.transport.api.commands
+org.openwms.common.transport.api.messages
 org.openwms.values
 org.openwms.wms
 org.openwms.wms.commands

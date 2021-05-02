@@ -1,7 +1,6 @@
 wms_rec_order
 wms_rec_product
 wms_rec_order_position
-wms_rec_order_position_map
-wms_rec_order_details
-wms_rec_order_position_details
+wms_rec_order_detail
+wms_rec_order_position_detail
 wms_rec_transport_unit
