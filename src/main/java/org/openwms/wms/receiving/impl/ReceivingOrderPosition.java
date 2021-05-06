@@ -156,8 +156,12 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
     }
 
     public Measurable addQuantityReceived(Measurable quantityReceived) {
-        this.quantityReceived = this.quantityReceived.add(quantityReceived);
-        return quantityReceived;
+        if (this.quantityReceived == null) {
+            this.quantityReceived = quantityReceived;
+        } else {
+            this.quantityReceived = this.quantityReceived.add(quantityReceived);
+        }
+        return this.quantityReceived;
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {

@@ -215,8 +215,8 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
-            @NotNull List<CaptureRequestVO> requests) {
+    public ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
+            @NotNull @Valid List<CaptureRequestVO> requests) {
         ReceivingOrder result = null;
         for (CaptureRequestVO request : requests) {
             result = this.capture(
@@ -228,7 +228,7 @@ class ReceivingServiceImpl implements ReceivingService {
                     request.getDetails(),
                     request.getProduct().getSku());
         }
-        return result;
+        return mapper.map(result, ReceivingOrderVO.class);
     }
 
     /**

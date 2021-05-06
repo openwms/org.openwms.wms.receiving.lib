@@ -49,7 +49,7 @@ public interface ReceivingService {
      * @param requests all captures to process
      * @return The updated ReceivingOrder instance with updated positions
      */
-    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull List<CaptureRequestVO> requests);
+    ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull @Valid List<CaptureRequestVO> requests);
 
     /**
      * Cancel a {@link ReceivingOrder}.
