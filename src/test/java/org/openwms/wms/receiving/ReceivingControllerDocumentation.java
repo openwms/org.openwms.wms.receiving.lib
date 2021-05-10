@@ -42,6 +42,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.mock;
+import static org.openwms.wms.receiving.TestData.ORDER1_PKEY;
 import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -208,6 +209,23 @@ class ReceivingControllerDocumentation {
 
     @Transactional
     @Rollback
+    @Test void shall_complete_order() throws Exception {
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/"+ORDER1_PKEY+"/complete")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("state", is("COMPLETED")))
+                .andExpect(jsonPath("positions[0].state", is("COMPLETED")))
+                .andExpect(jsonPath("positions[0].quantityReceived.magnitude", is(1)))
+                .andExpect(jsonPath("positions[1].state", is("COMPLETED")))
+                .andExpect(jsonPath("positions[1].quantityReceived.magnitude", is(2)))
+                .andDo(document("order-complete", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Transactional
+    @Rollback
     @Test void shall_cancel_order() throws Exception {
         String toLocation = createOrder("4714");
         ReceivingOrderVO value = new ReceivingOrderVO("4714");
@@ -275,7 +293,7 @@ class ReceivingControllerDocumentation {
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
-                        post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
                                 .param("loadUnitType", "EURO")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
@@ -295,7 +313,7 @@ class ReceivingControllerDocumentation {
             vo.setProduct(new ProductVO("C1"));
             mockMvc
                     .perform(
-                            post("/v1/receiving-orders/{pKey}/capture", TestData.ORDER1_PKEY)
+                            post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
                                     .param("loadUnitType", "EURO")
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(om.writeValueAsString(vo))

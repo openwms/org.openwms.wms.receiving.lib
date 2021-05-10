@@ -103,4 +103,12 @@ public interface ReceivingService {
      * @return The updated instance
      */
     ReceivingOrder update(@NotEmpty String pKey, @NotNull ReceivingOrderVO receivingOrder);
+
+    /**
+     * Complete a {@link ReceivingOrder} and all positions. Satisfy quantities and set the state to {@code COMPLETED}.
+     *
+     * @param pKey The synthetic persistent key
+     * @return The updated instance
+     */
+    ReceivingOrderVO complete(@NotEmpty String pKey);
 }

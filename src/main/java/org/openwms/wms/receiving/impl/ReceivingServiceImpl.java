@@ -261,7 +261,28 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder update(String pKey, ReceivingOrderVO receivingOrder) {
         ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
         LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
+        // FIXME [openwms]: 10.05.20 Implement this
         return order;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
+    @Override
+    public ReceivingOrderVO complete(@NotEmpty String pKey) {
+        ReceivingOrder order = repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("ReceivingOrder with pKey [%s] does not exist", pKey)));
+        if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
+            order.getPositions().forEach(p -> {
+                p.setQuantityReceived(p.getQuantityExpected());
+                p.setState(COMPLETED);
+            });
+            order.setOrderState(COMPLETED);
+            LOGGER.debug("ReceivingOrder [{}] with all positions completed", pKey);
+        } else {
+            LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
+        }
+        return mapper.map(order, ReceivingOrderVO.class);
     }
 
     /**

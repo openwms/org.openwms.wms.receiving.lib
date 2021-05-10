@@ -74,6 +74,7 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingController.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
                         linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", "EURO", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
+                        linkTo(methodOn(ReceivingController.class).completeOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-complete"),
                         linkTo(methodOn(ReceivingController.class).saveOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", null)).withRel("receiving-order-save"),
                         linkTo(methodOn(ReceivingController.class).patchOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", null)).withRel("receiving-order-patch")
                 )
@@ -122,6 +123,13 @@ public class ReceivingController extends AbstractWebController {
             @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody List<CaptureRequestVO> requests) {
         ReceivingOrderVO result = service.capture(pKey, loadUnitType, requests);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(value = "/v1/receiving-orders/{pKey}/complete")
+    public ResponseEntity<ReceivingOrderVO> completeOrder(
+            @PathVariable("pKey") String pKey) {
+        ReceivingOrderVO result = service.complete(pKey);
         return ResponseEntity.ok(result);
     }
 
