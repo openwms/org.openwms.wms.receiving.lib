@@ -19,8 +19,8 @@ spring:
       name: user
       password: sa
   jpa:
-    show-sql: false
     open-in-view: false
+    show-sql: false
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
   main:
