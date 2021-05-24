@@ -217,9 +217,7 @@ class ReceivingControllerDocumentation {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("state", is("COMPLETED")))
                 .andExpect(jsonPath("positions[0].state", is("COMPLETED")))
-                .andExpect(jsonPath("positions[0].quantityReceived.magnitude", is(1)))
                 .andExpect(jsonPath("positions[1].state", is("COMPLETED")))
-                .andExpect(jsonPath("positions[1].quantityReceived.magnitude", is(2)))
                 .andDo(document("order-complete", preprocessResponse(prettyPrint())))
         ;
     }
