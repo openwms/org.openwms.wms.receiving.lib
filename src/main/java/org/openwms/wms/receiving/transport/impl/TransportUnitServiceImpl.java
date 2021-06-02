@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.transport.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.transport.TransportUnit;
 import org.openwms.wms.receiving.transport.TransportUnitService;
@@ -34,10 +35,14 @@ class TransportUnitServiceImpl implements TransportUnitService {
 
     private final TransportUnitRepository repository;
 
-    public TransportUnitServiceImpl(TransportUnitRepository repository) {
+    TransportUnitServiceImpl(TransportUnitRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
     @Override
     public TransportUnit upsert(@NotNull TransportUnit transportUnit) {
         Assert.notNull(transportUnit, "transportUnit must not be null");

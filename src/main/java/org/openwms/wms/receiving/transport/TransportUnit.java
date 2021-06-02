@@ -21,6 +21,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -29,11 +31,20 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "WMS_REC_TRANSPORT_UNIT", uniqueConstraints = @UniqueConstraint(name = "UC_REC_TRANSPORT_UNIT_BARCODE", columnNames = {"C_BARCODE"}))
+@Table(name = "WMS_REC_TRANSPORT_UNIT", uniqueConstraints = {
+        @UniqueConstraint(name = "UC_TU_BARCODE", columnNames = {"C_BARCODE"}),
+        @UniqueConstraint(name = "UC_TU_FOREIGN_PID", columnNames = {"C_FOREIGN_PID"})
+})
 public class TransportUnit extends ApplicationEntity implements Serializable {
+
+    /** The foreign persistent key of the {@code Location}. */
+    @Column(name = "C_FOREIGN_PID", nullable = false)
+    @NotEmpty
+    private String foreignPKey;
 
     /** Unique natural key. */
     @Column(name = "C_BARCODE", nullable = false)
+    @NotNull
     private String barcode;
 
     /** The current {@code Location} of the {@code TransportUnit}. */
@@ -48,6 +59,14 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
     public TransportUnit(String barcode, String actualLocation) {
         this.barcode = barcode;
         this.actualLocation = actualLocation;
+    }
+
+    public String getForeignPKey() {
+        return foreignPKey;
+    }
+
+    public void setForeignPKey(String foreignPKey) {
+        this.foreignPKey = foreignPKey;
     }
 
     public String getBarcode() {

@@ -20,7 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -28,6 +30,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.SerializerMessageConverter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
@@ -81,40 +84,77 @@ public class ReceivingAsyncConfiguration {
         return rabbitTemplate;
     }
 
-    /* Common Service Bindings */
+    /*~ --------------- Exchanges --------------- */
     @Bean
     TopicExchange tuExchange(@Value("${owms.events.common.tu.exchange-name}") String exchangeName) {
         return new TopicExchange(exchangeName, true, false);
     }
-
-    @Bean
-    Queue tuQueue(@Value("${owms.events.common.tu.queue-name}") String queueName) {
-        return new Queue(queueName, true);
-    }
-
-    @Bean
-    Binding tuBinding(TopicExchange tuExchange, Queue tuQueue, @Value("${owms.events.common.tu.routing-key}") String routingKey) {
-        return BindingBuilder
-                .bind(tuQueue)
-                .to(tuExchange)
-                .with(routingKey);
-    }
-
     @Bean
     TopicExchange inventoryExchange(@Value("${owms.events.inventory.exchange-name}") String exchangeName) {
         return new TopicExchange(exchangeName, true, false);
     }
 
+    /*~ ---------------- Queues ----------------- */
     @Bean
-    Queue inventoryProductsQueue(@Value("${owms.events.inventory.products.queue-name}") String queueName) {
-        return new Queue(queueName, true);
+    Queue tuQueue(
+            @Value("${owms.events.common.tu.queue-name}") String queueName,
+            @Value("${owms.dead-letter.exchange-name}") String exchangeName
+    ) {
+        return QueueBuilder.durable(queueName)
+                .withArgument("x-dead-letter-exchange", exchangeName)
+                .withArgument("x-dead-letter-routing-key", "poison-message")
+                .build();
+    }
+    @Bean
+    Queue inventoryProductsQueue(
+            @Value("${owms.events.inventory.products.queue-name}") String queueName,
+            @Value("${owms.dead-letter.exchange-name}") String exchangeName
+    ) {
+        return QueueBuilder.durable(queueName)
+                .withArgument("x-dead-letter-exchange", exchangeName)
+                .withArgument("x-dead-letter-routing-key", "poison-message")
+                .build();
     }
 
+    /*~ --------------- Bindings ---------------- */
     @Bean
-    Binding inventoryProductsBinding(TopicExchange inventoryExchange, Queue inventoryProductsQueue, @Value("${owms.events.inventory.products.routing-key}") String routingKey) {
+    Binding tuBinding(
+            @Qualifier("tuExchange") TopicExchange tuExchange,
+            @Qualifier("tuQueue") Queue tuQueue,
+            @Value("${owms.events.common.tu.routing-key}") String routingKey
+    ) {
+        return BindingBuilder
+                .bind(tuQueue)
+                .to(tuExchange)
+                .with(routingKey);
+    }
+    @Bean
+    Binding inventoryProductsBinding(
+            @Qualifier("inventoryExchange") TopicExchange inventoryExchange,
+            @Qualifier("inventoryProductsQueue") Queue inventoryProductsQueue,
+            @Value("${owms.events.inventory.products.routing-key}") String routingKey
+    ) {
         return BindingBuilder
                 .bind(inventoryProductsQueue)
                 .to(inventoryExchange)
                 .with(routingKey);
+    }
+
+    /* Dead Letter */
+    @Bean
+    DirectExchange dlExchange(@Value("${owms.dead-letter.exchange-name}") String exchangeName) {
+        return new DirectExchange(exchangeName);
+    }
+
+    @Bean
+    Queue dlq(@Value("${owms.dead-letter.queue-name}") String queueName) {
+        return QueueBuilder.durable(queueName).build();
+    }
+
+    @Bean
+    Binding dlBinding(
+            @Value("${owms.dead-letter.queue-name}") String queueName,
+            @Value("${owms.dead-letter.exchange-name}") String exchangeName) {
+        return BindingBuilder.bind(dlq(queueName)).to(dlExchange(exchangeName)).with("poison-message");
     }
 }

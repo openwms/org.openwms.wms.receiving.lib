@@ -45,23 +45,7 @@ owms:
     prefix: common
     protocol: http
     hostname: localhost
-  commands:
-    common:
-      tu:
-        exchange-name: common.tu.commands
-  events:
-    inventory:
-      exchange-name: inventory
-      products:
-        queue-name: wms-receiving-products
-        routing-key: product.event.*
-    common:
-      tu:
-        exchange-name: common.tu
-        routing-key: tu.event.#
-        queue-name: wms-receiving-common-tu
   receiving:
-    serialization: json
     unexpected-receipts-allowed: true
 
 server:
@@ -100,6 +84,40 @@ management:
   health:
     rabbit:
       enabled: false
+
+---
+spring:
+  profiles: ASYNCHRONOUS
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          max-attempts: 3
+          enabled: true
+          initial-interval: 1s
+          max-interval: 1s
+
+owms:
+  commands:
+    common:
+      tu:
+        exchange-name: common.tu.commands
+  dead-letter:
+    exchange-name: dle.receiving
+    queue-name: receiving-dl-queue
+  events:
+    inventory:
+      exchange-name: inventory
+      products:
+        queue-name: receiving-products-queue
+        routing-key: product.event.#
+    common:
+      tu:
+        exchange-name: common.tu
+        routing-key: tu.event.#
+        queue-name: receiving-tu-queue
+  receiving:
+    serialization: json
 
 ---
 spring:
