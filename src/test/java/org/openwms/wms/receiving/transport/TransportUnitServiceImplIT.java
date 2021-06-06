@@ -45,6 +45,7 @@ class TransportUnitServiceImplIT {
     @Test
     void upsert() {
         org.openwms.wms.receiving.transport.TransportUnit tu = new org.openwms.wms.receiving.transport.TransportUnit("4709", "EXT_/0000/0000/0000/0000");
+        tu.setForeignPKey("1111-1111");
         tu = service.upsert(tu);
         assertThat(tu.getBarcode()).isEqualTo("4709");
         assertThat(tu.isNew()).isFalse();
