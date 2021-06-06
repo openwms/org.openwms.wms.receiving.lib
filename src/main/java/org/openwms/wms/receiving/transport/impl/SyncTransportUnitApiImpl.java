@@ -18,34 +18,20 @@ package org.openwms.wms.receiving.transport.impl;
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
- * A AsyncTransportUnitApiImpl is a Spring managed bean to send Commands asynchronously over AMQP, only active with Spring profile
- * {@linkplain SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ * A SyncTransportUnitApiImpl.
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Profile("!" + SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
-class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
-
-    private final AmqpTemplate template;
-    private final String exchangeName;
-
-    AsyncTransportUnitApiImpl(
-            AmqpTemplate template,
-            @Value("${owms.commands.common.tu.exchange-name}") String exchangeName
-    ) {
-        this.template = template;
-        this.exchangeName = exchangeName;
-    }
-
+class SyncTransportUnitApiImpl implements AsyncTransportUnitApi {
+    
     @Override
     public void process(Command command) {
-        template.convertAndSend(exchangeName, "common.tu.command.in.create", command);
+        // TODO [openwms]: 06.06.21 Do this via REST API 
     }
 }
