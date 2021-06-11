@@ -32,7 +32,11 @@ import java.util.StringJoiner;
 public class TransportUnitMO implements Serializable {
 
     /** The persistent key of TransportUnit. */
-    @NotEmpty(groups = {ValidationGroups.TransportUnit.Request.class, ValidationGroups.TransportUnit.Remove.class})
+    @NotEmpty(groups = {
+            ValidationGroups.TransportUnit.Create.class,
+            ValidationGroups.TransportUnit.Request.class,
+            ValidationGroups.TransportUnit.Remove.class
+    })
     private String pKey;
     /** The business key of the TransportUnit. */
     @NotEmpty(groups = {

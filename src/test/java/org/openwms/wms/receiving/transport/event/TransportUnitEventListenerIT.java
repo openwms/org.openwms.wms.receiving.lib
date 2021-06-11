@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.transport.event;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
@@ -49,7 +48,6 @@ class TransportUnitEventListenerIT {
     @Autowired
     TransactionTemplate txTemplate;
 
-    @Disabled("Fails on CI")
     @Test
     void shall_create_TU() throws Exception {
         assertThat(accessor.getRepository().findAll().size()).isZero();

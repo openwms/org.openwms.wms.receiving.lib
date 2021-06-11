@@ -32,8 +32,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "WMS_REC_TRANSPORT_UNIT", uniqueConstraints = {
-        @UniqueConstraint(name = "UC_TU_BARCODE", columnNames = {"C_BARCODE"}),
-        @UniqueConstraint(name = "UC_TU_FOREIGN_PID", columnNames = {"C_FOREIGN_PID"})
+        @UniqueConstraint(name = "UC_REC_TU_BARCODE", columnNames = {"C_BARCODE"}),
+        @UniqueConstraint(name = "UC_REC_TU_FOREIGN_PID", columnNames = {"C_FOREIGN_PID"})
 })
 public class TransportUnit extends ApplicationEntity implements Serializable {
 
