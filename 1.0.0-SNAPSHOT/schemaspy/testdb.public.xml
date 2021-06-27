@@ -118,10 +118,10 @@
          <index name="wms_rec_transport_unit_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
-         <index name="uc_tu_barcode" unique="true">
+         <index name="uc_rec_tu_barcode" unique="true">
             <column ascending="true" name="c_barcode"/>
          </index>
-         <index name="uc_tu_foreign_pid" unique="true">
+         <index name="uc_rec_tu_foreign_pid" unique="true">
             <column ascending="true" name="c_foreign_pid"/>
          </index>
       </table>
