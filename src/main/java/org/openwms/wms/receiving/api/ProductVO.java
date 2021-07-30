@@ -35,6 +35,9 @@ public class ProductVO implements Serializable {
     @NotEmpty(groups = ValidationGroups.Capture.class)
     @JsonProperty("sku")
     private String sku;
+    /** An identifying label of the Product. */
+    @JsonProperty("label")
+    private String label;
     /** Textual descriptive text. */
     @JsonProperty("description")
     private String description;
@@ -52,6 +55,14 @@ public class ProductVO implements Serializable {
 
     public String getSku() {
         return sku;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getDescription() {

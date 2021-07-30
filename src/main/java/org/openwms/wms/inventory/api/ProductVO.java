@@ -20,29 +20,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
- * A ProductVO.
+ * A ProductVO that is a representation and mapped to the Product like it is defined in the WMS Inventory Service API.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProductVO extends AbstractBase implements Serializable {
 
+    /** The persistent unique key. */
     @JsonProperty("pKey")
     private String pKey;
     /** The product id is part of the unique business key. */
     @JsonProperty("sku")
     private String sku;
+    /** An identifying label of the Product. */
+    @JsonProperty("label")
+    private String label;
 
-    @Override
-    public String toString() {
-        return sku;
-    }
-
-    public ProductVO() {
-    }
+    public ProductVO() { }
 
     private ProductVO(Builder builder) {
         setpKey(builder.pKey);
@@ -69,20 +66,17 @@ public class ProductVO extends AbstractBase implements Serializable {
         this.sku = sku;
     }
 
+    public String getLabel() {
+        return label;
+    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ProductVO productVO = (ProductVO) o;
-        return Objects.equals(pKey, productVO.pKey) &&
-                Objects.equals(sku, productVO.sku) ;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, sku);
+    public String toString() {
+        return sku;
     }
 
     public static final class Builder {

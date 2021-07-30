@@ -127,9 +127,14 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order) {
-        Optional<ReceivingOrder> opt = repository.findByOrderId(order.getOrderId());
-        if (opt.isPresent()) {
-            throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));
+        Optional<ReceivingOrder> opt;
+        if (order.hasOrderId()) {
+            opt = repository.findByOrderId(order.getOrderId());
+            if (opt.isPresent()) {
+                throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));
+            }
+        } else {
+            todo here
         }
         order.getPositions().forEach(p -> {
             Product product = service.findBySku(p.getProduct().getSku()).orElseThrow(() -> new NotFoundException(format("Product with SKU [%s] does not exist", p.getProduct().getSku())));
