@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2021 the original author or authors.
+ * Copyright 2005-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms;
+package org.openwms.wms.receiving.impl;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+
+import javax.persistence.LockModeType;
+import java.util.Optional;
 
 /**
- * A ReceivingConstants.
+ * A NextReceivingOrderRepository.
  *
  * @author Heiko Scherrer
  */
-public final class ReceivingConstants {
+interface NextReceivingOrderRepository extends JpaRepository<NextReceivingOrder, Long> {
 
-    public static final String DEFAULT_ACCOUNT_NAME = "DEFAULT";
-    public static final String PRODUCT_NOT_FOUND = "owms.wms.rec.product404";
-
-    private ReceivingConstants() {}
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<NextReceivingOrder> findByName(String name);
 }

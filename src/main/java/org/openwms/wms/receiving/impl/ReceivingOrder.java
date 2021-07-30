@@ -136,6 +136,10 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return orderId;
     }
 
+    void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public boolean hasOrderId() {
         return this.orderId != null && !this.orderId.isEmpty();
     }

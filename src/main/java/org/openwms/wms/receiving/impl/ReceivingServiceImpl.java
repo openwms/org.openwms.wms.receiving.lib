@@ -50,6 +50,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static org.openwms.wms.ReceivingConstants.DEFAULT_ACCOUNT_NAME;
 import static org.openwms.wms.order.OrderState.CANCELED;
 import static org.openwms.wms.order.OrderState.COMPLETED;
 import static org.openwms.wms.order.OrderState.CREATED;
@@ -71,17 +72,19 @@ class ReceivingServiceImpl implements ReceivingService {
     private final boolean overbookingAllowed;
     private final Translator translator;
     private final BeanMapper mapper;
+    private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final ProductService service;
     private final ApplicationEventPublisher publisher;
     private final PackagingUnitApi packagingUnitApi;
 
     ReceivingServiceImpl(
-            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, BeanMapper mapper, ReceivingOrderRepository repository,
+            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, BeanMapper mapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
             ProductService service, ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
         this.mapper = mapper;
+        this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
         this.service = service;
         this.publisher = publisher;
@@ -134,7 +137,21 @@ class ReceivingServiceImpl implements ReceivingService {
                 throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));
             }
         } else {
-            todo here
+            String orderId;
+            Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(DEFAULT_ACCOUNT_NAME);
+            NextReceivingOrder nb;
+            if (byName.isEmpty()) {
+                nb = new NextReceivingOrder();
+                nb.setName(DEFAULT_ACCOUNT_NAME);
+                nb.setCurrentOrderId("1");
+            } else {
+                nb = byName.get();
+                int current = Integer.parseInt(nb.getCurrentOrderId());
+                nb.setCurrentOrderId(String.valueOf(++current));
+            }
+            nextReceivingOrderRepository.save(nb);
+            orderId = nb.getCurrentOrderId();
+            order.setOrderId(orderId);
         }
         order.getPositions().forEach(p -> {
             Product product = service.findBySku(p.getProduct().getSku()).orElseThrow(() -> new NotFoundException(format("Product with SKU [%s] does not exist", p.getProduct().getSku())));
