@@ -127,7 +127,7 @@ class ReceivingControllerDocumentation {
                 .andDo(document("order-create",
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("orderId").description("An unique identifier of the ReceivingOrder to create"),
+                                fieldWithPath("orderId").description("An unique identifier of the ReceivingOrder to create, if not provided the server generates an ID"),
                                 fieldWithPath("positions[]").description("An array of positions, must not be empty"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),

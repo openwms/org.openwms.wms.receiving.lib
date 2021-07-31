@@ -58,6 +58,16 @@ class ReceivingServiceImplIT {
         assertThat(ex.getMessage()).containsIgnoringCase("exists");
     }
 
+    @Test void createOrderWithoutID() {
+        ReceivingOrder order = service.createOrder(new ReceivingOrder());
+        assertThat(order.isNew()).isFalse();
+        assertThat(order.getOrderId()).isNotNull();
+
+        ReceivingOrder order2 = service.createOrder(new ReceivingOrder());
+        assertThat(order2.getOrderId()).isNotNull();
+        assertThat(Integer.parseInt(order.getOrderId()) + 1).isEqualTo(Integer.parseInt(order2.getOrderId()));
+    }
+
     @Test void createOrderFull() {
         ReceivingOrder ro = new ReceivingOrder("4710");
         ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));

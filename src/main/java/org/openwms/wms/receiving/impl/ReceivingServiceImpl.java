@@ -134,10 +134,9 @@ class ReceivingServiceImpl implements ReceivingService {
         if (order.hasOrderId()) {
             opt = repository.findByOrderId(order.getOrderId());
             if (opt.isPresent()) {
-                throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order));
+                throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order.getOrderId()));
             }
         } else {
-            String orderId;
             Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(DEFAULT_ACCOUNT_NAME);
             NextReceivingOrder nb;
             if (byName.isEmpty()) {
@@ -150,11 +149,11 @@ class ReceivingServiceImpl implements ReceivingService {
                 nb.setCurrentOrderId(String.valueOf(++current));
             }
             nextReceivingOrderRepository.save(nb);
-            orderId = nb.getCurrentOrderId();
-            order.setOrderId(orderId);
+            order.setOrderId(nb.getCurrentOrderId());
         }
         order.getPositions().forEach(p -> {
-            Product product = service.findBySku(p.getProduct().getSku()).orElseThrow(() -> new NotFoundException(format("Product with SKU [%s] does not exist", p.getProduct().getSku())));
+            Product product = service.findBySku(p.getProduct().getSku())
+                    .orElseThrow(() -> new NotFoundException(format("Product with SKU [%s] does not exist", p.getProduct().getSku())));
             p.setProduct(product);
         });
         order = repository.save(order);

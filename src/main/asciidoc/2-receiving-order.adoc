@@ -14,7 +14,7 @@ The response lists all the operations possible on `ReceivingOrders` with a name 
 include::{generated}/get-order-index/http-response.adoc[]
 
 === Create a ReceivingOrder
-The `POST` operation take a flat structure of a simple `ReceivingOrder` to create.
+The `POST` operation takes a flat structure of a simple `ReceivingOrder` to create.
 
 include::{generated}/order-create/http-request.adoc[]
 include::{generated}/order-create/request-fields.adoc[]
