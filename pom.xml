@@ -22,7 +22,7 @@
     <distributionManagement>
         <site>
             <id>site</id>
-            <url>scm:git:git@github.com:openwms/${project.artifactId}.git</url>
+            <url>scm:git:ssh://git@github.com:openwms/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
 
@@ -71,7 +71,8 @@
         <guava.version>30.0-jre</guava.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <joda-time.version>2.10.8</joda-time.version>
-		<spring-cloud-dependencies.version>Hoxton.SR10</spring-cloud-dependencies.version>
+        <maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
+        <spring-cloud-dependencies.version>Hoxton.SR10</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>

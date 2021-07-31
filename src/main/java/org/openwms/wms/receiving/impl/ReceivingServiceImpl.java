@@ -21,6 +21,7 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
+import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.ReceivingConstants;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
@@ -137,11 +138,12 @@ class ReceivingServiceImpl implements ReceivingService {
                 throw new ResourceExistsException(format("The ReceivingOrder with orderId [%s] already exists", order.getOrderId()));
             }
         } else {
-            Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(DEFAULT_ACCOUNT_NAME);
+            String currentTenant = TenantHolder.getCurrentTenant() == null ? DEFAULT_ACCOUNT_NAME : TenantHolder.getCurrentTenant();
+            Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(currentTenant);
             NextReceivingOrder nb;
             if (byName.isEmpty()) {
                 nb = new NextReceivingOrder();
-                nb.setName(DEFAULT_ACCOUNT_NAME);
+                nb.setName(currentTenant);
                 nb.setCurrentOrderId("1");
             } else {
                 nb = byName.get();

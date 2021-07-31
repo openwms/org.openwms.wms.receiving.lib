@@ -18,6 +18,7 @@ package org.openwms.wms.receiving;
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
+import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.wms.order.OrderState;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static org.ameba.Constants.HEADER_VALUE_X_TENANT;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -104,7 +107,9 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @PostMapping("/v1/receiving-orders")
-    public ResponseEntity<Void> createOrder(@Valid @RequestBody ReceivingOrderVO orderVO, HttpServletRequest req) {
+    public ResponseEntity<Void> createOrder(
+            @Valid @RequestBody ReceivingOrderVO orderVO,
+            HttpServletRequest req) {
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
         order.getPositions().clear();
         order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
