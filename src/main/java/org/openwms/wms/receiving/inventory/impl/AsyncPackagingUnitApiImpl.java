@@ -39,8 +39,8 @@ class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
 
     AsyncPackagingUnitApiImpl(
             AmqpTemplate amqpTemplate,
-            @Value("owms.commands.inventory.pu.exchange-name") String exchangeName,
-            @Value("owms.commands.inventory.pu.routing-key") String routingKey) {
+            @Value("${owms.commands.inventory.pu.exchange-name}") String exchangeName,
+            @Value("${owms.commands.inventory.pu.routing-key}") String routingKey) {
         this.amqpTemplate = amqpTemplate;
         this.exchangeName = exchangeName;
         this.routingKey = routingKey;
