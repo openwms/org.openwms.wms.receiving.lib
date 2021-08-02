@@ -24,7 +24,8 @@ import org.ameba.mapping.BeanMapper;
 import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.ReceivingConstants;
-import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
+import org.openwms.wms.inventory.api.CreatePackagingUnitCommand;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.order.OrderState;
@@ -77,11 +78,11 @@ class ReceivingServiceImpl implements ReceivingService {
     private final ReceivingOrderRepository repository;
     private final ProductService service;
     private final ApplicationEventPublisher publisher;
-    private final PackagingUnitApi packagingUnitApi;
+    private final AsyncPackagingUnitApi packagingUnitApi;
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator, BeanMapper mapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService service, ApplicationEventPublisher publisher, PackagingUnitApi packagingUnitApi) {
+            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
         this.mapper = mapper;
@@ -226,8 +227,8 @@ class ReceivingServiceImpl implements ReceivingService {
                 pu.setMessage(details.getMessageText());
             }
             LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
-            // FIXME [openwms]: 19.06.20 do this asynchronously
-            packagingUnitApi.create(transportUnitId, loadUnitPosition, loadUnitType, pu);
+            var command = new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu);
+            packagingUnitApi.create(command);
         }
         position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);

@@ -102,6 +102,10 @@ owms:
     common:
       tu:
         exchange-name: common.tu.commands
+    inventory:
+      pu:
+        exchange-name: inventory
+        routing-key: pu.command.create
   dead-letter:
     exchange-name: dle.receiving
     queue-name: receiving-dl-queue
