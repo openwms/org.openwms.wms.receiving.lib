@@ -104,7 +104,7 @@ owms:
         exchange-name: common.tu.commands
     inventory:
       pu:
-        exchange-name: inventory
+        exchange-name: inventory.commands
         routing-key: pu.command.create
   dead-letter:
     exchange-name: dle.receiving
