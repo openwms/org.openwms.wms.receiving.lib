@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.events;
 import org.openwms.core.units.api.Measurable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ProductMO.
@@ -28,6 +29,7 @@ public class ProductMO implements Serializable {
 
     private String pKey;
     private String sku;
+    private String label;
     private Measurable baseUnit;
     private String description;
 
@@ -47,6 +49,14 @@ public class ProductMO implements Serializable {
         this.sku = sku;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public Measurable getBaseUnit() {
         return baseUnit;
     }
@@ -61,5 +71,29 @@ public class ProductMO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductMO)) return false;
+        ProductMO productMO = (ProductMO) o;
+        return Objects.equals(pKey, productMO.pKey) && Objects.equals(sku, productMO.sku) && Objects.equals(label, productMO.label) && Objects.equals(baseUnit, productMO.baseUnit) && Objects.equals(description, productMO.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pKey, sku, label, baseUnit, description);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductMO{" +
+                "pKey='" + pKey + '\'' +
+                ", sku='" + sku + '\'' +
+                ", label='" + label + '\'' +
+                ", baseUnit=" + baseUnit +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

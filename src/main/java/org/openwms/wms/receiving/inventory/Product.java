@@ -36,14 +36,26 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "WMS_REC_PRODUCT",
-        uniqueConstraints = @UniqueConstraint(name = "UC_REC_PRODUCT_SKU", columnNames = {"C_SKU"})
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UC_REC_PRODUCT_SKU", columnNames = {"C_SKU"}),
+                @UniqueConstraint(name = "UC_REC_PRODUCT_FOREIGN_PID", columnNames = {"C_FOREIGN_PID"})
+        }
 )
 public class Product extends ApplicationEntity implements Comparable<Product>, Serializable {
+
+    /** The foreign persistent key of the {@code Product}. */
+    @Column(name = "C_FOREIGN_PID", nullable = false)
+    @NotEmpty
+    private String foreignPKey;
 
     /** The product id is part of the unique business key. */
     @Column(name = "C_SKU")
     @NotEmpty
     private String sku;
+
+    /** An identifying label of the Product. */
+    @Column(name = "C_LABEL")
+    private String label;
 
     /** Textual descriptive text. */
     @Column(name = "C_DESCRIPTION")
@@ -72,6 +84,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.sku = sku;
     }
 
+    public String getForeignPKey() {
+        return foreignPKey;
+    }
+
+    public void setForeignPKey(String foreignPKey) {
+        this.foreignPKey = foreignPKey;
+    }
+
     /**
      * Get the SKU.
      * 
@@ -83,6 +103,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getDescription() {
@@ -114,24 +142,25 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     /**
      * {@inheritDoc}
      *
-     * SKU only.
+     * Use all fields.
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Product)) return false;
+        if (!super.equals(o)) return false;
         Product product = (Product) o;
-        return Objects.equals(sku, product.sku);
+        return Objects.equals(foreignPKey, product.foreignPKey) && Objects.equals(sku, product.sku) && Objects.equals(label, product.label) && Objects.equals(description, product.description) && Objects.equals(baseUnit, product.baseUnit);
     }
 
     /**
      * {@inheritDoc}
      *
-     * SKU only.
+     * Use all fields.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(sku);
+        return Objects.hash(super.hashCode(), foreignPKey, sku, label, description, baseUnit);
     }
 
     /**

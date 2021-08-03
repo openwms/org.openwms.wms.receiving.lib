@@ -37,7 +37,7 @@ import java.io.Serializable;
 })
 public class TransportUnit extends ApplicationEntity implements Serializable {
 
-    /** The foreign persistent key of the {@code Location}. */
+    /** The foreign persistent key of the {@code TransportUnit}. */
     @Column(name = "C_FOREIGN_PID", nullable = false)
     @NotEmpty
     private String foreignPKey;

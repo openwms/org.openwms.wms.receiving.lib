@@ -226,9 +226,10 @@ class ReceivingServiceImpl implements ReceivingService {
                 }
                 pu.setMessage(details.getMessageText());
             }
-            LOGGER.info("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
-            var command = new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu);
-            packagingUnitApi.create(command);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
+            }
+            packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
         position.addQuantityReceived(quantityReceived);
         return repository.save(receivingOrder);

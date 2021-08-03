@@ -53,8 +53,7 @@ public class InventoryEventListener {
             switch(header) {
                 case "created":
                     LOGGER.debug("Product has been created in Inventory service");
-                    Product map = mapper.map(msg, Product.class);
-                    publisher.publishEvent(new ProductEvent(map, ProductEvent.TYPE.CREATED));
+                    publisher.publishEvent(new ProductEvent(mapper.map(msg, Product.class), ProductEvent.TYPE.CREATED));
                     break;
                 case "updated":
                     LOGGER.debug("Product has been updated in Inventory service");
