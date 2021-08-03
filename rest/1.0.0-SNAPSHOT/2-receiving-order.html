@@ -603,7 +603,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/821248d5-96b5-4f6a-be0b-8cb7f38c0c32/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/5979ebfa-96ba-49e3-89e4-af066b729e77/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -824,28 +824,6 @@ Content-Length: 1471
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : 2,
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
-      "magnitude" : 2
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
-    },
-    "product" : {
-      "sku" : "C2",
-      "description" : "Notch M8",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : 1,
     "state" : "CREATED",
     "quantityExpected" : {
@@ -861,6 +839,28 @@ Content-Length: 1471
     "product" : {
       "sku" : "C1",
       "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : 2,
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "DOZ" ],
+      "magnitude" : 2
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
+    },
+    "product" : {
+      "sku" : "C2",
+      "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -948,7 +948,7 @@ Content-Length: 1611
   } ]
 }, {
   "links" : [ ],
-  "pKey" : "3abfbcef-3e50-4d57-a783-f432d56e7728",
+  "pKey" : "530fe8e2-da0f-444c-9b89-c76a485f8a3e",
   "orderId" : "4716",
   "state" : "PROCESSED"
 } ]</code></pre>
@@ -963,7 +963,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/725a83a3-6d14-4b94-96af-6534346e5340/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/ca125d98-3b60-41ff-a405-8ad49a4d7fc6/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 65
 Host: localhost:8080
@@ -985,7 +985,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "725a83a3-6d14-4b94-96af-6534346e5340",
+  "pKey" : "ca125d98-3b60-41ff-a405-8ad49a4d7fc6",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1003,7 +1003,7 @@ Content-Length: 279
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "3abfbcef-3e50-4d57-a783-f432d56e7728" ],
+  "obj" : [ "4716", "PROCESSED", "530fe8e2-da0f-444c-9b89-c76a485f8a3e" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1061,28 +1061,6 @@ Content-Length: 1471
   "orderId" : "T4711",
   "state" : "CREATED",
   "positions" : [ {
-    "positionId" : 1,
-    "state" : "CREATED",
-    "quantityExpected" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 1
-    },
-    "product" : {
-      "sku" : "C1",
-      "description" : "Skateboard gearings 608ZZ",
-      "baseUnit" : {
-        "@class" : "org.openwms.core.units.api.Piece",
-        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-        "magnitude" : 1
-      }
-    }
-  }, {
     "positionId" : 2,
     "state" : "CREATED",
     "quantityExpected" : {
@@ -1098,6 +1076,28 @@ Content-Length: 1471
     "product" : {
       "sku" : "C2",
       "description" : "Notch M8",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    }
+  }, {
+    "positionId" : 1,
+    "state" : "CREATED",
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1131,7 +1131,7 @@ Content-Length: 503
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-02 23:49:50 UTC
+Last updated 2021-08-03 21:57:01 UTC
 </div>
 </div>
 </body>

@@ -93,6 +93,8 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_base_unit_type" COLSPAN="3" ALIGN="LEFT">c_base_unit_type</TD></TR>
       <TR><TD PORT="c_base_unit_qty" COLSPAN="3" ALIGN="LEFT">c_base_unit_qty</TD></TR>
       <TR><TD PORT="c_description" COLSPAN="3" ALIGN="LEFT">c_description</TD></TR>
+      <TR><TD PORT="c_foreign_pid" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_foreign_pid</TD></TR>
+      <TR><TD PORT="c_label" COLSPAN="3" ALIGN="LEFT">c_label</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_sku</TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
     </TABLE>>

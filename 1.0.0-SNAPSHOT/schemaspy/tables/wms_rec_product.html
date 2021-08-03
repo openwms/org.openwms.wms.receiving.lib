@@ -171,6 +171,28 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='even'>
+ <td class='indexedColumn' title='Indexed'>c_foreign_pid</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
+ <td class='detail'>c_label</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
  <td class='indexedColumn' title='Indexed'>c_sku</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -191,7 +213,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='9 columns'>Table contained 2 rows at Mon Aug 02 23:56 UTC 2021<p/>
+<p title='11 columns'>Table contained 2 rows at Tue Aug 03 22:03 UTC 2021<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -214,6 +236,13 @@
   <td>&nbsp;</td>
  </tr>
  <tr>
+  <td class='indexedColumn'>c_foreign_pid</td>
+  <td class='detail'>Must be unique</td>
+  <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
+  <td class='constraint' style='text-align:left;'>uc_rec_product_foreign_pid</td>
+  <td>&nbsp;</td>
+ </tr>
+ <tr>
   <td class='indexedColumn'>c_sku</td>
   <td class='detail'>Must be unique</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
@@ -227,13 +256,13 @@
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
 <area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="341,5,547,400">
-<area shape="rect" id="node2" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="5,123,297,403">
+<area shape="rect" id="node2" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="5,75,297,403">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/wms_rec_product.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
 <area shape="rect" id="node1" href="wms_rec_order_position.html" title="wms_rec_order_position" alt="" coords="341,5,547,400">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="81,157,221,240">
-<area shape="rect" id="node3" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="5,257,297,537">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="81,133,221,216">
+<area shape="rect" id="node3" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="5,233,297,561">
 <area shape="rect" id="node4" href="wms_rec_order_position_detail.html" title="wms_rec_order_position_detail" alt="" coords="591,5,844,88">
 </map>
 

@@ -109,12 +109,17 @@
          <column autoUpdated="false" digits="0" id="5" name="c_base_unit_type" nullable="false" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="6" name="c_base_unit_qty" nullable="false" remarks="" size="16" type="varchar"/>
          <column autoUpdated="false" digits="0" id="7" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="8" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="8" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_label" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
             <child column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_order_position"/>
          </column>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_product_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
+         </index>
+         <index name="uc_rec_product_foreign_pid" unique="true">
+            <column ascending="true" name="c_foreign_pid"/>
          </index>
          <index name="uc_rec_product_sku" unique="true">
             <column ascending="true" name="c_sku"/>
