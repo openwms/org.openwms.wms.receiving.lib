@@ -39,10 +39,12 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -195,5 +197,9 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Override
     public String toString() {
         return orderId;
+    }
+
+    public void sortPositions() {
+       this.setPositions(this.getPositions().stream().sorted(Comparator.comparingInt(ReceivingOrderPosition::getPosNo)).collect(Collectors.toSet()));
     }
 }

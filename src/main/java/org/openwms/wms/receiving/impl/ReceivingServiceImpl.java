@@ -232,7 +232,9 @@ class ReceivingServiceImpl implements ReceivingService {
             packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
         position.addQuantityReceived(quantityReceived);
-        return repository.save(receivingOrder);
+        receivingOrder = repository.save(receivingOrder);
+        receivingOrder.sortPositions();
+        return receivingOrder;
     }
 
     /**
