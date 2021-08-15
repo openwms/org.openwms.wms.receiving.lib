@@ -18,7 +18,6 @@ package org.openwms.wms.receiving;
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
-import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.wms.order.OrderState;
@@ -37,17 +36,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
-import static org.ameba.Constants.HEADER_VALUE_X_TENANT;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -89,21 +87,26 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
         List<ReceivingOrder> orders = service.findAll();
         List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
+        result.forEach(ReceivingOrderVO::sortPositions);
         return ResponseEntity.ok(result);
     }
 
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
-        ReceivingOrder order = service.findByPKey(pKey);
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+        var vo = mapper.map(service.findByPKey(pKey), ReceivingOrderVO.class);
+        vo.sortPositions();
+        return ResponseEntity.ok(vo);
     }
 
     @Transactional(readOnly = true)
     @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
     public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
-        ReceivingOrder order = service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId)));
-        return ResponseEntity.ok(mapper.map(order, ReceivingOrderVO.class));
+        var vo = mapper.map(
+                service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId))),
+                ReceivingOrderVO.class);
+        vo.sortPositions();
+        return ResponseEntity.ok(vo);
     }
 
     @PostMapping("/v1/receiving-orders")
@@ -128,6 +131,7 @@ public class ReceivingController extends AbstractWebController {
             @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody List<CaptureRequestVO> requests) {
         ReceivingOrderVO result = service.capture(pKey, loadUnitType, requests);
+        result.sortPositions();
         return ResponseEntity.ok(result);
     }
 
@@ -135,6 +139,7 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<ReceivingOrderVO> completeOrder(
             @PathVariable("pKey") String pKey) {
         ReceivingOrderVO result = service.complete(pKey);
+        result.sortPositions();
         return ResponseEntity.ok(result);
     }
 
@@ -143,13 +148,15 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody ReceivingOrderVO receivingOrder
     ){
-        return ResponseEntity.ok(mapper.map(service.update(pKey, receivingOrder), ReceivingOrderVO.class));
+        var vo = mapper.map(service.update(pKey, receivingOrder), ReceivingOrderVO.class);
+        vo.sortPositions();
+        return ResponseEntity.ok(vo);
     }
 
     @PatchMapping(value = "/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> patchOrder(
             @PathVariable("pKey") String pKey,
-            @Valid @RequestBody ReceivingOrderVO receivingOrder
+            @Valid @NotNull @RequestBody ReceivingOrderVO receivingOrder
     ){
         ReceivingOrder updated = mapper.map(receivingOrder, ReceivingOrder.class);
         if (receivingOrder.hasState()) {
@@ -160,6 +167,8 @@ public class ReceivingController extends AbstractWebController {
                 updated = service.changeState(pKey, state);
             }
         }
-        return ResponseEntity.ok(mapper.map(updated, ReceivingOrderVO.class));
+        var vo = mapper.map(updated, ReceivingOrderVO.class);
+        vo.sortPositions();
+        return ResponseEntity.ok(vo);
     }
 }

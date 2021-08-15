@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
 import org.openwms.wms.order.OrderState;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -39,14 +40,13 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
+import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
 
 /**
  * A ReceivingOrder.
@@ -86,15 +86,33 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     private int priority;
 
     /** Latest date of this order can be processed. */
-    @Column(name = "C_LATEST_DUE")
+    @Column(name = "C_LATEST_DUE", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime latestDueDate;
 
+    /** When the order is expected to be received. */
+    @Column(name = "C_EXPECTED_RECEIPT", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    private ZonedDateTime expectedReceiptDate;
+
     /** Earliest date the order can be started. */
-    @Column(name = "C_START_DATE")
+    @Column(name = "C_START_EARLIEST", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    private ZonedDateTime earliestStartDate;
+
+    /** Earliest date the order can be started. */
+    @Column(name = "C_START_DATE", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime startDate;
+    /** When the order has been finished. */
+
+    @Column(name = "C_END_DATE", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    private ZonedDateTime endDate;
 
     /** Date when the order should be allocated. */
-    @Column(name = "C_NEXT_ALLOC")
+    @Column(name = "C_NEXT_ALLOC", columnDefinition = "timestamp(0)")
+    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime nextAllocationDate;
 
     /** Latest problem that is occurred on this order. */
@@ -166,6 +184,18 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return latestDueDate;
     }
 
+    public ZonedDateTime getExpectedReceiptDate() {
+        return expectedReceiptDate;
+    }
+
+    public ZonedDateTime getEarliestStartDate() {
+        return earliestStartDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
     public ZonedDateTime getStartDate() {
         return startDate;
     }
@@ -197,9 +227,5 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Override
     public String toString() {
         return orderId;
-    }
-
-    public void sortPositions() {
-       this.setPositions(this.getPositions().stream().sorted(Comparator.comparingInt(ReceivingOrderPosition::getPosNo)).collect(Collectors.toSet()));
     }
 }

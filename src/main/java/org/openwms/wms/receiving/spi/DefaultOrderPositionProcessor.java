@@ -48,6 +48,7 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
         if (orderPosition.getDetails().containsKey("transportUnitTypeName")) {
             TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
                     .type(orderPosition.getDetails().get("transportUnitTypeName"));
+            // FIXME [openwms]: 15.08.21 Get the actualLocation from the current workplace or from YML config
             transportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()

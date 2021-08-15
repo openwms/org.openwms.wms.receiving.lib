@@ -23,11 +23,13 @@ import org.ameba.http.AbstractBase;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A ReceivingOrderVO.
@@ -48,13 +50,18 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
     private String state;
     /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty("positions")
-    private Set<@Valid ReceivingOrderPositionVO> positions = new HashSet<>(0);
+    private List<@Valid ReceivingOrderPositionVO> positions = new ArrayList<>(0);
     /** Arbitrary detail information stored along an order. */
     @JsonProperty("details")
     private Map<String, String> details = new HashMap<>();
 
     @JsonCreator
     ReceivingOrderVO() {
+    }
+
+    public void sortPositions() {
+        this.setPositions(this.getPositions().stream().sorted(Comparator.comparingInt(ReceivingOrderPositionVO::getPositionId)).collect(Collectors.toList()));
+        this.getPositions().forEach(System.out::println);
     }
 
     public ReceivingOrderVO(@NotEmpty String orderId) {
@@ -73,11 +80,11 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
         this.orderId = orderId;
     }
 
-     public Set<ReceivingOrderPositionVO> getPositions() {
+     public List<ReceivingOrderPositionVO> getPositions() {
         return positions;
     }
 
-    public void setPositions(Set<ReceivingOrderPositionVO> positions) {
+    public void setPositions(List<ReceivingOrderPositionVO> positions) {
         this.positions = positions;
     }
 

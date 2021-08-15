@@ -233,7 +233,6 @@ class ReceivingServiceImpl implements ReceivingService {
         }
         position.addQuantityReceived(quantityReceived);
         receivingOrder = repository.save(receivingOrder);
-        receivingOrder.sortPositions();
         return receivingOrder;
     }
 
@@ -244,9 +243,9 @@ class ReceivingServiceImpl implements ReceivingService {
     @Measured
     public ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
             @NotNull @Valid List<CaptureRequestVO> requests) {
-        ReceivingOrder result = null;
+        ReceivingOrder ro = null;
         for (CaptureRequestVO request : requests) {
-            result = this.capture(
+            ro = this.capture(
                     pKey,
                     request.getTransportUnitId(),
                     request.getLoadUnitLabel(),
@@ -255,7 +254,7 @@ class ReceivingServiceImpl implements ReceivingService {
                     request.getDetails(),
                     request.getProduct().getSku());
         }
-        return mapper.map(result, ReceivingOrderVO.class);
+        return mapper.map(ro, ReceivingOrderVO.class);
     }
 
     /**
