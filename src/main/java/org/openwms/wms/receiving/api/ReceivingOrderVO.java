@@ -61,7 +61,6 @@ public class ReceivingOrderVO extends AbstractBase implements Serializable {
 
     public void sortPositions() {
         this.setPositions(this.getPositions().stream().sorted(Comparator.comparingInt(ReceivingOrderPositionVO::getPositionId)).collect(Collectors.toList()));
-        this.getPositions().forEach(System.out::println);
     }
 
     public ReceivingOrderVO(@NotEmpty String orderId) {
