@@ -93,6 +93,10 @@ public class ReceivingAsyncConfiguration {
     TopicExchange inventoryExchange(@Value("${owms.events.inventory.exchange-name}") String exchangeName) {
         return new TopicExchange(exchangeName, true, false);
     }
+    @Bean
+    TopicExchange receivingExchange(@Value("${owms.events.receiving.exchange-name}") String exchangeName) {
+        return new TopicExchange(exchangeName, true, false);
+    }
 
     /*~ ---------------- Queues ----------------- */
     @Bean

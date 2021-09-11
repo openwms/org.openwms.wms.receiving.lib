@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.events;
 import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
+import org.openwms.wms.receiving.api.events.ProductMO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

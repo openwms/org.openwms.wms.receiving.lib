@@ -260,7 +260,7 @@ class ReceivingControllerDocumentation {
                                 .content(om.writeValueAsString(value))
                 )
                 .andExpect(status().isGone())
-                .andExpect(jsonPath("messageKey", is(ReceivingMessages.ALREADY_CANCELLED)))
+                .andExpect(jsonPath("messageKey", is(ReceivingMessages.RO_ALREADY_IN_STATE)))
                 .andDo(document("order-cancel-cancelled", preprocessResponse(prettyPrint())))
         ;
     }
@@ -276,7 +276,7 @@ class ReceivingControllerDocumentation {
                                 .content(om.writeValueAsString(value))
                 )
                 .andExpect(status().isForbidden())
-                .andExpect(jsonPath("messageKey", is(ReceivingMessages.CANCELLATION_DENIED)))
+                .andExpect(jsonPath("messageKey", is(ReceivingMessages.RO_CANCELLATION_DENIED)))
                 .andDo(document("order-cancel-403", preprocessResponse(prettyPrint())))
         ;
     }

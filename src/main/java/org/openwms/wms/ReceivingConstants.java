@@ -23,7 +23,6 @@ package org.openwms.wms;
 public final class ReceivingConstants {
 
     public static final String DEFAULT_ACCOUNT_NAME = "DEFAULT";
-    public static final String PRODUCT_NOT_FOUND = "owms.wms.rec.product404";
 
     private ReceivingConstants() {}
 }

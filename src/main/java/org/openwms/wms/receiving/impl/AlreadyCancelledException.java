@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.BusinessRuntimeException;
+import org.ameba.i18n.Translator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -29,7 +30,7 @@ import java.io.Serializable;
 @ResponseStatus(HttpStatus.GONE)
 public class AlreadyCancelledException extends BusinessRuntimeException {
 
-    public AlreadyCancelledException(String message, String messageKey, Serializable[] data) {
-        super(message, messageKey, data);
+    public AlreadyCancelledException(Translator translator, String messageKey, Serializable[] data, Object... param) {
+        super(translator, messageKey, data, param);
     }
 }

@@ -17,8 +17,8 @@ package org.openwms.wms.receiving.inventory;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.ReceivingConstants;
 import org.openwms.wms.commands.EnsureProductExistsCommand;
+import org.openwms.wms.receiving.ReceivingMessages;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +44,7 @@ class InventoryCommandListener {
         service.findBySku((String) command.getSource()).orElseThrow(
                 () -> new NotFoundException(
                         translator,
-                        ReceivingConstants.PRODUCT_NOT_FOUND,
+                        ReceivingMessages.PRODUCT_NOT_FOUND,
                         command.getSource()
                 )
         );

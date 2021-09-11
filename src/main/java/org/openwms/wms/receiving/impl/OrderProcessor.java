@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
-import org.openwms.wms.receiving.ReceivingOrderCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;

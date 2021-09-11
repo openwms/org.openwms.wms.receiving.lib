@@ -17,8 +17,11 @@ package org.openwms.wms.receiving;
 
 import org.ameba.annotation.NotLogged;
 import org.ameba.exception.BusinessRuntimeException;
+import org.ameba.i18n.Translator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.Serializable;
 
 /**
  * A ProcessingException.
@@ -28,6 +31,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @NotLogged
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class ProcessingException extends BusinessRuntimeException {
+
+    public ProcessingException(Translator translator, String messageKey, Serializable[] data, Object... param) {
+        super(translator, messageKey, data, param);
+    }
 
     public ProcessingException(String message) {
         super(message);

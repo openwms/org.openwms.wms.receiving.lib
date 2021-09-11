@@ -15,22 +15,22 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import org.ameba.exception.BusinessRuntimeException;
-import org.ameba.i18n.Translator;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.io.Serializable;
+import org.openwms.core.event.RootApplicationEvent;
+import org.openwms.wms.receiving.impl.ReceivingOrder;
 
 /**
- * A CancellationDeniedException.
- *
+ * A ReceivingOrderCreatedEvent.
+ * 
  * @author Heiko Scherrer
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class CancellationDeniedException extends BusinessRuntimeException {
+public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
 
-    public CancellationDeniedException(Translator translator, String messageKey, Serializable[] data, Object... param) {
-        super(translator, messageKey, data, param);
+    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
+        super(source);
+    }
+
+    @Override
+    public ReceivingOrder getSource() {
+        return (ReceivingOrder) super.getSource();
     }
 }

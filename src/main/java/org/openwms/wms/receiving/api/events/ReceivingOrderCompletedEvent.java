@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.api.events;
 
 import org.openwms.core.event.RootApplicationEvent;
+import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
+
+import java.io.Serializable;
 
 /**
  * A ReceivingOrderCreatedEvent.
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
+public class ReceivingOrderCompletedEvent extends RootApplicationEvent implements Serializable {
 
-    /**
-     * Create a new ReceivingOrderCreatedEvent.
-     * 
-     * @param source
-     */
-    public ReceivingOrderCreatedEvent(ReceivingOrder source) {
+    public OrderState state;
+
+    public ReceivingOrderCompletedEvent(ReceivingOrder source, OrderState state) {
         super(source);
+        this.state = state;
     }
 
     @Override
@@ -39,4 +40,7 @@ public class ReceivingOrderCreatedEvent extends RootApplicationEvent {
         return (ReceivingOrder) super.getSource();
     }
 
+    public OrderState getState() {
+        return state;
+    }
 }

@@ -22,9 +22,15 @@ package org.openwms.wms.receiving;
  */
 public final class ReceivingMessages {
 
+    public static final String PRODUCT_NOT_FOUND = "owms.wms.rec.product404";
+
+    public static final String RO_NOT_FOUND_BY_PKEY = "owms.wms.rec.recOrderNotFound";
+    public static final String RO_ALREADY_IN_STATE = "owms.wms.rec.recOrderAlreadyInState";
+    public static final String RO_CANCELLATION_DENIED = "owms.wms.rec.recOrderCancellationDenied";
+    public static final String RO_ALREADY_EXISTS = "owms.wms.rec.recOrderExists";
+    public static final String RO_NO_OPEN_POSITIONS = "owms.wms.rec.recOrderNoROPWithProduct";
+    public static final String RO_NO_UNEXPECTED_ALLOWED = "owms.wms.rec.recOrderNoUnexpectedAllowed";
+
     private ReceivingMessages() {
     }
-
-    public static final String ALREADY_CANCELLED = "ALREADY_CANCELLED";
-    public static final String CANCELLATION_DENIED = "CANCELLATION.DENIED";
 }

@@ -89,6 +89,10 @@
 			<b is-accessible="true">sku</b>
 		</field>
 		<field>
+			<a is-accessible="true">label</a>
+			<b is-accessible="true">label</b>
+		</field>
+		<field>
 			<a is-accessible="true">description</a>
 			<b is-accessible="true">description</b>
 		</field>
@@ -112,6 +116,82 @@
 		<field>
 			<a is-accessible="true">actualLocation</a>
 			<b is-accessible="true">actualLocation</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>org.openwms.wms.receiving.impl.ReceivingOrder</class-a>
+		<class-b>org.openwms.wms.receiving.api.events.ReceivingOrderMO</class-b>
+		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
+			<a is-accessible="true">orderId</a>
+			<b is-accessible="true">orderId</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">orderState</a>
+			<b is-accessible="true">state</b>
+		</field>
+		<field>
+			<a is-accessible="false">positions</a>
+			<b is-accessible="false">positions</b>
+		</field>
+		<field>
+			<a is-accessible="false">details</a>
+			<b is-accessible="false">details</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.wms.receiving.impl.ReceivingOrderPosition</class-a>
+		<class-b>org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO</class-b>
+		<field>
+			<a is-accessible="true">posNo</a>
+			<b is-accessible="true">positionId</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">state</a>
+			<b is-accessible="true">state</b>
+		</field>
+		<field custom-converter="org.openwms.core.units.converter.MeasurableConverter">
+			<a is-accessible="true">quantityExpected</a>
+			<b is-accessible="true">quantityExpected</b>
+		</field>
+		<field custom-converter="org.openwms.core.units.converter.MeasurableConverter">
+			<a is-accessible="true">quantityReceived</a>
+			<b is-accessible="true">quantityReceived</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">product</a>
+			<b is-accessible="true">product</b>
+		</field>
+		<field>
+			<a is-accessible="true">transportUnitBK</a>
+			<b is-accessible="true">transportUnitBK</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.wms.receiving.inventory.Product</class-a>
+		<class-b>org.openwms.wms.receiving.api.events.ProductMO</class-b>
+		<field>
+			<a is-accessible="true">sku</a>
+			<b is-accessible="true">sku</b>
+		</field>
+		<field>
+			<a is-accessible="true">label</a>
+			<b is-accessible="true">label</b>
+		</field>
+		<field>
+			<a is-accessible="true">description</a>
+			<b is-accessible="true">description</b>
+		</field>
+		<field>
+			<a is-accessible="true">baseUnit</a>
+			<b is-accessible="true">baseUnit</b>
 		</field>
 	</mapping>
 </mappings>

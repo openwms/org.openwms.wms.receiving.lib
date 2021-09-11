@@ -110,6 +110,8 @@ owms:
     exchange-name: dle.receiving
     queue-name: receiving-dl-queue
   events:
+    receiving:
+      exchange-name: receiving
     inventory:
       exchange-name: inventory
       products:
