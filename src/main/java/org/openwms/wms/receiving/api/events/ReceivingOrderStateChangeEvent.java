@@ -26,11 +26,11 @@ import java.io.Serializable;
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderCompletedEvent extends RootApplicationEvent implements Serializable {
+public class ReceivingOrderStateChangeEvent extends RootApplicationEvent implements Serializable {
 
     public OrderState state;
 
-    public ReceivingOrderCompletedEvent(ReceivingOrder source, OrderState state) {
+    public ReceivingOrderStateChangeEvent(ReceivingOrder source, OrderState state) {
         super(source);
         this.state = state;
     }

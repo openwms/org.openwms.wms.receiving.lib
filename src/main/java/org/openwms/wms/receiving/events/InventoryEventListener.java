@@ -30,7 +30,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 /**
- * A InventoryEventListener.
+ * A InventoryEventListener is a Spring managed bean, active in profile ASYNCHRONOUS that listens for Product changes.
  *
  * @author Heiko Scherrer
  */

@@ -17,12 +17,14 @@ package org.openwms.wms.receiving.events;
 
 import org.openwms.core.event.RootApplicationEvent;
 
+import java.io.Serializable;
+
 /**
  * A ProductEvent.
  *
  * @author Heiko Scherrer
  */
-public class ProductEvent extends RootApplicationEvent {
+public class ProductEvent extends RootApplicationEvent implements Serializable {
 
     public static enum TYPE {
         CREATED, UPDATED, DELETED
@@ -30,20 +32,10 @@ public class ProductEvent extends RootApplicationEvent {
 
     private TYPE type;
 
-    /**
-     * Create a new RootApplicationEvent.
-     *
-     * @param source The event sender, never {@literal null}
-     */
     public ProductEvent(Object source) {
         super(source);
     }
 
-    /**
-     * Create a new RootApplicationEvent.
-     *
-     * @param source The event sender, never {@literal null}
-     */
     public ProductEvent(Object source, TYPE type) {
         super(source);
         this.type = type;

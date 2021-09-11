@@ -33,7 +33,6 @@ import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.api.events.ReceivingOrderCompletedEvent;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
@@ -267,8 +266,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 p.setQuantityReceived(p.getQuantityExpected());
                 p.setState(COMPLETED);
             });
-            order.setOrderState(COMPLETED);
-            publisher.publishEvent(new ReceivingOrderCompletedEvent(order));
+            order.changeOrderState(publisher, COMPLETED);
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
         }
@@ -299,8 +297,7 @@ class ReceivingServiceImpl implements ReceivingService {
                     order.getOrderId(), order.getOrderState()
             );
         }
-        order.setOrderState(CANCELED);
-        publisher.publishEvent(new ReceivingOrderCompletedEvent(order));
+        order.changeOrderState(publisher, CANCELED);
         return repository.save(order);
     }
 

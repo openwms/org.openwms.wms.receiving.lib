@@ -15,10 +15,11 @@
  */
 package org.openwms.wms.receiving.events;
 
+import org.ameba.annotation.Measured;
 import org.ameba.app.SpringProfiles;
 import org.ameba.mapping.BeanMapper;
-import org.openwms.wms.receiving.api.events.ReceivingOrderCompletedEvent;
 import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
+import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -49,11 +50,22 @@ public class EventPropagator {
         this.receivingExchangeName = receivingExchangeName;
     }
 
+    @Measured
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onEvent(ReceivingOrderCompletedEvent event) {
+    public void onEvent(ReceivingOrderStateChangeEvent event) {
         ReceivingOrderMO mo = mapper.map(event.getSource(), ReceivingOrderMO.class);
-        LOGGER.debug("Sending out ReceivingOrderMO: [{}]", mo);
-        amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.created", mo);
-        LOGGER.debug("ReceivingOrder [{}] with all positions completed", event.getSource().getPersistentKey());
+        switch(event.getState()) {
+            case COMPLETED:
+                LOGGER.debug("ReceivingOrder [{}] with all positions completed", event.getSource().getPersistentKey());
+                LOGGER.debug("Sending ReceivingOrderMO: [{}]", mo);
+                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.created", mo);
+                break;
+            case CANCELED:
+                LOGGER.debug("ReceivingOrder [{}] has been cancelled", event.getSource().getPersistentKey());
+                LOGGER.debug("Sending ReceivingOrderMO: [{}]", mo);
+                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.cancelled", mo);
+                break;
+            default:
+        }
     }
 }

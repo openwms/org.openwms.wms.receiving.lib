@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -173,7 +174,8 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.orderState = orderState;
     }
 
-    public void changeOrderState(OrderState orderState) {
+    public void changeOrderState(ApplicationEventPublisher eventPublisher, OrderState orderState) {
+        eventPublisher.publishEvent(new ReceivingOrderStateChangeEvent(this, orderState));
         this.orderState = orderState;
     }
 
