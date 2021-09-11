@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-37)">
+<meta name="author" content="(1.0.0-SNAPSHOT-38)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-37)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-38)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1085,7 +1085,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/f353aa80-e242-47dd-892e-e0fd72bcdc5c/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/1f83e3e6-8f5a-4f0d-8583-b063c3fc5850/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1271,12 +1271,14 @@ Content-Length: 1471
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
 Content-Type: application/hal+json
-Content-Length: 123
+Content-Length: 190
 
 {
   "message" : "ReceivingOrder with pKey [unknown] does not exist",
-  "messageKey" : "not.found",
-  "httpStatus" : "404"
+  "messageKey" : "owms.wms.rec.recOrderNotFound",
+  "obj" : [ "unknown" ],
+  "httpStatus" : "404",
+  "class" : "String"
 }</code></pre>
 </div>
 </div>
@@ -1430,7 +1432,7 @@ Content-Length: 1611
   } ]
 }, {
   "links" : [ ],
-  "pKey" : "6088792c-6812-4c25-b6a2-dfdbeae7137f",
+  "pKey" : "3e7522c8-e0f5-4ef9-a6fe-2a34619e988b",
   "orderId" : "4716",
   "state" : "PROCESSED"
 } ]</code></pre>
@@ -1445,7 +1447,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /v1/receiving-orders/0a2681c2-3494-4122-8296-a2baf17b670b/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /v1/receiving-orders/c1bdd8f6-365a-4a52-9228-07c2a8300489/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 65
 Host: localhost:8080
@@ -1467,7 +1469,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "0a2681c2-3494-4122-8296-a2baf17b670b",
+  "pKey" : "c1bdd8f6-365a-4a52-9228-07c2a8300489",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1480,12 +1482,12 @@ Content-Length: 99
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 403 Forbidden
 Content-Type: application/hal+json
-Content-Length: 279
+Content-Length: 299
 
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
-  "messageKey" : "CANCELLATION.DENIED",
-  "obj" : [ "4716", "PROCESSED", "6088792c-6812-4c25-b6a2-dfdbeae7137f" ],
+  "messageKey" : "owms.wms.rec.recOrderCancellationDenied",
+  "obj" : [ "4716", "PROCESSED", "3e7522c8-e0f5-4ef9-a6fe-2a34619e988b" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1613,7 +1615,7 @@ Content-Length: 503
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-15 15:06:10 UTC
+Last updated 2021-09-11 21:56:30 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
