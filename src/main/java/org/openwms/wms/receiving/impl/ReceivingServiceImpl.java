@@ -197,6 +197,13 @@ class ReceivingServiceImpl implements ReceivingService {
             packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
         position.addQuantityReceived(quantityReceived);
+        int compared = position.getQuantityReceived().compareTo(position.getQuantityExpected());
+        if (compared >= 0){
+            position.setState(COMPLETED);
+        }
+        if (receivingOrder.getPositions().stream().noneMatch(rop -> rop.getState() != COMPLETED)) {
+            receivingOrder.changeOrderState(publisher, COMPLETED);
+        }
         receivingOrder = repository.save(receivingOrder);
         return receivingOrder;
     }
