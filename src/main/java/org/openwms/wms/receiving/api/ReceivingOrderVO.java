@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderVO extends AbstractBase implements Serializable {
+public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements Serializable {
 
     /** The persistent identifier. */
     @JsonProperty("pKey")
