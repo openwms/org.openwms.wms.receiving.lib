@@ -76,8 +76,8 @@
 			<b is-accessible="true">product</b>
 		</field>
 		<field>
-			<a is-accessible="true">transportUnitBK</a>
-			<b is-accessible="true">transportUnitId</b>
+			<a is-accessible="true">details</a>
+			<b is-accessible="true">details</b>
 		</field>
 	</mapping>
 
@@ -167,10 +167,6 @@
 		<field type="one-way">
 			<a is-accessible="true">product</a>
 			<b is-accessible="true">product</b>
-		</field>
-		<field>
-			<a is-accessible="true">transportUnitBK</a>
-			<b is-accessible="true">transportUnitBK</b>
 		</field>
 	</mapping>
 

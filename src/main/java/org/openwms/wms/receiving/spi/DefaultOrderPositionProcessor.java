@@ -16,14 +16,15 @@
 package org.openwms.wms.receiving.spi;
 
 import org.ameba.annotation.TxService;
+import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
-import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
-import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
+import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
+import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,15 +45,15 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
-    public void processPosition(ReceivingOrder order, ReceivingOrderPosition orderPosition) {
-        if (orderPosition.getDetails().containsKey("transportUnitTypeName")) {
+    public void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition) {
+        if (orderPosition instanceof ReceivingTransportUnitOrderPosition) {
             TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
-                    .type(orderPosition.getDetails().get("transportUnitTypeName"));
+                    .type(((ReceivingTransportUnitOrderPosition) orderPosition).getTransportUnitTypeName());
             // FIXME [openwms]: 15.08.21 Get the actualLocation from the current workplace or from YML config
             transportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()
-                                    .withBarcode(orderPosition.getTransportUnitBK())
+                                    .withBarcode(((ReceivingTransportUnitOrderPosition) orderPosition).getTransportUnitBK())
                                     .withTransportUnitType(type.build())
                                     .build()
                             )

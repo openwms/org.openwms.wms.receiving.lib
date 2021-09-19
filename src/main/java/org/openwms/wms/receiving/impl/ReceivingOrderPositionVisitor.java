@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.api;
+package org.openwms.wms.receiving.impl;
 
 /**
- * A ValidationGroups.
+ * A ReceivingOrderPositionVisitor.
  *
  * @author Heiko Scherrer
  */
-public interface ValidationGroups {
+public interface ReceivingOrderPositionVisitor {
 
-    interface Capture {}
+    void accept(BaseReceivingOrderPositionVisitor visitor);
 }

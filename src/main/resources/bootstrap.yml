@@ -199,11 +199,6 @@ spring:
       fail-fast: false
     discovery:
       enabled: false
-  jpa:
-    properties:
-      hibernate:
-        hbm2ddl:
-          import_files: import-TEST.sql
   main:
     banner-mode: "off"
 

@@ -81,7 +81,7 @@ class ReceivingServiceImplIT {
         assertThat(order.getOrderState()).isEqualTo(OrderState.CREATED);
         assertThat(order.getDetails()).hasSize(3);
         assertThat(order.getDetails()).hasSize(3);
-        ReceivingOrderPosition next = order.getPositions().iterator().next();
+        ReceivingOrderPosition next = (ReceivingOrderPosition) order.getPositions().iterator().next();
         assertThat(next.getQuantityExpected()).isEqualTo(Piece.of(2));
         assertThat(next.getQuantityReceived()).isEqualTo(Piece.of(1));
         assertThat(next.getDetails()).hasSize(2);

@@ -15,132 +15,75 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.inventory.Product;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.openwms.wms.order.OrderState.COMPLETED;
 
 /**
- * A ReceivingOrderPosition.
+ * A ReceivingOrderPosition is a persisted entity class that represents an expected receipt of {@code Product}s in a
+ * particular quantity.
  * 
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "WMS_REC_ORDER_POSITION",
-        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
-public class ReceivingOrderPosition extends BaseEntity implements Serializable {
+@DiscriminatorValue("EXPQTY")
+public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements ReceivingOrderPositionVisitor, Serializable {
 
-    @ManyToOne(optional = false, targetEntity = ReceivingOrder.class)
-    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
-    private ReceivingOrder order;
-
-    /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
-    @Column(name = "C_POS_NO", nullable = false)
-    @NotNull
-    private Integer posNo;
-
-    /** Current position state. Default is {@value} */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "C_STATE")
-    @NotNull
-    private OrderState state = OrderState.CREATED;
-
+    /** The quantity that is expected to be receipt. */
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
-            @Column(name = "C_QTY_EXPECTED", nullable = false)
+            @Column(name = "C_QTY_EXPECTED_TYPE"),
+            @Column(name = "C_QTY_EXPECTED")
     })
-    @NotNull
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Measurable quantityExpected;
 
+    /** The receipt quantity, this might be increased at arrival. */
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
     @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_RECEIVED_TYPE", nullable = true),
-            @Column(name = "C_QTY_RECEIVED", nullable = true)
+            @Column(name = "C_QTY_RECEIVED_TYPE"),
+            @Column(name = "C_QTY_RECEIVED")
     })
     private Measurable quantityReceived;
 
-    /** The ordered {@link Product} identified by it's SKU. */
+    /** The expected {@link Product} to be receipt. */
     @ManyToOne
-    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"), nullable = false)
-    @NotNull
+    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"))
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Product product;
-
-    /** The business key of the expected {@code TransportUnit} that will be received. */
-    @Column(name = "C_TRANSPORT_UNIT_BK")
-    private String transportUnitBK;
-
-    /** Arbitrary detail information on this position, might by populated with ERP information. */
-    @ElementCollection
-    @CollectionTable(name = "WMS_REC_ORDER_POSITION_DETAIL",
-            joinColumns = {
-                    @JoinColumn(name = "C_ORDER_POS_PK", referencedColumnName = "C_PK")
-            },
-            foreignKey = @ForeignKey(name = "FK_REC_ORDER_DETAILS_ROP")
-    )
-    @MapKeyColumn(name = "C_KEY")
-    @Column(name = "C_VALUE")
-    private Map<String, String> details;
-
-    /** Latest date this position can be processed. */
-    @Column(name = "C_LATEST_DUE")
-    private ZonedDateTime latestDueDate;
 
     /** Used by the JPA provider. */
     protected ReceivingOrderPosition() {}
 
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
-        this.posNo = posNo;
+        super(posNo);
         this.quantityExpected = quantityExpected;
         this.product = product;
     }
 
-    public String getTransportUnitBK() {
-        return transportUnitBK;
-    }
-
-    public ReceivingOrder getOrder() {
-        return order;
-    }
-
-    public void setOrder(ReceivingOrder order) {
-        this.order = order;
-    }
-
-    public int getPosNo() {
-        return posNo;
-    }
-
-    public OrderState getState() {
-        return state;
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * If the state is set to {@code COMPLETED} the {@code quantityReceived} is set to {@code quantityExpected}.
+     */
+    @Override
     public void setState(OrderState state) {
         if (state == COMPLETED) {
             this.quantityReceived = this.quantityExpected;
         }
-        this.state = state;
+        super.setState(state);
     }
 
     public Measurable getQuantityExpected() {
@@ -176,36 +119,8 @@ public class ReceivingOrderPosition extends BaseEntity implements Serializable {
         this.product = product;
     }
 
-    /**
-     * Get all the details of this {@link ReceivingOrderPosition}.
-     *
-     * @return As Map
-     */
-    public Map<String, String> getDetails() {
-        return details == null ? Collections.emptyMap() : details;
-    }
-
-    /**
-     * Add a new detail to the {@link ReceivingOrderPosition}.
-     *
-     * @param key The unique key of the detail
-     * @param value The value as String
-     * @return This instance
-     */
-    public ReceivingOrderPosition addDetail(String key, String value) {
-        if (details == null) {
-            details = new HashMap<>();
-        }
-        details.put(key, value);
-        return this;
-    }
-
-    public ZonedDateTime getLatestDueDate() {
-        return latestDueDate;
-    }
-
     @Override
-    public String toString() {
-        return (order == null ? "n/a" : order.getOrderId()) + "/" + posNo;
+    public void accept(BaseReceivingOrderPositionVisitor visitor) {
+        visitor.visit(this);
     }
 }

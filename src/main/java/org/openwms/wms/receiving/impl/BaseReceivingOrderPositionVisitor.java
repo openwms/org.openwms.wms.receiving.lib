@@ -16,17 +16,13 @@
 package org.openwms.wms.receiving.impl;
 
 /**
- * A OrderPositionProcessor.
+ * A BaseReceivingOrderPositionVisitor.
  *
  * @author Heiko Scherrer
  */
-public interface OrderPositionProcessor {
+public interface BaseReceivingOrderPositionVisitor<T> {
 
-    /**
-     * Process a single {@code orderPosition} of an {@code order}.
-     *
-     * @param order The Order that holds the position, here for reference
-     * @param orderPosition The actual position to process
-     */
-    void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition);
+    T visit(ReceivingOrderPosition position);
+
+    T visit(ReceivingTransportUnitOrderPosition position);
 }

@@ -32,6 +32,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -64,6 +65,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Heiko Scherrer
  */
+@Sql("classpath:import-TEST.sql")
 @ReceivingApplicationTest
 @TestPropertySource(properties = "owms.receiving.unexpected-receipts-allowed=false")
 class ReceivingControllerDocumentation {
@@ -101,7 +103,8 @@ class ReceivingControllerDocumentation {
     @Rollback
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        orderVO.getPositions().add(new ReceivingOrderPositionVO(1, null, null));
+        ReceivingOrderPositionVO pos = new ReceivingOrderPositionVO(1);
+        orderVO.getPositions().add(pos);
         mockMvc
                 .perform(
                         post("/v1/receiving-orders")
@@ -113,7 +116,9 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
+        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1);
+        sku001.setQuantityExpected(Piece.of(1));
+        sku001.setProduct(new ProductVO(PRODUCT1_SKU));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc

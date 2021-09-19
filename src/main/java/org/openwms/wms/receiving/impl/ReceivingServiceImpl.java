@@ -123,7 +123,8 @@ class ReceivingServiceImpl implements ReceivingService {
             nextReceivingOrderRepository.save(nb);
             order.setOrderId(nb.getCurrentOrderId());
         }
-        order.getPositions().forEach(p -> p.setProduct(getProduct(p.getProduct().getSku())));
+        // TODO [openwms]: 18.09.21
+        //order.getPositions().forEach(p -> p.setProduct(getProduct(p.getProduct().getSku())));
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
         return order;
@@ -151,6 +152,8 @@ class ReceivingServiceImpl implements ReceivingService {
         ReceivingOrder receivingOrder = getOrder(pKey);
         List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(p -> p instanceof ReceivingOrderPosition)
+                .map(p -> (ReceivingOrderPosition) p)
                 .filter(p -> p.getProduct().equals(existingProduct))
                 .collect(Collectors.toList());
 
@@ -269,7 +272,11 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrderVO complete(@NotEmpty String pKey) {
         ReceivingOrder order = getOrder(pKey);
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
-            order.getPositions().forEach(p -> {
+            order.getPositions()
+                    .stream()
+                    .filter(p -> p instanceof ReceivingOrderPosition)
+                    .map(p -> (ReceivingOrderPosition) p)
+                    .forEach(p -> {
                 p.setQuantityReceived(p.getQuantityExpected());
                 p.setState(COMPLETED);
             });

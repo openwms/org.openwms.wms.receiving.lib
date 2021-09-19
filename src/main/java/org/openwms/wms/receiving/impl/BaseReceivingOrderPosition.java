@@ -16,9 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
-import org.openwms.wms.receiving.inventory.Product;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -40,8 +38,6 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.openwms.wms.order.OrderState.COMPLETED;
 
 /**
  * A BaseReceivingOrderPosition.
@@ -70,31 +66,6 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     @NotNull
     private OrderState state = OrderState.CREATED;
 
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
-    @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false),
-            @Column(name = "C_QTY_EXPECTED", nullable = false)
-    })
-    @NotNull
-    private Measurable quantityExpected;
-
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
-    @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_RECEIVED_TYPE", nullable = true),
-            @Column(name = "C_QTY_RECEIVED", nullable = true)
-    })
-    private Measurable quantityReceived;
-
-    /** The ordered {@link Product} identified by it's SKU. */
-    @ManyToOne
-    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"), nullable = false)
-    @NotNull
-    private Product product;
-
-    /** The business key of the expected {@code TransportUnit} that will be received. */
-    @Column(name = "C_TRANSPORT_UNIT_BK")
-    private String transportUnitBK;
-
     /** Arbitrary detail information on this position, might by populated with ERP information. */
     @ElementCollection
     @CollectionTable(name = "WMS_REC_ORDER_POSITION_DETAIL",
@@ -114,14 +85,8 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     /** Used by the JPA provider. */
     protected BaseReceivingOrderPosition() {}
 
-    public BaseReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
+    public BaseReceivingOrderPosition(Integer posNo) {
         this.posNo = posNo;
-        this.quantityExpected = quantityExpected;
-        this.product = product;
-    }
-
-    public String getTransportUnitBK() {
-        return transportUnitBK;
     }
 
     public ReceivingOrder getOrder() {
@@ -141,43 +106,7 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     }
 
     public void setState(OrderState state) {
-        if (state == COMPLETED) {
-            this.quantityReceived = this.quantityExpected;
-        }
         this.state = state;
-    }
-
-    public Measurable getQuantityExpected() {
-        return quantityExpected;
-    }
-
-    public void setQuantityExpected(Measurable quantityExpected) {
-        this.quantityExpected = quantityExpected;
-    }
-
-    public Measurable getQuantityReceived() {
-        return quantityReceived;
-    }
-
-    public Measurable addQuantityReceived(Measurable quantityReceived) {
-        if (this.quantityReceived == null) {
-            this.quantityReceived = quantityReceived;
-        } else {
-            this.quantityReceived = this.quantityReceived.add(quantityReceived);
-        }
-        return this.quantityReceived;
-    }
-
-    public void setQuantityReceived(Measurable quantityReceived) {
-        this.quantityReceived = quantityReceived;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     /**

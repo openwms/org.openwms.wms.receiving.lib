@@ -41,11 +41,11 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
@@ -125,7 +125,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
     @OrderBy("posNo")
     @Valid
-    private Set<ReceivingOrderPosition> positions = new HashSet<>();
+    private List<BaseReceivingOrderPosition> positions = new ArrayList<>();
 
     /** Arbitrary detail information on this order, might by populated with ERP information. */
     @ElementCollection(fetch = FetchType.EAGER)
@@ -215,11 +215,11 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return problem;
     }
 
-    public Set<ReceivingOrderPosition> getPositions() {
-        return positions == null ? Collections.emptySet() : positions;
+    public List<BaseReceivingOrderPosition> getPositions() {
+        return positions == null ? Collections.emptyList() : positions;
     }
 
-    public void setPositions(Set<ReceivingOrderPosition> positions) {
+    public void setPositions(List<BaseReceivingOrderPosition> positions) {
         this.positions = positions;
     }
 

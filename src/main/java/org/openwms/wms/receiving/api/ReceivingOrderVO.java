@@ -56,11 +56,14 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     private Map<String, String> details = new HashMap<>();
 
     @JsonCreator
-    ReceivingOrderVO() {
-    }
+    ReceivingOrderVO() {}
 
     public void sortPositions() {
-        this.setPositions(this.getPositions().stream().sorted(Comparator.comparingInt(ReceivingOrderPositionVO::getPositionId)).collect(Collectors.toList()));
+        if (this.getPositions() != null) {
+            this.setPositions(this.getPositions().stream()
+                    .sorted(Comparator.comparingInt(ReceivingOrderPositionVO::getPositionId))
+                    .collect(Collectors.toList()));
+        }
     }
 
     public ReceivingOrderVO(@NotEmpty String orderId) {
@@ -69,6 +72,10 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
 
     public String getpKey() {
         return pKey;
+    }
+
+    public void setpKey(String pKey) {
+        this.pKey = pKey;
     }
 
     public String getOrderId() {

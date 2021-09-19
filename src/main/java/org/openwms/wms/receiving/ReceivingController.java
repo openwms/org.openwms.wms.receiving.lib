@@ -60,10 +60,12 @@ public class ReceivingController extends AbstractWebController {
 
     private final ReceivingService service;
     private final BeanMapper mapper;
+    private final ReceivingMapper receivingMapper;
 
-    ReceivingController(ReceivingService service, BeanMapper mapper) {
+    ReceivingController(ReceivingService service, BeanMapper mapper, ReceivingMapper receivingMapper) {
         this.service = service;
         this.mapper = mapper;
+        this.receivingMapper = receivingMapper;
     }
 
     @GetMapping("/v1/receiving-orders/index")
@@ -85,8 +87,7 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders")
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
-        List<ReceivingOrder> orders = service.findAll();
-        List<ReceivingOrderVO> result = mapper.map(orders, ReceivingOrderVO.class);
+        var result = receivingMapper.convertToVO(service.findAll());
         result.forEach(ReceivingOrderVO::sortPositions);
         return ResponseEntity.ok(result);
     }
@@ -94,9 +95,9 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
-        var vo = mapper.map(service.findByPKey(pKey), ReceivingOrderVO.class);
-        vo.sortPositions();
-        return ResponseEntity.ok(vo);
+        var result = receivingMapper.convertToVO(service.findByPKey(pKey));
+        result.sortPositions();
+        return ResponseEntity.ok(result);
     }
 
     @Transactional(readOnly = true)
@@ -109,8 +110,26 @@ public class ReceivingController extends AbstractWebController {
         return ResponseEntity.ok(vo);
     }
 
+    @Validated(ValidationGroups.CreateQuantityReceipt.class)
     @PostMapping("/v1/receiving-orders")
     public ResponseEntity<Void> createOrder(
+            @Valid @RequestBody ReceivingOrderVO orderVO,
+            HttpServletRequest req) {
+        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
+        order.getPositions().clear();
+        order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
+            ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
+            rop.setOrder(order);
+            rop.setProduct(mapper.map(p.getProduct(), Product.class));
+            return rop;
+        }).collect(Collectors.toList()));
+        ReceivingOrder saved = service.createOrder(order);
+        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
+    }
+
+    @Validated(ValidationGroups.CreateExpectedTUReceipt.class)
+    @PostMapping(value = "/v1/receiving-orders", consumes = "application/vnd.openwms.receiving-order-v2+json")
+    public ResponseEntity<Void> createExpectedTUReceipt(
             @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
