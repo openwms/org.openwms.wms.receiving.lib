@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.app;
 
+import org.openwms.core.SpringProfiles;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ import org.springframework.context.annotation.Profile;
  *
  * @author Heiko Scherrer
  */
-@Profile("!INMEM")
+@Profile(SpringProfiles.DISTRIBUTED)
 @Configuration
 @EnableFeignClients(basePackageClasses = {
         PackagingUnitApi.class

@@ -17,7 +17,6 @@ package org.openwms.wms.receiving;
 
 import org.ameba.test.categories.SpringTestSupport;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -35,7 +34,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@EnableSpringConfigured
 @SpringTestSupport
 @SpringBootTest(classes = {
         ReceivingRunner.class
