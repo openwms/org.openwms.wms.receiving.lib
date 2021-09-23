@@ -15,11 +15,8 @@
  */
 package org.openwms.wms.receiving.api.events;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -39,12 +36,10 @@ public class ReceivingOrderPositionMO implements Serializable {
     /** Current position state. Default is {@value} */
     private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
-    @NotNull
     private Measurable<?, ?, ?> quantityExpected;
     /** The already received quantity of the product. */
     private Measurable<?, ?, ?> quantityReceived;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
-    @NotNull
     private ProductMO product;
     /** Optional: How the position should be processed, manually oder automatically. */
     private String startMode;

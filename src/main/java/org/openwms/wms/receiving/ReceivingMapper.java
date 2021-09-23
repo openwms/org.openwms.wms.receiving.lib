@@ -15,13 +15,16 @@
  */
 package org.openwms.wms.receiving;
 
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.openwms.wms.receiving.api.BaseReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.impl.BaseReceivingOrderPositionVisitor;
+import org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO;
+import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
@@ -35,31 +38,57 @@ import java.util.List;
  * @author Heiko Scherrer
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public abstract class ReceivingMapper implements BaseReceivingOrderPositionVisitor<ReceivingOrderPositionVO> {
-    @Override
-    public ReceivingOrderPositionVO visit(ReceivingOrderPosition position) {
-        return convertToVO(position);
+public interface ReceivingMapper {
+
+    default BaseReceivingOrderPosition toLib(BaseReceivingOrderPositionVO refinement, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
+        if (refinement instanceof ReceivingOrderPositionVO) {
+            return convertToVO((ReceivingOrderPositionVO) refinement, cycleAvoidingMappingContext);
+        } else if (refinement instanceof ReceivingTransportUnitOrderPositionVO) {
+            return convertToVO((ReceivingTransportUnitOrderPositionVO) refinement, cycleAvoidingMappingContext);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public ReceivingOrderPositionVO visit(ReceivingTransportUnitOrderPosition position) {
-        return convertToVO(position);
+    default BaseReceivingOrderPositionVO toVO(BaseReceivingOrderPosition refinement, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
+        if (refinement instanceof ReceivingOrderPosition) {
+            return convertToVO((ReceivingOrderPosition) refinement, cycleAvoidingMappingContext);
+        } else if (refinement instanceof ReceivingTransportUnitOrderPosition) {
+            return convertToVO((ReceivingTransportUnitOrderPosition) refinement, cycleAvoidingMappingContext);
+        } else {
+            return null;
+        }
     }
 
-    abstract ProductVO convertToVO(Product eo);
+    ProductVO convertToVO(Product eo);
+
+    @Mapping(target = "orderState", source = "state")
+    @Mapping(target = "positions", source = "positions")
+    ReceivingOrder convertVO(ReceivingOrderVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "pKey", source = "persistentKey")
     @Mapping(target = "state", source = "orderState")
-    abstract ReceivingOrderVO convertToVO(ReceivingOrder eo);
+    ReceivingOrderVO convertToVO(ReceivingOrder eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "pKey", source = "persistentKey")
     @Mapping(target = "state", source = "orderState")
-    abstract List<ReceivingOrderVO> convertToVO(List<ReceivingOrder> eo);
+    List<ReceivingOrderVO> convertToVO(List<ReceivingOrder> eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "positionId", source = "posNo")
     @Mapping(target = "quantityExpected", source = "quantityExpected")
-    abstract ReceivingOrderPositionVO convertToVO(ReceivingOrderPosition eo);
+    ReceivingOrderPositionVO convertToVO(ReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "positionId", source = "posNo")
-    abstract ReceivingOrderPositionVO convertToVO(ReceivingTransportUnitOrderPosition eo);
+    @Mapping(target = "order", source = "order")
+    ReceivingTransportUnitOrderPositionVO convertToVO(ReceivingTransportUnitOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @Mapping(target = "posNo", source = "positionId")
+    @Mapping(target = "order", source = "order")
+    @Mapping(target = "details", source = "details")
+    ReceivingTransportUnitOrderPosition convertToVO(ReceivingTransportUnitOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @Mapping(target = "posNo", source = "positionId")
+    @Mapping(target = "quantityExpected", source = "quantityExpected")
+    @Mapping(target = "details", source = "details")
+    ReceivingOrderPosition convertToVO(ReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

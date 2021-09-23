@@ -24,8 +24,6 @@ import org.openwms.wms.receiving.ValidationGroups;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -34,15 +32,8 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderPositionVO implements Serializable {
+public class ReceivingOrderPositionVO extends BaseReceivingOrderPositionVO implements ConvertableVO, Serializable {
 
-    /** The unique position ID within an ReceivingOrder - must not be empty. */
-    @NotNull
-    @JsonProperty("positionId")
-    private Integer positionId;
-    /** Current position state. Default is {@value} */
-    @JsonProperty("state")
-    private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @JsonProperty("quantityExpected")
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
@@ -54,41 +45,25 @@ public class ReceivingOrderPositionVO implements Serializable {
     @JsonProperty("product")
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private ProductVO product;
-    /** Optional: How the position should be processed, manually oder automatically. */
-    @JsonProperty("startMode")
-    private String startMode;
-    /** Optional: Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
-    @JsonProperty("transportUnitBK")
-    @NotNull(groups = ValidationGroups.CreateExpectedTUReceipt.class)
-    private String transportUnitBK;
-    /** The name of the {@code TransportUnitType} the expected {@code TransportUnit} is of. */
-    @JsonProperty("transportUnitTypeName")
-    @NotNull(groups = ValidationGroups.CreateExpectedTUReceipt.class)
-    private String transportUnitTypeName;
-    @JsonProperty("details")
-    private Map<String, String> details;
 
     @JsonCreator
     ReceivingOrderPositionVO() {}
 
-    @ConstructorProperties("positionId")
-    public ReceivingOrderPositionVO(@NotNull Integer positionId) {
-        this.positionId = positionId;
-    }
-
-    public void setPositionId(Integer positionId) {
-        this.positionId = positionId;
-    }
-
-    public Integer getPositionId() {
-        return positionId;
+    @ConstructorProperties({"positionId", "quantityExpected", "product"})
+    public ReceivingOrderPositionVO(
+            @NotNull Integer positionId,
+            @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Measurable<?, ?, ?> quantityExpected,
+            @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) ProductVO product) {
+        super(positionId);
+        this.quantityExpected = quantityExpected;
+        this.product = product;
     }
 
     public Measurable<?, ?, ?> getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
+    public void setQuantityExpected(@NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Measurable<?, ?, ?> quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 
@@ -100,60 +75,12 @@ public class ReceivingOrderPositionVO implements Serializable {
         this.quantityReceived = quantityReceived;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public ProductVO getProduct() {
         return product;
     }
 
-    public void setProduct(ProductVO product) {
+    public void setProduct(@NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) ProductVO product) {
         this.product = product;
-    }
-
-    public String getStartMode() {
-        return startMode;
-    }
-
-    public void setStartMode(String startMode) {
-        this.startMode = startMode;
-    }
-
-    public String getTransportUnitBK() {
-        return transportUnitBK;
-    }
-
-    public void setTransportUnitBK(String transportUnitBK) {
-        this.transportUnitBK = transportUnitBK;
-    }
-
-    public String getTransportUnitTypeName() {
-        return transportUnitTypeName;
-    }
-
-    public void setTransportUnitTypeName(String transportUnitTypeName) {
-        this.transportUnitTypeName = transportUnitTypeName;
-    }
-
-    public Map<String, String> getDetails() {
-        if (details == null) {
-            details = new HashMap<>();
-        }
-        return details;
-    }
-
-    public void setDetails(Map<String, String> details) {
-        this.details = details;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(positionId);
     }
 
     /**
@@ -165,8 +92,9 @@ public class ReceivingOrderPositionVO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ReceivingOrderPositionVO)) return false;
+        if (!super.equals(o)) return false;
         ReceivingOrderPositionVO that = (ReceivingOrderPositionVO) o;
-        return Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(quantityExpected, that.quantityExpected) && Objects.equals(quantityReceived, that.quantityReceived) && Objects.equals(product, that.product) && Objects.equals(startMode, that.startMode) && Objects.equals(transportUnitBK, that.transportUnitBK) && Objects.equals(transportUnitTypeName, that.transportUnitTypeName) && Objects.equals(details, that.details);
+        return Objects.equals(quantityExpected, that.quantityExpected) && Objects.equals(quantityReceived, that.quantityReceived) && Objects.equals(product, that.product);
     }
 
     /**
@@ -176,6 +104,11 @@ public class ReceivingOrderPositionVO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, state, quantityExpected, quantityReceived, product, startMode, transportUnitBK, transportUnitTypeName, details);
+        return Objects.hash(super.hashCode(), quantityExpected, quantityReceived, product);
+    }
+
+    @Override
+    public void accept(BaseReceivingOrderPositionVOVisitor visitor) {
+        visitor.visitVO(this);
     }
 }

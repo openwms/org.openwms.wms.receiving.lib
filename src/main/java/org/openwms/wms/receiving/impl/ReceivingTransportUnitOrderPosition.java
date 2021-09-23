@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 @Entity
 @DiscriminatorValue("EXPTU")
-public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosition implements ReceivingOrderPositionVisitor, Serializable {
+public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */
     @Column(name = "C_TRANSPORT_UNIT_BK")

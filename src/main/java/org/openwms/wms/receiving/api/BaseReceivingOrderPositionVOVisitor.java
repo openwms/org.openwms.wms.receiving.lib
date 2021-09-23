@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.impl;
+package org.openwms.wms.receiving.api;
 
 /**
- * A ReceivingOrderPositionVisitor.
+ * A BaseReceivingOrderPositionVOVisitor.
  *
  * @author Heiko Scherrer
  */
-public interface ReceivingOrderPositionVisitor {
+public interface BaseReceivingOrderPositionVOVisitor<T> {
 
-    void accept(BaseReceivingOrderPositionVisitor visitor);
+    T visitVO(ReceivingOrderPositionVO position);
+
+    T visitVO(ReceivingTransportUnitOrderPositionVO position);
 }

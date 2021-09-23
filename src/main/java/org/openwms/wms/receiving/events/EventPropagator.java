@@ -19,7 +19,10 @@ import org.ameba.annotation.Measured;
 import org.ameba.app.SpringProfiles;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
+import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
+import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
+import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -58,7 +61,7 @@ public class EventPropagator {
             case COMPLETED:
                 LOGGER.debug("ReceivingOrder [{}] with all positions completed", event.getSource().getPersistentKey());
                 LOGGER.debug("Sending ReceivingOrderMO: [{}]", mo);
-                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.created", mo);
+                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.completed", mo);
                 break;
             case CANCELED:
                 LOGGER.debug("ReceivingOrder [{}] has been cancelled", event.getSource().getPersistentKey());
@@ -66,6 +69,23 @@ public class EventPropagator {
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.cancelled", mo);
                 break;
             default:
+                LOGGER.warn("EventType [{}] not supported", event.getState());
+        }
+    }
+
+    @Measured
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public <T extends BaseReceivingOrderPosition> void onEvent(ReceivingOrderPositionStateChangeEvent<T> event) {
+        ReceivingOrderPositionMO mo = mapper.map(event.getSource(), ReceivingOrderPositionMO.class);
+        switch(event.getState()) {
+            case COMPLETED:
+                LOGGER.debug("ReceivingOrderPosition [{}]/[{}] completed",
+                        event.getSource().getOrder().getOrderId(), event.getSource().getPosNo());
+                LOGGER.debug("Sending ReceivingOrderPositionMO: [{}]", mo);
+                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.completed", mo);
+                break;
+            default:
+                LOGGER.warn("EventType [{}] not supported", event.getState());
         }
     }
 }

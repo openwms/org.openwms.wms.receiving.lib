@@ -39,7 +39,7 @@ import static org.openwms.wms.order.OrderState.COMPLETED;
  */
 @Entity
 @DiscriminatorValue("EXPQTY")
-public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements ReceivingOrderPositionVisitor, Serializable {
+public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")

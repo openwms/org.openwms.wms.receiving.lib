@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
@@ -50,7 +51,9 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     private String state;
     /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
     @JsonProperty("positions")
-    private List<@Valid ReceivingOrderPositionVO> positions = new ArrayList<>(0);
+    @JsonManagedReference
+    @Valid
+    private List<BaseReceivingOrderPositionVO> positions = new ArrayList<>(0);
     /** Arbitrary detail information stored along an order. */
     @JsonProperty("details")
     private Map<String, String> details = new HashMap<>();
@@ -61,7 +64,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     public void sortPositions() {
         if (this.getPositions() != null) {
             this.setPositions(this.getPositions().stream()
-                    .sorted(Comparator.comparingInt(ReceivingOrderPositionVO::getPositionId))
+                    .sorted(Comparator.comparingInt(BaseReceivingOrderPositionVO::getPositionId))
                     .collect(Collectors.toList()));
         }
     }
@@ -86,11 +89,11 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         this.orderId = orderId;
     }
 
-     public List<ReceivingOrderPositionVO> getPositions() {
+     public List<BaseReceivingOrderPositionVO> getPositions() {
         return positions;
     }
 
-    public void setPositions(List<ReceivingOrderPositionVO> positions) {
+    public void setPositions(List<BaseReceivingOrderPositionVO> positions) {
         this.positions = positions;
     }
 

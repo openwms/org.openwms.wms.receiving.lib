@@ -1,0 +1,43 @@
+/*
+ * Copyright 2005-2021 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.wms.receiving;
+
+import org.mapstruct.BeforeMapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.TargetType;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
+
+/**
+ * A CycleAvoidingMappingContext.
+ *
+ * @author Heiko Scherrer
+ */
+public class CycleAvoidingMappingContext {
+
+    private Map<Object, Object> knownInstances = new IdentityHashMap<>();
+
+    @BeforeMapping
+    public <T> T getMappedInstance(Object source, @TargetType Class<T> targetType) {
+        return (T) knownInstances.get( source );
+    }
+
+    @BeforeMapping
+    public void storeMappedInstance(Object source, @MappingTarget Object target) {
+        knownInstances.put( source, target );
+    }
+}

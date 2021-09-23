@@ -24,6 +24,7 @@ import org.openwms.core.units.api.Piece;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ProductVO;
+import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +104,7 @@ class ReceivingControllerDocumentation {
     @Rollback
     @Test void shall_create_order() throws Exception {
         ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        ReceivingOrderPositionVO pos = new ReceivingOrderPositionVO(1);
+        ReceivingOrderPositionVO pos = new ReceivingOrderPositionVO(1, null, null);
         orderVO.getPositions().add(pos);
         mockMvc
                 .perform(
@@ -116,9 +117,7 @@ class ReceivingControllerDocumentation {
         ;
 
         orderVO.getPositions().clear();
-        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1);
-        sku001.setQuantityExpected(Piece.of(1));
-        sku001.setProduct(new ProductVO(PRODUCT1_SKU));
+        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc
@@ -134,6 +133,7 @@ class ReceivingControllerDocumentation {
                         requestFields(
                                 fieldWithPath("orderId").description("An unique identifier of the ReceivingOrder to create, if not provided the server generates an ID"),
                                 fieldWithPath("positions[]").description("An array of positions, must not be empty"),
+                                fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),
                                 fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
@@ -173,6 +173,7 @@ class ReceivingControllerDocumentation {
                                 fieldWithPath("orderId").description("The business key of the ReceivingOrder"),
                                 fieldWithPath("state").description("The current state of the ReceivingOrder"),
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
+                                fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity to be received"),
                                 fieldWithPath("positions[].quantityExpected.magnitude").description("The expected quantity amount"),
@@ -289,7 +290,7 @@ class ReceivingControllerDocumentation {
     @Transactional
     @Rollback
     @Test void shall_capture_order() throws Exception {
-        CaptureRequestVO vo = new CaptureRequestVO();
+        var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
         vo.setQuantityReceived(Piece.of(1));
@@ -309,7 +310,7 @@ class ReceivingControllerDocumentation {
         @Transactional
         @Rollback
         @Test void shall_capture_order_INSUFFISIENT() throws Exception {
-            CaptureRequestVO vo = new CaptureRequestVO();
+            var vo = new QuantityCaptureRequestVO();
             vo.setTransportUnitId("4711");
             vo.setLoadUnitLabel("1");
             vo.setQuantityReceived(Piece.of(2));

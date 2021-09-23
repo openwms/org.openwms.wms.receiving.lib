@@ -46,7 +46,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableDiscoveryClient
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling

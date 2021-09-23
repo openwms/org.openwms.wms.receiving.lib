@@ -143,7 +143,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /** Used by the JPA provider. */
     protected ReceivingOrder() {}
 
-    protected ReceivingOrder(String orderId) {
+    public ReceivingOrder(String orderId) {
         this.orderId = orderId;
     }
 

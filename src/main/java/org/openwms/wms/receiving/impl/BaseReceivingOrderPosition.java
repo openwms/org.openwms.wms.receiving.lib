@@ -17,6 +17,8 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -35,7 +37,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     @NotNull
     private OrderState state = OrderState.CREATED;
 
-    /** Arbitrary detail information on this position, might by populated with ERP information. */
+    /** Arbitrary detail information on this position, might be populated with ERP information. */
     @ElementCollection
     @CollectionTable(name = "WMS_REC_ORDER_POSITION_DETAIL",
             joinColumns = {
@@ -109,13 +110,22 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
         this.state = state;
     }
 
+    public void changeOrderState(ApplicationEventPublisher eventPublisher, OrderState orderState) {
+        eventPublisher.publishEvent(new ReceivingOrderPositionStateChangeEvent(this, orderState));
+        this.state = orderState;
+    }
+
     /**
      * Get all the details of this {@link BaseReceivingOrderPosition}.
      *
      * @return As Map
      */
     public Map<String, String> getDetails() {
-        return details == null ? Collections.emptyMap() : details;
+        return details == null ? new HashMap<>() : details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
     }
 
     /**
@@ -126,10 +136,7 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
      * @return This instance
      */
     public BaseReceivingOrderPosition addDetail(String key, String value) {
-        if (details == null) {
-            details = new HashMap<>();
-        }
-        details.put(key, value);
+        getDetails().put(key, value);
         return this;
     }
 

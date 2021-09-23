@@ -28,45 +28,22 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class CaptureRequestVO implements Serializable {
+public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
     /** The business key of the captured TransportUnit. */
     @NotEmpty
-    @JsonProperty("transportUnitBK")
-    private String transportUnitId;
-    /** The unique */
-    @NotEmpty
-    @JsonProperty("loadUnitLabel")
-    private String loadUnitLabel;
-    /** A key/value dictionary of arbitrary values captured on the position. */
-    @JsonProperty("details")
-    private CaptureDetailsVO details;
+    @JsonProperty("expectedTransportUnitBK")
+    private String expectedTransportUnitBK;
 
     @JsonCreator
-    public CaptureRequestVO() {
+    public TUCaptureRequestVO() {
     }
 
-    public String getTransportUnitId() {
-        return transportUnitId;
+    public String getExpectedTransportUnitBK() {
+        return expectedTransportUnitBK;
     }
 
-    public void setTransportUnitId(String transportUnitId) {
-        this.transportUnitId = transportUnitId;
-    }
-
-    public String getLoadUnitLabel() {
-        return loadUnitLabel;
-    }
-
-    public void setLoadUnitLabel(String loadUnitLabel) {
-        this.loadUnitLabel = loadUnitLabel;
-    }
-
-    public CaptureDetailsVO getDetails() {
-        return details;
-    }
-
-    public void setDetails(CaptureDetailsVO details) {
-        this.details = details;
+    public void setExpectedTransportUnitBK(String expectedTransportUnitBK) {
+        this.expectedTransportUnitBK = expectedTransportUnitBK;
     }
 }

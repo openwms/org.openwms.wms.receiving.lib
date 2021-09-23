@@ -22,6 +22,7 @@ import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
@@ -76,6 +77,7 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingController.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
                         linkTo(methodOn(ReceivingController.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingController.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
+                        linkTo(methodOn(ReceivingController.class).createExpectedTUReceipt(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create-tu-receipt"),
                         linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", "EURO", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
                         linkTo(methodOn(ReceivingController.class).completeOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-complete"),
                         linkTo(methodOn(ReceivingController.class).saveOrder("b65a7658-c53c-4a81-8abb-75ab67783f47", null)).withRel("receiving-order-save"),
@@ -87,7 +89,8 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders")
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
-        var result = receivingMapper.convertToVO(service.findAll());
+        List<ReceivingOrder> all = service.findAll();
+        var result = receivingMapper.convertToVO(all, new CycleAvoidingMappingContext());
         result.forEach(ReceivingOrderVO::sortPositions);
         return ResponseEntity.ok(result);
     }
@@ -95,7 +98,7 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping("/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> findOrder(@PathVariable("pKey") String pKey) {
-        var result = receivingMapper.convertToVO(service.findByPKey(pKey));
+        var result = receivingMapper.convertToVO(service.findByPKey(pKey), new CycleAvoidingMappingContext());
         result.sortPositions();
         return ResponseEntity.ok(result);
     }
@@ -103,9 +106,9 @@ public class ReceivingController extends AbstractWebController {
     @Transactional(readOnly = true)
     @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
     public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
-        var vo = mapper.map(
+        var vo = receivingMapper.convertToVO(
                 service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId))),
-                ReceivingOrderVO.class);
+                new CycleAvoidingMappingContext());
         vo.sortPositions();
         return ResponseEntity.ok(vo);
     }
@@ -113,6 +116,7 @@ public class ReceivingController extends AbstractWebController {
     @Validated(ValidationGroups.CreateQuantityReceipt.class)
     @PostMapping("/v1/receiving-orders")
     public ResponseEntity<Void> createOrder(
+            @Validated(ValidationGroups.CreateQuantityReceipt.class)
             @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
         ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
@@ -120,7 +124,9 @@ public class ReceivingController extends AbstractWebController {
         order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
             ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
             rop.setOrder(order);
-            rop.setProduct(mapper.map(p.getProduct(), Product.class));
+            if (p instanceof ReceivingOrderPositionVO) {
+                rop.setProduct(mapper.map(((ReceivingOrderPositionVO)p).getProduct(), Product.class));
+            }
             return rop;
         }).collect(Collectors.toList()));
         ReceivingOrder saved = service.createOrder(order);
@@ -132,15 +138,8 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<Void> createExpectedTUReceipt(
             @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
-        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
-        order.getPositions().clear();
-        order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
-            ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
-            rop.setOrder(order);
-            rop.setProduct(mapper.map(p.getProduct(), Product.class));
-            return rop;
-        }).collect(Collectors.toList()));
-        ReceivingOrder saved = service.createOrder(order);
+        var eo = receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext());
+        ReceivingOrder saved = service.createOrder(eo);
         return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
     }
 

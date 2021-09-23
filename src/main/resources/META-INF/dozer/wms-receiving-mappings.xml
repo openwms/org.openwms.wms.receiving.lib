@@ -75,10 +75,6 @@
 			<a is-accessible="true">product</a>
 			<b is-accessible="true">product</b>
 		</field>
-		<field>
-			<a is-accessible="true">details</a>
-			<b is-accessible="true">details</b>
-		</field>
 	</mapping>
 
 	<mapping>
@@ -156,6 +152,10 @@
 			<a is-accessible="true">state</a>
 			<b is-accessible="true">state</b>
 		</field>
+		<field type="one-way">
+			<a is-accessible="true">details</a>
+			<b is-accessible="true">details</b>
+		</field>
 		<field custom-converter="org.openwms.core.units.converter.MeasurableConverter">
 			<a is-accessible="true">quantityExpected</a>
 			<b is-accessible="true">quantityExpected</b>
@@ -167,6 +167,27 @@
 		<field type="one-way">
 			<a is-accessible="true">product</a>
 			<b is-accessible="true">product</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition</class-a>
+		<class-b>org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO</class-b>
+		<field>
+			<a is-accessible="true">posNo</a>
+			<b is-accessible="true">positionId</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">state</a>
+			<b is-accessible="true">state</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">details</a>
+			<b is-accessible="true">details</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">transportUnitBK</a>
+			<b is-accessible="true">transportUnitBK</b>
 		</field>
 	</mapping>
 

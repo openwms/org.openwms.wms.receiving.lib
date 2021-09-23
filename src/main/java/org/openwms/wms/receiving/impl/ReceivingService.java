@@ -38,7 +38,7 @@ public interface ReceivingService {
      * @param order The ReceivingOrder instance to create
      * @return The saved instance
      */
-    @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order);
+    @NotNull ReceivingOrder createOrder(@NotNull ReceivingOrder order);
 
     /**
      * Decrease one of the {@code ReceivingOrderPosition}s by the received amount of the given {@code Product} and book the received article

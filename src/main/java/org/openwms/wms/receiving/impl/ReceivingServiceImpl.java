@@ -28,11 +28,15 @@ import org.openwms.wms.inventory.api.CreatePackagingUnitCommand;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
@@ -75,6 +79,7 @@ class ReceivingServiceImpl implements ReceivingService {
     private final boolean overbookingAllowed;
     private final Translator translator;
     private final BeanMapper mapper;
+    private final ReceivingMapper receivingMapper;
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final ProductService service;
@@ -83,11 +88,12 @@ class ReceivingServiceImpl implements ReceivingService {
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator,
-            BeanMapper mapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
+            BeanMapper mapper, ReceivingMapper receivingMapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
             ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
         this.mapper = mapper;
+        this.receivingMapper = receivingMapper;
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
         this.service = service;
@@ -100,7 +106,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public @NotNull ReceivingOrder createOrder(@NotNull @Valid ReceivingOrder order) {
+    public @NotNull ReceivingOrder createOrder(@NotNull ReceivingOrder order) {
         Optional<ReceivingOrder> opt;
         if (order.hasOrderId()) {
             opt = repository.findByOrderId(order.getOrderId());
@@ -123,8 +129,8 @@ class ReceivingServiceImpl implements ReceivingService {
             nextReceivingOrderRepository.save(nb);
             order.setOrderId(nb.getCurrentOrderId());
         }
-        // TODO [openwms]: 18.09.21
-        //order.getPositions().forEach(p -> p.setProduct(getProduct(p.getProduct().getSku())));
+        order.getPositions().stream().filter(p -> p instanceof ReceivingOrderPosition)
+                .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
         return order;
@@ -200,6 +206,7 @@ class ReceivingServiceImpl implements ReceivingService {
             packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
         position.addQuantityReceived(quantityReceived);
+        /*
         int compared = position.getQuantityReceived().compareTo(position.getQuantityExpected());
         if (compared >= 0){
             position.setState(COMPLETED);
@@ -207,6 +214,7 @@ class ReceivingServiceImpl implements ReceivingService {
         if (receivingOrder.getPositions().stream().noneMatch(rop -> rop.getState() != COMPLETED)) {
             receivingOrder.changeOrderState(publisher, COMPLETED);
         }
+         */
         receivingOrder = repository.save(receivingOrder);
         return receivingOrder;
     }
@@ -220,16 +228,52 @@ class ReceivingServiceImpl implements ReceivingService {
             @NotNull @Valid List<CaptureRequestVO> requests) {
         ReceivingOrder ro = null;
         for (CaptureRequestVO request : requests) {
-            ro = this.capture(
-                    pKey,
-                    request.getTransportUnitId(),
-                    request.getLoadUnitLabel(),
-                    loadUnitType,
-                    request.getQuantityReceived(),
-                    request.getDetails(),
-                    request.getProduct().getSku());
+            if (request instanceof QuantityCaptureRequestVO) {
+                var qr = (QuantityCaptureRequestVO) request;
+                ro = this.capture(
+                        pKey,
+                        qr.getTransportUnitId(),
+                        qr.getLoadUnitLabel(),
+                        loadUnitType,
+                        qr.getQuantityReceived(),
+                        qr.getDetails(),
+                        qr.getProduct().getSku());
+            } else if (request instanceof TUCaptureRequestVO) {
+                var tur = (TUCaptureRequestVO) request;
+                ro = this.capture(
+                        pKey,
+                        tur.getExpectedTransportUnitBK(),
+                        loadUnitType,
+                        tur.getDetails()
+                );
+            } else {
+                throw new IllegalArgumentException("Type not supported");
+            }
         }
-        return mapper.map(ro, ReceivingOrderVO.class);
+        return receivingMapper.convertToVO(ro, new CycleAvoidingMappingContext());
+    }
+
+    private @NotNull ReceivingOrder capture(String pKey, String expectedTransportUnitBK, String loadUnitType, CaptureDetailsVO details) {
+        ReceivingOrder receivingOrder = getOrder(pKey);
+        Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
+                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(p -> p instanceof ReceivingTransportUnitOrderPosition)
+                .map(p -> (ReceivingTransportUnitOrderPosition) p)
+                .filter(p -> p.getTransportUnitBK().equals(expectedTransportUnitBK))
+                .findFirst();
+
+        if (openPosition.isEmpty()) {
+            LOGGER.error("Received a goods receipt but no open ReceivingTransportUnitOrderPosition with the demanded TransportUnit exist");
+            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+        }
+        LOGGER.info("Received expected TransportUnit [{}] with ReceivingOrder [{}] in ReceivingOrderPosition [{}]",
+                expectedTransportUnitBK, receivingOrder.getOrderId(), openPosition.get().getPosNo());
+        openPosition.get().changeOrderState(publisher, COMPLETED);
+        if (receivingOrder.getPositions().stream().allMatch(rop -> rop.getState() == COMPLETED)) {
+            receivingOrder.changeOrderState(publisher, COMPLETED);
+        }
+        receivingOrder = repository.save(receivingOrder);
+        return receivingOrder;
     }
 
     /**
@@ -277,14 +321,14 @@ class ReceivingServiceImpl implements ReceivingService {
                     .filter(p -> p instanceof ReceivingOrderPosition)
                     .map(p -> (ReceivingOrderPosition) p)
                     .forEach(p -> {
-                p.setQuantityReceived(p.getQuantityExpected());
+//                p.setQuantityReceived(p.getQuantityExpected());
                 p.setState(COMPLETED);
             });
             order.changeOrderState(publisher, COMPLETED);
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
         }
-        return mapper.map(order, ReceivingOrderVO.class);
+        return receivingMapper.convertToVO(order, new CycleAvoidingMappingContext());
     }
 
     /**
