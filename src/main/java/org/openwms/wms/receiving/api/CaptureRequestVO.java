@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class CaptureRequestVO implements Serializable {
 
     /** The business key of the captured TransportUnit. */

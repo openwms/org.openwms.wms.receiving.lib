@@ -121,7 +121,10 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
      * @return As Map
      */
     public Map<String, String> getDetails() {
-        return details == null ? new HashMap<>() : details;
+        if (details == null) {
+            details = new HashMap<>();
+        }
+        return details;
     }
 
     public void setDetails(Map<String, String> details) {

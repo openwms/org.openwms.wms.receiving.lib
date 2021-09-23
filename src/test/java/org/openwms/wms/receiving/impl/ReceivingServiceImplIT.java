@@ -24,6 +24,7 @@ import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -68,6 +69,7 @@ class ReceivingServiceImplIT {
         assertThat(Integer.parseInt(order.getOrderId()) + 1).isEqualTo(Integer.parseInt(order2.getOrderId()));
     }
 
+    @Sql("classpath:import-TEST.sql")
     @Test void createOrderFull() {
         ReceivingOrder ro = new ReceivingOrder("4710");
         ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));
