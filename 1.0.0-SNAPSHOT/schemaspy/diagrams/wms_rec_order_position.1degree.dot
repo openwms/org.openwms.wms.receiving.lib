@@ -61,12 +61,12 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_latest_due" COLSPAN="2" ALIGN="LEFT">c_latest_due</TD><TD PORT="c_latest_due.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
       <TR><TD PORT="c_pos_no" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_pos_no</TD><TD PORT="c_pos_no.type" ALIGN="LEFT">int4[10]</TD></TR>
       <TR><TD PORT="c_state" COLSPAN="2" ALIGN="LEFT">c_state</TD><TD PORT="c_state.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="c_transport_unit_bk" COLSPAN="2" ALIGN="LEFT">c_transport_unit_bk</TD><TD PORT="c_transport_unit_bk.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="c_transport_unit_type_name" COLSPAN="2" ALIGN="LEFT">c_transport_unit_type_name</TD><TD PORT="c_transport_unit_type_name.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_expected_type" COLSPAN="2" ALIGN="LEFT">c_qty_expected_type</TD><TD PORT="c_qty_expected_type.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_expected" COLSPAN="2" ALIGN="LEFT">c_qty_expected</TD><TD PORT="c_qty_expected.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_received_type" COLSPAN="2" ALIGN="LEFT">c_qty_received_type</TD><TD PORT="c_qty_received_type.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_received" COLSPAN="2" ALIGN="LEFT">c_qty_received</TD><TD PORT="c_qty_received.type" ALIGN="LEFT">varchar[255]</TD></TR>
-      <TR><TD PORT="c_transport_unit_bk" COLSPAN="2" ALIGN="LEFT">c_transport_unit_bk</TD><TD PORT="c_transport_unit_bk.type" ALIGN="LEFT">varchar[255]</TD></TR>
-      <TR><TD PORT="c_transport_unit_type_name" COLSPAN="2" ALIGN="LEFT">c_transport_unit_type_name</TD><TD PORT="c_transport_unit_type_name.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD><TD PORT="c_order_id.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_sku" COLSPAN="2" ALIGN="LEFT">c_sku</TD><TD PORT="c_sku.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>

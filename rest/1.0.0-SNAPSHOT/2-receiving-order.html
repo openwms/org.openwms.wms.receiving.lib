@@ -612,7 +612,37 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/5428c8ab-d1b5-48be-a117-136ca0009385/</code></pre>
+Location: http://localhost:8080/v1/receiving-orders/9784a240-3a54-4f07-ace4-75b504b2525d/
+Content-Type: application/hal+json
+Content-Length: 740
+
+{
+  "pKey" : "9784a240-3a54-4f07-ace4-75b504b2525d",
+  "orderId" : "4712",
+  "state" : "CREATED",
+  "positions" : [ {
+    "@class" : "org.openwms.wms.receiving.api.ReceivingOrderPositionVO",
+    "positionId" : 1,
+    "quantityExpected" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 1
+    },
+    "product" : {
+      "sku" : "C1",
+      "description" : "Skateboard gearings 608ZZ",
+      "baseUnit" : {
+        "@class" : "org.openwms.core.units.api.Piece",
+        "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+        "magnitude" : 1
+      }
+    },
+    "state" : "CREATED",
+    "details" : {
+      "p1" : "v1"
+    }
+  } ]
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -980,7 +1010,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/4087be77-d541-4b8a-853d-25707378484c/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/75aed850-7404-46b3-8d86-866ff01aed55/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 65
 Host: localhost:8080
@@ -1002,7 +1032,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "4087be77-d541-4b8a-853d-25707378484c",
+  "pKey" : "75aed850-7404-46b3-8d86-866ff01aed55",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1020,7 +1050,7 @@ Content-Length: 299
 {
   "message" : "Cancellation of ReceivingOrder [4716] is not allowed because order is already in state [PROCESSED]",
   "messageKey" : "owms.wms.rec.recOrderCancellationDenied",
-  "obj" : [ "4716", "PROCESSED", "84ca2f8a-00cd-462c-b782-4c31afd7baca" ],
+  "obj" : [ "4716", "PROCESSED", "bc17e208-abfc-4133-bf06-c50f4981c18c" ],
   "httpStatus" : "403",
   "class" : "String"
 }</code></pre>
@@ -1151,7 +1181,7 @@ Content-Length: 503
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-23 22:22:51 UTC
+Last updated 2021-09-24 20:38:11 UTC
 </div>
 </div>
 </body>
