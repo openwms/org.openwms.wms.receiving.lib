@@ -10,6 +10,12 @@
     <entity class="org.openwms.wms.receiving.impl.ReceivingOrder" name="ReceivingOrder" access="FIELD">
         <sequence-generator name="generator" sequence-name="rec_ro_seq" allocation-size="1" />
     </entity>
+    <entity class="org.openwms.wms.receiving.impl.BaseReceivingOrderPosition" name="BaseReceivingOrderPosition" access="FIELD">
+        <sequence-generator name="generator" sequence-name="rec_ro_pos_seq" allocation-size="1" />
+    </entity>
+    <entity class="org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition" name="ReceivingTransportUnitOrderPosition" access="FIELD">
+        <sequence-generator name="generator" sequence-name="rec_ro_pos_seq" allocation-size="1" />
+    </entity>
     <entity class="org.openwms.wms.receiving.impl.ReceivingOrderPosition" name="ReceivingOrderPosition" access="FIELD">
         <sequence-generator name="generator" sequence-name="rec_ro_pos_seq" allocation-size="1" />
     </entity>

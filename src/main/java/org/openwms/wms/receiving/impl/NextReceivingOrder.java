@@ -36,6 +36,9 @@ public class NextReceivingOrder extends BaseEntity implements Serializable {
     /** Name of the Account. */
     @Column(name = "C_NAME")
     private String name;
+    /** Prefix of the ReceivingOrder number. */
+    @Column(name = "C_PREFIX")
+    private String prefix;
     /** Last given OrderId. */
     @Column(name = "C_CURRENT", length = 40)
     private String currentOrderId;
@@ -43,12 +46,27 @@ public class NextReceivingOrder extends BaseEntity implements Serializable {
     /** Dear JPA... */
     public NextReceivingOrder() {}
 
+    public String getCompleteOrderId() {
+        if (this.prefix == null || this.prefix.isEmpty()) {
+            return currentOrderId;
+        }
+        return prefix+currentOrderId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public String getCurrentOrderId() {
@@ -64,12 +82,12 @@ public class NextReceivingOrder extends BaseEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof NextReceivingOrder)) return false;
         NextReceivingOrder that = (NextReceivingOrder) o;
-        return Objects.equals(name, that.name) && Objects.equals(currentOrderId, that.currentOrderId);
+        return Objects.equals(name, that.name) && Objects.equals(prefix, that.prefix) && Objects.equals(currentOrderId, that.currentOrderId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, currentOrderId);
+        return Objects.hash(name, prefix, currentOrderId);
     }
 
     @Override

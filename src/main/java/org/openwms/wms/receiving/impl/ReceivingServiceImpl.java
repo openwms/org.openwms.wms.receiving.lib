@@ -127,9 +127,10 @@ class ReceivingServiceImpl implements ReceivingService {
                 nb.setCurrentOrderId(String.valueOf(++current));
             }
             nextReceivingOrderRepository.save(nb);
-            order.setOrderId(nb.getCurrentOrderId());
+            order.setOrderId(nb.getCompleteOrderId());
         }
-        order.getPositions().stream().filter(p -> p instanceof ReceivingOrderPosition)
+        order.getPositions().stream()
+                .filter(p -> p instanceof ReceivingOrderPosition)
                 .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
