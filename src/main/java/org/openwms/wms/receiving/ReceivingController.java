@@ -22,12 +22,11 @@ import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
-import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
-import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingService;
-import org.openwms.wms.receiving.inventory.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -59,6 +57,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingController.class);
     private final ReceivingService service;
     private final BeanMapper mapper;
     private final ReceivingMapper receivingMapper;
@@ -113,34 +112,32 @@ public class ReceivingController extends AbstractWebController {
         return ResponseEntity.ok(vo);
     }
 
+    @Transactional
     @Validated(ValidationGroups.CreateQuantityReceipt.class)
     @PostMapping("/v1/receiving-orders")
-    public ResponseEntity<Void> createOrder(
+    public ResponseEntity<ReceivingOrderVO> createOrder(
             @Validated(ValidationGroups.CreateQuantityReceipt.class)
             @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
-        ReceivingOrder order = mapper.map(orderVO, ReceivingOrder.class);
-        order.getPositions().clear();
-        order.getPositions().addAll(orderVO.getPositions().stream().map(p -> {
-            ReceivingOrderPosition rop = mapper.map(p, ReceivingOrderPosition.class);
-            rop.setOrder(order);
-            if (p instanceof ReceivingOrderPositionVO) {
-                rop.setProduct(mapper.map(((ReceivingOrderPositionVO)p).getProduct(), Product.class));
-            }
-            return rop;
-        }).collect(Collectors.toList()));
-        ReceivingOrder saved = service.createOrder(order);
-        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
+        LOGGER.debug("Requested to create ReceivingOrder with quantities [{}]", orderVO);
+        ReceivingOrder saved = service.createOrder(receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext()));
+        return ResponseEntity
+                .created(getLocationURIForCreatedResource(req, saved.getPersistentKey()))
+                .body(receivingMapper.convertToVO(saved, new CycleAvoidingMappingContext()));
     }
 
+    @Transactional
     @Validated(ValidationGroups.CreateExpectedTUReceipt.class)
     @PostMapping(value = "/v1/receiving-orders", consumes = "application/vnd.openwms.receiving-order-v2+json")
-    public ResponseEntity<Void> createExpectedTUReceipt(
+    public ResponseEntity<ReceivingOrderVO> createExpectedTUReceipt(
             @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
+        LOGGER.debug("Requested to create ReceivingOrder with expected TU [{}]", orderVO);
         var eo = receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext());
         ReceivingOrder saved = service.createOrder(eo);
-        return ResponseEntity.created(getLocationURIForCreatedResource(req, saved.getPersistentKey())).build();
+        return ResponseEntity
+                .created(getLocationURIForCreatedResource(req, saved.getPersistentKey()))
+                .body(receivingMapper.convertToVO(saved, new CycleAvoidingMappingContext()));
     }
 
     @PostMapping(value = "/v1/receiving-orders/{pKey}/capture", params = "loadUnitType")
