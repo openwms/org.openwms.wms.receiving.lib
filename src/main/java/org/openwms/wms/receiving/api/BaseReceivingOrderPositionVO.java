@@ -43,7 +43,7 @@ public class BaseReceivingOrderPositionVO implements Serializable {
     @NotNull
     @JsonProperty("positionId")
     private Integer positionId;
-    /** Current position state. Default is {@value} */
+    /** Current position state. */
     @JsonProperty("state")
     private String state;
     /** Optional: How the position should be processed, manually oder automatically. */

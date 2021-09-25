@@ -78,7 +78,6 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
      * <li>true: locked</li>
      * <li>false: unlocked</li>
      * </ul>
-     * Default is {@value}
      */
     @Column(name = "C_LOCKED")
     private boolean locked = false;

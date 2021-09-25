@@ -33,7 +33,7 @@ public class ReceivingOrderPositionMO implements Serializable {
     /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotNull
     private Integer positionId;
-    /** Current position state. Default is {@value} */
+    /** Current position state. */
     private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
     private Measurable<?, ?, ?> quantityExpected;

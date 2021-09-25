@@ -61,7 +61,7 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     @NotNull
     private Integer posNo;
 
-    /** Current position state. Default is {@value} */
+    /** Current position state. */
     @Enumerated(EnumType.STRING)
     @Column(name = "C_STATE")
     @NotNull

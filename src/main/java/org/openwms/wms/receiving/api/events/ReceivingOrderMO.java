@@ -15,21 +15,13 @@
  */
 package org.openwms.wms.receiving.api.events;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.ameba.http.AbstractBase;
-
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * A ReceivingOrderMO.
@@ -42,9 +34,9 @@ public class ReceivingOrderMO implements Serializable {
     private String pKey;
     /** The unique identifier of this {@code ReceivingOrder}. */
     private String orderId;
-    /** The current state of this {@code ReceivingOrder. */
+    /** The current state of this {@code ReceivingOrder}. */
     private String state;
-    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
+    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder}. */
     private List<@Valid ReceivingOrderPositionMO> positions = new ArrayList<>(0);
     /** Arbitrary detail information stored along an order. */
     private Map<String, String> details = new HashMap<>();

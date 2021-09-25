@@ -46,10 +46,10 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     /** The unique identifier of this {@code ReceivingOrder}. */
     @JsonProperty("orderId")
     private String orderId;
-    /** The current state of this {@code ReceivingOrder. */
+    /** The current state of this {@code ReceivingOrder}. */
     @JsonProperty("state")
     private String state;
-    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder. */
+    /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder}. */
     @JsonProperty("positions")
     @JsonManagedReference
     @Valid
