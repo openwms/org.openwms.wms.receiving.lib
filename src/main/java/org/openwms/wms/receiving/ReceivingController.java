@@ -17,6 +17,7 @@ package org.openwms.wms.receiving;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
@@ -43,8 +44,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_BK;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -59,11 +60,13 @@ public class ReceivingController extends AbstractWebController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingController.class);
     private final ReceivingService service;
+    private final Translator translator;
     private final BeanMapper mapper;
     private final ReceivingMapper receivingMapper;
 
-    ReceivingController(ReceivingService service, BeanMapper mapper, ReceivingMapper receivingMapper) {
+    ReceivingController(ReceivingService service, Translator translator, BeanMapper mapper, ReceivingMapper receivingMapper) {
         this.service = service;
+        this.translator = translator;
         this.mapper = mapper;
         this.receivingMapper = receivingMapper;
     }
@@ -104,10 +107,13 @@ public class ReceivingController extends AbstractWebController {
 
     @Transactional(readOnly = true)
     @GetMapping(value = "/v1/receiving-orders", params = {"orderId"})
-    public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(@RequestParam("orderId") String orderId) {
+    public ResponseEntity<ReceivingOrderVO> findOrderByOrderId(
+            @RequestParam("orderId") String orderId) {
         var vo = receivingMapper.convertToVO(
-                service.findByOrderId(orderId).orElseThrow(() -> new NotFoundException(format("No ReceivingOrder with orderId [%s] exists", orderId))),
-                new CycleAvoidingMappingContext());
+                service.findByOrderId(orderId).orElseThrow(
+                        () -> new NotFoundException(translator, RO_NOT_FOUND_BY_BK, new String[]{orderId}, orderId)),
+                new CycleAvoidingMappingContext()
+        );
         vo.sortPositions();
         return ResponseEntity.ok(vo);
     }
@@ -130,7 +136,7 @@ public class ReceivingController extends AbstractWebController {
     @Validated(ValidationGroups.CreateExpectedTUReceipt.class)
     @PostMapping(value = "/v1/receiving-orders", consumes = "application/vnd.openwms.receiving-order-v2+json")
     public ResponseEntity<ReceivingOrderVO> createExpectedTUReceipt(
-            @Valid @RequestBody ReceivingOrderVO orderVO,
+            @Validated(ValidationGroups.CreateExpectedTUReceipt.class) @Valid @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
         LOGGER.debug("Requested to create ReceivingOrder with expected TU [{}]", orderVO);
         var eo = receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext());

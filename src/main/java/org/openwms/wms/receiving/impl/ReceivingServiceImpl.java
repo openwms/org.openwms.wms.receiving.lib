@@ -344,7 +344,7 @@ class ReceivingServiceImpl implements ReceivingService {
             throw new AlreadyCancelledException(
                     translator,
                     RO_ALREADY_IN_STATE,
-                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()},
+                    new String[]{order.getOrderId(), order.getOrderState().name()},
                     order.getOrderId(), order.getOrderState()
             );
         }
@@ -352,7 +352,7 @@ class ReceivingServiceImpl implements ReceivingService {
             throw new CancellationDeniedException(
                     translator,
                     RO_CANCELLATION_DENIED,
-                    new String[]{order.getOrderId(), order.getOrderState().name(), order.getPersistentKey()},
+                    new String[]{order.getOrderId(), order.getOrderState().name()},
                     order.getOrderId(), order.getOrderState()
             );
         }
