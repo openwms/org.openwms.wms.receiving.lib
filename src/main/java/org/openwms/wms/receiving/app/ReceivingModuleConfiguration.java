@@ -19,6 +19,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
+import org.ameba.http.identity.EnableIdentityAwareness;
 import org.ameba.i18n.AbstractTranslator;
 import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
@@ -46,6 +47,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableDiscoveryClient
+@EnableIdentityAwareness
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
