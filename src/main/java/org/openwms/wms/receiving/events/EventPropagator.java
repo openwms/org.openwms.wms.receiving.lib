@@ -17,7 +17,8 @@ package org.openwms.wms.receiving.events;
 
 import org.ameba.annotation.Measured;
 import org.ameba.app.SpringProfiles;
-import org.ameba.mapping.BeanMapper;
+import org.openwms.wms.receiving.CycleAvoidingMappingContext;
+import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
@@ -43,29 +44,29 @@ public class EventPropagator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPropagator.class);
     private final AmqpTemplate amqpTemplate;
-    private final BeanMapper mapper;
+    private final ReceivingMapper receivingMapper;
     private final String receivingExchangeName;
 
     public EventPropagator(AmqpTemplate amqpTemplate,
-            BeanMapper mapper, @Value("${owms.events.receiving.exchange-name}") String receivingExchangeName) {
+                           ReceivingMapper receivingMapper, @Value("${owms.events.receiving.exchange-name}") String receivingExchangeName) {
         this.amqpTemplate = amqpTemplate;
-        this.mapper = mapper;
+        this.receivingMapper = receivingMapper;
         this.receivingExchangeName = receivingExchangeName;
     }
 
     @Measured
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onEvent(ReceivingOrderStateChangeEvent event) {
-        ReceivingOrderMO mo = mapper.map(event.getSource(), ReceivingOrderMO.class);
+        ReceivingOrderMO mo = receivingMapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
         switch(event.getState()) {
             case COMPLETED:
-                LOGGER.debug("ReceivingOrder [{}] with all positions completed", event.getSource().getPersistentKey());
-                LOGGER.debug("Sending ReceivingOrderMO: [{}]", mo);
+                LOGGER.debug("ReceivingOrder [{}] with all positions completed, sending ReceivingOrderMO: [{}]",
+                        event.getSource().getPersistentKey(), mo);
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.completed", mo);
                 break;
             case CANCELED:
-                LOGGER.debug("ReceivingOrder [{}] has been cancelled", event.getSource().getPersistentKey());
-                LOGGER.debug("Sending ReceivingOrderMO: [{}]", mo);
+                LOGGER.debug("ReceivingOrder [{}] with all positions cancelled, sending ReceivingOrderMO: [{}]",
+                        event.getSource().getPersistentKey(), mo);
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.cancelled", mo);
                 break;
             default:
@@ -76,12 +77,11 @@ public class EventPropagator {
     @Measured
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public <T extends BaseReceivingOrderPosition> void onEvent(ReceivingOrderPositionStateChangeEvent<T> event) {
-        ReceivingOrderPositionMO mo = mapper.map(event.getSource(), ReceivingOrderPositionMO.class);
+        ReceivingOrderPositionMO mo = receivingMapper.fromEOtoMO(event.getSource(), new CycleAvoidingMappingContext());
         switch(event.getState()) {
             case COMPLETED:
-                LOGGER.debug("ReceivingOrderPosition [{}]/[{}] completed",
-                        event.getSource().getOrder().getOrderId(), event.getSource().getPosNo());
-                LOGGER.debug("Sending ReceivingOrderPositionMO: [{}]", mo);
+                LOGGER.debug("ReceivingOrderPosition [{}]/[{}] completed, sending ReceivingOrderPositionMO [{}]",
+                        event.getSource().getOrder().getOrderId(), event.getSource().getPosNo(), mo);
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.completed", mo);
                 break;
             default:

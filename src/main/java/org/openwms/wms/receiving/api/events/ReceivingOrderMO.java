@@ -45,6 +45,10 @@ public class ReceivingOrderMO implements Serializable {
         return pKey;
     }
 
+    public void setpKey(String pKey) {
+        this.pKey = pKey;
+    }
+
     public String getOrderId() {
         return orderId;
     }

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * A ReceivingOrderPositionMO.
@@ -47,7 +48,6 @@ public class ReceivingOrderPositionMO implements Serializable {
     private String transportUnitBK;
     /** Optional: The suppliers type of {@code TransportUnit}. */
     private String transportUnitType;
-    private String supplierPackingUnit;
     /** Arbitrary detail information on this position, might by populated with ERP information. */
     private Map<String, String> details;
 
@@ -55,36 +55,64 @@ public class ReceivingOrderPositionMO implements Serializable {
         return positionId;
     }
 
+    public void setPositionId(Integer positionId) {
+        this.positionId = positionId;
+    }
+
     public Measurable<?, ?, ?> getQuantityExpected() {
         return quantityExpected;
+    }
+
+    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
+        this.quantityExpected = quantityExpected;
     }
 
     public Measurable<?, ?, ?> getQuantityReceived() {
         return quantityReceived;
     }
 
+    public void setQuantityReceived(Measurable<?, ?, ?> quantityReceived) {
+        this.quantityReceived = quantityReceived;
+    }
+
     public String getState() {
         return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public ProductMO getProduct() {
         return product;
     }
 
+    public void setProduct(ProductMO product) {
+        this.product = product;
+    }
+
     public String getStartMode() {
         return startMode;
+    }
+
+    public void setStartMode(String startMode) {
+        this.startMode = startMode;
     }
 
     public String getTransportUnitBK() {
         return transportUnitBK;
     }
 
+    public void setTransportUnitBK(String transportUnitBK) {
+        this.transportUnitBK = transportUnitBK;
+    }
+
     public String getTransportUnitType() {
         return transportUnitType;
     }
 
-    public String getSupplierPackingUnit() {
-        return supplierPackingUnit;
+    public void setTransportUnitType(String transportUnitType) {
+        this.transportUnitType = transportUnitType;
     }
 
     public Map<String, String> getDetails() {
@@ -98,11 +126,31 @@ public class ReceivingOrderPositionMO implements Serializable {
         this.details = details;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public String toString() {
-        return String.valueOf(positionId);
+        return new StringJoiner(", ", ReceivingOrderPositionMO.class.getSimpleName() + "[", "]")
+                .add("positionId=" + positionId)
+                .add("state='" + state + "'")
+                .add("quantityExpected=" + quantityExpected)
+                .add("quantityReceived=" + quantityReceived)
+                .add("product=" + product)
+                .add("startMode='" + startMode + "'")
+                .add("transportUnitBK='" + transportUnitBK + "'")
+                .add("transportUnitType='" + transportUnitType + "'")
+                .add("details=" + details)
+                .toString();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,12 +164,16 @@ public class ReceivingOrderPositionMO implements Serializable {
                 Objects.equals(startMode, that.startMode) &&
                 Objects.equals(transportUnitBK, that.transportUnitBK) &&
                 Objects.equals(transportUnitType, that.transportUnitType) &&
-                Objects.equals(supplierPackingUnit, that.supplierPackingUnit) &&
                 Objects.equals(details, that.details);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, state, quantityExpected, quantityReceived, product, startMode, transportUnitBK, transportUnitType, supplierPackingUnit, details);
+        return Objects.hash(positionId, state, quantityExpected, quantityReceived, product, startMode, transportUnitBK, transportUnitType, details);
     }
 }
