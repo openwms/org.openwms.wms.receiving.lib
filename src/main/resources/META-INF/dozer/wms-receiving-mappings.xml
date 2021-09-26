@@ -195,6 +195,10 @@
 		<class-a>org.openwms.wms.receiving.inventory.Product</class-a>
 		<class-b>org.openwms.wms.receiving.api.events.ProductMO</class-b>
 		<field>
+			<a is-accessible="true">foreignPKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
 			<a is-accessible="true">sku</a>
 			<b is-accessible="true">sku</b>
 		</field>
