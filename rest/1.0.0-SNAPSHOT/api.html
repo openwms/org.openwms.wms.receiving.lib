@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-44)">
+<meta name="author" content="(1.0.0-SNAPSHOT-45)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-44)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-45)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1094,12 +1094,12 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/0bacd9b8-b196-4fee-a9e1-ef67b81061e8/
+Location: http://localhost:8080/v1/receiving-orders/28b9ef6d-e856-4b0c-b2a4-dfde17b43d20/
 Content-Type: application/hal+json
 Content-Length: 740
 
 {
-  "pKey" : "0bacd9b8-b196-4fee-a9e1-ef67b81061e8",
+  "pKey" : "28b9ef6d-e856-4b0c-b2a4-dfde17b43d20",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1492,7 +1492,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /v1/receiving-orders/a72e2533-6196-4978-89f9-153c44e0bcb1/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /v1/receiving-orders/dee3466b-4cde-4e18-80a0-b60d4a9cdd6a/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 65
 Host: localhost:8080
@@ -1514,7 +1514,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "a72e2533-6196-4978-89f9-153c44e0bcb1",
+  "pKey" : "dee3466b-4cde-4e18-80a0-b60d4a9cdd6a",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1663,7 +1663,7 @@ Content-Length: 503
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-26 10:49:16 UTC
+Last updated 2021-09-26 19:23:01 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
