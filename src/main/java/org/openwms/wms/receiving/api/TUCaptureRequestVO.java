@@ -34,6 +34,9 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     @NotEmpty
     @JsonProperty("expectedTransportUnitBK")
     private String expectedTransportUnitBK;
+    @NotEmpty
+    @JsonProperty("actualLocationErpCode")
+    private String actualLocationErpCode;
 
     @JsonCreator
     public TUCaptureRequestVO() {
@@ -45,5 +48,13 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     public void setExpectedTransportUnitBK(String expectedTransportUnitBK) {
         this.expectedTransportUnitBK = expectedTransportUnitBK;
+    }
+
+    public String getActualLocationErpCode() {
+        return actualLocationErpCode;
+    }
+
+    public void setActualLocationErpCode(String actualLocationErpCode) {
+        this.actualLocationErpCode = actualLocationErpCode;
     }
 }

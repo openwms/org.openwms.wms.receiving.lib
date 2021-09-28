@@ -39,6 +39,7 @@ import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,11 +86,12 @@ class ReceivingServiceImpl implements ReceivingService {
     private final ProductService service;
     private final ApplicationEventPublisher publisher;
     private final AsyncPackagingUnitApi packagingUnitApi;
+    private final TransportUnitApi transportUnitApi;
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator,
             BeanMapper mapper, ReceivingMapper receivingMapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi) {
+            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
         this.mapper = mapper;
@@ -99,6 +101,7 @@ class ReceivingServiceImpl implements ReceivingService {
         this.service = service;
         this.publisher = publisher;
         this.packagingUnitApi = packagingUnitApi;
+        this.transportUnitApi = transportUnitApi;
     }
 
     /**
@@ -244,6 +247,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 ro = this.capture(
                         pKey,
                         tur.getExpectedTransportUnitBK(),
+                        tur.getActualLocationErpCode(),
                         loadUnitType,
                         tur.getDetails()
                 );
@@ -254,7 +258,8 @@ class ReceivingServiceImpl implements ReceivingService {
         return receivingMapper.convertToVO(ro, new CycleAvoidingMappingContext());
     }
 
-    private @NotNull ReceivingOrder capture(String pKey, String expectedTransportUnitBK, String loadUnitType, CaptureDetailsVO details) {
+    private @NotNull ReceivingOrder capture(String pKey, String expectedTransportUnitBK, String actualLocationErpCode,
+                                            String loadUnitType, CaptureDetailsVO details) {
         ReceivingOrder receivingOrder = getOrder(pKey);
         Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
@@ -274,6 +279,7 @@ class ReceivingServiceImpl implements ReceivingService {
             receivingOrder.changeOrderState(publisher, COMPLETED);
         }
         receivingOrder = repository.save(receivingOrder);
+        transportUnitApi.moveTU(expectedTransportUnitBK, actualLocationErpCode);
         return receivingOrder;
     }
 

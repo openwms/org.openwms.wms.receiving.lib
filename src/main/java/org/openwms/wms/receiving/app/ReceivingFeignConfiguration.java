@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.app;
 
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,7 +30,8 @@ import org.springframework.context.annotation.Profile;
 @Profile(SpringProfiles.DISTRIBUTED)
 @Configuration
 @EnableFeignClients(basePackageClasses = {
-        PackagingUnitApi.class
+        PackagingUnitApi.class,
+        TransportUnitApi.class
 })
 class ReceivingFeignConfiguration {
 }
