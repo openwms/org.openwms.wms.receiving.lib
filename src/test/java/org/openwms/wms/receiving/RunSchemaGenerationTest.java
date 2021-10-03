@@ -16,6 +16,8 @@
 package org.openwms.wms.receiving;
 
 import org.junit.jupiter.api.Test;
+import org.openwms.core.SpringProfiles;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Heiko Scherrer
  */
+@ActiveProfiles(SpringProfiles.DISTRIBUTED)
 @ReceivingApplicationTest
 class RunSchemaGenerationTest {
 

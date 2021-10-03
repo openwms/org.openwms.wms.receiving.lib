@@ -20,7 +20,6 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
 import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
@@ -79,7 +78,6 @@ class ReceivingServiceImpl implements ReceivingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
     private final Translator translator;
-    private final BeanMapper mapper;
     private final ReceivingMapper receivingMapper;
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
@@ -89,12 +87,13 @@ class ReceivingServiceImpl implements ReceivingService {
     private final TransportUnitApi transportUnitApi;
 
     ReceivingServiceImpl(
-            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed, Translator translator,
-            BeanMapper mapper, ReceivingMapper receivingMapper, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi) {
+            @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
+            Translator translator, ReceivingMapper receivingMapper,
+            NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
+            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi,
+            TransportUnitApi transportUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
-        this.mapper = mapper;
         this.receivingMapper = receivingMapper;
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
