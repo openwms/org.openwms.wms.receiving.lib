@@ -191,6 +191,7 @@ class ReceivingServiceImpl implements ReceivingService {
         }
 
         for (int i = 0; i < quantityReceived.getMagnitude().intValue(); i++) {
+            // single packs
             PackagingUnitVO pu = new PackagingUnitVO(
                     ProductVO.newBuilder().sku(sku).build(),
                     existingProduct.getBaseUnit()
