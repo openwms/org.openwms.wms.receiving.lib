@@ -16,8 +16,8 @@
 package org.openwms.wms.receiving;
 
 import org.junit.jupiter.api.Test;
-import org.openwms.core.SpringProfiles;
-import org.springframework.test.context.ActiveProfiles;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,9 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Heiko Scherrer
  */
-@ActiveProfiles(SpringProfiles.DISTRIBUTED)
 @ReceivingApplicationTest
 class RunSchemaGenerationTest {
+
+    @MockBean
+    private TransportUnitApi transportUnitApi;
 
     @Test
     void runSchemaGeneration() {
