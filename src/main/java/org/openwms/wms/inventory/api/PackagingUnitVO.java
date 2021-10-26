@@ -32,7 +32,7 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PackagingUnitVO extends AbstractBase implements Serializable {
+public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Serializable {
 
     /** Ordered Product. */
     @JsonProperty("product")
