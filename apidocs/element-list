@@ -3,7 +3,6 @@ org.openwms.common.transport.api.commands
 org.openwms.common.transport.api.messages
 org.openwms.values
 org.openwms.wms
-org.openwms.wms.commands
 org.openwms.wms.inventory.api
 org.openwms.wms.order
 org.openwms.wms.receiving
