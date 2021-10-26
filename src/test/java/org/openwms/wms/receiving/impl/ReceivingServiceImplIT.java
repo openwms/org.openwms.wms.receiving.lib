@@ -22,7 +22,9 @@ import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.inventory.Product;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,8 @@ class ReceivingServiceImplIT {
 
     @Autowired
     private ReceivingServiceImpl service;
+    @MockBean
+    private TransportUnitApi transportUnitApi;
 
     @Test void createOrderWithNull() {
         ServiceLayerException ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));

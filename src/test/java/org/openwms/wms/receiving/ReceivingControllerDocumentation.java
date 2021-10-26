@@ -27,6 +27,7 @@ import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -77,6 +78,8 @@ class ReceivingControllerDocumentation {
     private ObjectMapper om;
     @MockBean
     private PackagingUnitApi packagingUnitApi;
+    @MockBean
+    private TransportUnitApi transportUnitApi;
     private MockMvc mockMvc;
 
     @BeforeEach

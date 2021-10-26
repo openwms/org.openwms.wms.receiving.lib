@@ -17,8 +17,10 @@ package org.openwms.wms.receiving.transport;
 
 import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
+import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,6 +35,8 @@ class TransportUnitServiceImplIT {
 
     @Autowired
     private TransportUnitService service;
+    @MockBean
+    private TransportUnitApi transportUnitApi;
 
     @Test
     void upsertWithNull() {
