@@ -30,23 +30,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "wms-receiving", qualifier = "receivingApi")
 public interface ReceivingApi {
 
+    /**
+     * Create a new {@code ReceivingOrder}.
+     *
+     * @param order The ReceivingOrder representation
+     */
     @PostMapping("/v1/receiving-orders")
     void createOrder(
             @RequestBody ReceivingOrderVO order
     );
 
+    /**
+     * Update an existing {@code ReceivingOrder}.
+     *
+     * @param pKey The persistent identifier of the ReceivingOrder to change
+     * @param order The ReceivingOrder representation with the modified values
+     * @return The updated instance
+     */
     @PutMapping("/v1/receiving/{pKey}")
     ReceivingOrderVO changeOrder(
             @PathVariable("pKey") String pKey,
             @RequestBody ReceivingOrderVO order
     );
 
+    /**
+     * Execute the process of capturing a Goods Receipt.
+     *
+     * @param pKey The persistent identifier of the ReceivingOrder the capture targets on
+     * @param request Required capture request data
+     */
     @PostMapping("/v1/receiving-orders/{pKey}/capture")
     void captureOrder(
             @PathVariable("pKey") String pKey,
             @RequestBody CaptureRequestVO request
     );
 
+    /**
+     * Cancel an existing {@code ReceivingOrder}.
+     *
+     * @param pKey The persistent identifier of the ReceivingOrder
+     */
     @DeleteMapping("/v1/receiving-orders/{pKey}")
     void cancelOrder(
             @PathVariable("pKey") String pKey

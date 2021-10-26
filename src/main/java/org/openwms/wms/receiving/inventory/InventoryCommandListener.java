@@ -17,7 +17,6 @@ package org.openwms.wms.receiving.inventory;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.commands.EnsureProductExistsCommand;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

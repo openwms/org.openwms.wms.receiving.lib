@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * This package contains all supported Command types the common-service can handle.
+ * This package contains all supported Command types the COMMON Service can handle.
  */
 package org.openwms.common.transport.api.commands;
