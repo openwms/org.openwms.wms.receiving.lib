@@ -25,6 +25,7 @@ import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
+import org.openwms.wms.receiving.impl.ReceivingOrderUpdater;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CorsFilter;
@@ -47,6 +49,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableDiscoveryClient
+@EnablePluginRegistries(ReceivingOrderUpdater.class)
 @EnableIdentityAwareness
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing

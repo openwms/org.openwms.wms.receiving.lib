@@ -74,6 +74,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
         <spring-cloud-dependencies.version>Hoxton.SR10</spring-cloud-dependencies.version>
+        <spring-plugin-core.version>2.0.0.RELEASE</spring-plugin-core.version>
     </properties>
 
     <reporting>
@@ -243,6 +244,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.plugin</groupId>
+                <artifactId>spring-plugin-core</artifactId>
+                <version>${spring-plugin-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.plugin</groupId>
+                <artifactId>spring-plugin-metadata</artifactId>
+                <version>${spring-plugin-core.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -319,6 +330,17 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-metadata</artifactId>
             <optional>true</optional>
         </dependency>
 

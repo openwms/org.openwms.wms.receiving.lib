@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.plugin.core.PluginRegistry;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -65,6 +66,7 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_CANCELLATION_DENIED
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOWED;
+import static org.openwms.wms.receiving.impl.ReceivingOrderUpdater.Type.DETAILS_CHANGE;
 
 /**
  * A ReceivingServiceImpl is a Spring managed transactional Services that deals with {@link ReceivingOrder}s.
@@ -82,6 +84,7 @@ class ReceivingServiceImpl implements ReceivingService {
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final ProductService service;
+    private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
     private final ApplicationEventPublisher publisher;
     private final AsyncPackagingUnitApi packagingUnitApi;
     private final TransportUnitApi transportUnitApi;
@@ -90,7 +93,7 @@ class ReceivingServiceImpl implements ReceivingService {
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
             Translator translator, ReceivingMapper receivingMapper,
             NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService service, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi,
+            ProductService service, PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi,
             TransportUnitApi transportUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
@@ -98,6 +101,7 @@ class ReceivingServiceImpl implements ReceivingService {
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
         this.service = service;
+        this.plugins = plugins;
         this.publisher = publisher;
         this.packagingUnitApi = packagingUnitApi;
         this.transportUnitApi = transportUnitApi;
@@ -161,8 +165,8 @@ class ReceivingServiceImpl implements ReceivingService {
         ReceivingOrder receivingOrder = getOrder(pKey);
         List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
-                .filter(p -> p instanceof ReceivingOrderPosition)
-                .map(p -> (ReceivingOrderPosition) p)
+                .filter(ReceivingOrderPosition.class::isInstance)
+                .map(ReceivingOrderPosition.class::cast)
                 .filter(p -> p.getProduct().equals(existingProduct))
                 .collect(Collectors.toList());
 
@@ -210,15 +214,6 @@ class ReceivingServiceImpl implements ReceivingService {
             packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
         position.addQuantityReceived(quantityReceived);
-        /*
-        int compared = position.getQuantityReceived().compareTo(position.getQuantityExpected());
-        if (compared >= 0){
-            position.setState(COMPLETED);
-        }
-        if (receivingOrder.getPositions().stream().noneMatch(rop -> rop.getState() != COMPLETED)) {
-            receivingOrder.changeOrderState(publisher, COMPLETED);
-        }
-         */
         receivingOrder = repository.save(receivingOrder);
         return receivingOrder;
     }
@@ -228,7 +223,7 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Override
     @Measured
-    public ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
+    public @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
             @NotNull @Valid List<CaptureRequestVO> requests) {
         ReceivingOrder ro = null;
         for (CaptureRequestVO request : requests) {
@@ -258,13 +253,13 @@ class ReceivingServiceImpl implements ReceivingService {
         return receivingMapper.convertToVO(ro, new CycleAvoidingMappingContext());
     }
 
-    private @NotNull ReceivingOrder capture(String pKey, String expectedTransportUnitBK, String actualLocationErpCode,
+    private ReceivingOrder capture(String pKey, String expectedTransportUnitBK, String actualLocationErpCode,
                                             String loadUnitType, CaptureDetailsVO details) {
         ReceivingOrder receivingOrder = getOrder(pKey);
         Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
-                .filter(p -> p instanceof ReceivingTransportUnitOrderPosition)
-                .map(p -> (ReceivingTransportUnitOrderPosition) p)
+                .filter(ReceivingTransportUnitOrderPosition.class::isInstance)
+                .map(ReceivingTransportUnitOrderPosition.class::cast)
                 .filter(p -> p.getTransportUnitBK().equals(expectedTransportUnitBK))
                 .findFirst();
 
@@ -308,10 +303,10 @@ class ReceivingServiceImpl implements ReceivingService {
      */
     @Measured
     @Override
-    public ReceivingOrder update(String pKey, ReceivingOrderVO receivingOrder) {
+    public ReceivingOrder update(String pKey, ReceivingOrder receivingOrder) {
         ReceivingOrder order = getOrder(pKey);
         LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
-        // FIXME [openwms]: 10.05.20 Implement this
+        order = plugins.getPluginFor(DETAILS_CHANGE).get().update(order, receivingOrder);
         return order;
     }
 

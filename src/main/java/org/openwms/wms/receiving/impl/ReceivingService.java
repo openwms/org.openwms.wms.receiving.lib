@@ -49,7 +49,8 @@ public interface ReceivingService {
      * @param requests all captures to process
      * @return The updated ReceivingOrder instance with updated positions
      */
-    ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull @Valid List<CaptureRequestVO> requests);
+    @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
+                                      @NotNull @Valid List<CaptureRequestVO> requests);
 
     /**
      * Cancel a {@link ReceivingOrder}.
@@ -102,7 +103,7 @@ public interface ReceivingService {
      * @throws org.ameba.exception.NotFoundException if not found
      * @return The updated instance
      */
-    ReceivingOrder update(@NotEmpty String pKey, @NotNull ReceivingOrderVO receivingOrder);
+    ReceivingOrder update(@NotEmpty String pKey, @NotNull ReceivingOrder receivingOrder);
 
     /**
      * Complete a {@link ReceivingOrder} and all positions. Satisfy quantities and set the state to {@code COMPLETED}.

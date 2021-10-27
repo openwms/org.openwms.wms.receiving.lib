@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -168,7 +169,8 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody ReceivingOrderVO receivingOrder
     ){
-        var vo = mapper.map(service.update(pKey, receivingOrder), ReceivingOrderVO.class);
+        ReceivingOrder eo = mapper.map(receivingOrder, ReceivingOrder.class);
+        var vo = mapper.map(service.update(pKey, eo), ReceivingOrderVO.class);
         vo.sortPositions();
         return ResponseEntity.ok(vo);
     }
@@ -176,7 +178,7 @@ public class ReceivingController extends AbstractWebController {
     @PatchMapping(value = "/v1/receiving-orders/{pKey}")
     public ResponseEntity<ReceivingOrderVO> patchOrder(
             @PathVariable("pKey") String pKey,
-            @Valid @RequestBody ReceivingOrderVO receivingOrder
+            @NotNull @Valid @RequestBody ReceivingOrderVO receivingOrder
     ){
         ReceivingOrder updated = mapper.map(receivingOrder, ReceivingOrder.class);
         if (receivingOrder.hasState()) {
