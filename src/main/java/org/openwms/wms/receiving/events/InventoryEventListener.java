@@ -65,7 +65,7 @@ public class InventoryEventListener {
                     publisher.publishEvent(new ProductEvent(msg.getpKey(), ProductEvent.TYPE.DELETED));
                     break;
                 default:
-                    LOGGER.warn("Event of type [{}] is currently not supported", header);
+                    LOGGER.warn("Product event of type [{}] is currently not supported", header);
             }
         } catch (Exception e) {
             throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);

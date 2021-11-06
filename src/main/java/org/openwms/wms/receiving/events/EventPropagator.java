@@ -70,7 +70,7 @@ public class EventPropagator {
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.cancelled", mo);
                 break;
             default:
-                LOGGER.warn("EventType [{}] not supported", event.getState());
+                LOGGER.warn("ReceivingOrderStateChangeEvent [{}] not supported", event.getState());
         }
     }
 
@@ -85,7 +85,7 @@ public class EventPropagator {
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.completed", mo);
                 break;
             default:
-                LOGGER.warn("EventType [{}] not supported", event.getState());
+                LOGGER.warn("ReceivingOrderPositionStateChangeEvent [{}] not supported", event.getState());
         }
     }
 }
