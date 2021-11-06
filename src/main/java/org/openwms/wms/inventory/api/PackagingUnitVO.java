@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Weight;
+import org.openwms.wms.receiving.api.LocationVO;
 
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
@@ -42,6 +43,9 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @JsonProperty("quantity")
     @NotNull
     private Measurable quantity;
+    /** The actualLocation the PackagingUnit is placed on. */
+    @JsonProperty("actualLocation")
+    public LocationVO actualLocation;
     /** The current length of the PackagingUnit. */
     @JsonProperty("length")
     private Integer length;
@@ -80,6 +84,14 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
 
     public void setQuantity(Measurable quantity) {
         this.quantity = quantity;
+    }
+
+    public LocationVO getActualLocation() {
+        return actualLocation;
+    }
+
+    public void setActualLocation(LocationVO actualLocation) {
+        this.actualLocation = actualLocation;
     }
 
     public Integer getLength() {

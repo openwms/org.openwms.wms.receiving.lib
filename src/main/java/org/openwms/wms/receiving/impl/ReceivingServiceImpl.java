@@ -24,6 +24,7 @@ import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
 import org.openwms.wms.inventory.api.CreatePackagingUnitCommand;
+import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.order.OrderState;
@@ -33,6 +34,8 @@ import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.LocationVO;
+import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
@@ -86,15 +89,17 @@ class ReceivingServiceImpl implements ReceivingService {
     private final ProductService service;
     private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
     private final ApplicationEventPublisher publisher;
-    private final AsyncPackagingUnitApi packagingUnitApi;
+    private final AsyncPackagingUnitApi asyncPackagingUnitApi;
+    private final PackagingUnitApi packagingUnitApi;
     private final TransportUnitApi transportUnitApi;
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
             Translator translator, ReceivingMapper receivingMapper,
             NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService service, PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins, ApplicationEventPublisher publisher, AsyncPackagingUnitApi packagingUnitApi,
-            TransportUnitApi transportUnitApi) {
+            ProductService service, PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
+            ApplicationEventPublisher publisher, AsyncPackagingUnitApi asyncPackagingUnitApi,
+            PackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
         this.receivingMapper = receivingMapper;
@@ -103,6 +108,7 @@ class ReceivingServiceImpl implements ReceivingService {
         this.service = service;
         this.plugins = plugins;
         this.publisher = publisher;
+        this.asyncPackagingUnitApi = asyncPackagingUnitApi;
         this.packagingUnitApi = packagingUnitApi;
         this.transportUnitApi = transportUnitApi;
     }
@@ -152,7 +158,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 ));
     }
 
-    private @NotNull ReceivingOrder capture(
+    private ReceivingOrder capture(
             @NotEmpty String pKey,
             @NotEmpty String transportUnitId,
             @NotEmpty String loadUnitPosition,
@@ -211,8 +217,59 @@ class ReceivingServiceImpl implements ReceivingService {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
             }
-            packagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
+            asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
         }
+        position.addQuantityReceived(quantityReceived);
+        receivingOrder = repository.save(receivingOrder);
+        return receivingOrder;
+    }
+
+    private ReceivingOrder captureQuantityOnLocation(
+            String pKey,
+            String erpCode,
+            Measurable quantityReceived,
+            CaptureDetailsVO details,
+            String sku) {
+
+        final Product existingProduct = getProduct(sku);
+        ReceivingOrder receivingOrder = getOrder(pKey);
+        List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
+                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(ReceivingOrderPosition.class::isInstance)
+                .map(ReceivingOrderPosition.class::cast)
+                .filter(p -> p.getProduct().equals(existingProduct))
+                .collect(Collectors.toList());
+
+        if (openPositions.isEmpty()) {
+            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
+            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+        }
+
+        Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
+                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
+                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .findFirst();
+        ReceivingOrderPosition position = openPositions.get(0);
+
+        // multi packs
+        PackagingUnitVO pu = new PackagingUnitVO(
+                ProductVO.newBuilder().sku(sku).build(),
+                quantityReceived
+        );
+        pu.setActualLocation(new LocationVO(erpCode));
+        if (details != null) {
+            pu.setLength(details.getLength());
+            pu.setWidth(details.getWidth());
+            pu.setHeight(details.getHeight());
+            if (details.getWeight() != null) {
+                pu.setWeight(details.getWeight());
+            }
+            pu.setMessage(details.getMessageText());
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
+        }
+        packagingUnitApi.createOnLocation(pu);
         position.addQuantityReceived(quantityReceived);
         receivingOrder = repository.save(receivingOrder);
         return receivingOrder;
@@ -237,6 +294,15 @@ class ReceivingServiceImpl implements ReceivingService {
                         qr.getQuantityReceived(),
                         qr.getDetails(),
                         qr.getProduct().getSku());
+            } else if (request instanceof QuantityCaptureOnLocationRequestVO) {
+                var tur = (QuantityCaptureOnLocationRequestVO) request;
+                ro = this.captureQuantityOnLocation(
+                        pKey,
+                        tur.getActualLocation().getErpCode(),
+                        tur.getQuantityReceived(),
+                        tur.getDetails(),
+                        tur.getProduct().getSku()
+                );
             } else if (request instanceof TUCaptureRequestVO) {
                 var tur = (TUCaptureRequestVO) request;
                 ro = this.capture(
@@ -247,7 +313,7 @@ class ReceivingServiceImpl implements ReceivingService {
                         tur.getDetails()
                 );
             } else {
-                throw new IllegalArgumentException("Type not supported");
+                throw new IllegalArgumentException("Type of CaptureRequestVO not supported");
             }
         }
         return receivingMapper.convertToVO(ro, new CycleAvoidingMappingContext());

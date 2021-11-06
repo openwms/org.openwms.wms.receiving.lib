@@ -18,32 +18,35 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.ameba.http.AbstractBase;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
- * A CaptureRequestVO.
+ * A LocationVO.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public class CaptureRequestVO implements Serializable {
+public class LocationVO extends AbstractBase<LocationVO> implements Serializable {
 
-    /** A key/value dictionary of arbitrary values captured on the position. */
-    @JsonProperty("details")
-    private CaptureDetailsVO details;
+    @NotEmpty
+    @JsonProperty("erpCode")
+    private String erpCode;
 
     @JsonCreator
-    public CaptureRequestVO() {
+    LocationVO() {}
+
+    public LocationVO(String erpCode) {
+        this.erpCode = erpCode;
     }
 
-    public CaptureDetailsVO getDetails() {
-        return details;
+    public String getErpCode() {
+        return erpCode;
     }
 
-    public void setDetails(CaptureDetailsVO details) {
-        this.details = details;
+    public void setErpCode(String erpCode) {
+        this.erpCode = erpCode;
     }
 }

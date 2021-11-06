@@ -32,6 +32,14 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     /** The business key of the captured TransportUnit. */
     @NotEmpty
+    @JsonProperty("transportUnitBK")
+    private String transportUnitId;
+    /** The unique */
+    @NotEmpty
+    @JsonProperty("loadUnitLabel")
+    private String loadUnitLabel;
+    /** The business key of the captured TransportUnit. */
+    @NotEmpty
     @JsonProperty("expectedTransportUnitBK")
     private String expectedTransportUnitBK;
     @NotEmpty
@@ -40,6 +48,22 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     @JsonCreator
     public TUCaptureRequestVO() {
+    }
+
+    public String getTransportUnitId() {
+        return transportUnitId;
+    }
+
+    public void setTransportUnitId(String transportUnitId) {
+        this.transportUnitId = transportUnitId;
+    }
+
+    public String getLoadUnitLabel() {
+        return loadUnitLabel;
+    }
+
+    public void setLoadUnitLabel(String loadUnitLabel) {
+        this.loadUnitLabel = loadUnitLabel;
     }
 
     public String getExpectedTransportUnitBK() {

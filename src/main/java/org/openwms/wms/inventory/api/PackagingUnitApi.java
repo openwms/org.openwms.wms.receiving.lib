@@ -16,10 +16,8 @@
 package org.openwms.wms.inventory.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A PackagingUnitApi.
@@ -29,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "wms-inventory", qualifier = "packagingUnitApi", decode404 = true)
 public interface PackagingUnitApi {
 
-    @PostMapping(value = "/v1/transport-units/{transportUnitBK}/load-units/{luPos}/packaging-units", params = "loadUnitType")
-    void create(
-            @PathVariable("transportUnitBK") String transportUnitBK,
-            @PathVariable("luPos") String luPos,
-            @RequestParam("loadUnitType") String loadUnitType,
+    /**
+     * Create a new {@code PackagingUnit} on the {@code Location} given as {@code actualLocation} of the {@code pu}.
+     *
+     * @param pu The PackagingUnit representation, contains the Location where to create it
+     */
+    @PostMapping("/v1/packaging-units")
+    void createOnLocation(
             @RequestBody PackagingUnitVO pu
     );
 }

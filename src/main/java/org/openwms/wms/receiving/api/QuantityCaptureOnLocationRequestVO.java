@@ -20,26 +20,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * A QuantityCaptureRequestVO.
+ * A QuantityCaptureOnLocationRequestVO.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serializable {
+public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The business key of the captured TransportUnit. */
-    @NotEmpty
-    @JsonProperty("transportUnitBK")
-    private String transportUnitId;
-    /** The unique */
-    @NotEmpty
-    @JsonProperty("loadUnitLabel")
-    private String loadUnitLabel;
+    /** The Location where the captured material is located on. */
+    @NotNull
+    @JsonProperty("actualLocation")
+    private LocationVO actualLocation;
     /** The quantity that has been received during the capturing Goods In process. */
     @NotNull
     @JsonProperty("quantity")
@@ -50,23 +45,15 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
     private ProductVO product;
 
     @JsonCreator
-    public QuantityCaptureRequestVO() {
+    public QuantityCaptureOnLocationRequestVO() {
     }
 
-    public String getTransportUnitId() {
-        return transportUnitId;
+    public LocationVO getActualLocation() {
+        return actualLocation;
     }
 
-    public void setTransportUnitId(String transportUnitId) {
-        this.transportUnitId = transportUnitId;
-    }
-
-    public String getLoadUnitLabel() {
-        return loadUnitLabel;
-    }
-
-    public void setLoadUnitLabel(String loadUnitLabel) {
-        this.loadUnitLabel = loadUnitLabel;
+    public void setActualLocation(LocationVO actualLocation) {
+        this.actualLocation = actualLocation;
     }
 
     public Measurable getQuantityReceived() {
