@@ -16,20 +16,15 @@
 package org.openwms.wms.receiving;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.openwms.core.units.api.Piece;
-import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
@@ -44,7 +39,6 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.mockito.Mockito.mock;
 import static org.openwms.wms.receiving.TestData.ORDER1_PKEY;
 import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -70,27 +64,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("classpath:import-TEST.sql")
 @ReceivingApplicationTest
 @TestPropertySource(properties = "owms.receiving.unexpected-receipts-allowed=false")
-class ReceivingControllerDocumentation {
+class ReceivingControllerDocumentation extends AbstractTestBase {
 
     @Autowired
     private WebApplicationContext context;
     @Autowired
     private ObjectMapper om;
-    @MockBean
-    private PackagingUnitApi packagingUnitApi;
-    @MockBean
-    private TransportUnitApi transportUnitApi;
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
-        packagingUnitApi = mock(PackagingUnitApi.class);
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(documentationConfiguration(restDocumentation)).build();
-    }
-
-    @AfterEach
-    void tearDown() {
-        Mockito.reset(packagingUnitApi);
     }
 
     @Test void shall_return_index() throws Exception {

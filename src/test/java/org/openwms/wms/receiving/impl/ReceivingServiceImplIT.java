@@ -20,11 +20,10 @@ import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.inventory.Product;
-import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,19 +35,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
 
 /**
- * A ReceivingServiceImplTest.
+ * A ReceivingServiceImplIT.
  *
  * @author Heiko Scherrer
  */
 @ReceivingApplicationTest
 @Transactional
 @Rollback
-class ReceivingServiceImplIT {
+class ReceivingServiceImplIT extends AbstractTestBase {
 
     @Autowired
     private ReceivingServiceImpl service;
-    @MockBean
-    private TransportUnitApi transportUnitApi;
 
     @Test void createOrderWithNull() {
         ServiceLayerException ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));

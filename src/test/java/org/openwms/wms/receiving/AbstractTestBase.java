@@ -15,24 +15,20 @@
  */
 package org.openwms.wms.receiving;
 
-import org.junit.jupiter.api.Test;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
- * A RunSchemaGenerationTest is an empty test class to bootstrap the test ApplicationContext and run the database schema generation. It is
- * a Unit test and is executed with the surefire plugin.
+ * A AbstractTestBase.
  *
  * @author Heiko Scherrer
  */
-@ReceivingApplicationTest
-class RunSchemaGenerationTest extends AbstractTestBase {
+public abstract class AbstractTestBase {
 
-    @Test
-    void runSchemaGeneration() {
-        assertEquals(this.getClass(), (RunSchemaGenerationTest.class));
-    }
+    @MockBean
+    private PackagingUnitApi packagingUnitApi;
+    @MockBean
+    private TransportUnitApi transportUnitApi;
+
 }
