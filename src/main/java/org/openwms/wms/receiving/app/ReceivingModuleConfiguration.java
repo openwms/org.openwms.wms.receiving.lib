@@ -20,7 +20,7 @@ import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.http.identity.EnableIdentityAwareness;
-import org.ameba.i18n.AbstractTranslator;
+import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
@@ -38,8 +38,14 @@ import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.servlet.Filter;
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -55,7 +61,12 @@ import java.util.Properties;
 @EnableJpaAuditing
 @EnableAspects(propagateRootCause = true)
 @EnableScheduling
-public class ReceivingModuleConfiguration {
+public class ReceivingModuleConfiguration implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 
     @Bean MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
         return registry -> registry.config().commonTags("application", applicationName);
@@ -70,8 +81,22 @@ public class ReceivingModuleConfiguration {
         return new DozerMapperImpl("META-INF/dozer/wms-receiving-mappings.xml");
     }
 
+    public @Bean
+    LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);
+        return slr;
+    }
+
+    public @Bean
+    LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+
     @Bean Translator translator() {
-        return new AbstractTranslator() {
+        return new AbstractSpringTranslator() {
             @Override
             protected MessageSource getMessageSource() {
                 return messageSource();
