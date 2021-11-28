@@ -30,5 +30,5 @@ $ java -jar target/openwms-wms-receiving-exec.jar
 # Run Distributed
 Or additionally run in a distributed environment with an already running Service Registry, Configuration Server and a RabbitMQ broker:
 ```
-$ java -Dspring.profiles.active=ASYNCHRONOUS,DEMO -jar target/openwms-wms-receiving-exec.jar 
+$ java -Dspring.profiles.active=ASYNCHRONOUS,DISTRIBUTED,DEMO -jar target/openwms-wms-receiving-exec.jar 
 ```
