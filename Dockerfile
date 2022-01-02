@@ -1,13 +1,14 @@
-FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0-alpine as builder
-WORKDIR app
+FROM openjdk:17.0.1-oracle as builder
+WORKDIR application
 ARG JAR_FILE=target/openwms-wms-receiving-exec.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
-FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0-alpine
+FROM openjdk:17.0.1-oracle
+ARG JAVA_OPTS="-Xss512k"
 WORKDIR application
-COPY --from=builder app/dependencies/ ./
-COPY --from=builder app/application/ ./
-COPY --from=builder app/spring-boot-loader/ ./
-COPY --from=builder app/snapshot-dependencies/ ./
-ENTRYPOINT ["java", "-Xshareclasses -Xquickstart -noverify", "org.springframework.boot.loader.JarLauncher"]
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
+ENTRYPOINT exec java $JAVA_OPTS org.springframework.boot.loader.JarLauncher
