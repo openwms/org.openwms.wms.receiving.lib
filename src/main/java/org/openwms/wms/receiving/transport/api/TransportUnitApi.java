@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", qualifier = "transportUnitApi")
+@FeignClient(name = "wms-inventory")
 public interface TransportUnitApi {
 
     /**

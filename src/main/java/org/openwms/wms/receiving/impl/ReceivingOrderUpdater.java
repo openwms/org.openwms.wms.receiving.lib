@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
  */
 public interface ReceivingOrderUpdater extends Plugin<ReceivingOrderUpdater.Type> {
 
-    static enum Type {
+    enum Type {
         DETAILS_CHANGE
     }
 

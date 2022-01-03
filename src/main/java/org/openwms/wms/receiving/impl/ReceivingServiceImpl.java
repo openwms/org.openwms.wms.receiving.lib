@@ -143,7 +143,7 @@ class ReceivingServiceImpl implements ReceivingService {
             order.setOrderId(nb.getCompleteOrderId());
         }
         order.getPositions().stream()
-                .filter(p -> p instanceof ReceivingOrderPosition)
+                .filter(ReceivingOrderPosition.class::isInstance)
                 .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
@@ -370,8 +370,8 @@ class ReceivingServiceImpl implements ReceivingService {
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
             order.getPositions()
                     .stream()
-                    .filter(p -> p instanceof ReceivingOrderPosition)
-                    .map(p -> (ReceivingOrderPosition) p)
+                    .filter(ReceivingOrderPosition.class::isInstance)
+                    .map(ReceivingOrderPosition.class::cast)
                     .forEach(p -> {
 //                p.setQuantityReceived(p.getQuantityExpected());
                 p.setState(COMPLETED);

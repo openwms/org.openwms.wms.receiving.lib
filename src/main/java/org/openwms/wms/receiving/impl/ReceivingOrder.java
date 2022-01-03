@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static javax.persistence.CascadeType.ALL;
 import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
@@ -230,8 +231,36 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.details = details;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Only the orderId.
+     */
     @Override
     public String toString() {
         return orderId;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Only the orderId.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReceivingOrder that)) return false;
+        if (!super.equals(o)) return false;
+        return orderId.equals(that.orderId);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Only the orderId.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), orderId);
     }
 }

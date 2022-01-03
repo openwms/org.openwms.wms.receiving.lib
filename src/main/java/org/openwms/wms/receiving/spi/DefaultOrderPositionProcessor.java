@@ -46,14 +46,13 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition) {
-        if (orderPosition instanceof ReceivingTransportUnitOrderPosition) {
-            TransportUnitTypeMO.Builder type = TransportUnitTypeMO.newBuilder()
-                    .type(((ReceivingTransportUnitOrderPosition) orderPosition).getTransportUnitTypeName());
+        if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
+            var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
             // FIXME [openwms]: 15.08.21 Get the actualLocation from the current workplace or from YML config
             transportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()
-                                    .withBarcode(((ReceivingTransportUnitOrderPosition) orderPosition).getTransportUnitBK())
+                                    .withBarcode(rtuop.getTransportUnitBK())
                                     .withTransportUnitType(type.build())
                                     .build()
                             )
