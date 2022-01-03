@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.15">
-<meta name="author" content="(1.0.0-SNAPSHOT-58)">
+<meta name="author" content="(1.0.0-SNAPSHOT-59)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-58)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-59)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -968,16 +968,16 @@ Content-Length: 1168
       "href" : "http://localhost:8080/v1/receiving-orders"
     },
     "receiving-order-capture" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47/capture?loadUnitType=EURO"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f48/capture?loadUnitType=EURO"
     },
     "receiving-order-complete" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47/complete"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f49/complete"
     },
     "receiving-order-save" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f46"
     },
     "receiving-order-patch" : {
-      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f47"
+      "href" : "http://localhost:8080/v1/receiving-orders/b65a7658-c53c-4a81-8abb-75ab67783f45"
     }
   }
 }</code></pre>
@@ -1088,12 +1088,12 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/6cb113c5-ff84-4cbf-9181-375129aa3ad5/
+Location: http://localhost:8080/v1/receiving-orders/14a9e3da-2512-4b2a-96eb-a7c406b10e92/
 Content-Type: application/hal+json
 Content-Length: 740
 
 {
-  "pKey" : "6cb113c5-ff84-4cbf-9181-375129aa3ad5",
+  "pKey" : "14a9e3da-2512-4b2a-96eb-a7c406b10e92",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1485,7 +1485,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/2d3de38d-b76f-4b91-ab3a-550d21544d12/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/49c951af-1847-4d5a-a973-5223161791a8/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 48
 Host: localhost:8080
@@ -1506,7 +1506,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "2d3de38d-b76f-4b91-ab3a-550d21544d12",
+  "pKey" : "49c951af-1847-4d5a-a973-5223161791a8",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1655,7 +1655,7 @@ Content-Length: 557
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-03 09:38:02 UTC
+Last updated 2022-01-03 10:04:22 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
