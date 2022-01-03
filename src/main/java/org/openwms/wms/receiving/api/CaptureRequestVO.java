@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.api;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -34,10 +33,6 @@ public class CaptureRequestVO implements Serializable {
     /** A key/value dictionary of arbitrary values captured on the position. */
     @JsonProperty("details")
     private CaptureDetailsVO details;
-
-    @JsonCreator
-    public CaptureRequestVO() {
-    }
 
     public CaptureDetailsVO getDetails() {
         return details;

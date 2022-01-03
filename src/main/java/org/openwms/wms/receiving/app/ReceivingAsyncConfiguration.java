@@ -52,6 +52,7 @@ import static org.ameba.LoggingCategories.BOOT;
 public class ReceivingAsyncConfiguration {
 
     private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);
+    private static final String POISON_MESSAGE = "poison-message";
 
     @ConditionalOnExpression("'${owms.receiving.serialization}'=='json'")
     @Bean
@@ -106,7 +107,7 @@ public class ReceivingAsyncConfiguration {
     ) {
         return QueueBuilder.durable(queueName)
                 .withArgument("x-dead-letter-exchange", exchangeName)
-                .withArgument("x-dead-letter-routing-key", "poison-message")
+                .withArgument("x-dead-letter-routing-key", POISON_MESSAGE)
                 .build();
     }
     @Bean
@@ -116,7 +117,7 @@ public class ReceivingAsyncConfiguration {
     ) {
         return QueueBuilder.durable(queueName)
                 .withArgument("x-dead-letter-exchange", exchangeName)
-                .withArgument("x-dead-letter-routing-key", "poison-message")
+                .withArgument("x-dead-letter-routing-key", POISON_MESSAGE)
                 .build();
     }
 
@@ -159,6 +160,6 @@ public class ReceivingAsyncConfiguration {
     Binding dlBinding(
             @Value("${owms.dead-letter.queue-name}") String queueName,
             @Value("${owms.dead-letter.exchange-name}") String exchangeName) {
-        return BindingBuilder.bind(dlq(queueName)).to(dlExchange(exchangeName)).with("poison-message");
+        return BindingBuilder.bind(dlq(queueName)).to(dlExchange(exchangeName)).with(POISON_MESSAGE);
     }
 }

@@ -19,6 +19,7 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
+import org.ameba.exception.ServiceLayerException;
 import org.ameba.i18n.Translator;
 import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static org.openwms.wms.ReceivingConstants.DEFAULT_ACCOUNT_NAME;
 import static org.openwms.wms.order.OrderState.CANCELED;
 import static org.openwms.wms.order.OrderState.COMPLETED;
@@ -372,7 +374,8 @@ class ReceivingServiceImpl implements ReceivingService {
     public ReceivingOrder update(String pKey, ReceivingOrder receivingOrder) {
         ReceivingOrder order = getOrder(pKey);
         LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
-        order = plugins.getPluginFor(DETAILS_CHANGE).get().update(order, receivingOrder);
+        var updater = plugins.getPluginFor(DETAILS_CHANGE).orElseThrow(() -> new ServiceLayerException(format("No Updater implementation found for [%s]", DETAILS_CHANGE)));
+        order = updater.update(order, receivingOrder);
         return order;
     }
 

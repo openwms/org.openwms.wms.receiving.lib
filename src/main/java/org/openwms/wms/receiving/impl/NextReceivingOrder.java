@@ -43,9 +43,6 @@ public class NextReceivingOrder extends BaseEntity implements Serializable {
     @Column(name = "C_CURRENT", length = 40)
     private String currentOrderId;
 
-    /** Dear JPA... */
-    public NextReceivingOrder() {}
-
     public String getCompleteOrderId() {
         if (this.prefix == null || this.prefix.isEmpty()) {
             return currentOrderId;

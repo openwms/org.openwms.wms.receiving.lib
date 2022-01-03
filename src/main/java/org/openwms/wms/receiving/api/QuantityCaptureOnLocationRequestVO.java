@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.api;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
@@ -43,10 +42,6 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
     @NotNull
     @JsonProperty("product")
     private ProductVO product;
-
-    @JsonCreator
-    public QuantityCaptureOnLocationRequestVO() {
-    }
 
     public LocationVO getActualLocation() {
         return actualLocation;

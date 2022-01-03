@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.api;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,10 +44,6 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     @NotEmpty
     @JsonProperty("actualLocationErpCode")
     private String actualLocationErpCode;
-
-    @JsonCreator
-    public TUCaptureRequestVO() {
-    }
 
     public String getTransportUnitId() {
         return transportUnitId;
