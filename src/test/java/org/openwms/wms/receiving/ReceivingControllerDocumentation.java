@@ -128,8 +128,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
                                 fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"),
                                 fieldWithPath("positions[].details").description("Some arbitrary detail information of the position"),
-                                fieldWithPath("positions[].details.p1").ignored(),
-                                fieldWithPath("links").description("Further action links provided on the ReceivingOrder resource"))
+                                fieldWithPath("positions[].details.p1").ignored()//,
+                                //fieldWithPath("links").description("Further action links provided on the ReceivingOrder resource")
+                                )
                         )
                 )
         ;
