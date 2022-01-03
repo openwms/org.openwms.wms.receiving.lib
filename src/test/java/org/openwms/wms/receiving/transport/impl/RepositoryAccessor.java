@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 public class RepositoryAccessor {
 
     @Autowired
-    private org.openwms.wms.receiving.transport.impl.TransportUnitRepository repository;
+    private TransportUnitRepository repository;
 
     public JpaRepository<TransportUnit, Long> getRepository() {
         return repository;

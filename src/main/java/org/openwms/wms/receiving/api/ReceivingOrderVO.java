@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * A ReceivingOrderVO.
@@ -65,7 +64,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         if (this.getPositions() != null) {
             this.setPositions(this.getPositions().stream()
                     .sorted(Comparator.comparingInt(BaseReceivingOrderPositionVO::getPositionId))
-                    .collect(Collectors.toList()));
+                    .toList());
         }
     }
 

@@ -39,15 +39,16 @@ class TransportUnitServiceImplIT extends AbstractTestBase {
     @Test
     @Disabled("Fails on CI")
     void upsertWithNull() {
-        Exception ex = assertThrows(ServiceLayerException.class, () -> service.upsert(null));
+        var ex = assertThrows(ServiceLayerException.class, () -> service.upsert(null));
         assertThat(ex.getMessage()).containsIgnoringCase("transportUnit");
-        ex = assertThrows(ServiceLayerException.class, () -> service.upsert(new org.openwms.wms.receiving.transport.TransportUnit()));
+        var newTU = new TransportUnit();
+        ex = assertThrows(ServiceLayerException.class, () -> service.upsert(newTU));
         assertThat(ex.getMessage()).containsIgnoringCase("barcode");
     }
 
     @Test
     void upsert() {
-        org.openwms.wms.receiving.transport.TransportUnit tu = new org.openwms.wms.receiving.transport.TransportUnit("4709", "EXT_/0000/0000/0000/0000");
+        var tu = new TransportUnit("4709", "EXT_/0000/0000/0000/0000");
         tu.setForeignPKey("1111-1111");
         tu = service.upsert(tu);
         assertThat(tu.getBarcode()).isEqualTo("4709");

@@ -31,7 +31,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -90,8 +89,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Transactional
     @Rollback
     @Test void shall_create_order() throws Exception {
-        ReceivingOrderVO orderVO = new ReceivingOrderVO("4712");
-        ReceivingOrderPositionVO pos = new ReceivingOrderPositionVO(1, null, null);
+        var orderVO = new ReceivingOrderVO("4712");
+        var pos = new ReceivingOrderPositionVO(1, null, null);
         orderVO.getPositions().add(pos);
         mockMvc
                 .perform(
@@ -104,7 +103,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
 
         orderVO.getPositions().clear();
-        ReceivingOrderPositionVO sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
+        var sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc
@@ -219,8 +218,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Transactional
     @Rollback
     @Test void shall_cancel_order() throws Exception {
-        String toLocation = createOrder("4714");
-        ReceivingOrderVO value = new ReceivingOrderVO("4714");
+        var toLocation = createOrder("4714");
+        var value = new ReceivingOrderVO("4714");
         value.setState("CANCELED");
         mockMvc
                 .perform(
@@ -236,8 +235,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Transactional
     @Rollback
     @Test void shall_cancel_cancelled_order() throws Exception {
-        String toLocation = createOrder("4715");
-        ReceivingOrderVO value = new ReceivingOrderVO("4715");
+        var toLocation = createOrder("4715");
+        var value = new ReceivingOrderVO("4715");
         value.setState("CANCELED");
         mockMvc
                 .perform(
@@ -260,8 +259,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     }
 
     @Test void shall_NOT_cancel_order() throws Exception {
-        String toLocation = createOrder("4716");
-        ReceivingOrderVO value = new ReceivingOrderVO("4716");
+        var toLocation = createOrder("4716");
+        var value = new ReceivingOrderVO("4716");
         value.setState("CANCELED");
         mockMvc
                 .perform(
@@ -317,7 +316,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
 
 
     public String createOrder(String orderId) throws Exception {
-        MvcResult result = mockMvc
+        var result = mockMvc
                 .perform(
                         post("/v1/receiving-orders")
                                 .contentType(MediaType.APPLICATION_JSON)

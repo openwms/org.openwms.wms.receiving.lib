@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ProductVO that is a representation and mapped to the Product like it is defined in the WMS Inventory Service API.
@@ -99,5 +100,19 @@ public class ProductVO extends AbstractBase implements Serializable {
         public ProductVO build() {
             return new ProductVO(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductVO)) return false;
+        if (!super.equals(o)) return false;
+        ProductVO productVO = (ProductVO) o;
+        return Objects.equals(pKey, productVO.pKey) && Objects.equals(sku, productVO.sku) && Objects.equals(label, productVO.label);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pKey, sku, label);
     }
 }

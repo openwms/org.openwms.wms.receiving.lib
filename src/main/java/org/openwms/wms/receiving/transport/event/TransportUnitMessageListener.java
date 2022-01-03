@@ -78,7 +78,6 @@ class TransportUnitMessageListener {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
             throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);
         }
     }

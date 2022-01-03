@@ -29,7 +29,7 @@ public final class TestData {
     public static final String PRODUCT1_SKU = "C1";
 
     public static String extractPKey(String locationURI) {
-        String result = locationURI.substring(0, locationURI.length() - 1);
+        var result = locationURI.substring(0, locationURI.length() - 1);
         return result.substring(result.lastIndexOf("/") + 1);
     }
 }

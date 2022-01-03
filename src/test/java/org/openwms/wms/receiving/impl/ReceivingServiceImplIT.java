@@ -48,37 +48,38 @@ class ReceivingServiceImplIT extends AbstractTestBase {
     private ReceivingServiceImpl service;
 
     @Test void createOrderWithNull() {
-        ServiceLayerException ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
+        var ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
         assertThat(ex.getMessage()).containsIgnoringCase("order");
     }
 
     @Test void createOrder() {
-        ReceivingOrder order = service.createOrder(new ReceivingOrder("4710"));
+        var newOrder = new ReceivingOrder("4710");
+        var order = service.createOrder(newOrder);
         assertThat(order.isNew()).isFalse();
 
-        ResourceExistsException ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(new ReceivingOrder("4710")));
+        var ex = assertThrows(ResourceExistsException.class, () -> service.createOrder(newOrder));
         assertThat(ex.getMessage()).containsIgnoringCase("exists");
     }
 
     @Test void createOrderWithoutID() {
-        ReceivingOrder order = service.createOrder(new ReceivingOrder());
+        var order = service.createOrder(new ReceivingOrder());
         assertThat(order.isNew()).isFalse();
         assertThat(order.getOrderId()).isNotNull();
 
-        ReceivingOrder order2 = service.createOrder(new ReceivingOrder());
+        var order2 = service.createOrder(new ReceivingOrder());
         assertThat(order2.getOrderId()).isNotNull();
         assertThat(Integer.parseInt(order.getOrderId()) + 1).isEqualTo(Integer.parseInt(order2.getOrderId()));
     }
 
     @Sql("classpath:import-TEST.sql")
     @Test void createOrderFull() {
-        ReceivingOrder ro = new ReceivingOrder("4710");
+        var ro = new ReceivingOrder("4710");
         ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));
-        ReceivingOrderPosition rop = new ReceivingOrderPosition(1, Piece.of(2), new Product(PRODUCT1_SKU));
+        var rop = new ReceivingOrderPosition(1, Piece.of(2), new Product(PRODUCT1_SKU));
         rop.setQuantityReceived(Piece.of(1));
         rop.addDetail("p1", "v1").addDetail("p2", "v2");
         ro.getPositions().add(rop);
-        ReceivingOrder order = service.createOrder(ro);
+        var order = service.createOrder(ro);
 
         assertThat(order.isNew()).isFalse();
         assertThat(order.getOrderState()).isEqualTo(OrderState.CREATED);

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Weight;
+import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.LocationVO;
 
 import javax.validation.constraints.NotNull;
@@ -68,6 +69,18 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     public PackagingUnitVO(ProductVO product, Measurable quantity) {
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public void setDetails(CaptureDetailsVO details) {
+        if (details != null) {
+            this.setLength(details.getLength());
+            this.setWidth(details.getWidth());
+            this.setHeight(details.getHeight());
+            if (details.getWeight() != null) {
+                this.setWeight(details.getWeight());
+            }
+            this.setMessage(details.getMessageText());
+        }
     }
 
     public ProductVO getProduct() {

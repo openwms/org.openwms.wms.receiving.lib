@@ -51,21 +51,20 @@ public class InventoryEventListener {
     @RabbitListener(queues = "${owms.events.inventory.products.queue-name}")
     void handle(ProductMO msg, @Header("owms_event_type") String header) {
         try {
-            switch(header) {
-                case "created":
-                    LOGGER.debug("Product has been created in Inventory service");
+            switch (header) {
+                case "created" -> {
+                    LOGGER.debug("Product has been created in Inventory service: [{}]", msg);
                     publisher.publishEvent(new ProductEvent(mapper.map(msg, Product.class), ProductEvent.TYPE.CREATED));
-                    break;
-                case "updated":
-                    LOGGER.debug("Product has been updated in Inventory service");
+                }
+                case "updated" -> {
+                    LOGGER.debug("Product has been updated in Inventory service: [{}]", msg);
                     publisher.publishEvent(new ProductEvent(mapper.map(msg, Product.class), ProductEvent.TYPE.UPDATED));
-                    break;
-                case "deleted":
-                    LOGGER.debug("Product has been deleted in Inventory service: [{}]", msg.toString());
+                }
+                case "deleted" -> {
+                    LOGGER.debug("Product has been deleted in Inventory service: [{}]", msg);
                     publisher.publishEvent(new ProductEvent(msg.getpKey(), ProductEvent.TYPE.DELETED));
-                    break;
-                default:
-                    LOGGER.warn("Product event of type [{}] is currently not supported", header);
+                }
+                default -> LOGGER.warn("Product event of type [{}] is currently not supported", header);
             }
         } catch (Exception e) {
             throw new AmqpRejectAndDontRequeueException(e.getMessage(), e);
