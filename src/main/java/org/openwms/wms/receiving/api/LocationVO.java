@@ -22,6 +22,7 @@ import org.ameba.http.AbstractBase;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A LocationVO.
@@ -48,5 +49,19 @@ public class LocationVO extends AbstractBase<LocationVO> implements Serializable
 
     public void setErpCode(String erpCode) {
         this.erpCode = erpCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LocationVO)) return false;
+        if (!super.equals(o)) return false;
+        LocationVO that = (LocationVO) o;
+        return Objects.equals(erpCode, that.erpCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), erpCode);
     }
 }

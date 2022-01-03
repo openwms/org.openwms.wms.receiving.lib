@@ -26,7 +26,7 @@ import java.io.Serializable;
  */
 public class ProductEvent extends RootApplicationEvent implements Serializable {
 
-    public static enum TYPE {
+    public enum TYPE {
         CREATED, UPDATED, DELETED
     }
 

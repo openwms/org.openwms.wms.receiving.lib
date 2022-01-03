@@ -23,6 +23,7 @@ import org.openwms.wms.receiving.ValidationGroups;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ProductVO.
@@ -84,5 +85,18 @@ public class ProductVO implements Serializable {
 
     public void setBaseUnit(Measurable baseUnit) {
         this.baseUnit = baseUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductVO)) return false;
+        ProductVO productVO = (ProductVO) o;
+        return Objects.equals(sku, productVO.sku) && Objects.equals(label, productVO.label) && Objects.equals(description, productVO.description) && Objects.equals(baseUnit, productVO.baseUnit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sku, label, description, baseUnit);
     }
 }

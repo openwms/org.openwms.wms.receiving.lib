@@ -43,30 +43,30 @@ import java.util.List;
 public interface ReceivingMapper {
 
     default BaseReceivingOrderPosition fromVOtoEO(BaseReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
-        if (vo instanceof ReceivingOrderPositionVO) {
-            return convertToVO((ReceivingOrderPositionVO) vo, cycleAvoidingMappingContext);
-        } else if (vo instanceof ReceivingTransportUnitOrderPositionVO) {
-            return convertToVO((ReceivingTransportUnitOrderPositionVO) vo, cycleAvoidingMappingContext);
+        if (vo instanceof ReceivingOrderPositionVO rop) {
+            return convertToVO(rop, cycleAvoidingMappingContext);
+        } else if (vo instanceof ReceivingTransportUnitOrderPositionVO rtuop) {
+            return convertToVO(rtuop, cycleAvoidingMappingContext);
         } else {
             return null;
         }
     }
 
     default BaseReceivingOrderPositionVO fromEOtoVO(BaseReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
-        if (eo instanceof ReceivingOrderPosition) {
-            return convertToVO((ReceivingOrderPosition) eo, cycleAvoidingMappingContext);
-        } else if (eo instanceof ReceivingTransportUnitOrderPosition) {
-            return convertToVO((ReceivingTransportUnitOrderPosition) eo, cycleAvoidingMappingContext);
+        if (eo instanceof ReceivingOrderPosition rop) {
+            return convertToVO(rop, cycleAvoidingMappingContext);
+        } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
+            return convertToVO(rtuop, cycleAvoidingMappingContext);
         } else {
             return null;
         }
     }
 
     default ReceivingOrderPositionMO fromEOtoMO(BaseReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
-        if (eo instanceof ReceivingOrderPosition) {
-            return convertToReceivingOrderPositionMO((ReceivingOrderPosition) eo, cycleAvoidingMappingContext);
-        } else if (eo instanceof ReceivingTransportUnitOrderPosition) {
-            return convertToReceivingOrderPositionMO((ReceivingTransportUnitOrderPosition) eo, cycleAvoidingMappingContext);
+        if (eo instanceof ReceivingOrderPosition rop) {
+            return convertToReceivingOrderPositionMO(rop, cycleAvoidingMappingContext);
+        } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
+            return convertToReceivingOrderPositionMO(rtuop, cycleAvoidingMappingContext);
         } else {
             return null;
         }
