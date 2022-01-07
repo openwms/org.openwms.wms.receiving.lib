@@ -16,7 +16,6 @@
 package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
 
 /**
  * A ReceivingOrderCreatedEvent.

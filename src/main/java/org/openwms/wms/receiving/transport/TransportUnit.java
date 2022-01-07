@@ -24,6 +24,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A TransportUnit.
@@ -81,8 +82,36 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
         this.actualLocation = actualLocation;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Only the barcode.
+     */
     @Override
     public String toString() {
         return barcode;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransportUnit that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(foreignPKey, that.foreignPKey) && Objects.equals(barcode, that.barcode) && Objects.equals(actualLocation, that.actualLocation);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), foreignPKey, barcode, actualLocation);
     }
 }
