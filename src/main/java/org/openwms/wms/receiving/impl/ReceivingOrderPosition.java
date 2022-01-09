@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.units.api.Measurable;
+import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.inventory.Product;
@@ -56,7 +57,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
             @Column(name = "C_QTY_RECEIVED_TYPE"),
             @Column(name = "C_QTY_RECEIVED")
     })
-    private Measurable quantityReceived;
+    private Measurable quantityReceived = Piece.ZERO;
 
     /** The expected {@link Product} to be receipt. */
     @ManyToOne
@@ -70,6 +71,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
         super(posNo);
         this.quantityExpected = quantityExpected;
+        this.quantityReceived = Piece.ZERO;
         this.product = product;
     }
 
