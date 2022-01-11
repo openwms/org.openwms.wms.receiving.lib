@@ -605,12 +605,12 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/88a03ffb-5465-45ac-abac-2adf60f449d1/
+Location: http://localhost:8080/v1/receiving-orders/dc73de6b-2cc3-431e-946c-d34b26e56c4b/
 Content-Type: application/hal+json
-Content-Length: 740
+Content-Length: 918
 
 {
-  "pKey" : "88a03ffb-5465-45ac-abac-2adf60f449d1",
+  "pKey" : "dc73de6b-2cc3-431e-946c-d34b26e56c4b",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -633,6 +633,11 @@ Content-Length: 740
     "state" : "CREATED",
     "details" : {
       "p1" : "v1"
+    },
+    "quantityReceived" : {
+      "@class" : "org.openwms.core.units.api.Piece",
+      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+      "magnitude" : 0
     }
   } ]
 }</code></pre>
@@ -1002,7 +1007,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/a06c53ca-5c6b-4903-a451-01ac353d64e7/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/89f5d023-733f-4fc1-bbda-0ae6858b123b/ HTTP/1.1
 Content-Type: application/json
 Content-Length: 48
 Host: localhost:8080
@@ -1023,7 +1028,7 @@ Content-Type: application/hal+json
 Content-Length: 99
 
 {
-  "pKey" : "a06c53ca-5c6b-4903-a451-01ac353d64e7",
+  "pKey" : "89f5d023-733f-4fc1-bbda-0ae6858b123b",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1172,7 +1177,7 @@ Content-Length: 557
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-09 15:52:24 UTC
+Last updated 2022-01-11 23:39:15 UTC
 </div>
 </div>
 </body>
