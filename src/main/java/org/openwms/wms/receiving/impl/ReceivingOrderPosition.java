@@ -57,6 +57,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
             @Column(name = "C_QTY_RECEIVED_TYPE"),
             @Column(name = "C_QTY_RECEIVED")
     })
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Measurable quantityReceived = Piece.ZERO;
 
     /** The expected {@link Product} to be receipt. */
@@ -110,7 +111,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {
-        this.quantityReceived = quantityReceived;
+        this.quantityReceived = quantityReceived == null ? Piece.ZERO : quantityReceived;
     }
 
     public Product getProduct() {
