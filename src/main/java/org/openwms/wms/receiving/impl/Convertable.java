@@ -16,7 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 /**
- * A ReceivingOrderPositionVisitor.
+ * A Convertable.
  *
  * @author Heiko Scherrer
  */

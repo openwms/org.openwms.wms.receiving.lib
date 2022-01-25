@@ -59,7 +59,7 @@ import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
 @Entity
 @Table(name = "WMS_REC_ORDER",
         uniqueConstraints = {
-        @UniqueConstraint(name = "UC_REC_ORDER_ID", columnNames = { "C_ORDER_ID" }),
+            @UniqueConstraint(name = "UC_REC_ORDER_ID", columnNames = { "C_ORDER_ID" }),
         }
 )
 public class ReceivingOrder extends ApplicationEntity implements Serializable {

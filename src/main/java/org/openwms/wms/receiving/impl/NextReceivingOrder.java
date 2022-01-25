@@ -30,7 +30,9 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "WMS_REC_ORDER_ID", uniqueConstraints = @UniqueConstraint(columnNames = {"C_NAME"}))
+@Table(name = "WMS_REC_ORDER_ID", uniqueConstraints = {
+        @UniqueConstraint(name = "UC_REC_ORDER_NAME", columnNames = { "C_NAME" })
+})
 public class NextReceivingOrder extends BaseEntity implements Serializable {
 
     /** Name of the Account. */

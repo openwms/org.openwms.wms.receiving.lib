@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * A PackagingUnitVO.
@@ -40,6 +41,11 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @JsonProperty("product")
     @NotNull
     private ProductVO product;
+    @JsonProperty("serialNumber")
+    private String serialNumber;
+    /** The business key referring to a defined {@code Lot}. */
+    @JsonProperty("lotId")
+    private String lotId;
     /** Quantity ordered. */
     @JsonProperty("quantity")
     @NotNull
@@ -89,6 +95,22 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
 
     public void setProduct(ProductVO product) {
         this.product = product;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getLotId() {
+        return lotId;
+    }
+
+    public void setLotId(String lotId) {
+        this.lotId = lotId;
     }
 
     public Measurable getQuantity() {
@@ -147,28 +169,48 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
         this.message = message;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public String toString() {
-        return "PackagingUnitVO{" +
-                "product=" + product +
-                ", quantity=" + quantity +
-                '}';
+        return new StringJoiner(", ", PackagingUnitVO.class.getSimpleName() + "[", "]")
+                .add("product=" + product)
+                .add("serialNumber='" + serialNumber + "'")
+                .add("lot='" + lotId + "'")
+                .add("quantity=" + quantity)
+                .add("actualLocation=" + actualLocation)
+                .add("length=" + length)
+                .add("width=" + width)
+                .add("height=" + height)
+                .add("weight=" + weight)
+                .add("message='" + message + "'")
+                .toString();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PackagingUnitVO)) return false;
+        if (!super.equals(o)) return false;
         PackagingUnitVO that = (PackagingUnitVO) o;
-        return Objects.equals(product, that.product) &&
-                Objects.equals(quantity, that.quantity) &&
-                Objects.equals(length, that.length) &&
-                Objects.equals(width, that.width) &&
-                Objects.equals(height, that.height);
+        return Objects.equals(product, that.product) && Objects.equals(serialNumber, that.serialNumber) && Objects.equals(lotId, that.lotId) && Objects.equals(quantity, that.quantity) && Objects.equals(actualLocation, that.actualLocation) && Objects.equals(length, that.length) && Objects.equals(width, that.width) && Objects.equals(height, that.height) && Objects.equals(weight, that.weight) && Objects.equals(message, that.message);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(product, quantity, length, width, height);
+        return Objects.hash(super.hashCode(), product, serialNumber, lotId, quantity, actualLocation, length, width, height, weight, message);
     }
 }
