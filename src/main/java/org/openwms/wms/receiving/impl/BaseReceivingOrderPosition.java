@@ -34,6 +34,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -50,7 +51,7 @@ import java.util.Map;
 @DiscriminatorColumn(name = "C_DISC")
 @Table(name = "WMS_REC_ORDER_POSITION",
         uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
-public class BaseReceivingOrderPosition extends BaseEntity implements Serializable {
+public abstract class BaseReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, targetEntity = ReceivingOrder.class)
     @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
@@ -89,6 +90,8 @@ public class BaseReceivingOrderPosition extends BaseEntity implements Serializab
     public BaseReceivingOrderPosition(Integer posNo) {
         this.posNo = posNo;
     }
+
+    public abstract void validate(Validator validator);
 
     public ReceivingOrder getOrder() {
         return order;

@@ -27,6 +27,7 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -62,12 +63,17 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
 
     /** The expected {@link Product} to be receipt. */
     @ManyToOne
-    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"))
+    @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"), nullable = false)
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Product product;
 
     /** Used by the JPA provider. */
     protected ReceivingOrderPosition() {}
+
+    @Override
+    public void validate(Validator validator) {
+
+    }
 
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
         super(posNo);

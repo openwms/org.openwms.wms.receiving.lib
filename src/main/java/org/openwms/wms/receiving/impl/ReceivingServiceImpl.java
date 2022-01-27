@@ -52,6 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -84,6 +85,7 @@ class ReceivingServiceImpl implements ReceivingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
     private final Translator translator;
+    private final Validator validator;
     private final ReceivingMapper receivingMapper;
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
@@ -96,13 +98,14 @@ class ReceivingServiceImpl implements ReceivingService {
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
-            Translator translator, ReceivingMapper receivingMapper,
+            Translator translator, Validator validator, ReceivingMapper receivingMapper,
             NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
             ProductService productService, PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
             ApplicationEventPublisher publisher, AsyncPackagingUnitApi asyncPackagingUnitApi,
             PackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi) {
         this.overbookingAllowed = overbookingAllowed;
         this.translator = translator;
+        this.validator = validator;
         this.receivingMapper = receivingMapper;
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
@@ -128,6 +131,16 @@ class ReceivingServiceImpl implements ReceivingService {
             }
         } else {
             assignOrderId(order);
+        }
+        try {
+            order.getPositions().stream()
+                    .filter(ReceivingOrderPosition.class::isInstance)
+                    .forEach(p -> {
+                        p.validate(validator);
+                        ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku()));
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         try {
             order.getPositions().stream()
