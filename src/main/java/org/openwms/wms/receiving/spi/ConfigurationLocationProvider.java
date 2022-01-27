@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2021 the original author or authors.
+ * Copyright 2005-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,25 @@
  */
 package org.openwms.wms.receiving.spi;
 
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
-import org.openwms.wms.receiving.impl.OrderPositionProcessor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
- * A SPITestConfiguration.
+ * A ConfigurationLocationProvider.
  *
  * @author Heiko Scherrer
  */
-//@Configuration
-public class SPITestConfiguration {
+@Component
+class ConfigurationLocationProvider implements InitialLocationProvider {
 
-  //  @Bean
-    OrderPositionProcessor orderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {
-        return new DefaultOrderPositionProcessor(transportUnitApi);
+    private final String initialLocationErpCode;
+
+    ConfigurationLocationProvider(@Value("${owms.receiving.initial-location-erp-code}") String initialLocationErpCode) {
+        this.initialLocationErpCode = initialLocationErpCode;
+    }
+
+    @Override
+    public String findInitial() {
+        return initialLocationErpCode;
     }
 }

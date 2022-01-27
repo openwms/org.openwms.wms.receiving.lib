@@ -38,9 +38,11 @@ import org.springframework.transaction.annotation.Transactional;
 class DefaultOrderPositionProcessor implements OrderPositionProcessor {
 
     private final AsyncTransportUnitApi transportUnitApi;
+    private final InitialLocationProvider initialLocationProvider;
 
-    DefaultOrderPositionProcessor(AsyncTransportUnitApi transportUnitApi) {
+    DefaultOrderPositionProcessor(AsyncTransportUnitApi transportUnitApi, InitialLocationProvider initialLocationProvider) {
         this.transportUnitApi = transportUnitApi;
+        this.initialLocationProvider = initialLocationProvider;
     }
 
     @Override
@@ -49,10 +51,12 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
         if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
             var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
             // FIXME [openwms]: 15.08.21 Get the actualLocation from the current workplace or from YML config
+            var initialLocation = initialLocationProvider.findInitial();
             transportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()
                                     .withBarcode(rtuop.getTransportUnitBK())
+                                    .withActualLocation(initialLocation)
                                     .withTransportUnitType(type.build())
                                     .build()
                             )

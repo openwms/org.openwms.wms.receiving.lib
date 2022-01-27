@@ -39,6 +39,8 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements Serializable {
 
+    public static final String MEDIA_TYPE = "application/vnd.openwms.receiving-order-v1+json";
+
     /** The persistent identifier. */
     @JsonProperty("pKey")
     private String pKey;

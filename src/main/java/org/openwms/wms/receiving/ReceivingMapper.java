@@ -15,9 +15,11 @@
  */
 package org.openwms.wms.receiving;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.openwms.wms.receiving.api.BaseReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ProductVO;

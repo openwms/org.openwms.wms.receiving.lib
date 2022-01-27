@@ -127,27 +127,35 @@ class ReceivingServiceImpl implements ReceivingService {
                 throw new ResourceExistsException(translator, RO_ALREADY_EXISTS, new String[]{order.getOrderId()}, order.getOrderId());
             }
         } else {
-            String currentTenant = TenantHolder.getCurrentTenant() == null ? DEFAULT_ACCOUNT_NAME : TenantHolder.getCurrentTenant();
-            Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(currentTenant);
-            NextReceivingOrder nb;
-            if (byName.isEmpty()) {
-                nb = new NextReceivingOrder();
-                nb.setName(currentTenant);
-                nb.setCurrentOrderId("1");
-            } else {
-                nb = byName.get();
-                int current = Integer.parseInt(nb.getCurrentOrderId());
-                nb.setCurrentOrderId(String.valueOf(++current));
-            }
-            nextReceivingOrderRepository.save(nb);
-            order.setOrderId(nb.getCompleteOrderId());
+            assignOrderId(order);
         }
-        order.getPositions().stream()
-                .filter(ReceivingOrderPosition.class::isInstance)
-                .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
+        try {
+            order.getPositions().stream()
+                    .filter(ReceivingOrderPosition.class::isInstance)
+                    .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
         return order;
+    }
+
+    private void assignOrderId(ReceivingOrder order) {
+        String currentTenant = TenantHolder.getCurrentTenant() == null ? DEFAULT_ACCOUNT_NAME : TenantHolder.getCurrentTenant();
+        Optional<NextReceivingOrder> byName = nextReceivingOrderRepository.findByName(currentTenant);
+        NextReceivingOrder nb;
+        if (byName.isEmpty()) {
+            nb = new NextReceivingOrder();
+            nb.setName(currentTenant);
+            nb.setCurrentOrderId("1");
+        } else {
+            nb = byName.get();
+            int current = Integer.parseInt(nb.getCurrentOrderId());
+            nb.setCurrentOrderId(String.valueOf(++current));
+        }
+        nextReceivingOrderRepository.save(nb);
+        order.setOrderId(nb.getCompleteOrderId());
     }
 
     private Product getProduct(String sku) {

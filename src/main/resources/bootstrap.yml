@@ -39,6 +39,7 @@ owms:
     hostname: localhost
   receiving:
     unexpected-receipts-allowed: true
+    initial-location-erp-code: EXTERN
 
 server:
   port: ${PORT:8141}
