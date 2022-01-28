@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.spi;
 
 import org.ameba.annotation.TxService;
+import org.openwms.common.location.api.messages.LocationMO;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
@@ -50,13 +51,12 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     public void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition) {
         if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
             var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
-            // FIXME [openwms]: 15.08.21 Get the actualLocation from the current workplace or from YML config
             var initialLocation = initialLocationProvider.findInitial();
             transportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()
                                     .withBarcode(rtuop.getTransportUnitBK())
-                                    .withActualLocation(initialLocation)
+                                    .withActualLocation(LocationMO.ofId(initialLocation))
                                     .withTransportUnitType(type.build())
                                     .build()
                             )

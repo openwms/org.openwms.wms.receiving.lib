@@ -28,7 +28,7 @@ class ConfigurationLocationProvider implements InitialLocationProvider {
 
     private final String initialLocationErpCode;
 
-    ConfigurationLocationProvider(@Value("${owms.receiving.initial-location-erp-code}") String initialLocationErpCode) {
+    ConfigurationLocationProvider(@Value("${owms.receiving.initial-location-id}") String initialLocationErpCode) {
         this.initialLocationErpCode = initialLocationErpCode;
     }
 

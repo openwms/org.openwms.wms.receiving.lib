@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.transport.event;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.openwms.common.location.api.messages.LocationMO;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
@@ -54,12 +55,12 @@ class TransportUnitEventListenerIT {
     void shall_create_TU() throws Exception {
         assertThat(accessor.getRepository().findAll().size()).isZero();
 
-        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation(LocationM"EXT_/0000/0000/0000/0000").build();
+        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation(LocationMO.ofId("EXT_/0000/0000/0000/0000")).build();
         template.convertAndSend(exchangeName, "tu.event.created", create);
         TimeUnit.MILLISECONDS.sleep(500);
         assertThat(accessor.getRepository().findAll().size()).isEqualTo(1);
 
-        create.setActualLocation("INIT/0000/0000/0000/0000");
+        create.setActualLocation(LocationMO.ofId("INIT/0000/0000/0000/0000"));
         template.convertAndSend(exchangeName, "tu.event.moved.INIT/0000/0000/0000/0000", create);
         TimeUnit.MILLISECONDS.sleep(500);
         assertThat(accessor.getRepository().findAll()).hasSize(1);

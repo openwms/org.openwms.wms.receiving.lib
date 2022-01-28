@@ -31,6 +31,10 @@ public record LocationMO(
 
 ) implements Serializable {
 
+    public static LocationMO ofId(String id) {
+        return new LocationMO(id, null);
+    }
+
     public static LocationMO ofErpCode(String erpCode) {
         return new LocationMO(null, erpCode);
     }
