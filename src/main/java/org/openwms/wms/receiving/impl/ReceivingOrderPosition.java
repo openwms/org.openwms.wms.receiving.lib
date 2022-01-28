@@ -15,18 +15,21 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.exception.NotFoundException;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.ReceivingMessages;
+import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.inventory.Product;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -40,7 +43,7 @@ import static org.openwms.wms.order.OrderState.COMPLETED;
  * @author Heiko Scherrer
  */
 @Entity
-@DiscriminatorValue("EXPQTY")
+@Table(name = "WMS_REC_ORDER_POS_PRODUCT")
 public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
@@ -71,9 +74,27 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     protected ReceivingOrderPosition() {}
 
     @Override
-    public void validate(Validator validator) {
-
+    public void validateOnCreation(Validator validator, Class<?> clazz) {
+        if (clazz.isAssignableFrom(ValidationGroups.Create.class)) {
+            validator.validate(this, ValidationGroups.CreateQuantityReceipt.class);
+        }
+        validator.validate(this, clazz);
     }
+
+    @Override
+    public void preCreate(ServiceProvider serviceProvider) {
+        this.setProduct(getProduct(serviceProvider, this.getProduct().getSku()));
+    }
+
+    private Product getProduct(ServiceProvider serviceProvider, String sku) {
+        return serviceProvider.getProductService().findBySku(sku).orElseThrow(
+                () -> new NotFoundException(
+                        serviceProvider.getTranslator(),
+                        ReceivingMessages.PRODUCT_NOT_FOUND,
+                        sku
+                ));
+    }
+
 
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
         super(posNo);

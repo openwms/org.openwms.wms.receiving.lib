@@ -54,7 +54,7 @@ class TransportUnitEventListenerIT {
     void shall_create_TU() throws Exception {
         assertThat(accessor.getRepository().findAll().size()).isZero();
 
-        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation("EXT_/0000/0000/0000/0000").build();
+        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation(LocationM"EXT_/0000/0000/0000/0000").build();
         template.convertAndSend(exchangeName, "tu.event.created", create);
         TimeUnit.MILLISECONDS.sleep(500);
         assertThat(accessor.getRepository().findAll().size()).isEqualTo(1);

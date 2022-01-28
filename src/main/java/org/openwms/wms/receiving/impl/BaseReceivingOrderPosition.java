@@ -17,18 +17,19 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
@@ -47,8 +48,7 @@ import java.util.Map;
  * @author Heiko Scherrer
  */
 @Entity
-@Inheritance
-@DiscriminatorColumn(name = "C_DISC")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "WMS_REC_ORDER_POSITION",
         uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
 public abstract class BaseReceivingOrderPosition extends BaseEntity implements Serializable {
@@ -91,7 +91,20 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
         this.posNo = posNo;
     }
 
-    public abstract void validate(Validator validator);
+    /**
+     * Subclasses may validate themselves.
+     *
+     * @param validator The Validator instance
+     * @param clazz The validation group
+     */
+    public abstract void validateOnCreation(Validator validator, Class<?> clazz);
+
+    /**
+     * Subclasses have the chance for manipulation before creation.
+     *
+     * @param serviceProvider An instance that provides application services.
+     */
+    public void preCreate(ServiceProvider serviceProvider) {};
 
     public ReceivingOrder getOrder() {
         return order;

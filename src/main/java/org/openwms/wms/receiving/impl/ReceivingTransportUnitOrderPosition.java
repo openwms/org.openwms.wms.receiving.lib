@@ -18,8 +18,9 @@ package org.openwms.wms.receiving.impl;
 import org.openwms.wms.receiving.ValidationGroups;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -30,7 +31,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @Entity
-@DiscriminatorValue("EXPTU")
+@Table(name = "WMS_REC_ORDER_POS_TU")
 public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */
@@ -50,6 +51,14 @@ public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosit
         super(posNo);
         this.transportUnitBK = transportUnitBK;
         this.transportUnitTypeName = transportUnitTypeName;
+    }
+
+    @Override
+    public void validateOnCreation(Validator validator, Class<?> clazz) {
+        if (clazz.isAssignableFrom(ValidationGroups.Create.class)) {
+            validator.validate(this, ValidationGroups.CreateExpectedTUReceipt.class);
+        }
+        validator.validate(this, clazz);
     }
 
     @Override

@@ -20,7 +20,6 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.exception.ServiceLayerException;
-import org.ameba.i18n.Translator;
 import org.ameba.tenancy.TenantHolder;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
@@ -33,6 +32,8 @@ import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.ReceivingMessages;
+import org.openwms.wms.receiving.ServiceProvider;
+import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
@@ -41,7 +42,6 @@ import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
-import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,37 +84,35 @@ class ReceivingServiceImpl implements ReceivingService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
-    private final Translator translator;
     private final Validator validator;
     private final ReceivingMapper receivingMapper;
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
-    private final ProductService productService;
     private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
     private final ApplicationEventPublisher publisher;
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
     private final PackagingUnitApi packagingUnitApi;
     private final TransportUnitApi transportUnitApi;
+    private final ServiceProvider serviceProvider;
 
     ReceivingServiceImpl(
             @Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
-            Translator translator, Validator validator, ReceivingMapper receivingMapper,
+            Validator validator, ReceivingMapper receivingMapper,
             NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
-            ProductService productService, PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
+            PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
             ApplicationEventPublisher publisher, AsyncPackagingUnitApi asyncPackagingUnitApi,
-            PackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi) {
+            PackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi, ServiceProvider serviceProvider) {
         this.overbookingAllowed = overbookingAllowed;
-        this.translator = translator;
         this.validator = validator;
         this.receivingMapper = receivingMapper;
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
-        this.productService = productService;
         this.plugins = plugins;
         this.publisher = publisher;
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
         this.packagingUnitApi = packagingUnitApi;
         this.transportUnitApi = transportUnitApi;
+        this.serviceProvider = serviceProvider;
     }
 
     /**
@@ -127,28 +125,17 @@ class ReceivingServiceImpl implements ReceivingService {
         if (order.hasOrderId()) {
             opt = repository.findByOrderId(order.getOrderId());
             if (opt.isPresent()) {
-                throw new ResourceExistsException(translator, RO_ALREADY_EXISTS, new String[]{order.getOrderId()}, order.getOrderId());
+                throw new ResourceExistsException(serviceProvider.getTranslator(), RO_ALREADY_EXISTS, new String[]{order.getOrderId()}, order.getOrderId());
             }
         } else {
             assignOrderId(order);
         }
-        try {
-            order.getPositions().stream()
-                    .filter(ReceivingOrderPosition.class::isInstance)
-                    .forEach(p -> {
-                        p.validate(validator);
-                        ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku()));
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            order.getPositions().stream()
-                    .filter(ReceivingOrderPosition.class::isInstance)
-                    .forEach(p -> ((ReceivingOrderPosition) p).setProduct(getProduct(((ReceivingOrderPosition) p).getProduct().getSku())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        order.getPositions().stream()
+                .filter(ReceivingOrderPosition.class::isInstance)
+                .forEach(p -> {
+                    p.preCreate(serviceProvider);
+                    p.validateOnCreation(validator, ValidationGroups.Create.class);
+                });
         order = repository.save(order);
         publisher.publishEvent(new ReceivingOrderCreatedEvent(order));
         return order;
@@ -172,9 +159,9 @@ class ReceivingServiceImpl implements ReceivingService {
     }
 
     private Product getProduct(String sku) {
-        return productService.findBySku(sku).orElseThrow(
+        return serviceProvider.getProductService().findBySku(sku).orElseThrow(
                 () -> new NotFoundException(
-                        translator,
+                        serviceProvider.getTranslator(),
                         ReceivingMessages.PRODUCT_NOT_FOUND,
                         sku
                 ));
@@ -200,7 +187,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
         if (openPositions.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
@@ -215,7 +202,7 @@ class ReceivingServiceImpl implements ReceivingService {
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
-                throw new ProcessingException(translator, RO_NO_UNEXPECTED_ALLOWED, new String[0]);
+                throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_UNEXPECTED_ALLOWED, new String[0]);
             }
         } else {
             position = openPosition.get();
@@ -256,7 +243,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
         if (openPositions.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
@@ -266,7 +253,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
         if (openPosition.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded quantity exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         // multi packs
@@ -335,7 +322,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
         if (openPosition.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingTransportUnitOrderPosition with the demanded TransportUnit exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_OPEN_POSITIONS, new String[0]);
         }
         LOGGER.info("Received expected TransportUnit [{}] with ReceivingOrder [{}] in ReceivingOrderPosition [{}]",
                 expectedTransportUnitBK, receivingOrder.getOrderId(), openPosition.get().getPosNo());
@@ -414,7 +401,7 @@ class ReceivingServiceImpl implements ReceivingService {
         LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
         if (order.getOrderState() == CANCELED) {
             throw new AlreadyCancelledException(
-                    translator,
+                    serviceProvider.getTranslator(),
                     RO_ALREADY_IN_STATE,
                     new String[]{order.getOrderId(), order.getOrderState().name()},
                     order.getOrderId(), order.getOrderState()
@@ -422,7 +409,7 @@ class ReceivingServiceImpl implements ReceivingService {
         }
         if (order.getOrderState() != UNDEFINED && order.getOrderState() != CREATED) {
             throw new CancellationDeniedException(
-                    translator,
+                    serviceProvider.getTranslator(),
                     RO_CANCELLATION_DENIED,
                     new String[]{order.getOrderId(), order.getOrderState().name()},
                     order.getOrderId(), order.getOrderState()
@@ -451,7 +438,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
     private ReceivingOrder getOrder(@NotEmpty String pKey) {
         return repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(
-                translator,
+                serviceProvider.getTranslator(),
                 RO_NOT_FOUND_BY_PKEY,
                 new String[]{pKey},
                 pKey
