@@ -465,7 +465,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 1168
+Content-Length: 1058
 
 {
   "_links" : {
@@ -479,9 +479,6 @@ Content-Length: 1168
       "href" : "http://localhost:8080/v1/receiving-orders?orderId=4711"
     },
     "receiving-order-create" : {
-      "href" : "http://localhost:8080/v1/receiving-orders"
-    },
-    "receiving-order-create-tu-receipt" : {
       "href" : "http://localhost:8080/v1/receiving-orders"
     },
     "receiving-order-capture" : {
@@ -509,7 +506,7 @@ Content-Length: 1168
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/receiving-orders HTTP/1.1
-Content-Type: application/json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 410
 Host: localhost:8080
 
@@ -605,12 +602,12 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/dc73de6b-2cc3-431e-946c-d34b26e56c4b/
-Content-Type: application/hal+json
+Location: http://localhost:8080/v1/receiving-orders/84aee0d0-6873-4fdf-b644-8f13ce706235/
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 918
 
 {
-  "pKey" : "dc73de6b-2cc3-431e-946c-d34b26e56c4b",
+  "pKey" : "84aee0d0-6873-4fdf-b644-8f13ce706235",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -678,7 +675,7 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 1617
 
 {
@@ -862,7 +859,7 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 1617
 
 {
@@ -941,7 +938,7 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 1621
 
 [ {
@@ -1007,8 +1004,8 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/89f5d023-733f-4fc1-bbda-0ae6858b123b/ HTTP/1.1
-Content-Type: application/json
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/c4937071-7c5e-4b6d-83cb-312189ef8482/ HTTP/1.1
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
 
@@ -1024,11 +1021,11 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 99
 
 {
-  "pKey" : "89f5d023-733f-4fc1-bbda-0ae6858b123b",
+  "pKey" : "c4937071-7c5e-4b6d-83cb-312189ef8482",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1097,7 +1094,7 @@ that position and the server responds with success:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
+Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 1617
 
 {
@@ -1177,7 +1174,7 @@ Content-Length: 557
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-11 23:39:15 UTC
+Last updated 2022-01-29 22:42:58 UTC
 </div>
 </div>
 </body>

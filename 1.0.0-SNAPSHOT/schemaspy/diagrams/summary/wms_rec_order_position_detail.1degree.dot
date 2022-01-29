@@ -1,0 +1,32 @@
+// dot 2.43.0 on Linux 5.11.0-1027-azure
+// SchemaSpy rev Unknown
+digraph "wms_rec_order_position_detail" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "wms_rec_order_position_detail" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">wms_rec_order_position_detail</TD></TR>
+      <TR><TD PORT="c_order_pos_pk" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_order_pos_pk</TD></TR>
+      <TR><TD PORT="c_value" COLSPAN="3" ALIGN="LEFT">c_value</TD></TR>
+      <TR><TD PORT="c_key" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_key</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/wms_rec_order_position_detail.html"
+    tooltip="wms_rec_order_position_detail"
+  ];
+}

@@ -1,3 +1,4 @@
+org.openwms.common.location.api.messages
 org.openwms.common.transport.api
 org.openwms.common.transport.api.commands
 org.openwms.common.transport.api.messages
@@ -13,6 +14,7 @@ org.openwms.wms.receiving.events
 org.openwms.wms.receiving.impl
 org.openwms.wms.receiving.inventory
 org.openwms.wms.receiving.inventory.impl
+org.openwms.wms.receiving.rest
 org.openwms.wms.receiving.spi
 org.openwms.wms.receiving.transport
 org.openwms.wms.receiving.transport.api

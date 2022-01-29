@@ -16,7 +16,8 @@
          <column autoUpdated="false" digits="0" id="9" name="c_locked" nullable="true" remarks="" size="1" type="bool"/>
          <column autoUpdated="false" digits="0" id="10" name="c_next_alloc" nullable="true" remarks="" size="22" type="timestamp"/>
          <column autoUpdated="false" digits="0" id="11" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
-            <child column="c_order_id" foreignKey="fk_rec_pos_order_id" implied="false" onDeleteCascade="false" table="wms_rec_order_position"/>
+            <child column="c_order_id" foreignKey="fk_im2bv9ryrvfg7eymfblkxwhre" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_product"/>
+            <child column="c_order_id" foreignKey="fk_kiut0n2iu98su280ewqhtvvpi" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_tu"/>
          </column>
          <column autoUpdated="false" digits="0" id="12" name="c_order_state" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="13" name="c_priority" nullable="true" remarks="" size="10" type="int4"/>
@@ -57,46 +58,61 @@
          <index name="wms_rec_order_id_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
-         <index name="ukrf4hnyiar5ke1k1fix3nep6ov" unique="true">
+         <index name="uc_rec_order_name" unique="true">
             <column ascending="true" name="c_name"/>
          </index>
       </table>
-      <table name="wms_rec_order_position" numRows="2" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="false" digits="0" id="0" name="c_disc" nullable="false" remarks="" size="31" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="1" name="c_pk" nullable="false" remarks="" size="19" type="int8">
-            <child column="c_order_pos_pk" foreignKey="fk_rec_order_details_rop" implied="false" onDeleteCascade="false" table="wms_rec_order_position_detail"/>
+      <table name="wms_rec_order_pos_product" numRows="2" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
+            <parent column="c_order_id" foreignKey="fk_im2bv9ryrvfg7eymfblkxwhre" implied="false" onDeleteCascade="false" table="wms_rec_order"/>
          </column>
-         <column autoUpdated="false" digits="6" id="2" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="3" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="6" id="5" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="8" name="c_transport_unit_bk" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="9" name="c_transport_unit_type_name" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="10" name="c_qty_expected_type" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="11" name="c_qty_expected" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="12" name="c_qty_received_type" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="13" name="c_qty_received" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="14" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
-            <parent column="c_order_id" foreignKey="fk_rec_pos_order_id" implied="false" onDeleteCascade="false" table="wms_rec_order"/>
-         </column>
-         <column autoUpdated="false" digits="0" id="15" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="8" name="c_qty_expected_type" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_qty_expected" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_qty_received_type" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_qty_received" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="12" name="c_sku" nullable="false" remarks="" size="255" type="varchar">
             <parent column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_product"/>
          </column>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
-         <index name="wms_rec_order_position_pkey" unique="true">
+         <index name="wms_rec_order_pos_product_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
-         <index name="uc_order_id_pos" unique="true">
+         <index name="uk_axlftk09h2d5f5bprmuaka1bg" unique="true">
+            <column ascending="true" name="c_order_id"/>
+            <column ascending="true" name="c_pos_no"/>
+         </index>
+      </table>
+      <table name="wms_rec_order_pos_tu" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
+            <parent column="c_order_id" foreignKey="fk_kiut0n2iu98su280ewqhtvvpi" implied="false" onDeleteCascade="false" table="wms_rec_order"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="8" name="c_transport_unit_bk" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_transport_unit_type_name" nullable="true" remarks="" size="255" type="varchar"/>
+         <primaryKey column="c_pk" sequenceNumberInPK="1"/>
+         <index name="wms_rec_order_pos_tu_pkey" unique="true">
+            <column ascending="true" name="c_pk"/>
+         </index>
+         <index name="uk_r9e4hklwcmaiybxruipkxyl9w" unique="true">
             <column ascending="true" name="c_order_id"/>
             <column ascending="true" name="c_pos_no"/>
          </index>
       </table>
       <table name="wms_rec_order_position_detail" numRows="0" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="false" digits="0" id="0" name="c_order_pos_pk" nullable="false" remarks="" size="19" type="int8">
-            <parent column="c_pk" foreignKey="fk_rec_order_details_rop" implied="false" onDeleteCascade="false" table="wms_rec_order_position"/>
-         </column>
+         <column autoUpdated="false" digits="0" id="0" name="c_order_pos_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="0" id="1" name="c_value" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="c_key" nullable="false" remarks="" size="255" type="varchar"/>
          <primaryKey column="c_order_pos_pk" sequenceNumberInPK="1"/>
@@ -118,7 +134,7 @@
          <column autoUpdated="false" digits="0" id="8" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="9" name="c_label" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="10" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
-            <child column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_order_position"/>
+            <child column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_product"/>
          </column>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_product_pkey" unique="true">
