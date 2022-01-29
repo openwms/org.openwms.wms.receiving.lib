@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.NotFoundException;
+import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
@@ -76,14 +77,16 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     @Override
     public void validateOnCreation(Validator validator, Class<?> clazz) {
         if (clazz.isAssignableFrom(ValidationGroups.Create.class)) {
-            validator.validate(this, ValidationGroups.CreateQuantityReceipt.class);
+            ValidationUtil.validate(validator, this, ValidationGroups.CreateQuantityReceipt.class);
         }
         validator.validate(this, clazz);
     }
 
     @Override
     public void preCreate(ServiceProvider serviceProvider) {
-        this.setProduct(getProduct(serviceProvider, this.getProduct().getSku()));
+        if (this.hasProduct()) {
+            this.setProduct(getProduct(serviceProvider, this.getProduct().getSku()));
+        }
     }
 
     private Product getProduct(ServiceProvider serviceProvider, String sku) {
@@ -143,6 +146,10 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
 
     public Product getProduct() {
         return product;
+    }
+
+    public boolean hasProduct() {
+        return product != null;
     }
 
     public void setProduct(Product product) {

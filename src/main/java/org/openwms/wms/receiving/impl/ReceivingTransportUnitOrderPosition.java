@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
 
 import javax.persistence.Column;
@@ -56,7 +57,7 @@ public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosit
     @Override
     public void validateOnCreation(Validator validator, Class<?> clazz) {
         if (clazz.isAssignableFrom(ValidationGroups.Create.class)) {
-            validator.validate(this, ValidationGroups.CreateExpectedTUReceipt.class);
+            ValidationUtil.validate(validator,this, ValidationGroups.CreateExpectedTUReceipt.class);
         }
         validator.validate(this, clazz);
     }

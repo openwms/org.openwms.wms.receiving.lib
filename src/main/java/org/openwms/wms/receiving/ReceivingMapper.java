@@ -15,11 +15,9 @@
  */
 package org.openwms.wms.receiving;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.openwms.wms.receiving.api.BaseReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ProductVO;
@@ -46,9 +44,9 @@ public interface ReceivingMapper {
 
     default BaseReceivingOrderPosition fromVOtoEO(BaseReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
         if (vo instanceof ReceivingOrderPositionVO rop) {
-            return convertToVO(rop, cycleAvoidingMappingContext);
+            return convertFromVO(rop, cycleAvoidingMappingContext);
         } else if (vo instanceof ReceivingTransportUnitOrderPositionVO rtuop) {
-            return convertToVO(rtuop, cycleAvoidingMappingContext);
+            return convertFromVO(rtuop, cycleAvoidingMappingContext);
         } else {
             return null;
         }
@@ -110,10 +108,10 @@ public interface ReceivingMapper {
     @Mapping(target = "posNo", source = "positionId")
     @Mapping(target = "order", source = "order")
     @Mapping(target = "details", source = "details")
-    ReceivingTransportUnitOrderPosition convertToVO(ReceivingTransportUnitOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+    ReceivingTransportUnitOrderPosition convertFromVO(ReceivingTransportUnitOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "posNo", source = "positionId")
     @Mapping(target = "quantityExpected", source = "quantityExpected")
     @Mapping(target = "details", source = "details")
-    ReceivingOrderPosition convertToVO(ReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+    ReceivingOrderPosition convertFromVO(ReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

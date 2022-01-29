@@ -16,7 +16,6 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.ResourceExistsException;
-import org.ameba.exception.ServiceLayerException;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
@@ -28,6 +27,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +48,7 @@ class ReceivingServiceImplIT extends AbstractTestBase {
     private ReceivingServiceImpl service;
 
     @Test void createOrderWithNull() {
-        var ex = assertThrows(ServiceLayerException.class, () -> service.createOrder(null));
+        var ex = assertThrows(ConstraintViolationException.class, () -> service.createOrder(null));
         assertThat(ex.getMessage()).containsIgnoringCase("order");
     }
 

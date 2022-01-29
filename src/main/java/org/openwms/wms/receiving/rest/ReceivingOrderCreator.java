@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 
@@ -56,7 +55,7 @@ public class ReceivingOrderCreator extends AbstractWebController {
     @Transactional
     @PostMapping(value = "/v1/receiving-orders", consumes = MEDIA_TYPE, produces = MEDIA_TYPE)
     public ResponseEntity<ReceivingOrderVO> createOrder(
-            @Valid @RequestBody ReceivingOrderVO orderVO,
+            @RequestBody ReceivingOrderVO orderVO,
             HttpServletRequest req) {
 
         LOGGER.debug("Requested to create ReceivingOrder with quantities [{}]", orderVO);

@@ -25,7 +25,6 @@ import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
@@ -93,7 +92,7 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
         mockMvc
                 .perform(
                         post("/v1/receiving-orders")
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(orderVO))
                 )
                 .andExpect(status().isCreated())
