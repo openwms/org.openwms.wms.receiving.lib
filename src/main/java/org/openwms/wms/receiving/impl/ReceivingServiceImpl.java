@@ -176,9 +176,9 @@ class ReceivingServiceImpl implements ReceivingService {
             CaptureDetailsVO details,
             @NotEmpty String sku) {
 
-        final Product existingProduct = getProduct(sku);
-        ReceivingOrder receivingOrder = getOrder(pKey);
-        List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
+        final var existingProduct = getProduct(sku);
+        var receivingOrder = getOrder(pKey);
+        var openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
@@ -190,7 +190,7 @@ class ReceivingServiceImpl implements ReceivingService {
             throw new ProcessingException(serviceProvider.getTranslator(), RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
-        Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
+        var openPosition = openPositions.stream()
                 .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
                 .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
                 .findFirst();
@@ -210,7 +210,7 @@ class ReceivingServiceImpl implements ReceivingService {
 
         for (int i = 0; i < quantityReceived.getMagnitude().intValue(); i++) {
             // single packs
-            PackagingUnitVO pu = new PackagingUnitVO(
+            var pu = new PackagingUnitVO(
                     ProductVO.newBuilder().sku(sku).build(),
                     existingProduct.getBaseUnit()
             );
