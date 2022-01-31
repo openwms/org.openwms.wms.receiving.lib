@@ -70,7 +70,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
-    private final PluginRegistry<ReceivingOrderCapturer<T>, T> capturers;
+    private final PluginRegistry<ReceivingOrderCapturer<T>, CaptureRequestVO> capturers;
     private final ApplicationEventPublisher publisher;
     private final ServiceProvider serviceProvider;
 
@@ -78,7 +78,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
             Validator validator, ReceivingMapper receivingMapper, NextReceivingOrderRepository nextReceivingOrderRepository,
             ReceivingOrderRepository repository,
             @Qualifier("plugins") PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
-            @Qualifier("capturers") PluginRegistry<ReceivingOrderCapturer<T>, T> capturers,
+            @Qualifier("capturers") PluginRegistry<ReceivingOrderCapturer<T>, CaptureRequestVO> capturers,
             ApplicationEventPublisher publisher, ServiceProvider serviceProvider) {
         this.validator = validator;
         this.receivingMapper = receivingMapper;
@@ -142,7 +142,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
             @NotNull @Valid List<T> requests) {
         ReceivingOrder ro = null;
         for (T request : requests) {
-            capturers.getPluginFor(request)
+            ro = capturers.getPluginFor(request)
                     .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
                     .capture(pKey, loadUnitType, request);
         }

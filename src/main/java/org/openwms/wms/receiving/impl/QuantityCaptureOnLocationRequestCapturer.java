@@ -21,6 +21,7 @@ import org.openwms.wms.inventory.api.PackagingUnitApi;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -101,7 +102,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
     }
 
     @Override
-    public boolean supports(QuantityCaptureOnLocationRequestVO request) {
-        return true;
+    public boolean supports(CaptureRequestVO request) {
+        return request instanceof QuantityCaptureOnLocationRequestVO;
     }
 }

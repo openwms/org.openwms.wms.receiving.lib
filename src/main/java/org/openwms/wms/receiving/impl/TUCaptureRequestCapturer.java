@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.transport.api.TransportUnitApi;
@@ -82,7 +83,7 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
     }
 
     @Override
-    public boolean supports(TUCaptureRequestVO request) {
-        return true;
+    public boolean supports(CaptureRequestVO request) {
+        return request instanceof TUCaptureRequestVO;
     }
 }

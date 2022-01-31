@@ -22,6 +22,7 @@ import org.openwms.wms.inventory.api.CreatePackagingUnitCommand;
 import org.openwms.wms.inventory.api.PackagingUnitVO;
 import org.openwms.wms.inventory.api.ProductVO;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
@@ -113,7 +114,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
     }
 
     @Override
-    public boolean supports(QuantityCaptureRequestVO request) {
-        return true;
+    public boolean supports(CaptureRequestVO request) {
+        return request instanceof QuantityCaptureRequestVO;
     }
 }

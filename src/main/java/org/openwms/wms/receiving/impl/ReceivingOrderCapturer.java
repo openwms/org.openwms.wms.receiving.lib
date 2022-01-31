@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Heiko Scherrer
  */
-public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plugin<T> {
+public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plugin<CaptureRequestVO> {
 
     ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull T request);
 }
