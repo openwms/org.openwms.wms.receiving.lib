@@ -42,6 +42,12 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
     @NotNull
     @JsonProperty("product")
     private ProductVO product;
+    /** An optional serial number of the captured item. */
+    @JsonProperty("serialNumber")
+    private String serialNumber;
+    /** The business key referring to a defined {@code Lot}. */
+    @JsonProperty("lotId")
+    private String lotId;
 
     public LocationVO getActualLocation() {
         return actualLocation;
@@ -65,5 +71,21 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
 
     public void setProduct(ProductVO product) {
         this.product = product;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getLotId() {
+        return lotId;
+    }
+
+    public void setLotId(String lotId) {
+        this.lotId = lotId;
     }
 }

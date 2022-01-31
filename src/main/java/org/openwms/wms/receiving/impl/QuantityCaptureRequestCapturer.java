@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
@@ -57,7 +58,11 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Measured
     public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull QuantityCaptureRequestVO request) {
         final var sku = request.getProduct().getSku();
         final var quantityReceived = request.getQuantityReceived();
@@ -103,6 +108,8 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
                     existingProduct.getBaseUnit()
             );
             pu.setDetails(details);
+            pu.setSerialNumber(request.getSerialNumber());
+            pu.setLotId(request.getLotId());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
             }

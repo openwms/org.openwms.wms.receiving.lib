@@ -92,6 +92,8 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         );
         pu.setActualLocation(new LocationVO(erpCode));
         pu.setDetails(details);
+        pu.setSerialNumber(request.getSerialNumber());
+        pu.setLotId(request.getLotId());
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
         }
