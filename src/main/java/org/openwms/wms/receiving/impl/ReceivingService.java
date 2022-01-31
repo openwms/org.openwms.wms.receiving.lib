@@ -30,7 +30,7 @@ import java.util.Optional;
  *
  * @author Heiko Scherrer
  */
-public interface ReceivingService {
+public interface ReceivingService<T extends CaptureRequestVO> {
 
     /**
      * Create a {@link ReceivingOrder} with containing {@link ReceivingOrderPosition}.
@@ -50,7 +50,7 @@ public interface ReceivingService {
      * @return The updated ReceivingOrder instance with updated positions
      */
     @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
-                                      @NotNull @Valid List<CaptureRequestVO> requests);
+                                      @NotNull @Valid List<T> requests);
 
     /**
      * Cancel a {@link ReceivingOrder}.

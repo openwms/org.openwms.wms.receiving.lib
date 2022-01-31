@@ -80,7 +80,7 @@ import static org.openwms.wms.receiving.impl.ReceivingOrderUpdater.Type.DETAILS_
  */
 @Validated
 @TxService
-class ReceivingServiceImpl implements ReceivingService {
+class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingService<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final boolean overbookingAllowed;
@@ -89,6 +89,7 @@ class ReceivingServiceImpl implements ReceivingService {
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
+    private final PluginRegistry<ReceivingOrderCapturer<T>, T> capturers;
     private final ApplicationEventPublisher publisher;
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
     private final PackagingUnitApi packagingUnitApi;
@@ -100,7 +101,7 @@ class ReceivingServiceImpl implements ReceivingService {
             Validator validator, ReceivingMapper receivingMapper,
             NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
             PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
-            ApplicationEventPublisher publisher, AsyncPackagingUnitApi asyncPackagingUnitApi,
+            PluginRegistry<ReceivingOrderCapturer<T>, T> capturers, ApplicationEventPublisher publisher, AsyncPackagingUnitApi asyncPackagingUnitApi,
             PackagingUnitApi packagingUnitApi, TransportUnitApi transportUnitApi, ServiceProvider serviceProvider) {
         this.overbookingAllowed = overbookingAllowed;
         this.validator = validator;
@@ -108,6 +109,7 @@ class ReceivingServiceImpl implements ReceivingService {
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
         this.plugins = plugins;
+        this.capturers = capturers;
         this.publisher = publisher;
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
         this.packagingUnitApi = packagingUnitApi;
@@ -278,9 +280,10 @@ class ReceivingServiceImpl implements ReceivingService {
     @Override
     @Measured
     public @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
-            @NotNull @Valid List<CaptureRequestVO> requests) {
+            @NotNull @Valid List<T> requests) {
         ReceivingOrder ro = null;
-        for (CaptureRequestVO request : requests) {
+        for (T request : requests) {
+            capturers.getPluginFor(request).get().capture(pKey, loadUnitType, request);
             if (request instanceof QuantityCaptureRequestVO qr) {
                 ro = this.capture(
                         pKey,
