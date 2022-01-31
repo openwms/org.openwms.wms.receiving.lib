@@ -21,6 +21,7 @@ import org.ameba.i18n.Translator;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
@@ -48,11 +49,11 @@ import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 public class ReceivingOrderFinder extends AbstractWebController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingOrderFinder.class);
-    private final ReceivingService service;
+    private final ReceivingService<CaptureRequestVO> service;
     private final Translator translator;
     private final ReceivingMapper receivingMapper;
 
-    public ReceivingOrderFinder(ReceivingService service, Translator translator, ReceivingMapper receivingMapper) {
+    public ReceivingOrderFinder(ReceivingService<CaptureRequestVO> service, Translator translator, ReceivingMapper receivingMapper) {
         this.service = service;
         this.translator = translator;
         this.receivingMapper = receivingMapper;
