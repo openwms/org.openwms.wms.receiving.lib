@@ -41,6 +41,7 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @JsonProperty("product")
     @NotNull
     private ProductVO product;
+    /** An optional serial number of the {@code PackagingUnit}. */
     @JsonProperty("serialNumber")
     private String serialNumber;
     /** The business key referring to a defined {@code Lot}. */
@@ -50,22 +51,22 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @JsonProperty("quantity")
     @NotNull
     private Measurable quantity;
-    /** The actualLocation the PackagingUnit is placed on. */
+    /** The actualLocation the {@code PackagingUnit} is placed on. */
     @JsonProperty("actualLocation")
     public LocationVO actualLocation;
-    /** The current length of the PackagingUnit. */
+    /** The current length of the {@code PackagingUnit}. */
     @JsonProperty("length")
     private Integer length;
-    /** The current width of the PackagingUnit. */
+    /** The current width of the {@code PackagingUnit}. */
     @JsonProperty("width")
     private Integer width;
-    /** The current height of the PackagingUnit. */
+    /** The current height of the {@code PackagingUnit}. */
     @JsonProperty("height")
     private Integer height;
-    /** The current weight of the PackagingUnit. */
+    /** The current weight of the {@code PackagingUnit}. */
     @JsonProperty("weight")
     private Weight weight;
-    /** Any kind of message placed on the PackagingUnit. */
+    /** Any kind of message placed on the {@code PackagingUnit}. */
     @JsonProperty("message")
     private String message;
 
