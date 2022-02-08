@@ -102,12 +102,12 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime earliestStartDate;
 
-    /** Earliest date the order can be started. */
+    /** When the order has been started. */
     @Column(name = "C_START_DATE", columnDefinition = "timestamp(0)")
-    @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDate;
-    /** When the order has been finished. */
 
+    /** When the order has been finished. */
     @Column(name = "C_END_DATE", columnDefinition = "timestamp(0)")
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime endDate;

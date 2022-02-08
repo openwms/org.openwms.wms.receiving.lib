@@ -23,7 +23,6 @@ import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,7 @@ import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
  */
 @ReceivingApplicationTest
 @Transactional
-@Rollback
+//@Rollback
 class ReceivingServiceImplIT extends AbstractTestBase {
 
     @Autowired
