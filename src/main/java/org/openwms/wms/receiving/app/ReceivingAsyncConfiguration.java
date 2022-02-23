@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.app;
 
+import org.ameba.amqp.RabbitTemplateConfigurable;
 import org.openwms.core.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.SerializerMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -72,7 +74,7 @@ public class ReceivingAsyncConfiguration {
 
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
-            MessageConverter messageConverter) {
+            MessageConverter messageConverter, @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setMultiplier(2);
@@ -82,6 +84,9 @@ public class ReceivingAsyncConfiguration {
         retryTemplate.setBackOffPolicy(backOffPolicy);
         rabbitTemplate.setRetryTemplate(retryTemplate);
         rabbitTemplate.setMessageConverter(messageConverter);
+        if (rabbitTemplateConfigurable != null) {
+            rabbitTemplateConfigurable.configure(rabbitTemplate);
+        }
         return rabbitTemplate;
     }
 
