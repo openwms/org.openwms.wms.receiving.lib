@@ -31,7 +31,7 @@ digraph "twoDegreesRelationshipsDiagram" {
       <TR><TD PORT="c_created" COLSPAN="2" ALIGN="LEFT">c_created</TD><TD PORT="c_created.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
       <TR><TD PORT="c_updated" COLSPAN="2" ALIGN="LEFT">c_updated</TD><TD PORT="c_updated.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
       <TR><TD PORT="c_ol" COLSPAN="2" ALIGN="LEFT">c_ol</TD><TD PORT="c_ol.type" ALIGN="LEFT">int8[19]</TD></TR>
-      <TR><TD PORT="c_pid" COLSPAN="2" ALIGN="LEFT">c_pid</TD><TD PORT="c_pid.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="c_pid" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_pid</TD><TD PORT="c_pid.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_start_earliest" COLSPAN="2" ALIGN="LEFT">c_start_earliest</TD><TD PORT="c_start_earliest.type" ALIGN="LEFT">timestamp[22]</TD></TR>
       <TR><TD PORT="c_end_date" COLSPAN="2" ALIGN="LEFT">c_end_date</TD><TD PORT="c_end_date.type" ALIGN="LEFT">timestamp[22]</TD></TR>
       <TR><TD PORT="c_expected_receipt" COLSPAN="2" ALIGN="LEFT">c_expected_receipt</TD><TD PORT="c_expected_receipt.type" ALIGN="LEFT">timestamp[22]</TD></TR>

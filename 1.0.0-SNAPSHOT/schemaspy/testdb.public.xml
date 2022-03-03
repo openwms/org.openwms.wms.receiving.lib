@@ -32,6 +32,9 @@
          <index name="uc_rec_order_id" unique="true">
             <column ascending="true" name="c_order_id"/>
          </index>
+         <index name="uk_cutckn7kskbndmhc5g614hv71" unique="true">
+            <column ascending="true" name="c_pid"/>
+         </index>
       </table>
       <table name="wms_rec_order_detail" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_order_pk" nullable="false" remarks="" size="19" type="int8">
@@ -146,6 +149,9 @@
          <index name="uc_rec_product_sku" unique="true">
             <column ascending="true" name="c_sku"/>
          </index>
+         <index name="uk_ac4k3c97u3f3x06ke10pdvtht" unique="true">
+            <column ascending="true" name="c_pid"/>
+         </index>
       </table>
       <table name="wms_rec_transport_unit" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
@@ -165,6 +171,9 @@
          </index>
          <index name="uc_rec_tu_foreign_pid" unique="true">
             <column ascending="true" name="c_foreign_pid"/>
+         </index>
+         <index name="uk_920s9ug02t4d7rehfjn8g7by7" unique="true">
+            <column ascending="true" name="c_pid"/>
          </index>
       </table>
    </tables>
