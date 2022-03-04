@@ -20,7 +20,6 @@ import org.openwms.core.http.AbstractWebController;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +43,10 @@ import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 public class ReceivingOrderCreator extends AbstractWebController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingOrderCreator.class);
-    private final ReceivingService service;
+    private final ReceivingService<?> service;
     private final ReceivingMapper receivingMapper;
 
-    public ReceivingOrderCreator(ReceivingService service, ReceivingMapper receivingMapper) {
+    public ReceivingOrderCreator(ReceivingService<?> service, ReceivingMapper receivingMapper) {
         this.service = service;
         this.receivingMapper = receivingMapper;
     }
@@ -59,7 +58,7 @@ public class ReceivingOrderCreator extends AbstractWebController {
             HttpServletRequest req) {
 
         LOGGER.debug("Requested to create ReceivingOrder with quantities [{}]", orderVO);
-        ReceivingOrder saved = service.createOrder(receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext()));
+        var saved = service.createOrder(receivingMapper.convertVO(orderVO, new CycleAvoidingMappingContext()));
         return ResponseEntity
                 .created(getLocationURIForCreatedResource(req, saved.getPersistentKey()))
                 .body(receivingMapper.convertToVO(saved, new CycleAvoidingMappingContext()));

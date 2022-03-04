@@ -23,10 +23,7 @@ import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +51,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingController.class);
     private final ReceivingService service;
     private final ReceivingMapper receivingMapper;
 
@@ -85,7 +81,7 @@ public class ReceivingController extends AbstractWebController {
             @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody List<CaptureRequestVO> requests) {
 
-        ReceivingOrderVO result = service.capture(pKey, loadUnitType, requests);
+        var result = service.capture(pKey, loadUnitType, requests);
         result.sortPositions();
         return ResponseEntity.ok(result);
     }
@@ -94,7 +90,7 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<ReceivingOrderVO> completeOrder(
             @PathVariable("pKey") String pKey) {
 
-        ReceivingOrderVO result = service.complete(pKey);
+        var result = service.complete(pKey);
         result.sortPositions();
         return ResponseEntity.ok(result);
     }
@@ -104,7 +100,7 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody ReceivingOrderVO receivingOrder){
 
-        ReceivingOrder eo = receivingMapper.convertVO(receivingOrder, new CycleAvoidingMappingContext());
+        var eo = receivingMapper.convertVO(receivingOrder, new CycleAvoidingMappingContext());
         var vo = receivingMapper.convertToVO(service.update(pKey, eo), new CycleAvoidingMappingContext());
         vo.sortPositions();
         return ResponseEntity.ok(vo);

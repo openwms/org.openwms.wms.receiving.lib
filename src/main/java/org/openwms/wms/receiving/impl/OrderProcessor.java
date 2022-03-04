@@ -20,6 +20,7 @@ import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
@@ -37,7 +38,10 @@ class OrderProcessor {
     private final OrderPositionProcessor positionProcessor;
     private final ReceivingOrderRepository repository;
 
-    OrderProcessor(OrderPositionProcessor positionProcessor, ReceivingOrderRepository repository) {
+    OrderProcessor(
+            @Autowired(required = false) OrderPositionProcessor positionProcessor,
+            ReceivingOrderRepository repository
+    ) {
         this.positionProcessor = positionProcessor;
         this.repository = repository;
     }
@@ -56,7 +60,9 @@ class OrderProcessor {
         }
         LOGGER.debug("Processing ReceivingOrder [{}]", order.getOrderId());
         order.setOrderState(OrderState.PROCESSED);
-        order.getPositions().forEach(p -> positionProcessor.processPosition(order, p));
+        if (positionProcessor != null) {
+            order.getPositions().forEach(p -> positionProcessor.processPosition(order, p));
+        }
         repository.save(order);
     }
 }

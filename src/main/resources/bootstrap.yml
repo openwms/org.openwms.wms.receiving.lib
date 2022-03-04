@@ -40,6 +40,7 @@ owms:
   receiving:
     unexpected-receipts-allowed: true
     initial-location-id: EXTERN
+    create-tu-on-expected-tu-receipt: true
 
 server:
   port: ${PORT:8141}

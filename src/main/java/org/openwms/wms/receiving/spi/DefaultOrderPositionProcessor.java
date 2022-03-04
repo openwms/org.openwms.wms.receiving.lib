@@ -26,6 +26,7 @@ import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
 import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Heiko Scherrer
  */
+@ConditionalOnProperty(name = "owms.receiving.create-tu-on-expected-tu-receipt", havingValue = "true")
 @TxService
 class DefaultOrderPositionProcessor implements OrderPositionProcessor {
 

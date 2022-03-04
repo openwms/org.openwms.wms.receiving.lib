@@ -23,10 +23,7 @@ import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -48,7 +45,6 @@ import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 @MeasuredRestController
 public class ReceivingOrderFinder extends AbstractWebController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingOrderFinder.class);
     private final ReceivingService<CaptureRequestVO> service;
     private final Translator translator;
     private final ReceivingMapper receivingMapper;
@@ -63,8 +59,7 @@ public class ReceivingOrderFinder extends AbstractWebController {
     @GetMapping(value = "/v1/receiving-orders", produces = MEDIA_TYPE)
     public ResponseEntity<List<ReceivingOrderVO>> findAll() {
 
-        List<ReceivingOrder> all = service.findAll();
-        var result = receivingMapper.convertToVO(all, new CycleAvoidingMappingContext());
+        var result = receivingMapper.convertToVO(service.findAll(), new CycleAvoidingMappingContext());
         result.forEach(ReceivingOrderVO::sortPositions);
         return ResponseEntity.ok(result);
     }
