@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-public class ProductVO extends AbstractBase implements Serializable {
+public class ProductVO extends AbstractBase<ProductVO> implements Serializable {
 
     /** The persistent unique key. */
     @JsonProperty("pKey")

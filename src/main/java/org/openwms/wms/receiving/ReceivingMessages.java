@@ -27,6 +27,7 @@ public final class ReceivingMessages {
     public static final String RO_NOT_FOUND_BY_PKEY = "owms.wms.rec.recOrderNotFound";
     public static final String RO_NOT_FOUND_BY_BK = "owms.wms.rec.recOrderNotFoundBK";
     public static final String RO_ALREADY_IN_STATE = "owms.wms.rec.recOrderAlreadyInState";
+    public static final String RO_PARTIAL_COMPLETION_DENIED = "owms.wms.rec.recOrderPartialCompletionDenied";
     public static final String RO_CANCELLATION_DENIED = "owms.wms.rec.recOrderCancellationDenied";
     public static final String RO_ALREADY_EXISTS = "owms.wms.rec.recOrderExists";
     public static final String RO_NO_OPEN_POSITIONS = "owms.wms.rec.recOrderNoROPWithProduct";

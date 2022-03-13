@@ -47,19 +47,22 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
     private final PackagingUnitApi packagingUnitApi;
+    private final ProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            PackagingUnitApi packagingUnitApi) {
+                                             PackagingUnitApi packagingUnitApi, ProductApi productApi) {
         super(translator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
+        this.productApi = productApi;
     }
 
     @Override
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull QuantityCaptureOnLocationRequestVO request) {
-        final var sku = request.getProduct().getSku();
+    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
+        final var existingProduct = request.hasUomRelation()
+                ? productApi.findProductByProductUnitPkey(request.getUomRelation().pKey)
+                : productApi.findByLabelOrSKU(request.getProduct().getSku());
         final var quantityReceived = request.getQuantityReceived();
         var receivingOrder = getOrder(pKey);
-        final var existingProduct = getProduct(sku);
         final var erpCode = request.getActualLocation().getErpCode();
         final var details = request.getDetails();
 
@@ -67,7 +70,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
-                .filter(p -> p.getProduct().equals(existingProduct))
+                .filter(p -> p.getProduct().getSku().equals(existingProduct.getSku()))
                 .toList();
 
         if (openPositions.isEmpty()) {
@@ -86,14 +89,17 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         }
 
         // multi packs
-        PackagingUnitVO pu = new PackagingUnitVO(
-                ProductVO.newBuilder().sku(sku).build(),
-                quantityReceived
-        );
+        PackagingUnitVO pu = request.hasUomRelation()
+                ? new PackagingUnitVO(request.getUomRelation(), quantityReceived)
+                : new PackagingUnitVO(ProductVO.newBuilder().sku(request.getProduct().getSku()).build(), quantityReceived);
         pu.setActualLocation(new LocationVO(erpCode));
         pu.setDetails(details);
         pu.setSerialNumber(request.getSerialNumber());
         pu.setLotId(request.getLotId());
+        pu.setProduct(existingProduct);
+        pu.setExpiresAt(request.getExpiresAt());
+        pu.setProductionDate(request.getProductionDate());
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
         }

@@ -32,6 +32,8 @@ public enum OrderState {
     PROCESSED,
     /** If the Order or Position has been cancelled. */
     CANCELED,
+    /** Order has been completed only partially, the unfulfilled positions can be transferred to a new order. */
+    PARTIALLY_COMPLETED,
     /** Order or Position has been completed successfully. */
     COMPLETED
 }

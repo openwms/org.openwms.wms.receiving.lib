@@ -65,6 +65,11 @@ public class EventPropagator {
                         event.getSource().getPersistentKey(), mo);
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.completed", mo);
             }
+            case PARTIALLY_COMPLETED -> {
+                LOGGER.debug("ReceivingOrder [{}] partially completed, sending ReceivingOrderMO: [{}]",
+                        event.getSource().getPersistentKey(), mo);
+                amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.partially-completed", mo);
+            }
             case CANCELED -> {
                 LOGGER.debug("ReceivingOrder [{}] with all positions cancelled, sending ReceivingOrderMO: [{}]",
                         event.getSource().getPersistentKey(), mo);

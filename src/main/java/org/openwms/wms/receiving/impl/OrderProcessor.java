@@ -54,7 +54,7 @@ class OrderProcessor {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void onCreate(ReceivingOrderCreatedEvent event) {
-        ReceivingOrder order = event.getSource();
+        var order = event.getSource();
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info("ReceivingOrder with orderId [{}] saved", order.getOrderId());
         }

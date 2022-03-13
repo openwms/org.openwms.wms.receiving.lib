@@ -195,6 +195,10 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return expectedReceiptDate;
     }
 
+    public void setExpectedReceiptDate(ZonedDateTime expectedReceiptDate) {
+        this.expectedReceiptDate = expectedReceiptDate;
+    }
+
     public ZonedDateTime getEarliestStartDate() {
         return earliestStartDate;
     }

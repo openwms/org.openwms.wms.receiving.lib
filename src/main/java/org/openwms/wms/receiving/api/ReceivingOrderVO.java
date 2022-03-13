@@ -90,7 +90,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         this.orderId = orderId;
     }
 
-     public List<BaseReceivingOrderPositionVO> getPositions() {
+    public List<BaseReceivingOrderPositionVO> getPositions() {
         return positions;
     }
 

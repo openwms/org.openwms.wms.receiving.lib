@@ -15,19 +15,22 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import org.openwms.wms.receiving.api.CaptureRequestVO;
-import org.springframework.plugin.core.Plugin;
+import org.ameba.exception.BusinessRuntimeException;
+import org.ameba.i18n.Translator;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
- * A ReceivingOrderCapturer.
+ * A PartialCompletionDeniedException.
  *
- * @author Heiko Scherrer
+ * @author Matjaž Smolej
  */
-public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plugin<CaptureRequestVO> {
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class PartialCompletionDeniedException extends BusinessRuntimeException {
 
-    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @Valid @NotNull T request);
+    public PartialCompletionDeniedException(Translator translator, String messageKey, Serializable[] data, Object... param) {
+        super(translator, messageKey, data, param);
+    }
 }

@@ -30,7 +30,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * A PackagingUnitVO.
+ * A PackagingUnitVO represents a quantity of a {@code Product} packaged into a single physical unit.
  *
  * @author Heiko Scherrer
  */
@@ -41,12 +41,23 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @JsonProperty("product")
     @NotNull
     private ProductVO product;
+    /** The type of PackagingUnit. */
+    @JsonProperty("uomRelation")
+    public UomRelationVO uomRelation;
     /** An optional serial number of the {@code PackagingUnit}. */
     @JsonProperty("serialNumber")
     private String serialNumber;
     /** The business key referring to a defined {@code Lot}. */
     @JsonProperty("lotId")
     private String lotId;
+    /** The expiration date of this particular {@code PackagingUnit}. */
+    @JsonProperty("expiresAt")
+    @JsonFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    private ZonedDateTime expiresAt;
+    /** The production date of this particular {@code PackagingUnit}. */
+    @JsonProperty("productionDate")
+    @JsonFormat(pattern = DATE_TIME_WITH_TIMEZONE)
+    private ZonedDateTime productionDate;
     /** Quantity ordered. */
     @JsonProperty("quantity")
     @NotNull
@@ -75,6 +86,12 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     @ConstructorProperties({"product", "quantity"})
     public PackagingUnitVO(ProductVO product, Measurable quantity) {
         this.product = product;
+        this.quantity = quantity;
+    }
+
+    @ConstructorProperties({"productUnit", "quantity"})
+    public PackagingUnitVO(UomRelationVO uomRelation, Measurable quantity) {
+        this.uomRelation = uomRelation;
         this.quantity = quantity;
     }
 
@@ -112,6 +129,22 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
 
     public void setLotId(String lotId) {
         this.lotId = lotId;
+    }
+
+    public ZonedDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(ZonedDateTime expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    public ZonedDateTime getProductionDate() {
+        return productionDate;
+    }
+
+    public void setProductionDate(ZonedDateTime productionDate) {
+        this.productionDate = productionDate;
     }
 
     public Measurable getQuantity() {

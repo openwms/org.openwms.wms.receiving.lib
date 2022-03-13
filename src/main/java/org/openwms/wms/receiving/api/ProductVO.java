@@ -46,6 +46,9 @@ public class ProductVO implements Serializable {
     /** Products may be defined with different base units. */
     @JsonProperty("baseUnit")
     private Measurable baseUnit;
+    /** The foreign persistent key of the {@code Product}. */
+    @JsonProperty("foreignPKey")
+    private String foreignPKey;
 
     @JsonCreator
     ProductVO() {
@@ -85,6 +88,14 @@ public class ProductVO implements Serializable {
 
     public void setBaseUnit(Measurable baseUnit) {
         this.baseUnit = baseUnit;
+    }
+
+    public String getForeignPKey() {
+        return foreignPKey;
+    }
+
+    public void setForeignPKey(String foreignPKey) {
+        this.foreignPKey = foreignPKey;
     }
 
     @Override
