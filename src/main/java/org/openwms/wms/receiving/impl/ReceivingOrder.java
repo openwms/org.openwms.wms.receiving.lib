@@ -207,6 +207,10 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return endDate;
     }
 
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
     public ZonedDateTime getStartDate() {
         return startDate;
     }

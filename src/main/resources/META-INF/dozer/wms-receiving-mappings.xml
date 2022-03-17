@@ -96,6 +96,10 @@
 			<a is-accessible="true">baseUnit</a>
 			<b is-accessible="true">baseUnit</b>
 		</field>
+		<field>
+			<a is-accessible="true">foreignPKey</a>
+			<b is-accessible="true">foreignPKey</b>
+		</field>
 	</mapping>
 
 	<mapping>
