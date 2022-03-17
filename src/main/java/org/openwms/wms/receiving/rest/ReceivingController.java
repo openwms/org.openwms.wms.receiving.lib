@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -67,7 +66,7 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingOrderFinder.class).findOrder("b65a7658-c53c-4a81-8abb-75ab67783f47")).withRel("receiving-order-findbypkey"),
                         linkTo(methodOn(ReceivingOrderFinder.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingOrderCreator.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
-                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f48", "EURO", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
+                        linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f48", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
                         linkTo(methodOn(ReceivingController.class).completeOrder("b65a7658-c53c-4a81-8abb-75ab67783f49")).withRel("receiving-order-complete"),
                         linkTo(methodOn(ReceivingController.class).saveOrder("b65a7658-c53c-4a81-8abb-75ab67783f46", null)).withRel("receiving-order-save"),
                         linkTo(methodOn(ReceivingController.class).patchOrder("b65a7658-c53c-4a81-8abb-75ab67783f45", null)).withRel("receiving-order-patch")
@@ -75,13 +74,12 @@ public class ReceivingController extends AbstractWebController {
         );
     }
 
-    @PostMapping(value = "/v1/receiving-orders/{pKey}/capture", params = "loadUnitType", produces = MEDIA_TYPE)
+    @PostMapping(value = "/v1/receiving-orders/{pKey}/capture", produces = MEDIA_TYPE)
     public ResponseEntity<ReceivingOrderVO> captureOrder(
             @PathVariable("pKey") String pKey,
-            @RequestParam("loadUnitType") String loadUnitType,
             @Valid @RequestBody List<CaptureRequestVO> requests) {
 
-        var result = service.capture(pKey, loadUnitType, requests);
+        var result = service.capture(pKey, requests);
         result.sortPositions();
         return ResponseEntity.ok(result);
     }

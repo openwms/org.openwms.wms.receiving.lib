@@ -41,16 +41,20 @@ public interface ReceivingService<T extends CaptureRequestVO> {
     @NotNull ReceivingOrder createOrder(@NotNull ReceivingOrder order);
 
     /**
-     * Decrease one of the {@code ReceivingOrderPosition}s by the received amount of the given {@code Product} and book the received article
-     * to the {@code TransportUnit} identified by the {@code transportUnitId}.
+     * Capturing on a {@code ReceivingOrder} means:
+     * <ul>
+     *     <li>Decrease one of the {@code ReceivingOrderPosition}s by the received amount of the given {@code Product}</li>
+     *     <li>Create physical {@code PackagingUnit}(s) from the received quantity</li>
+     * </ul>
      *
      * @param pKey The persistent key of the ReceivingOrder
-     * @param loadUnitType In case the LoadUnit is created this is type for the LoadUnit
-     * @param requests all captures to process
+     * @param requests Contains all the capturing information according to the process in use
      * @return The updated ReceivingOrder instance with updated positions
      */
-    @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotEmpty String loadUnitType,
-                                      @NotNull @Valid List<T> requests);
+    @NotNull ReceivingOrderVO capture(
+            @NotEmpty String pKey,
+            @NotNull @Valid List<T> requests
+    );
 
     /**
      * Cancel a {@link ReceivingOrder}.

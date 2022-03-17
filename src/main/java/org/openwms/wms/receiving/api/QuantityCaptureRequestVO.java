@@ -24,33 +24,42 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * A QuantityCaptureRequestVO.
+ * A QuantityCaptureRequestVO contains all information used to capture goods within a {@code LoadUnit} on top of a {@code TransportUnit}.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The business key of the captured TransportUnit. */
+    /** The business key of the captured {@code TransportUnit} where the goods are captured in. */
     @NotEmpty
     @JsonProperty("transportUnitBK")
     private String transportUnitId;
-    /** The unique */
+
+    /** The unique identifier if the {@code LoadUnit} where the goods are captured in. */
     @NotEmpty
     @JsonProperty("loadUnitLabel")
     private String loadUnitLabel;
-    /** The quantity that has been received during the capturing Goods In process. */
+
+    /** A type in case a {@code LoadUnit} needs to be created (optional). */
+    @JsonProperty("loadUnitType")
+    private String loadUnitType;
+
+    /** The quantity that has been received during the capturing process. */
     @NotNull
     @JsonProperty("quantity")
     private Measurable quantityReceived;
-    /** The Product captured during the Goods In process. */
+
+    /** The captured {@code Product}. */
     @NotNull
     @JsonProperty("product")
     private ProductVO product;
-    /** An optional serial number of the captured item. */
+
+    /** A serial number of the captured item (optional) . */
     @JsonProperty("serialNumber")
     private String serialNumber;
-    /** The business key referring to a defined {@code Lot}. */
+
+    /** The business key referring to an existing {@code Lot} (optional) . */
     @JsonProperty("lotId")
     private String lotId;
 
@@ -68,6 +77,14 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
 
     public void setLoadUnitLabel(String loadUnitLabel) {
         this.loadUnitLabel = loadUnitLabel;
+    }
+
+    public String getLoadUnitType() {
+        return loadUnitType;
+    }
+
+    public void setLoadUnitType(String loadUnitType) {
+        this.loadUnitType = loadUnitType;
     }
 
     public Measurable getQuantityReceived() {

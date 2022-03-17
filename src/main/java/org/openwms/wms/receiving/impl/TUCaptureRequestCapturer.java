@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ProcessingException;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -54,8 +56,12 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
         this.transportUnitApi = transportUnitApi;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
     @Override
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull TUCaptureRequestVO request) {
+    public ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull TUCaptureRequestVO request) {
         final var expectedTransportUnitBK = request.getExpectedTransportUnitBK();
         final var actualLocationErpCode = request.getActualLocationErpCode();
 

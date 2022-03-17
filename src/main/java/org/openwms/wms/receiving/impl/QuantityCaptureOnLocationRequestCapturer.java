@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.inventory.api.PackagingUnitApi;
@@ -28,6 +29,7 @@ import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -56,8 +58,12 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         this.productApi = productApi;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
     @Override
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
+    public ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
         final var existingProduct = request.hasUomRelation()
                 ? productApi.findProductByProductUnitPkey(request.getUomRelation().pKey)
                 : productApi.findByLabelOrSKU(request.getProduct().getSku());

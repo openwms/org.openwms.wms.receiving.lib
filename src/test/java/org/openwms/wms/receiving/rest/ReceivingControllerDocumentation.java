@@ -163,12 +163,12 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(1));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
-                                .param("loadUnitType", "EURO")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
                 )
@@ -183,12 +183,12 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
-                                .param("loadUnitType", "EURO")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(vo))
                 )

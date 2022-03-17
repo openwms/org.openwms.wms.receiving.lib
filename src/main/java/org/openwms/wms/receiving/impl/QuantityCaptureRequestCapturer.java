@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -63,7 +64,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @NotNull QuantityCaptureRequestVO request) {
+    public ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull QuantityCaptureRequestVO request) {
         final var sku = request.getProduct().getSku();
         final var quantityReceived = request.getQuantityReceived();
         final var transportUnitId = request.getTransportUnitId();
@@ -113,7 +114,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
             }
-            asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, loadUnitType, pu));
+            asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, request.getLoadUnitType(), pu));
         }
         position.addQuantityReceived(quantityReceived);
         receivingOrder = repository.save(receivingOrder);

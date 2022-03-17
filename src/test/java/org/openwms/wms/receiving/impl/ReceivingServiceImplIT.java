@@ -40,7 +40,6 @@ import static org.openwms.wms.receiving.TestData.PRODUCT1_SKU;
  */
 @ReceivingApplicationTest
 @Transactional
-//@Rollback
 class ReceivingServiceImplIT extends AbstractTestBase {
 
     @Autowired

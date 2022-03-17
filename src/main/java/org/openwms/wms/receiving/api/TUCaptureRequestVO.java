@@ -22,25 +22,33 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
- * A CaptureRequestVO.
+ * A TUCaptureRequestVO contains all information used to capture goods within a {@code LoadUnit} on top of an expected {@code TransportUnit}.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The business key of the captured TransportUnit. */
+    /** The business key of the actual captured {@code TransportUnit} where the goods are placed on. */
     @NotEmpty
     @JsonProperty("transportUnitBK")
     private String transportUnitId;
-    /** The unique */
+
+    /** The unique identifier if the {@code LoadUnit} where the goods are stored in. */
     @NotEmpty
     @JsonProperty("loadUnitLabel")
     private String loadUnitLabel;
-    /** The business key of the captured TransportUnit. */
+
+    /** The type in case a {@code LoadUnit} needs to be created (optional). */
+    @JsonProperty("loadUnitType")
+    private String loadUnitType;
+
+    /** The business key of the expected {@code TransportUnit} to receive. */
     @NotEmpty
     @JsonProperty("expectedTransportUnitBK")
     private String expectedTransportUnitBK;
+
+    /** The ERP code of the actual {@code Location} where the goods were received. */
     @NotEmpty
     @JsonProperty("actualLocationErpCode")
     private String actualLocationErpCode;
@@ -59,6 +67,14 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     public void setLoadUnitLabel(String loadUnitLabel) {
         this.loadUnitLabel = loadUnitLabel;
+    }
+
+    public String getLoadUnitType() {
+        return loadUnitType;
+    }
+
+    public void setLoadUnitType(String loadUnitType) {
+        this.loadUnitType = loadUnitType;
     }
 
     public String getExpectedTransportUnitBK() {

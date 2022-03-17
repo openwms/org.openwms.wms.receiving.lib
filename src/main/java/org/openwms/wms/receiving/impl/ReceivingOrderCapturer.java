@@ -23,11 +23,19 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * A ReceivingOrderCapturer.
+ * A ReceivingOrderCapturer is responsible to capture receipt goods in it's particular flavor.
  *
  * @author Heiko Scherrer
+ * @see T The flavor or goods recipt capturing
  */
 public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plugin<CaptureRequestVO> {
 
-    ReceivingOrder capture(@NotEmpty String pKey, @NotEmpty String loadUnitType, @Valid @NotNull T request);
+    /**
+     * Capture received goods to a suitable {@code ReceivingOrderPosition}.
+     *
+     * @param pKey The persistent identifier of the ReceivingOrder
+     * @param request Particular capturing detail information used to perform the capturing process
+     * @return The identified and updated ReceivingOrder instance
+     */
+    ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull T request);
 }
