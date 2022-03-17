@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.inventory.api;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
@@ -22,12 +23,16 @@ import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Weight;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.LocationVO;
+import org.openwms.wms.receiving.api.UomRelationVO;
 
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
+
+import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
 
 /**
  * A PackagingUnitVO represents a quantity of a {@code Product} packaged into a single physical unit.

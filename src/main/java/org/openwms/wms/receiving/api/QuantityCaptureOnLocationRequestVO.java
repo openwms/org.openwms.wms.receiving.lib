@@ -28,48 +28,52 @@ import java.time.ZonedDateTime;
 import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
 
 /**
- * A QuantityCaptureOnLocationRequestVO.
+ * A QuantityCaptureOnLocationRequestVO contains all information used to capture goods on a {@code Location}.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The {@code Location} where the captured material is located on. */
+    /** The {@code Location} where the captured items are located on. */
     @NotNull
     @JsonProperty("actualLocation")
     private LocationVO actualLocation;
-    /** The quantity that has been received during the capturing Goods In process. */
+
+    /** The quantity that has been received during the capturing process. */
     @NotNull
     @JsonProperty("quantity")
     private Measurable quantityReceived;
-    /** The Product captured during the Goods In process. */
+
+    /** The captured {@code Product}. */
     @JsonProperty("product")
     private ProductVO product;
-    /** Described in what kind of UOM the {@code PackagingUnit} is stored in. */
+
+    /** Describes the kind of UOM the {@code PackagingUnit}(s) are received in. */
     @JsonProperty("productUnit")
     public UomRelationVO uomRelation;
-    /** An optional serial number of the captured item. */
+
+    /** A serial number of the captured item (optional). */
     @JsonProperty("serialNumber")
     private String serialNumber;
-    /** The business key referring to a defined {@code Lot}. */
+
+    /** The business key referring to an existing {@code Lot} (optional). */
     @JsonProperty("lotId")
     private String lotId;
-    /** The expiration date of this particular {@code PackagingUnit}. */
+
+    /** The expiration date of the particular {@code PackagingUnit}(s) (optional). */
     @JsonProperty("expiresAt")
     @JsonFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime expiresAt;
-    /** The production date of this particular {@code PackagingUnit}. */
+
+    /** The production date of the particular {@code PackagingUnit}(s) (optional). */
     @JsonProperty("productionDate")
     @JsonFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime productionDate;
 
     @Valid
     public boolean isValid() {
-        if (uomRelation == null && product == null) {
-            return false;
-        }
-        return true;
+        return uomRelation != null || product != null;
     }
 
     public LocationVO getActualLocation() {

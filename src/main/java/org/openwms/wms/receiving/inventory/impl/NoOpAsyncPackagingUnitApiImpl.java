@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
- * A NoOpAsyncPackagingUnitApiImpl.
+ * A NoOpAsyncPackagingUnitApiImpl is used in non-distributed environments and doesn't do anything.
  *
  * @author Heiko Scherrer
  */
@@ -34,6 +34,11 @@ class NoOpAsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NoOpAsyncPackagingUnitApiImpl.class);
 
+    /**
+     * {@inheritDoc}
+     *
+     * No operation here!
+     */
     @Override
     public void create(CreatePackagingUnitCommand command) {
         LOGGER.warn("Command to send [{}]", command);

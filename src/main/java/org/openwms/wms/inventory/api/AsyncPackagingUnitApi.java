@@ -16,11 +16,16 @@
 package org.openwms.wms.inventory.api;
 
 /**
- * A AsyncPackagingUnitApi.
+ * A AsyncPackagingUnitApi is the client stub to handle operations on {@code PackagingUnit}s asynchronously.
  *
  * @author Heiko Scherrer
  */
 public interface AsyncPackagingUnitApi {
 
+    /**
+     * Create a new {@code PackagingUnit}.
+     *
+     * @param command Encapsulates all information used to create the PackagingUnit
+     */
     void create(CreatePackagingUnitCommand command);
 }
