@@ -9,6 +9,7 @@ org.openwms.wms.order
 org.openwms.wms.receiving
 org.openwms.wms.receiving.api
 org.openwms.wms.receiving.api.events
+org.openwms.wms.receiving.api.inventory
 org.openwms.wms.receiving.app
 org.openwms.wms.receiving.events
 org.openwms.wms.receiving.impl
