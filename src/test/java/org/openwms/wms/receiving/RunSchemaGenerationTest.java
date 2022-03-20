@@ -16,9 +16,6 @@
 package org.openwms.wms.receiving;
 
 import org.junit.jupiter.api.Test;
-import org.openwms.wms.inventory.api.PackagingUnitApi;
-import org.openwms.wms.receiving.transport.api.TransportUnitApi;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

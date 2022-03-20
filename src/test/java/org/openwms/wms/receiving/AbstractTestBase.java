@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving;
 
 import org.openwms.wms.inventory.api.PackagingUnitApi;
+import org.openwms.wms.receiving.api.inventory.ProductApi;
 import org.openwms.wms.receiving.transport.api.TransportUnitApi;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -30,5 +31,7 @@ public abstract class AbstractTestBase {
     private PackagingUnitApi packagingUnitApi;
     @MockBean
     private TransportUnitApi transportUnitApi;
+    @MockBean
+    private ProductApi productApi;
 
 }
