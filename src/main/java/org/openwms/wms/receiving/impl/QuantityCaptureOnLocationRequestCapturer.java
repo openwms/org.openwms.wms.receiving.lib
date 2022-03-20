@@ -25,6 +25,7 @@ import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
+import org.openwms.wms.receiving.api.inventory.ProductApi;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
