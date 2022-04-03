@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.spi.wms.transport;
 
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
-import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.openwms.common.transport.api.commands.Command;
+import org.openwms.core.SpringProfiles;
+import org.openwms.wms.receiving.spi.wms.transport.AsyncTransportUnitApi;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 /**
- * A AbstractTestBase.
+ * A NoOpAsyncTransportUnitApiImpl.
  *
  * @author Heiko Scherrer
  */
-public abstract class AbstractTestBase {
-
-    @MockBean
-    private PackagingUnitApi packagingUnitApi;
-    @MockBean
-    private TransportUnitApi transportUnitApi;
-    @MockBean
-    private ProductApi productApi;
-
+@Profile("!" + SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Component
+class NoOpAsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
+    
+    @Override
+    public void process(Command command) {
+        // Just ignore
+    }
 }

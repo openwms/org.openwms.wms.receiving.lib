@@ -1,6 +1,5 @@
-package org.openwms.wms.receiving.api.inventory;
+package org.openwms.wms.receiving.spi.wms.inventory;
 
-import org.openwms.wms.inventory.api.ProductVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

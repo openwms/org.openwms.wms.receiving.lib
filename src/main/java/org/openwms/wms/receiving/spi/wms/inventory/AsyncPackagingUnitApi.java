@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.transport.impl;
-
-import org.openwms.common.transport.api.commands.Command;
-import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+package org.openwms.wms.receiving.spi.wms.inventory;
 
 /**
- * A SyncTransportUnitApiImpl.
+ * A AsyncPackagingUnitApi is the client stub to handle operations on {@code PackagingUnit}s asynchronously.
  *
  * @author Heiko Scherrer
  */
-@Profile("!" + SpringProfiles.ASYNCHRONOUS_PROFILE)
-@Component
-class SyncTransportUnitApiImpl implements AsyncTransportUnitApi {
-    
-    @Override
-    public void process(Command command) {
-        // TODO [openwms]: 06.06.21 Do this via REST API 
-    }
+public interface AsyncPackagingUnitApi {
+
+    /**
+     * Create a new {@code PackagingUnit}.
+     *
+     * @param command Encapsulates all information used to create the PackagingUnit
+     */
+    void create(CreatePackagingUnitCommand command);
 }

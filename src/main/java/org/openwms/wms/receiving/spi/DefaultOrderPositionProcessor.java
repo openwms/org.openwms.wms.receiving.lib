@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.common.location.api.messages.LocationMO;
 import org.openwms.common.transport.api.commands.TUCommand;
@@ -25,7 +26,7 @@ import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.transport.AsyncTransportUnitApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,21 +41,25 @@ import org.springframework.transaction.annotation.Transactional;
 @TxService
 class DefaultOrderPositionProcessor implements OrderPositionProcessor {
 
-    private final AsyncTransportUnitApi transportUnitApi;
+    private final AsyncTransportUnitApi asyncTransportUnitApi;
     private final InitialLocationProvider initialLocationProvider;
 
-    DefaultOrderPositionProcessor(AsyncTransportUnitApi transportUnitApi, InitialLocationProvider initialLocationProvider) {
-        this.transportUnitApi = transportUnitApi;
+    DefaultOrderPositionProcessor(AsyncTransportUnitApi asyncTransportUnitApi, InitialLocationProvider initialLocationProvider) {
+        this.asyncTransportUnitApi = asyncTransportUnitApi;
         this.initialLocationProvider = initialLocationProvider;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Measured
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition) {
         if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
             var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
             var initialLocation = initialLocationProvider.findInitial();
-            transportUnitApi.process(
+            asyncTransportUnitApi.process(
                     TUCommand.newBuilder(TUCommand.Type.CREATE)
                             .withTransportUnit(TransportUnitMO.newBuilder()
                                     .withBarcode(rtuop.getTransportUnitBK())

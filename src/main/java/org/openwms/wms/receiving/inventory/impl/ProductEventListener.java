@@ -37,17 +37,11 @@ public class ProductEventListener {
 
     @EventListener
     public void onEvent(ProductEvent event) {
-        switch(event.getType()) {
-            case CREATED:
-                productService.create((Product) event.getSource());
-                break;
-            case UPDATED:
-                productService.update((Product) event.getSource());
-                break;
-            case DELETED:
-                productService.delete((String) event.getSource());
-                break;
-            default:
+        switch (event.getType()) {
+            case CREATED -> productService.create((Product) event.getSource());
+            case UPDATED -> productService.update((Product) event.getSource());
+            case DELETED -> productService.delete((String) event.getSource());
+            default -> {}
         }
     }
 }

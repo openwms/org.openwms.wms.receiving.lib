@@ -13,39 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.transport.impl;
+package org.openwms.wms.receiving.spi.wms.inventory;
 
-import org.openwms.common.transport.api.commands.Command;
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.transport.api.AsyncTransportUnitApi;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
- * A AsyncTransportUnitApiImpl is a Spring managed bean to send Commands asynchronously over AMQP, only active with Spring profile
- * {@linkplain SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ * A AsyncPackagingUnitApiImpl.
  *
  * @author Heiko Scherrer
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
-class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
+class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
 
-    private final AmqpTemplate template;
+    private final AmqpTemplate amqpTemplate;
     private final String exchangeName;
+    private final String routingKey;
 
-    AsyncTransportUnitApiImpl(
-            AmqpTemplate template,
-            @Value("${owms.commands.common.tu.exchange-name}") String exchangeName
-    ) {
-        this.template = template;
+    AsyncPackagingUnitApiImpl(
+            AmqpTemplate amqpTemplate,
+            @Value("${owms.commands.inventory.pu.exchange-name}") String exchangeName,
+            @Value("${owms.commands.inventory.pu.routing-key}") String routingKey) {
+        this.amqpTemplate = amqpTemplate;
         this.exchangeName = exchangeName;
+        this.routingKey = routingKey;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void process(Command command) {
-        template.convertAndSend(exchangeName, "common.tu.command.in.create", command);
+    @Measured
+    public void create(CreatePackagingUnitCommand command) {
+        amqpTemplate.convertAndSend(exchangeName, routingKey, command);
     }
 }

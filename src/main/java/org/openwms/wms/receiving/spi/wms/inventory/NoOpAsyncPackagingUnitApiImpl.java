@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.inventory.impl;
+package org.openwms.wms.receiving.spi.wms.inventory;
 
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.inventory.api.AsyncPackagingUnitApi;
-import org.openwms.wms.inventory.api.CreatePackagingUnitCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;

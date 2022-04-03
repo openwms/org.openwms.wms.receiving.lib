@@ -16,9 +16,9 @@
 package org.openwms.wms.receiving.app;
 
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.inventory.api.PackagingUnitApi;
-import org.openwms.wms.receiving.api.inventory.ProductApi;
-import org.openwms.wms.receiving.transport.api.TransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
+import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

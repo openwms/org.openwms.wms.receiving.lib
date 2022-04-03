@@ -13,19 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.inventory.api;
+package org.openwms.wms.receiving.spi.wms.inventory;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * A AsyncPackagingUnitApi is the client stub to handle operations on {@code PackagingUnit}s asynchronously.
+ * A PackagingUnitApi.
  *
  * @author Heiko Scherrer
  */
-public interface AsyncPackagingUnitApi {
+@FeignClient(name = "wms-inventory", decode404 = true)
+public interface PackagingUnitApi {
 
     /**
-     * Create a new {@code PackagingUnit}.
+     * Create a new {@code PackagingUnit} on the {@code Location} given as {@code actualLocation} of the {@code pu}.
      *
-     * @param command Encapsulates all information used to create the PackagingUnit
+     * @param pu The PackagingUnit representation, contains the Location where to create it
      */
-    void create(CreatePackagingUnitCommand command);
+    @PostMapping("/v1/packaging-units")
+    void createOnLocation(
+            @RequestBody PackagingUnitVO pu
+    );
 }

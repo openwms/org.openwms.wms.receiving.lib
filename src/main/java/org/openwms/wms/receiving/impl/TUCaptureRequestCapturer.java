@@ -22,7 +22,7 @@ import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
-import org.openwms.wms.receiving.transport.api.TransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

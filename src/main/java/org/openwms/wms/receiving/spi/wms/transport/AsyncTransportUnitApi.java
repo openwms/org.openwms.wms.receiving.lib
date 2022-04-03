@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.transport.api;
+package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.openwms.common.transport.api.commands.Command;
 
