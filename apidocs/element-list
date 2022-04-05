@@ -4,12 +4,10 @@ org.openwms.common.transport.api.commands
 org.openwms.common.transport.api.messages
 org.openwms.values
 org.openwms.wms
-org.openwms.wms.inventory.api
 org.openwms.wms.order
 org.openwms.wms.receiving
 org.openwms.wms.receiving.api
 org.openwms.wms.receiving.api.events
-org.openwms.wms.receiving.api.inventory
 org.openwms.wms.receiving.app
 org.openwms.wms.receiving.events
 org.openwms.wms.receiving.impl
@@ -17,7 +15,9 @@ org.openwms.wms.receiving.inventory
 org.openwms.wms.receiving.inventory.impl
 org.openwms.wms.receiving.rest
 org.openwms.wms.receiving.spi
+org.openwms.wms.receiving.spi.wms
+org.openwms.wms.receiving.spi.wms.inventory
+org.openwms.wms.receiving.spi.wms.transport
 org.openwms.wms.receiving.transport
-org.openwms.wms.receiving.transport.api
 org.openwms.wms.receiving.transport.event
 org.openwms.wms.receiving.transport.impl
