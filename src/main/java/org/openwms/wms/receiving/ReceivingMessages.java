@@ -31,6 +31,7 @@ public final class ReceivingMessages {
     public static final String RO_CANCELLATION_DENIED = "owms.wms.rec.recOrderCancellationDenied";
     public static final String RO_ALREADY_EXISTS = "owms.wms.rec.recOrderExists";
     public static final String RO_NO_OPEN_POSITIONS = "owms.wms.rec.recOrderNoROPWithProduct";
+    public static final String RO_NO_OPEN_POSITIONS_TU = "owms.wms.rec.recOrderNoROPWithTU";
     public static final String RO_NO_UNEXPECTED_ALLOWED = "owms.wms.rec.recOrderNoUnexpectedAllowed";
 
     private ReceivingMessages() {

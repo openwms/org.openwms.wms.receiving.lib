@@ -27,6 +27,7 @@ import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -160,7 +161,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
 
     @Transactional
     @Rollback
-    @Test void shall_capture_order() throws Exception {
+    @Test void shall_do_a_QuantityCapture() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
@@ -174,6 +175,46 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
                 )
                 .andDo(document("order-capture", preprocessResponse(prettyPrint())))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_TUCapture_with_unexpected_TU() throws Exception {
+        var vo = new TUCaptureRequestVO();
+        vo.setTransportUnitId("00000000000000004711"); // The captured TU
+        vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
+        vo.setLoadUnitLabel("1"); // The LU id of the captured TU
+        vo.setLoadUnitType("EURO"); // The LU type
+        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("order-capture-tu-unexpected", preprocessResponse(prettyPrint())))
+                .andExpect(status().isConflict())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_TUCapture_with_expected_TU() throws Exception {
+        var vo = new TUCaptureRequestVO();
+        vo.setTransportUnitId("00000000000000004712"); // The captured TU
+        vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
+        vo.setLoadUnitLabel("1"); // The LU id of the captured TU
+        vo.setLoadUnitType("EURO"); // The LU type
+        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("order-capture-tu", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
         ;
     }

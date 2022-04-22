@@ -18,20 +18,20 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.receiving.spi.wms.inventory.AsyncPackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.CreatePackagingUnitCommand;
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.spi.wms.inventory.AsyncPackagingUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.CreatePackagingUnitCommand;
+import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
+import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import static org.openwms.wms.order.OrderState.CREATED;
@@ -64,7 +64,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
      */
     @Override
     @Measured
-    public ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull QuantityCaptureRequestVO request) {
+    public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull QuantityCaptureRequestVO request) {
         final var sku = request.getProduct().getSku();
         final var quantityReceived = request.getQuantityReceived();
         final var transportUnitId = request.getTransportUnitId();
@@ -81,7 +81,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
 
         if (openPositions.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         var openPosition = openPositions.stream()

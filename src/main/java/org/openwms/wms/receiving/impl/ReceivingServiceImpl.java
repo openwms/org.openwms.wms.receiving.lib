@@ -142,7 +142,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
                     .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
                     .capture(pKey, request);
         }
-        return receivingMapper.convertToVO(ro, new CycleAvoidingMappingContext());
+        return receivingMapper.convertToVO(repository.save(ro), new CycleAvoidingMappingContext());
     }
 
     /**

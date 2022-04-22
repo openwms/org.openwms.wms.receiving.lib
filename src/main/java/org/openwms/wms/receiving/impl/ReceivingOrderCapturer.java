@@ -19,11 +19,11 @@ import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.springframework.plugin.core.Plugin;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * A ReceivingOrderCapturer is responsible to capture receipt goods in it's particular flavor.
+ * A ReceivingOrderCapturer is responsible to capture receipt goods in its particular flavor.
  *
  * @author Heiko Scherrer
  * @see T The flavor or goods recipt capturing
@@ -37,5 +37,5 @@ public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plug
      * @param request Particular capturing detail information used to perform the capturing process
      * @return The identified and updated ReceivingOrder instance
      */
-    ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull T request);
+    @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull T request);
 }

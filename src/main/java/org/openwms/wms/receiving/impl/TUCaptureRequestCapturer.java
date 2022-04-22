@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -28,14 +27,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 import static org.openwms.wms.order.OrderState.COMPLETED;
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
-import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
+import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS_TU;
 
 /**
  * A TUCaptureRequestCapturer.
@@ -61,30 +60,30 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
      */
     @Measured
     @Override
-    public ReceivingOrder capture(@NotEmpty String pKey, @Valid @NotNull TUCaptureRequestVO request) {
-        final var expectedTransportUnitBK = request.getExpectedTransportUnitBK();
+    public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull TUCaptureRequestVO request) {
+        final var transportUnitBK = request.getTransportUnitId();
         final var actualLocationErpCode = request.getActualLocationErpCode();
 
-        ReceivingOrder receivingOrder = getOrder(pKey);
+        var receivingOrder = getOrder(pKey);
         Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingTransportUnitOrderPosition.class::isInstance)
                 .map(ReceivingTransportUnitOrderPosition.class::cast)
-                .filter(p -> p.getTransportUnitBK().equals(expectedTransportUnitBK))
+                .filter(p -> p.getTransportUnitBK().equals(transportUnitBK))
                 .findFirst();
 
         if (openPosition.isEmpty()) {
-            LOGGER.error("Received a goods receipt but no open ReceivingTransportUnitOrderPosition with the demanded TransportUnit exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            LOGGER.error("Received a goods receipt but no open ReceivingTransportUnitOrderPosition with the expected TransportUnit exist");
+            throw new CapturingException(translator, RO_NO_OPEN_POSITIONS_TU, new String[0]);
         }
-        LOGGER.info("Received expected TransportUnit [{}] with ReceivingOrder [{}] in ReceivingOrderPosition [{}]",
-                expectedTransportUnitBK, receivingOrder.getOrderId(), openPosition.get().getPosNo());
+        LOGGER.info("Received TransportUnit [{}] with ReceivingOrder [{}] in ReceivingOrderPosition [{}]",
+                transportUnitBK, receivingOrder.getOrderId(), openPosition.get().getPosNo());
         openPosition.get().changeOrderState(publisher, COMPLETED);
         if (receivingOrder.getPositions().stream().allMatch(rop -> rop.getState() == COMPLETED)) {
             receivingOrder.changeOrderState(publisher, COMPLETED);
         }
         receivingOrder = repository.save(receivingOrder);
-        transportUnitApi.moveTU(expectedTransportUnitBK, actualLocationErpCode);
+        transportUnitApi.moveTU(transportUnitBK, actualLocationErpCode);
         return receivingOrder;
     }
 
