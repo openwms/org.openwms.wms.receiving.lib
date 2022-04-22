@@ -49,6 +49,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -197,8 +198,27 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
+    @Transactional
+    @Rollback
+    @Test void shall_update_order() throws Exception {
+        var vo = new QuantityCaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
+        vo.setQuantityReceived(Piece.of(2));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        put("/v1/receiving-orders/{pKey}", ORDER1_PKEY)
+                                .contentType("application/vnd.openwms.receiving-order-v1+json")
+                                .content(om.writeValueAsString(vo))
+                )
+                .andDo(document("order-update-500", preprocessResponse(prettyPrint())))
+                .andExpect(status().isOk())
+        ;
+    }
 
-    public String createOrder(String orderId) throws Exception {
+    private String createOrder(String orderId) throws Exception {
         var result = mockMvc
                 .perform(
                         post("/v1/receiving-orders")

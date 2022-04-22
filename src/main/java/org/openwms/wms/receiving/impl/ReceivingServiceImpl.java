@@ -19,7 +19,6 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
-import org.ameba.exception.ServiceLayerException;
 import org.ameba.tenancy.TenantHolder;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
@@ -33,17 +32,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.plugin.core.PluginRegistry;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.Validator;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.String.format;
 import static org.openwms.wms.ReceivingConstants.DEFAULT_ACCOUNT_NAME;
 import static org.openwms.wms.order.OrderState.CANCELED;
 import static org.openwms.wms.order.OrderState.COMPLETED;
@@ -53,7 +51,6 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_ALREADY_EXISTS;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_ALREADY_IN_STATE;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_CANCELLATION_DENIED;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
-import static org.openwms.wms.receiving.impl.ReceivingOrderUpdater.Type.DETAILS_CHANGE;
 
 /**
  * A ReceivingServiceImpl is a Spring managed transactional Services that deals with {@link ReceivingOrder}s.
@@ -138,7 +135,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public @NotNull ReceivingOrderVO capture(@NotEmpty String pKey, @NotNull @Valid List<T> requests) {
+    public @NotNull ReceivingOrderVO capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
         ReceivingOrder ro = null;
         for (T request : requests) {
             ro = capturers.getPluginFor(request)
@@ -152,9 +149,8 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = true)
     @Measured
-    public @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey) {
+    public @NotNull ReceivingOrder findByPKey(@NotBlank String pKey) {
         return getOrder(pKey);
     }
 
@@ -162,9 +158,8 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      * {@inheritDoc}
      */
     @Measured
-    @Transactional(readOnly = true)
     @Override
-    public Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId) {
+    public Optional<ReceivingOrder> findByOrderId(@NotBlank String orderId) {
         return repository.findByOrderId(orderId);
     }
 
@@ -173,12 +168,14 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
-    public ReceivingOrder update(String pKey, ReceivingOrder receivingOrder) {
-        ReceivingOrder order = getOrder(pKey);
+    public @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder) {
+        var order = getOrder(pKey);
         LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
-        var updater = plugins.getPluginFor(DETAILS_CHANGE).orElseThrow(() -> new ServiceLayerException(format("No Updater implementation found for [%s]", DETAILS_CHANGE)));
-        order = updater.update(order, receivingOrder);
-        return order;
+        var plugins = this.plugins.getPlugins();
+        for (ReceivingOrderUpdater plugin : plugins) {
+            order = plugin.update(order, receivingOrder);
+        }
+        return repository.save(order);
     }
 
     /**
@@ -186,8 +183,8 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
-    public ReceivingOrderVO complete(@NotEmpty String pKey) {
-        ReceivingOrder order = getOrder(pKey);
+    public @NotNull ReceivingOrderVO complete(@NotBlank String pKey) {
+        var order = getOrder(pKey);
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
             order.getPositions()
                     .stream()
@@ -201,7 +198,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
         }
-        return receivingMapper.convertToVO(order, new CycleAvoidingMappingContext());
+        return receivingMapper.convertToVO(repository.save(order), new CycleAvoidingMappingContext());
     }
 
     /**
@@ -209,8 +206,8 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public ReceivingOrder cancelOrder(@NotEmpty String pKey) {
-        ReceivingOrder order = getOrder(pKey);
+    public @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey) {
+        var order = getOrder(pKey);
         LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
         if (order.getOrderState() == CANCELED) {
             throw new AlreadyCancelledException(
@@ -237,8 +234,8 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public ReceivingOrder changeState(@NotEmpty String pKey, @NotNull OrderState state) {
-        ReceivingOrder order = getOrder(pKey);
+    public @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state) {
+        var order = getOrder(pKey);
         LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getOrderId(), state);
         if (state == COMPLETED) {
 
@@ -246,7 +243,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
             order.getPositions().forEach(p -> p.setState(COMPLETED));
         }
         order.setOrderState(state);
-        return order;
+        return repository.save(order);
     }
 
     private ReceivingOrder getOrder(@NotEmpty String pKey) {

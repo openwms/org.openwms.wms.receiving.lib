@@ -31,6 +31,6 @@ public interface ReceivingOrderUpdater extends Plugin<ReceivingOrderUpdater.Type
         DETAILS_CHANGE
     }
 
-    ReceivingOrder update(@NotNull ReceivingOrder existingReceivingOrder,
+    @NotNull ReceivingOrder update(@NotNull ReceivingOrder existingReceivingOrder,
                           @Valid @NotNull ReceivingOrder receivingOrder);
 }

@@ -20,7 +20,7 @@ import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @return The updated ReceivingOrder instance with updated positions
      */
     @NotNull ReceivingOrderVO capture(
-            @NotEmpty String pKey,
+            @NotBlank String pKey,
             @NotNull @Valid List<T> requests
     );
 
@@ -63,7 +63,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws CancellationDeniedException in case the cancellation is not allowed
      * @return The cancelled instance
      */
-    ReceivingOrder cancelOrder(@NotEmpty String pKey);
+    @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey);
 
     /**
      * Change the state of a {@link ReceivingOrder}.
@@ -73,7 +73,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws CancellationDeniedException in case the state change is not allowed
      * @return The updated instance
      */
-    ReceivingOrder changeState(@NotEmpty String pKey, @NotNull OrderState state);
+    @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state);
 
     /**
      * Find and return all existing {@link ReceivingOrder}s.
@@ -89,7 +89,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @return The instance
      * @throws org.ameba.exception.NotFoundException if not found
      */
-    @NotNull ReceivingOrder findByPKey(@NotEmpty String pKey);
+    @NotNull ReceivingOrder findByPKey(@NotBlank String pKey);
 
     /**
      * Find and return a {@link ReceivingOrder} identified by its business key.
@@ -97,7 +97,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param orderId The business key
      * @return The order instance
      */
-    Optional<ReceivingOrder> findByOrderId(@NotEmpty String orderId);
+    Optional<ReceivingOrder> findByOrderId(@NotBlank String orderId);
 
     /**
      * Update an existing {@link ReceivingOrder} with the given data.
@@ -107,7 +107,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws org.ameba.exception.NotFoundException if not found
      * @return The updated instance
      */
-    ReceivingOrder update(@NotEmpty String pKey, @NotNull ReceivingOrder receivingOrder);
+    @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder);
 
     /**
      * Complete a {@link ReceivingOrder} and all positions. Satisfy quantities and set the state to {@code COMPLETED}.
@@ -115,5 +115,5 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param pKey The synthetic persistent key
      * @return The updated instance
      */
-    ReceivingOrderVO complete(@NotEmpty String pKey);
+    @NotNull ReceivingOrderVO complete(@NotBlank String pKey);
 }
