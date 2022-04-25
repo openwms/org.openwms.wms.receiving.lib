@@ -48,6 +48,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -174,8 +176,41 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
                 )
-                .andDo(document("order-capture", preprocessResponse(prettyPrint())))
+                .andDo(document("order-capture",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("[]").description("Accepts multiple capture requests"),
+                                fieldWithPath("[].@class").description("The type of capturing"),
+                                fieldWithPath("[].transportUnitBK").description("The business key of the TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].loadUnitLabel").description("The identifier of the LoadUnit where the material has been put in"),
+                                fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
+                                fieldWithPath("[].quantity").description("The captured (received) quantity"),
+                                fieldWithPath("[].quantity.*").ignored(),
+                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].product").description("The captured (received) product"),
+                                fieldWithPath("[].product.*").ignored()
+                        )))
                 .andExpect(status().isOk())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_QuantityCapture_INSUFFICIENT() throws Exception {
+        var vo = new QuantityCaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
+        vo.setQuantityReceived(Piece.of(2));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("order-capture-to-many", preprocessResponse(prettyPrint())))
+                .andExpect(status().isConflict())
         ;
     }
 
@@ -216,26 +251,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                 )
                 .andDo(document("order-capture-tu", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
-        ;
-    }
-
-    @Transactional
-    @Rollback
-    @Test void shall_capture_order_INSUFFISIENT() throws Exception {
-        var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
-        vo.setLoadUnitLabel("1");
-        vo.setLoadUnitType("EURO");
-        vo.setQuantityReceived(Piece.of(2));
-        vo.setProduct(new ProductVO("C1"));
-        mockMvc
-                .perform(
-                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(om.writeValueAsString(vo))
-                )
-                .andDo(document("order-capture-500", preprocessResponse(prettyPrint())))
-                .andExpect(status().isInternalServerError())
         ;
     }
 

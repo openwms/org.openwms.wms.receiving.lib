@@ -92,7 +92,6 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
             if (overbookingAllowed) {
-
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");

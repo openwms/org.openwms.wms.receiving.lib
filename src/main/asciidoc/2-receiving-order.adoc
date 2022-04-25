@@ -55,6 +55,7 @@ include::{generated}/order-findby-orderid/http-response.adoc[]
 
 In case the order does not exist, the server responds in the same way like <<resources-receiving-order-find>>.
 
+[[resources-receiving-order-findall]]
 === Find all ReceivingOrders
 A HTTP `GET request to the primary resource is required to find all `ReceivingOrders`. Notice, this method is foreseen for UI applications
 and may change in future API versions.
@@ -65,6 +66,7 @@ Returns an array of `ReceivingOrders` or an empty array:
 
 include::{generated}/order-find-all/http-response.adoc[]
 
+[[resources-receiving-order-cancel]]
 === Cancel a ReceivingOrder
 An earlier created `ReceivingOrder` can be cancelled for further processing. The client needs to send a HTTP `DELETE request with the
 unique identifier of the order.
@@ -79,25 +81,59 @@ In case the order couldn't be cancelled because the order is already in process 
 
 include::{generated}/order-cancel-403/http-response.adoc[]
 
-=== Capture Receivings
-When products arrive at the warehouse they were usually announced with a `ReceivingOrder` and its `ReceivingOrderPositions`. This is
-called an expected receipt. Also unexpected receipts may occur, any unplanned material that needs to be stored in the warehouse without any
-previously received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more of a
-product that was previously announced in a `ReceivingOrderPosition`.
+[[resources-receiving-order-capture]]
+=== Capture a Receiving
+When products arrive at the warehouse they are usually announced with a `ReceivingOrder` and its `ReceivingOrderPositions` beforehand. This
+is called an expected receipt. Also unexpected receipts may occur, any unplanned material that needs to be stored in the warehouse without
+any previously received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more of
+a product that was previously announced in a `ReceivingOrderPosition`. Multiple capturing types exists:
 
-Capturing receipts happen at Goods Nn, where material arrives and is scanned (captured). The scanned articles are assigned to `ReceivingOrderPositions`
-and basically assigned to a `TransportUnit` (with all its logical compartments on top).
+- Expected `Product` are captured on a `LoadUnit`
+- Expected `Product` are captured on a `Location`
+- Expected `TransportUnits` without `Product` information are captured on a `Location`
+
+The capturing process happens at the Goods In area of the warehouse, where material arrives and is identified (captured). The identified
+articles or `TransportUnits` are assigned to `ReceivingOrderPositions`.
+
+==== Capture an expected Product on a LoadUnit
+The received `Product` is identified and assigned to an existing `ReceivingOrderPosition`. As part of the capturing process the items are
+basically placed on a `LoadUnit` on top of a `TransportUnit`.
 
 To capture an amount of a `Product` in the context of a `ReceivingOrder` the caller sends a `POST` request:
 
 include::{generated}/order-capture/http-request.adoc[]
+include::{generated}/order-capture/request-fields.adoc[]
 
-If an open and not satisfied position with the same demanded `Product` exists in the `ReceivingOrder` the captured quantity is assigned to
-that position and the server responds with success:
+If an open and not satisfied `ReceivingOrderPosition` with the captured `Product` exists the captured quantity is assigned to that position
+and the server responds with success:
 
 include::{generated}/order-capture/http-response.adoc[]
 
-If no open positions exist in the `ReceivingOrder` or the `Product` does not fit to the list of demanded `Products`, the server cannot
-capture the article and responds with an error:
+If no open `ReceivingOrderPosition` exists in the `ReceivingOrder` or the `Product` does not fit to the list of expected `Products` and
+overbooking an expected `ReceivingOrderPosition` is not allowed, the server does not allow to receive the goods and responds with an error:
 
-include::{generated}/order-capture-500/http-response.adoc[]
+include::{generated}/order-capture-to-many/http-response.adoc[]
+
+*Overbooking* means: The Receiving Service allows `Overbooking` or not. In case `Overbooking` is allowed, the supplier can ship a higher
+quantity than previously announced in the `ReceivingOrderPosition`. If `Overbooking` is forbidden, the server raises an exception in case of
+more is received than expected. This setting is currently configured service wide and not per `Product`.
+
+==== Capture an expected TransportUnit on a Location
+It may happen that an external supplier ships back existing and empty `TransportUnits` to the warehouse. In this case, the announced
+`ReceivingOrder` contains `ReceivingOrderPositions` that point to the expected `TransportUnit`.
+
+To capture an received `TransportUnit` the operator identifies (e.g. scans) the `TransportUnit` and the `LoadUnit` on top (optional) and the
+client device sends a `POST` request to the server with the identifying `pKey` of the `ReceivingOrder` as part of the URI:
+
+include::{generated}/order-capture-tu/http-request.adoc[]
+include::{generated}/order-capture/request-fields.adoc[]
+
+If an open and not satisfied position with the expected `TransportUnit` exists the server responds with success and the state of the
+`ReceivingOrderPosition` changes to `COMPLETED`:
+
+include::{generated}/order-capture-tu/http-response.adoc[]
+
+If no open `ReceivingOrderPosition` with the captured `TransportUnit` exists in the `ReceivingOrder`, the server does not allow to receive
+the `TransportUnit` and responds with an error:
+
+include::{generated}/order-capture-tu-unexpected/http-response.adoc[]

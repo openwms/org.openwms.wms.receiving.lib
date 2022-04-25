@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @NotLogged
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+@ResponseStatus(HttpStatus.CONFLICT)
 public class ProcessingException extends BusinessRuntimeException {
 
     public ProcessingException(Translator translator, String messageKey, Serializable[] data, Object... param) {
