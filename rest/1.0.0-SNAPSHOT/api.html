@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.15">
-<meta name="author" content="(1.0.0-SNAPSHOT-83)">
+<meta name="author" content="(1.0.0-SNAPSHOT-84)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-83)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-84)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1085,12 +1085,12 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/ae246f87-c494-4d51-8aff-52e7ca1eb17b/
+Location: http://localhost:8080/v1/receiving-orders/837e621e-bdf2-4db3-84b3-050a71ec65b1/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 963
 
 {
-  "pKey" : "ae246f87-c494-4d51-8aff-52e7ca1eb17b",
+  "pKey" : "837e621e-bdf2-4db3-84b3-050a71ec65b1",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1109,7 +1109,7 @@ Content-Length: 963
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.10154756483707672"
+      "foreignPKey" : "0.39605503551013044"
     },
     "state" : "CREATED",
     "details" : {
@@ -1160,7 +1160,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1705
+Content-Length: 1930
 
 {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
@@ -1182,7 +1182,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.2108717893670189"
+      "foreignPKey" : "0.7901455615698438"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1206,7 +1206,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6191479341418429"
+      "foreignPKey" : "0.6968145059936361"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1214,6 +1214,12 @@ Content-Length: 1705
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 0
     }
+  }, {
+    "@class" : "org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO",
+    "positionId" : 3,
+    "transportUnitBK" : "00000000000000004712",
+    "transportUnitTypeName" : "EURO",
+    "state" : "CREATED"
   } ]
 }</code></pre>
 </div>
@@ -1269,12 +1275,12 @@ Content-Length: 1705
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.magnitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity amount</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityExpected.unitType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The expected quantity type</p></td>
 </tr>
 <tr>
@@ -1284,13 +1290,23 @@ Content-Length: 1705
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityReceived.magnitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The received quantity amount</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].quantityReceived.unitType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The received quantity type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].transportUnitBK</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the captured TransportUnit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].transportUnitTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the captured TransportUnitType</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product</code></p></td>
@@ -1299,12 +1315,12 @@ Content-Length: 1705
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product.baseUnit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The default unit and quantity the Product is shipped</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].product.baseUnit.unitType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Varies</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The default unit type of the Product</p></td>
 </tr>
 </tbody>
@@ -1346,7 +1362,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1705
+Content-Length: 1930
 
 {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
@@ -1368,7 +1384,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9637408269331758"
+      "foreignPKey" : "0.447285588605979"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1392,7 +1408,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7577860304232544"
+      "foreignPKey" : "0.27059564404579106"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1400,6 +1416,12 @@ Content-Length: 1705
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 0
     }
+  }, {
+    "@class" : "org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO",
+    "positionId" : 3,
+    "transportUnitBK" : "00000000000000004712",
+    "transportUnitTypeName" : "EURO",
+    "state" : "CREATED"
   } ]
 }</code></pre>
 </div>
@@ -1427,7 +1449,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1709
+Content-Length: 1934
 
 [ {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
@@ -1449,7 +1471,7 @@ Content-Length: 1709
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9357581386223188"
+      "foreignPKey" : "0.9677778173101501"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1473,7 +1495,7 @@ Content-Length: 1709
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5587125292910216"
+      "foreignPKey" : "0.8539558112665091"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1481,6 +1503,12 @@ Content-Length: 1709
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 0
     }
+  }, {
+    "@class" : "org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO",
+    "positionId" : 3,
+    "transportUnitBK" : "00000000000000004712",
+    "transportUnitTypeName" : "EURO",
+    "state" : "CREATED"
   } ]
 } ]</code></pre>
 </div>
@@ -1494,7 +1522,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/cd3c807c-20f5-422c-b87d-94a8dfa2b2b4/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/540622c3-afaf-4800-bd10-8ec4206f067f/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1515,7 +1543,7 @@ Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 99
 
 {
-  "pKey" : "cd3c807c-20f5-422c-b87d-94a8dfa2b2b4",
+  "pKey" : "540622c3-afaf-4800-bd10-8ec4206f067f",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1586,7 +1614,7 @@ that position and the server responds with success:</p>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1705
+Content-Length: 1930
 
 {
   "pKey" : "d8099b89-bdb6-40d3-9580-d56aeadd578f",
@@ -1608,7 +1636,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.28102077139094206"
+      "foreignPKey" : "0.9725542519007462"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1632,7 +1660,7 @@ Content-Length: 1705
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.775734663545812"
+      "foreignPKey" : "0.8813613080273726"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1640,6 +1668,12 @@ Content-Length: 1705
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
       "magnitude" : 0
     }
+  }, {
+    "@class" : "org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO",
+    "positionId" : 3,
+    "transportUnitBK" : "00000000000000004712",
+    "transportUnitTypeName" : "EURO",
+    "state" : "CREATED"
   } ]
 }</code></pre>
 </div>
@@ -1667,7 +1701,7 @@ Content-Length: 596
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-27 17:46:45 UTC
+Last updated 2022-04-27 20:29:37 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
