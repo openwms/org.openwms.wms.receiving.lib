@@ -21,6 +21,12 @@ public interface ProductApi {
     @GetMapping("/v1/product/product-units/{pKey}")
     ProductVO findProductByProductUnitPkey(@PathVariable("pKey") String pKey);
 
+    /**
+     * Find and return a {@code Product}.
+     *
+     * @param bk The business key, either the SKU or the Label
+     * @return The instance
+     */
     @GetMapping(value = API_PRODUCTS, params = {"bk"})
     ProductVO findByLabelOrSKU(@RequestParam("bk") String bk);
 }

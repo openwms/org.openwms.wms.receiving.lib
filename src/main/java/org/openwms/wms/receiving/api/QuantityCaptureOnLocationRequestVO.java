@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2021 the original author or authors.
+ * Copyright 2005-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
@@ -71,6 +72,7 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
     @JsonFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime productionDate;
 
+    @JsonIgnore
     @Valid
     public boolean isValid() {
         return uomRelation != null || product != null;

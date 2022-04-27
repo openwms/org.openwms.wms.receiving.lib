@@ -33,11 +33,11 @@ import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Optional;
 
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
+import static org.openwms.wms.receiving.ReceivingMessages.PRODUCT_NOT_FOUND;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 
 /**
@@ -50,12 +50,14 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
     private final PackagingUnitApi packagingUnitApi;
+    private final ProductService productService;
     private final ProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-                                             PackagingUnitApi packagingUnitApi, ProductApi productApi) {
+            PackagingUnitApi packagingUnitApi, ProductService productService1, ProductApi productApi) {
         super(translator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
+        this.productService = productService1;
         this.productApi = productApi;
     }
 
@@ -66,18 +68,22 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
     @Override
     public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
         final var existingProduct = request.hasUomRelation()
-                ? productApi.findProductByProductUnitPkey(request.getUomRelation().pKey)
-                : productApi.findByLabelOrSKU(request.getProduct().getSku());
+                ? productApi.findProductByProductUnitPkey(request.getUomRelation().pKey).getSku()
+                : productService.findBySku(request.getProduct().getSku())
+                .orElseThrow(() -> new CapturingException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()})).getSku();
+        if (existingProduct == null) {
+            throw new CapturingException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()});
+        }
         final var quantityReceived = request.getQuantityReceived();
         var receivingOrder = getOrder(pKey);
         final var erpCode = request.getActualLocation().getErpCode();
         final var details = request.getDetails();
 
-        List<ReceivingOrderPosition> openPositions = receivingOrder.getPositions().stream()
+        var openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
-                .filter(p -> p.getProduct().getSku().equals(existingProduct.getSku()))
+                .filter(p -> p.getProduct().getSku().equals(existingProduct))
                 .toList();
 
         if (openPositions.isEmpty()) {
@@ -96,14 +102,14 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         }
 
         // multi packs
-        PackagingUnitVO pu = request.hasUomRelation()
+        var pu = request.hasUomRelation()
                 ? new PackagingUnitVO(request.getUomRelation(), quantityReceived)
                 : new PackagingUnitVO(ProductVO.newBuilder().sku(request.getProduct().getSku()).build(), quantityReceived);
         pu.setActualLocation(new LocationVO(erpCode));
         pu.setDetails(details);
         pu.setSerialNumber(request.getSerialNumber());
         pu.setLotId(request.getLotId());
-        pu.setProduct(existingProduct);
+        pu.setProduct(ProductVO.newBuilder().sku(existingProduct).build());
         pu.setExpiresAt(request.getExpiresAt());
         pu.setProductionDate(request.getProductionDate());
 
