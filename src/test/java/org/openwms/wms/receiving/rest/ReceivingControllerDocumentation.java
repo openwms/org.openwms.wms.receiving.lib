@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2021 the original author or authors.
+ * Copyright 2005-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,9 @@ import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.ProductVO;
+import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
@@ -187,7 +189,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
                                 fieldWithPath("[].quantity.*").ignored(),
                                 fieldWithPath("[].quantity.unitType[]").ignored(),
-                                fieldWithPath("[].product").description("The captured (received) product"),
+                                fieldWithPath("[].product").description("The captured (received) Product"),
                                 fieldWithPath("[].product.*").ignored()
                         )))
                 .andExpect(status().isOk())
@@ -210,6 +212,56 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
                 )
                 .andDo(document("order-capture-to-many", preprocessResponse(prettyPrint())))
+                .andExpect(status().isConflict())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_QuantityCapture_on_LOC() throws Exception {
+        var vo = new QuantityCaptureOnLocationRequestVO();
+        vo.setActualLocation(new LocationVO("WE01"));
+        vo.setQuantityReceived(Piece.of(1));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("order-capture-loc",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("[]").description("Accepts multiple capture requests"),
+                                fieldWithPath("[].@class").description("The type of capturing"),
+                                fieldWithPath("[].actualLocation").description("The Location where the material has been moved to"),
+                                fieldWithPath("[].actualLocation.erpCode").description("The business key of the Location"),
+                                fieldWithPath("[].quantity").description("The captured (received) quantity"),
+                                fieldWithPath("[].quantity.*").ignored(),
+                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].product").description("The captured (received) Product"),
+                                fieldWithPath("[].product.*").ignored()
+                        )))
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_QuantityCapture_on_LOC_INSUFFICIENT() throws Exception {
+        var vo = new QuantityCaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
+        vo.setQuantityReceived(Piece.of(2));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("order-capture-loc-to-many", preprocessResponse(prettyPrint())))
                 .andExpect(status().isConflict())
         ;
     }

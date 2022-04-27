@@ -99,13 +99,14 @@ articles or `TransportUnits` are assigned to `ReceivingOrderPositions`.
 The received `Product` is identified and assigned to an existing `ReceivingOrderPosition`. As part of the capturing process the items are
 basically placed on a `LoadUnit` on top of a `TransportUnit`.
 
-To capture an amount of a `Product` in the context of a `ReceivingOrder` the caller sends a `POST` request:
+To capture an amount of a `Product` in the context of a `ReceivingOrder` the caller sends a `POST` request to the server with the
+identifying `pKey` of the `ReceivingOrder` as part of the URI:
 
 include::{generated}/order-capture/http-request.adoc[]
 include::{generated}/order-capture/request-fields.adoc[]
 
 If an open and not satisfied `ReceivingOrderPosition` with the captured `Product` exists the captured quantity is assigned to that position
-and the server responds with success:
+and the items are booked to the `LoadUnit` on top of the `TransportUnit. The server responds with success:
 
 include::{generated}/order-capture/http-response.adoc[]
 
@@ -117,6 +118,26 @@ include::{generated}/order-capture-to-many/http-response.adoc[]
 *Overbooking* means: The Receiving Service allows `Overbooking` or not. In case `Overbooking` is allowed, the supplier can ship a higher
 quantity than previously announced in the `ReceivingOrderPosition`. If `Overbooking` is forbidden, the server raises an exception in case of
 more is received than expected. This setting is currently configured service wide and not per `Product`.
+
+==== Capture an expected Product on a Location
+The received `Product` is identified and assigned to an existing `ReceivingOrderPosition`. As part of the capturing process the items are
+placed on a `Location` directly without any carrier like a `LoadUnit` or a `TransportUnit`.
+
+To capture an amount of a `Product` in the context of a `ReceivingOrder` the caller sends a `POST` request to the server with the
+identifying `pKey` of the `ReceivingOrder` as part of the URI:
+
+include::{generated}/order-capture-loc/http-request.adoc[]
+include::{generated}/order-capture-loc/request-fields.adoc[]
+
+If an open and not satisfied `ReceivingOrderPosition` with the captured `Product` exists the captured quantity is assigned to that position
+and the items are booked directly onto the given `Location`. The server responds with success:
+
+include::{generated}/order-capture-loc/http-response.adoc[]
+
+If no open `ReceivingOrderPosition` exists in the `ReceivingOrder` or the `Product` does not fit to the list of expected `Products`, the
+server does not allow to receive the article and responds with an error:
+
+include::{generated}/order-capture-loc-to-many/http-response.adoc[]
 
 ==== Capture an expected TransportUnit on a Location
 It may happen that an external supplier ships back existing and empty `TransportUnits` to the warehouse. In this case, the announced
