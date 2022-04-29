@@ -51,7 +51,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param requests Contains all the capturing information according to the process in use
      * @return The updated ReceivingOrder instance with updated positions
      */
-    @NotNull ReceivingOrderVO capture(
+    @NotNull Optional<ReceivingOrderVO> capture(
             @NotBlank String pKey,
             @NotNull @Valid List<T> requests
     );

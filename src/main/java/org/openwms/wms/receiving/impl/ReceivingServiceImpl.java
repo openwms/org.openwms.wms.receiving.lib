@@ -135,14 +135,17 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public @NotNull ReceivingOrderVO capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
+    public @NotNull Optional<ReceivingOrderVO> capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
         ReceivingOrder ro = null;
         for (T request : requests) {
             ro = capturers.getPluginFor(request)
                     .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
                     .capture(pKey, request);
         }
-        return receivingMapper.convertToVO(repository.save(ro), new CycleAvoidingMappingContext());
+        if (ro == null) {
+            return Optional.empty();
+        }
+        return Optional.of(receivingMapper.convertToVO(repository.save(ro), new CycleAvoidingMappingContext()));
     }
 
     /**

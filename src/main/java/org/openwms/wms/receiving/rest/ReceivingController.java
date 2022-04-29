@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
@@ -79,9 +80,12 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody List<CaptureRequestVO> requests) {
 
-        var result = service.capture(pKey, requests);
-        result.sortPositions();
-        return ResponseEntity.ok(result);
+        Optional<ReceivingOrderVO> result = service.capture(pKey, requests);
+        if (result.isPresent()) {
+            result.get().sortPositions();
+            return ResponseEntity.ok(result.get());
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/v1/receiving-orders/{pKey}/complete", produces = MEDIA_TYPE)

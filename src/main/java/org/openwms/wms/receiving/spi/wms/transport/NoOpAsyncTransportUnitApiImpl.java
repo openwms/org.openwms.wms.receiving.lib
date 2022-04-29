@@ -17,7 +17,6 @@ package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.spi.wms.transport.AsyncTransportUnitApi;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
