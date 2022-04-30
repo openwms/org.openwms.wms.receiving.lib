@@ -243,6 +243,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].product.*").ignored()
                         )))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.positions").isArray())
+                .andExpect(jsonPath("$.positions.length()", is(2)))
         ;
     }
 
