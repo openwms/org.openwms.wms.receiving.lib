@@ -81,6 +81,7 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("pKey").description("The synthetic unique identifier of the ReceivingOrder"),
                                 fieldWithPath("orderId").description("The business key of the ReceivingOrder"),
                                 fieldWithPath("state").description("The current state of the ReceivingOrder"),
+                                fieldWithPath("ol").ignored(),
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),

@@ -244,7 +244,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.positions").isArray())
-                .andExpect(jsonPath("$.positions.length()", is(2)))
+                .andExpect(jsonPath("$.positions.length()", is(3)))
         ;
     }
 
