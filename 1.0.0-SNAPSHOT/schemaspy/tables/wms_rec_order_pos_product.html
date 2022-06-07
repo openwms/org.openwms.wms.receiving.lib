@@ -82,7 +82,7 @@
 </tr>
 </thead>
 <tbody valign='top'>
-<tr class='odd'>
+<tr class='even'>
  <td class='primaryKey' title='Primary Key'>c_pk</td>
  <td class='detail'>int8</td>
  <td class='detail' align='right'>19</td>
@@ -93,7 +93,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>c_created</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>29,6</td>
@@ -104,7 +104,29 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
+<tr class='even'>
+ <td class='detail'>c_created_by</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
 <tr class='odd'>
+ <td class='detail'>c_updated_by</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
  <td class='detail'>c_updated</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>29,6</td>
@@ -115,7 +137,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>c_ol</td>
  <td class='detail'>int8</td>
  <td class='detail' align='right'>19</td>
@@ -126,7 +148,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>c_latest_due</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>29,6</td>
@@ -137,7 +159,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='indexedColumn' title='Indexed'>c_pos_no</td>
  <td class='detail'>int4</td>
  <td class='detail' align='right'>10</td>
@@ -148,7 +170,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>c_state</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -159,7 +181,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='indexedColumn' title='Indexed'>c_order_id</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -169,7 +191,7 @@
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
+   <tr class='relative odd' valign='top'>
     <td class='relatedTable detail' title="wms_rec_order_pos_product.c_order_id refs wms_rec_order.c_order_id via fk_im2bv9ryrvfg7eymfblkxwhre"><a href='wms_rec_order.html'>wms_rec_order</a><span class='relatedKey'>.c_order_id</span>
     </td>
     <td class='constraint detail'>fk_im2bv9ryrvfg7eymfblkxwhre<span title='Restrict delete:
@@ -179,7 +201,7 @@
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>c_qty_expected_type</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -190,7 +212,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>c_qty_expected</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -201,7 +223,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>c_qty_received_type</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -212,7 +234,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>c_qty_received</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -223,7 +245,7 @@
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>c_sku</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -233,7 +255,7 @@
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="wms_rec_order_pos_product.c_sku refs wms_rec_product.c_sku via fk_rec_pos_product"><a href='wms_rec_product.html'>wms_rec_product</a><span class='relatedKey'>.c_sku</span>
     </td>
     <td class='constraint detail'>fk_rec_pos_product<span title='Restrict delete:
@@ -244,7 +266,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='13 columns'>Table contained 2 rows at Fri Apr 29 15:18 UTC 2022<p/>
+<p title='15 columns'>Table contained 2 rows at Tue Jun 07 17:08 UTC 2022<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -276,17 +298,17 @@
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from wms_rec_order_pos_product'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="252,281,573,657">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,5,208,496">
-<area shape="rect" id="node3" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="28,513,185,836">
+<area shape="rect" id="node1" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="252,305,573,729">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,5,208,544">
+<area shape="rect" id="node3" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="28,561,185,932">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/wms_rec_order_pos_product.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
 <area shape="rect" id="node1" href="wms_rec_order_detail.html" title="wms_rec_order_detail" alt="" coords="319,5,507,88">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,5,208,496">
-<area shape="rect" id="node3" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="252,416,573,792">
-<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="28,513,185,836">
-<area shape="rect" id="node5" href="wms_rec_order_pos_tu.html" title="wms_rec_order_pos_tu" alt="" coords="315,269,510,352">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,5,208,544">
+<area shape="rect" id="node3" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="252,464,573,888">
+<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="28,561,185,932">
+<area shape="rect" id="node5" href="wms_rec_order_pos_tu.html" title="wms_rec_order_pos_tu" alt="" coords="315,317,510,400">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/wms_rec_order_pos_product.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

@@ -6,25 +6,27 @@
             <child column="c_order_pk" foreignKey="fk_details_ro" implied="false" onDeleteCascade="false" table="wms_rec_order_detail"/>
          </column>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_start_earliest" nullable="true" remarks="" size="22" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_end_date" nullable="true" remarks="" size="22" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_expected_receipt" nullable="true" remarks="" size="22" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="8" name="c_latest_due" nullable="true" remarks="" size="22" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="9" name="c_locked" nullable="true" remarks="" size="1" type="bool"/>
-         <column autoUpdated="false" digits="0" id="10" name="c_next_alloc" nullable="true" remarks="" size="22" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="11" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_start_earliest" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_end_date" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_expected_receipt" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_latest_due" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_locked" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="12" name="c_next_alloc" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="13" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
             <child column="c_order_id" foreignKey="fk_im2bv9ryrvfg7eymfblkxwhre" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_product"/>
             <child column="c_order_id" foreignKey="fk_kiut0n2iu98su280ewqhtvvpi" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_tu"/>
          </column>
-         <column autoUpdated="false" digits="0" id="12" name="c_order_state" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="13" name="c_priority" nullable="true" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="14" name="c_problem_message" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="15" name="c_problem_message_no" nullable="true" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="6" id="16" name="c_problem_occurred" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="17" name="c_start_date" nullable="true" remarks="" size="22" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="14" name="c_order_state" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="15" name="c_priority" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="16" name="c_problem_message" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="17" name="c_problem_message_no" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="6" id="18" name="c_problem_occurred" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="19" name="c_start_date" nullable="true" remarks="" size="22" type="timestamp"/>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_order_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
@@ -52,11 +54,13 @@
       <table name="wms_rec_order_id" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_current" nullable="true" remarks="" size="40" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_name" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_prefix" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_current" nullable="true" remarks="" size="40" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_name" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_prefix" nullable="true" remarks="" size="255" type="varchar"/>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_order_id_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
@@ -68,19 +72,21 @@
       <table name="wms_rec_order_pos_product" numRows="2" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="6" id="4" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="6" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
             <parent column="c_order_id" foreignKey="fk_im2bv9ryrvfg7eymfblkxwhre" implied="false" onDeleteCascade="false" table="wms_rec_order"/>
          </column>
-         <column autoUpdated="false" digits="0" id="8" name="c_qty_expected_type" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="9" name="c_qty_expected" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="10" name="c_qty_received_type" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="11" name="c_qty_received" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="12" name="c_sku" nullable="false" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="10" name="c_qty_expected_type" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_qty_expected" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="12" name="c_qty_received_type" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="13" name="c_qty_received" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="14" name="c_sku" nullable="false" remarks="" size="255" type="varchar">
             <parent column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_product"/>
          </column>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
@@ -95,16 +101,18 @@
       <table name="wms_rec_order_pos_tu" numRows="1" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="6" id="4" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="6" id="6" name="c_latest_due" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_pos_no" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_state" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_order_id" nullable="false" remarks="" size="255" type="varchar">
             <parent column="c_order_id" foreignKey="fk_kiut0n2iu98su280ewqhtvvpi" implied="false" onDeleteCascade="false" table="wms_rec_order"/>
          </column>
-         <column autoUpdated="false" digits="0" id="8" name="c_transport_unit_bk" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="9" name="c_transport_unit_type_name" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_transport_unit_bk" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_transport_unit_type_name" nullable="true" remarks="" size="255" type="varchar"/>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_order_pos_tu_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
@@ -128,15 +136,17 @@
       <table name="wms_rec_product" numRows="2" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_base_unit_type" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_base_unit_qty" nullable="false" remarks="" size="16" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="8" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="9" name="c_label" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="10" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_base_unit_type" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_base_unit_qty" nullable="false" remarks="" size="16" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_label" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="12" name="c_sku" nullable="true" remarks="" size="255" type="varchar">
             <child column="c_sku" foreignKey="fk_rec_pos_product" implied="false" onDeleteCascade="false" table="wms_rec_order_pos_product"/>
          </column>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
@@ -156,12 +166,14 @@
       <table name="wms_rec_transport_unit" numRows="1" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="6" id="2" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
-         <column autoUpdated="false" digits="0" id="3" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_actual_location" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_barcode" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_pid" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_actual_location" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="c_barcode" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="9" name="c_foreign_pid" nullable="false" remarks="" size="255" type="varchar"/>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="wms_rec_transport_unit_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
