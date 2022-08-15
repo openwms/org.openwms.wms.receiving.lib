@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-receiving")
+@FeignClient(name = "wms-receiving", qualifiers = "receivingApi")
 public interface ReceivingApi {
 
     /**

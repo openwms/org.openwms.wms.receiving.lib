@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "wms-inventory", decode404 = true)
+@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "productApi")
 public interface ProductApi {
 
     /** API version. */
