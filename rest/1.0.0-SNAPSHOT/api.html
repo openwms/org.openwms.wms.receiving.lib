@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(1.0.0-SNAPSHOT-91)">
+<meta name="author" content="(1.0.0-SNAPSHOT-92)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-91)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-92)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1092,13 +1092,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/202c1bfa-e6dd-4e25-9f75-827552ef57c9/
+Location: http://localhost:8080/v1/receiving-orders/a99bd620-04d7-4fe0-994e-cb7515b54f92/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 974
+Content-Length: 796
 
 {
   "ol" : 0,
-  "pKey" : "202c1bfa-e6dd-4e25-9f75-827552ef57c9",
+  "pKey" : "a99bd620-04d7-4fe0-994e-cb7515b54f92",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1117,16 +1117,11 @@ Content-Length: 974
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.0660031741216649"
+      "foreignPKey" : "0.5157874240309965"
     },
     "state" : "CREATED",
     "details" : {
       "p1" : "v1"
-    },
-    "quantityReceived" : {
-      "@class" : "org.openwms.core.units.api.Piece",
-      "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
-      "magnitude" : 0
     }
   } ]
 }</code></pre>
@@ -1191,7 +1186,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5602041449856934"
+      "foreignPKey" : "0.3339669142525068"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1215,7 +1210,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5379775882296052"
+      "foreignPKey" : "0.6073714225261853"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1394,7 +1389,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4145382743203392"
+      "foreignPKey" : "0.7028440811388847"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1418,7 +1413,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7713021464522107"
+      "foreignPKey" : "0.6445904608314379"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1482,7 +1477,7 @@ Content-Length: 1947
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5133764492200648"
+      "foreignPKey" : "0.9770211443081038"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1506,7 +1501,7 @@ Content-Length: 1947
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.15399680133618787"
+      "foreignPKey" : "0.08967237489645186"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1533,7 +1528,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/02fe1082-fbcd-42cd-bb8f-b7acdb39bc33/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/769522bd-cd0d-4f55-bc4e-b58f1c316882/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1555,7 +1550,7 @@ Content-Length: 111
 
 {
   "ol" : 0,
-  "pKey" : "02fe1082-fbcd-42cd-bb8f-b7acdb39bc33",
+  "pKey" : "769522bd-cd0d-4f55-bc4e-b58f1c316882",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1720,7 +1715,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.04633272966021096"
+      "foreignPKey" : "0.48767539317720576"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1744,7 +1739,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9468979364184058"
+      "foreignPKey" : "0.5634951888138033"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1895,7 +1890,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9017393382514065"
+      "foreignPKey" : "0.7144843472093143"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1919,7 +1914,7 @@ Content-Length: 1942
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4157360041633318"
+      "foreignPKey" : "0.9934209222885784"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2041,7 +2036,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1944
+Content-Length: 1945
 
 {
   "ol" : 0,
@@ -2064,7 +2059,7 @@ Content-Length: 1944
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5219933458459032"
+      "foreignPKey" : "0.19546651383611646"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2088,7 +2083,7 @@ Content-Length: 1944
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5794651736651097"
+      "foreignPKey" : "0.8155778812377434"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2130,7 +2125,7 @@ Content-Length: 195
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-15 20:46:15 UTC
+Last updated 2022-12-02 16:24:18 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
