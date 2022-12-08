@@ -27,7 +27,6 @@ import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,7 +52,6 @@ import java.util.Properties;
  * @author Heiko Scherrer
  */
 @Configuration
-@EnableDiscoveryClient
 @EnableIdentityAwareness
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
@@ -104,7 +102,7 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
     }
 
     @Bean MessageSource messageSource() {
-        NestedReloadableResourceBundleMessageSource messageSource = new NestedReloadableResourceBundleMessageSource();
+        var messageSource = new NestedReloadableResourceBundleMessageSource();
         messageSource.setBasenames("classpath:/META-INF/i18n/rec");
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCommonMessages(new Properties());
