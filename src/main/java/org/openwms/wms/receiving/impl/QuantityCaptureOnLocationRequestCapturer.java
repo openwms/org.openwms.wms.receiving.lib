@@ -92,8 +92,8 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         }
 
         Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
-                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
-                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .filter(p -> p.getQuantityExpected().getUnit().equals(quantityReceived.getUnit()))
+                .filter(p -> p.getQuantityExpected().getValue().doubleValue() >= quantityReceived.getValue().doubleValue())
                 .findFirst();
 
         if (openPosition.isEmpty()) {

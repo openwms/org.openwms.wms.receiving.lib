@@ -83,10 +83,9 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
-
         var openPosition = openPositions.stream()
-                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
-                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .filter(p -> p.getQuantityExpected().getUnit().equals(quantityReceived.getUnit()))
+                .filter(p -> p.getQuantityExpected().getValue().doubleValue() >= quantityReceived.getValue().doubleValue())
                 .findFirst();
         ReceivingOrderPosition position;
         // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
@@ -100,8 +99,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         } else {
             position = openPosition.get();
         }
-
-        for (int i = 0; i < quantityReceived.getMagnitude().intValue(); i++) {
+        for (int i = 0; i < quantityReceived.getValue().intValue(); i++) {
             // single packs
             var pu = new PackagingUnitVO(
                     ProductVO.newBuilder().sku(sku).build(),
