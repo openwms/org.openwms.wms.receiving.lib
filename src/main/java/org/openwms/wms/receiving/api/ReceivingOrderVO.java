@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.ameba.http.AbstractBase;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -37,7 +36,7 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements Serializable {
+public class ReceivingOrderVO implements Serializable {
 
     public static final String MEDIA_TYPE = "application/vnd.openwms.receiving-order-v1+json";
 

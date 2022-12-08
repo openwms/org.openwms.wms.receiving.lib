@@ -15,8 +15,7 @@
  */
 package org.openwms.wms.receiving.api.events;
 
-import org.openwms.core.units.api.Measurable;
-
+import javax.measure.Quantity;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -37,9 +36,9 @@ public class ReceivingOrderPositionMO implements Serializable {
     /** Current position state. */
     private String state;
     /** The expected quantity of the expected product - must not be {@literal null}. */
-    private Measurable<?, ?, ?> quantityExpected;
+    private Quantity<?> quantityExpected;
     /** The already received quantity of the product. */
-    private Measurable<?, ?, ?> quantityReceived;
+    private Quantity<?> quantityReceived;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
     private ProductMO product;
     /** Optional: How the position should be processed, manually oder automatically. */
@@ -59,19 +58,19 @@ public class ReceivingOrderPositionMO implements Serializable {
         this.positionId = positionId;
     }
 
-    public Measurable<?, ?, ?> getQuantityExpected() {
+    public Quantity<?> getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable<?, ?, ?> quantityExpected) {
+    public void setQuantityExpected(Quantity<?> quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 
-    public Measurable<?, ?, ?> getQuantityReceived() {
+    public Quantity<?> getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable<?, ?, ?> quantityReceived) {
+    public void setQuantityReceived(Quantity<?> quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

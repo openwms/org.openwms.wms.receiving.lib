@@ -18,9 +18,9 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 
+import javax.measure.Quantity;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
@@ -37,10 +37,10 @@ public class ReceivingOrderPositionVO extends BaseReceivingOrderPositionVO imple
     /** The expected quantity of the expected product - must not be {@literal null}. */
     @JsonProperty("quantityExpected")
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
-    private Measurable<?, ?, ?> quantityExpected;
+    private Quantity quantityExpected;
     /** The already received quantity of the product. */
     @JsonProperty("quantityReceived")
-    private Measurable<?, ?, ?> quantityReceived;
+    private Quantity quantityReceived;
     /** The unique SKU of the expected {@code Product} - must not be empty. */
     @JsonProperty("product")
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
@@ -52,26 +52,26 @@ public class ReceivingOrderPositionVO extends BaseReceivingOrderPositionVO imple
     @ConstructorProperties({"positionId", "quantityExpected", "product"})
     public ReceivingOrderPositionVO(
             @NotNull Integer positionId,
-            @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Measurable<?, ?, ?> quantityExpected,
+            @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Quantity<?> quantityExpected,
             @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) ProductVO product) {
         super(positionId);
         this.quantityExpected = quantityExpected;
         this.product = product;
     }
 
-    public Measurable<?, ?, ?> getQuantityExpected() {
+    public Quantity getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(@NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Measurable<?, ?, ?> quantityExpected) {
+    public void setQuantityExpected(@NotNull(groups = ValidationGroups.CreateQuantityReceipt.class) Quantity<?> quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 
-    public Measurable<?, ?, ?> getQuantityReceived() {
+    public Quantity getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable<?, ?, ?> quantityReceived) {
+    public void setQuantityReceived(Quantity<?> quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

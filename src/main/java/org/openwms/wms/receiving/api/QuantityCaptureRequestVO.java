@@ -17,8 +17,8 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.Measurable;
 
+import javax.measure.Quantity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -48,7 +48,7 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
     /** The quantity that has been received during the capturing process. */
     @NotNull
     @JsonProperty("quantity")
-    private Measurable quantityReceived;
+    private Quantity<?> quantityReceived;
 
     /** The captured {@code Product}. */
     @NotNull
@@ -87,11 +87,11 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
         this.loadUnitType = loadUnitType;
     }
 
-    public Measurable getQuantityReceived() {
+    public Quantity<?> getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable quantityReceived) {
+    public void setQuantityReceived(Quantity<?> quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.Measurable;
 
+import javax.measure.Quantity;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -44,7 +44,7 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
     /** The quantity that has been received during the capturing process. */
     @NotNull
     @JsonProperty("quantity")
-    private Measurable quantityReceived;
+    private Quantity<?> quantityReceived;
 
     /** The captured {@code Product}. */
     @JsonProperty("product")
@@ -86,11 +86,11 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
         this.actualLocation = actualLocation;
     }
 
-    public Measurable getQuantityReceived() {
+    public Quantity<?> getQuantityReceived() {
         return quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable quantityReceived) {
+    public void setQuantityReceived(Quantity<?> quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

@@ -18,9 +18,9 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 
+import javax.measure.Quantity;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class ProductVO implements Serializable {
     private String description;
     /** Products may be defined with different base units. */
     @JsonProperty("baseUnit")
-    private Measurable baseUnit;
+    private Quantity<?> baseUnit;
     /** The foreign persistent key of the {@code Product}. */
     @JsonProperty("foreignPKey")
     private String foreignPKey;
@@ -82,11 +82,11 @@ public class ProductVO implements Serializable {
         this.description = description;
     }
 
-    public Measurable getBaseUnit() {
+    public Quantity<?> getBaseUnit() {
         return baseUnit;
     }
 
-    public void setBaseUnit(Measurable baseUnit) {
+    public void setBaseUnit(Quantity<?> baseUnit) {
         this.baseUnit = baseUnit;
     }
 
