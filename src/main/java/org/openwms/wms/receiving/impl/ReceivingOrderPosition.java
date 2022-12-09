@@ -17,13 +17,13 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.system.ValidationUtil;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.inventory.Product;
 
+import javax.measure.Quantity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -47,21 +47,21 @@ import static org.openwms.wms.order.OrderState.COMPLETED;
 public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
+    @org.hibernate.annotations.Type(type = "org.openwms.core.units.jsr385.persistence.JSR385UserType")
     @org.hibernate.annotations.Columns(columns = {
             @Column(name = "C_QTY_EXPECTED_TYPE"),
             @Column(name = "C_QTY_EXPECTED")
     })
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
-    private Measurable quantityExpected;
+    private Quantity<?> quantityExpected;
 
     /** The receipt quantity, this might be increased at arrival. */
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
+    @org.hibernate.annotations.Type(type = "org.openwms.core.units.jsr385.persistence.JSR385UserType")
     @org.hibernate.annotations.Columns(columns = {
             @Column(name = "C_QTY_RECEIVED_TYPE"),
             @Column(name = "C_QTY_RECEIVED")
     })
-    private Measurable quantityReceived;
+    private Quantity<?> quantityReceived;
 
     /** The expected {@link Product} to be receipt. */
     @ManyToOne
@@ -97,7 +97,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     }
 
 
-    public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
+    public ReceivingOrderPosition(Integer posNo, Quantity<?> quantityExpected, Product product) {
         super(posNo);
         this.quantityExpected = quantityExpected;
         this.product = product;
@@ -116,19 +116,19 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
         super.setState(state);
     }
 
-    public Measurable getQuantityExpected() {
+    public Quantity<?> getQuantityExpected() {
         return quantityExpected;
     }
 
-    public void setQuantityExpected(Measurable quantityExpected) {
+    public void setQuantityExpected(Quantity<?> quantityExpected) {
         this.quantityExpected = quantityExpected;
     }
 
-    public Measurable getQuantityReceived() {
+    public Quantity<?> getQuantityReceived() {
         return quantityReceived;
     }
 
-    public Measurable addQuantityReceived(Measurable quantityReceived) {
+    public Quantity<?> addQuantityReceived(Quantity quantityReceived) {
         if (this.quantityReceived == null) {
             this.quantityReceived = quantityReceived;
         } else {
@@ -137,7 +137,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
         return this.quantityReceived;
     }
 
-    public void setQuantityReceived(Measurable quantityReceived) {
+    public void setQuantityReceived(Quantity<?> quantityReceived) {
         this.quantityReceived = quantityReceived;
     }
 

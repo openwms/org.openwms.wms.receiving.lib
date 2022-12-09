@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
@@ -25,6 +26,7 @@ import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
+import org.openwms.core.units.jsr385.jackson.UnitJacksonModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.MessageSource;
@@ -59,6 +61,12 @@ import java.util.Properties;
 @EnableScheduling
 @ImportResource("classpath:META-INF/spring/plugins-ctx.xml")
 public class ReceivingModuleConfiguration implements WebMvcConfigurer {
+
+    @Bean
+    public com.fasterxml.jackson.databind.Module unitJacksonModule(ObjectMapper objectMapper) {
+        objectMapper.registerModule(new UnitJacksonModule());
+        return new UnitJacksonModule();
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

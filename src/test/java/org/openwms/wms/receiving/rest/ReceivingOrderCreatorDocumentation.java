@@ -18,7 +18,7 @@ package org.openwms.wms.receiving.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openwms.core.units.api.Piece;
+import org.openwms.core.units.jsr385.api.Each;
 import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.api.ProductVO;
@@ -86,7 +86,7 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
         ;
 
         orderVO.getPositions().clear();
-        var sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
+        var sku001 = new ReceivingOrderPositionVO(1, Each.of(1), new ProductVO(PRODUCT1_SKU));
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc
@@ -104,10 +104,9 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[]").description("An array of positions, must not be empty"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
-                                fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),
-                                fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
-                                fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),
-                                fieldWithPath("positions[].quantityExpected.magnitude").description("The amount"),
+                                fieldWithPath("positions[].quantityExpected.unit").description("The unit of the expected quantity"),
+                                fieldWithPath("positions[].quantityExpected.scale").description("The scale of the expected quantity"),
+                                fieldWithPath("positions[].quantityExpected.value").description("The amount of the expected quantity"),
                                 fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"),
                                 fieldWithPath("positions[].details").description("Some arbitrary detail information of the position"),
                                 fieldWithPath("positions[].details.p1").ignored()//,

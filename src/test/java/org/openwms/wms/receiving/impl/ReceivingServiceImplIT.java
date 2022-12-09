@@ -17,7 +17,7 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.exception.ResourceExistsException;
 import org.junit.jupiter.api.Test;
-import org.openwms.core.units.api.Piece;
+import org.openwms.core.units.jsr385.api.Each;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
@@ -73,8 +73,8 @@ class ReceivingServiceImplIT extends AbstractTestBase {
     @Test void createOrderFull() {
         var ro = new ReceivingOrder("4710");
         ro.setDetails(Map.of("p1", "v1", "p2", "v2", "p3", "v3"));
-        var rop = new ReceivingOrderPosition(1, Piece.of(2), new Product(PRODUCT1_SKU));
-        rop.setQuantityReceived(Piece.of(1));
+        var rop = new ReceivingOrderPosition(1, Each.of(2), new Product(PRODUCT1_SKU));
+        rop.setQuantityReceived(Each.of(1));
         rop.addDetail("p1", "v1").addDetail("p2", "v2");
         ro.getPositions().add(rop);
         var order = service.createOrder(ro);
@@ -84,8 +84,8 @@ class ReceivingServiceImplIT extends AbstractTestBase {
         assertThat(order.getDetails()).hasSize(3);
         assertThat(order.getDetails()).hasSize(3);
         ReceivingOrderPosition next = (ReceivingOrderPosition) order.getPositions().iterator().next();
-        assertThat(next.getQuantityExpected()).isEqualTo(Piece.of(2));
-        assertThat(next.getQuantityReceived()).isEqualTo(Piece.of(1));
+        assertThat(next.getQuantityExpected()).isEqualTo(Each.of(2));
+        assertThat(next.getQuantityReceived()).isEqualTo(Each.of(1));
         assertThat(next.getDetails()).hasSize(2);
     }
 }

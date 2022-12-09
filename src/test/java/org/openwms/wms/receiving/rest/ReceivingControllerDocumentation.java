@@ -19,7 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openwms.core.units.api.Piece;
+import org.openwms.core.units.jsr385.api.Each;
+import org.openwms.core.units.jsr385.api.WMSUnits;
 import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
 import org.openwms.wms.receiving.ReceivingMessages;
@@ -40,6 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import tech.units.indriya.quantity.Quantities;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.wms.receiving.TestData.ORDER1_PKEY;
@@ -170,7 +172,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
-        vo.setQuantityReceived(Piece.of(1));
+        vo.setQuantityReceived(Quantities.getQuantity(1, WMSUnits.EACH));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
@@ -187,8 +189,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].loadUnitLabel").description("The identifier of the LoadUnit where the material has been put in"),
                                 fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
-                                fieldWithPath("[].quantity.*").ignored(),
-                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].quantity.unit").description("The unit of the (received) quantity"),
+                                fieldWithPath("[].quantity.scale").description("The scale of the (received) quantity"),
+                                fieldWithPath("[].quantity.value").description("The amount of the (received) quantity"),
                                 fieldWithPath("[].product").description("The captured (received) Product"),
                                 fieldWithPath("[].product.*").ignored()
                         )))
@@ -203,7 +206,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
-        vo.setQuantityReceived(Piece.of(2));
+        vo.setQuantityReceived(Each.of(2));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
@@ -221,7 +224,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Test void shall_do_a_QuantityCapture_on_LOC() throws Exception {
         var vo = new QuantityCaptureOnLocationRequestVO();
         vo.setActualLocation(new LocationVO("WE01"));
-        vo.setQuantityReceived(Piece.of(1));
+        vo.setQuantityReceived(Each.of(1));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
@@ -237,8 +240,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].actualLocation").description("The Location where the material has been moved to"),
                                 fieldWithPath("[].actualLocation.erpCode").description("The business key of the Location"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
-                                fieldWithPath("[].quantity.*").ignored(),
-                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].quantity.unit").description("The unit of the (received) quantity"),
+                                fieldWithPath("[].quantity.scale").description("The scale of the (received) quantity"),
+                                fieldWithPath("[].quantity.value").description("The amount of the (received) quantity"),
                                 fieldWithPath("[].product").description("The captured (received) Product"),
                                 fieldWithPath("[].product.*").ignored()
                         )))
@@ -255,7 +259,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
-        vo.setQuantityReceived(Piece.of(2));
+        vo.setQuantityReceived(Each.of(2));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(
@@ -315,7 +319,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         vo.setTransportUnitId("4711");
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
-        vo.setQuantityReceived(Piece.of(2));
+        vo.setQuantityReceived(Each.of(2));
         vo.setProduct(new ProductVO("C1"));
         mockMvc
                 .perform(

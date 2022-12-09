@@ -19,12 +19,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.core.units.api.Weight;
 import org.openwms.wms.receiving.api.CaptureDetailsVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.UomRelationVO;
 
+import javax.measure.Quantity;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
@@ -66,7 +66,7 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     /** Quantity ordered. */
     @JsonProperty("quantity")
     @NotNull
-    private Measurable quantity;
+    private Quantity<?> quantity;
     /** The actualLocation the {@code PackagingUnit} is placed on. */
     @JsonProperty("actualLocation")
     public LocationVO actualLocation;
@@ -89,13 +89,13 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
     public PackagingUnitVO() { }
 
     @ConstructorProperties({"product", "quantity"})
-    public PackagingUnitVO(ProductVO product, Measurable quantity) {
+    public PackagingUnitVO(ProductVO product, Quantity<?> quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
     @ConstructorProperties({"productUnit", "quantity"})
-    public PackagingUnitVO(UomRelationVO uomRelation, Measurable quantity) {
+    public PackagingUnitVO(UomRelationVO uomRelation, Quantity<?> quantity) {
         this.uomRelation = uomRelation;
         this.quantity = quantity;
     }
@@ -152,11 +152,11 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
         this.productionDate = productionDate;
     }
 
-    public Measurable getQuantity() {
+    public Quantity<?> getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Measurable quantity) {
+    public void setQuantity(Quantity<?> quantity) {
         this.quantity = quantity;
     }
 

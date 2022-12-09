@@ -19,8 +19,8 @@ import org.ameba.integration.jpa.ApplicationEntity;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.openwms.core.units.UnitConstants;
-import org.openwms.core.units.api.Measurable;
 
+import javax.measure.Quantity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -62,14 +62,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     private String description;
 
     /** Products may be defined with different base units. */
-    @Type(type = "org.openwms.core.units.persistence.UnitUserType")
+    @Type(type = "org.openwms.core.units.jsr385.persistence.JSR385UserType")
     @Columns(columns = {
             @Column(name = "C_BASE_UNIT_TYPE", nullable = false),
             @Column(name = "C_BASE_UNIT_QTY", length = UnitConstants.QUANTITY_LENGTH, nullable = false)
     })
     //problems when mapping
     //@NotNull
-    private Measurable baseUnit;
+    private Quantity<?> baseUnit;
 
     /** Dear JPA ... */
     protected Product() {
@@ -121,11 +121,11 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.description = description;
     }
 
-    public Measurable getBaseUnit() {
+    public Quantity<?> getBaseUnit() {
         return baseUnit;
     }
 
-    public void setBaseUnit(Measurable baseUnit) {
+    public void setBaseUnit(Quantity<?> baseUnit) {
         this.baseUnit = baseUnit;
     }
 

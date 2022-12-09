@@ -81,27 +81,25 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("pKey").description("The synthetic unique identifier of the ReceivingOrder"),
                                 fieldWithPath("orderId").description("The business key of the ReceivingOrder"),
                                 fieldWithPath("state").description("The current state of the ReceivingOrder"),
-                                fieldWithPath("ol").ignored(),
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),
-                                fieldWithPath("positions[].quantityExpected").optional().description("The expected quantity to be received"),
-                                fieldWithPath("positions[].quantityExpected.magnitude").description("The expected quantity amount"),
-                                fieldWithPath("positions[].quantityExpected.unitType").description("The expected quantity type"),
-                                fieldWithPath("positions[].quantityExpected.*").ignored(),
-                                fieldWithPath("positions[].quantityReceived").optional().description("The already received quantity"),
-                                fieldWithPath("positions[].quantityReceived.magnitude").description("The received quantity amount"),
-                                fieldWithPath("positions[].quantityReceived.unitType").description("The received quantity type"),
-                                fieldWithPath("positions[].quantityReceived.*").ignored(),
+                                fieldWithPath("positions[].quantityExpected.unit").description("The unit of the expected quantity").optional(),
+                                fieldWithPath("positions[].quantityExpected.scale").description("The scale of the expected quantity").optional(),
+                                fieldWithPath("positions[].quantityExpected.value").description("The value of the expected quantity").optional(),
+                                fieldWithPath("positions[].quantityReceived.unit").description("The unit of the received quantity").optional(),
+                                fieldWithPath("positions[].quantityReceived.scale").description("The scale of the received quantity").optional(),
+                                fieldWithPath("positions[].quantityReceived.value").description("The value of the received quantity").optional(),
                                 fieldWithPath("positions[].transportUnitBK").optional().description("The business key of the captured TransportUnit"),
                                 fieldWithPath("positions[].transportUnitTypeName").optional().description("The name of the captured TransportUnitType"),
                                 fieldWithPath("positions[].product").optional().description("The expected Product to be received"),
-                                fieldWithPath("positions[].product.baseUnit").description("The default unit and quantity the Product is shipped"),
-                                fieldWithPath("positions[].product.baseUnit.unitType").description("The default unit type of the Product"),
-                                fieldWithPath("positions[].product.baseUnit.*").ignored(),
-                                fieldWithPath("positions[].product.*").ignored()
-                        )
-                ))
+                                fieldWithPath("positions[].product.sku").description("The SKU of the Product"),
+                                fieldWithPath("positions[].product.description").ignored(),
+                                fieldWithPath("positions[].product.foreignPKey").ignored(),
+                                fieldWithPath("positions[].product.baseUnit.unit").description("The unit of the expected product quantity"),
+                                fieldWithPath("positions[].product.baseUnit.scale").description("The scale of the expected product quantity"),
+                                fieldWithPath("positions[].product.baseUnit.value").description("The value of the expected product quantity")
+                )));
         ;
     }
 
