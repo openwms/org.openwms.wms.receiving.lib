@@ -27,7 +27,6 @@ import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,7 +52,6 @@ import java.util.Properties;
  * @author Heiko Scherrer
  */
 @Configuration
-@EnableDiscoveryClient
 @EnableIdentityAwareness
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
