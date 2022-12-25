@@ -105,7 +105,6 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
                                 fieldWithPath("positions[].quantityExpected.unit").description("The unit of the expected quantity"),
-                                fieldWithPath("positions[].quantityExpected.scale").description("The scale of the expected quantity"),
                                 fieldWithPath("positions[].quantityExpected.value").description("The amount of the expected quantity"),
                                 fieldWithPath("positions[].product.sku").description("The SKU of the expected Product"),
                                 fieldWithPath("positions[].details").description("Some arbitrary detail information of the position"),

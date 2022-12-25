@@ -85,10 +85,8 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].quantityExpected.unit").description("The unit of the expected quantity").optional(),
-                                fieldWithPath("positions[].quantityExpected.scale").description("The scale of the expected quantity").optional(),
                                 fieldWithPath("positions[].quantityExpected.value").description("The value of the expected quantity").optional(),
                                 fieldWithPath("positions[].quantityReceived.unit").description("The unit of the received quantity").optional(),
-                                fieldWithPath("positions[].quantityReceived.scale").description("The scale of the received quantity").optional(),
                                 fieldWithPath("positions[].quantityReceived.value").description("The value of the received quantity").optional(),
                                 fieldWithPath("positions[].transportUnitBK").optional().description("The business key of the captured TransportUnit"),
                                 fieldWithPath("positions[].transportUnitTypeName").optional().description("The name of the captured TransportUnitType"),
@@ -97,7 +95,6 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].product.description").ignored(),
                                 fieldWithPath("positions[].product.foreignPKey").ignored(),
                                 fieldWithPath("positions[].product.baseUnit.unit").description("The unit of the expected product quantity"),
-                                fieldWithPath("positions[].product.baseUnit.scale").description("The scale of the expected product quantity"),
                                 fieldWithPath("positions[].product.baseUnit.value").description("The value of the expected product quantity")
                 )));
         ;

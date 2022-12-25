@@ -190,7 +190,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
                                 fieldWithPath("[].quantity.unit").description("The unit of the (received) quantity"),
-                                fieldWithPath("[].quantity.scale").description("The scale of the (received) quantity"),
                                 fieldWithPath("[].quantity.value").description("The amount of the (received) quantity"),
                                 fieldWithPath("[].product").description("The captured (received) Product"),
                                 fieldWithPath("[].product.*").ignored()
@@ -241,7 +240,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[].actualLocation.erpCode").description("The business key of the Location"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
                                 fieldWithPath("[].quantity.unit").description("The unit of the (received) quantity"),
-                                fieldWithPath("[].quantity.scale").description("The scale of the (received) quantity"),
                                 fieldWithPath("[].quantity.value").description("The amount of the (received) quantity"),
                                 fieldWithPath("[].product").description("The captured (received) Product"),
                                 fieldWithPath("[].product.*").ignored()
