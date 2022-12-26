@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.exception.NotFoundException;
 import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.core.units.api.Piece;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.ServiceProvider;
@@ -62,8 +61,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
             @Column(name = "C_QTY_RECEIVED_TYPE"),
             @Column(name = "C_QTY_RECEIVED")
     })
-    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
-    private Measurable quantityReceived = Piece.ZERO;
+    private Measurable quantityReceived;
 
     /** The expected {@link Product} to be receipt. */
     @ManyToOne
@@ -102,7 +100,6 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
         super(posNo);
         this.quantityExpected = quantityExpected;
-        this.quantityReceived = Piece.ZERO;
         this.product = product;
     }
 
@@ -141,7 +138,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     }
 
     public void setQuantityReceived(Measurable quantityReceived) {
-        this.quantityReceived = quantityReceived == null ? Piece.ZERO : quantityReceived;
+        this.quantityReceived = quantityReceived;
     }
 
     public Product getProduct() {
