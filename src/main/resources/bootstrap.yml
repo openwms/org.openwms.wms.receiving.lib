@@ -22,12 +22,16 @@ spring:
       type: web
 
 feign:
+  client:
+    config:
+      common-service:
+        read-timeout: 20000
+        connect-timeout: 10000
   httpclient:
     connection-timeout: 30000
     connection-timer-repeat: 30000
-ribbon:
-  connectTimeout: 30000
-  ReadTimeout: 30000
+  circuitbreaker:
+    enabled: true
 
 owms:
   eureka:
@@ -79,6 +83,11 @@ management:
     rabbit:
       enabled: false
 
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 8s
 ---
 spring:
   config:
