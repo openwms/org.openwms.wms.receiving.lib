@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.spi.wms.transport;
 
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
-import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.openwms.core.SpringProfiles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 /**
- * A AbstractTestBase.
+ * A NoOpSyncTransportUnitApiImpl.
  *
  * @author Heiko Scherrer
  */
-public abstract class AbstractTestBase {
+@Profile("!" + SpringProfiles.DISTRIBUTED)
+@Component
+class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
 
-    @MockBean
-    private PackagingUnitApi packagingUnitApi;
-    @MockBean
-    private SyncTransportUnitApi transportUnitApi;
-    @MockBean
-    private ProductApi productApi;
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncTransportUnitApiImpl.class);
 
+    @Override
+    public void moveTU(String transportUnitBK, String newLocationErpCode) {
+        LOGGER.error("Not yet implemented");
+    }
 }

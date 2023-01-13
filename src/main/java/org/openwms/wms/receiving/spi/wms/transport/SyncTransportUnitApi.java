@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.spi.wms.transport;
 
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
-import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import javax.validation.constraints.NotBlank;
 
 /**
- * A AbstractTestBase.
+ * A SyncTransportUnitApi is the public API to manage {@code TransportUnits} in a synchronous way.
  *
  * @author Heiko Scherrer
  */
-public abstract class AbstractTestBase {
+public interface SyncTransportUnitApi {
 
-    @MockBean
-    private PackagingUnitApi packagingUnitApi;
-    @MockBean
-    private SyncTransportUnitApi transportUnitApi;
-    @MockBean
-    private ProductApi productApi;
-
+    /**
+     * Move a {@code TransportUnit} from its current location to the {@code newLocation}.
+     *
+     * @param transportUnitBK The unique (physical) identifier
+     * @param newLocationErpCode The ERP code of the {@code Location} to move to
+     */
+    void moveTU(@NotBlank String transportUnitBK, @NotBlank String newLocationErpCode);
 }
