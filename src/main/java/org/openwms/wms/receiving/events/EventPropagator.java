@@ -20,7 +20,6 @@ import org.ameba.app.SpringProfiles;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
-import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
@@ -58,7 +57,7 @@ public class EventPropagator {
     @Measured
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onEvent(ReceivingOrderStateChangeEvent event) {
-        ReceivingOrderMO mo = receivingMapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
+        var mo = receivingMapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
         switch (event.getState()) {
             case COMPLETED -> {
                 LOGGER.debug("ReceivingOrder [{}] with all positions completed, sending ReceivingOrderMO: [{}]",
