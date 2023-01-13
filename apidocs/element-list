@@ -16,6 +16,7 @@ org.openwms.wms.receiving.inventory
 org.openwms.wms.receiving.inventory.impl
 org.openwms.wms.receiving.rest
 org.openwms.wms.receiving.spi
+org.openwms.wms.receiving.spi.common.transport
 org.openwms.wms.receiving.spi.wms
 org.openwms.wms.receiving.spi.wms.inventory
 org.openwms.wms.receiving.spi.wms.transport
