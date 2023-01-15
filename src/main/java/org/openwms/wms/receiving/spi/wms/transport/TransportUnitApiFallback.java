@@ -15,8 +15,11 @@
  */
 package org.openwms.wms.receiving.spi.wms.transport;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.spi.common.transport.CommonTransportUnitApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -29,14 +32,21 @@ import org.springframework.stereotype.Component;
 @Component
 class TransportUnitApiFallback implements TransportUnitApi {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitApiFallback.class);
     private final CommonTransportUnitApi commonTransportUnitApi;
 
     TransportUnitApiFallback(CommonTransportUnitApi commonTransportUnitApi) {
         this.commonTransportUnitApi = commonTransportUnitApi;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Measured
     public void moveTU(String transportUnitBK, String newLocationErpCode) {
+        LOGGER.warn("TransportUnitApi not available or took too long, placing a command to move TransportUnit [{}] to [{}] afterwards",
+                transportUnitBK, newLocationErpCode);
         commonTransportUnitApi.moveTU(transportUnitBK, newLocationErpCode);
     }
 }

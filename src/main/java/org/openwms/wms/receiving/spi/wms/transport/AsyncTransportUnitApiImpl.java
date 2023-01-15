@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.transport;
 
+import org.ameba.annotation.Measured;
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.core.SpringProfiles;
@@ -48,6 +49,7 @@ class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public void process(Command<?> command) {
         if (command instanceof TUCommand tuCommand) {
             switch (tuCommand.getType()) {

@@ -32,8 +32,11 @@ class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncTransportUnitApiImpl.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveTU(String transportUnitBK, String newLocationErpCode) {
-        LOGGER.error("Not yet implemented");
+        LOGGER.error("Not implemented yet");
     }
 }

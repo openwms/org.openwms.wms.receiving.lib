@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.transport;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,7 @@ class FeignTransportUnitApiAdapter implements SyncTransportUnitApi {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public void moveTU(@NotBlank String transportUnitBK, @NotBlank String newLocationErpCode) {
         transportUnitApi.moveTU(transportUnitBK, newLocationErpCode);
     }
