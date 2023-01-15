@@ -15,6 +15,9 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -28,14 +31,21 @@ public class CreatePackagingUnitCommand implements Serializable {
     private String transportUnitBK;
     private String luPos;
     private String loadUnitType;
+    @NotNull
     private PackagingUnitVO packagingUnit;
 
     public CreatePackagingUnitCommand(){}
 
     public CreatePackagingUnitCommand(String transportUnitBK, String luPos, String loadUnitType, PackagingUnitVO packagingUnit) {
+        Assert.notNull(packagingUnit, "PackagingUnit to create must not be null");
         this.transportUnitBK = transportUnitBK;
         this.luPos = luPos;
         this.loadUnitType = loadUnitType;
+        this.packagingUnit = packagingUnit;
+    }
+
+    public CreatePackagingUnitCommand(PackagingUnitVO packagingUnit) {
+        Assert.notNull(packagingUnit, "PackagingUnit to create must not be null");
         this.packagingUnit = packagingUnit;
     }
 

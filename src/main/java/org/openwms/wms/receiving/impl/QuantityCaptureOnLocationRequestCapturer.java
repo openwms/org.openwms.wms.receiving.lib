@@ -23,17 +23,16 @@ import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
 import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
@@ -49,12 +48,12 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
-    private final PackagingUnitApi packagingUnitApi;
+    private final SyncPackagingUnitApi packagingUnitApi;
     private final ProductService productService;
     private final ProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            PackagingUnitApi packagingUnitApi, ProductService productService1, ProductApi productApi) {
+            SyncPackagingUnitApi packagingUnitApi, ProductService productService1, ProductApi productApi) {
         super(translator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
         this.productService = productService1;
@@ -91,7 +90,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
-        Optional<ReceivingOrderPosition> openPosition = openPositions.stream()
+        var openPosition = openPositions.stream()
                 .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
                 .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
                 .findFirst();

@@ -16,14 +16,17 @@
 package org.openwms.wms.receiving.spi.wms.inventory;
 
 import org.ameba.annotation.Measured;
+import org.ameba.system.ValidationUtil;
 import org.openwms.core.SpringProfiles;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Validator;
+
 /**
- * A AsyncPackagingUnitApiImpl.
+ * A AsyncPackagingUnitApiImpl is used to asynchronously work with a remote service to manage {@code PackagingUnits}.
  *
  * @author Heiko Scherrer
  */
@@ -34,14 +37,16 @@ class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
     private final AmqpTemplate amqpTemplate;
     private final String exchangeName;
     private final String routingKey;
+    private final Validator validator;
 
     AsyncPackagingUnitApiImpl(
             AmqpTemplate amqpTemplate,
             @Value("${owms.commands.inventory.pu.exchange-name}") String exchangeName,
-            @Value("${owms.commands.inventory.pu.routing-key}") String routingKey) {
+            @Value("${owms.commands.inventory.pu.routing-key}") String routingKey, Validator validator) {
         this.amqpTemplate = amqpTemplate;
         this.exchangeName = exchangeName;
         this.routingKey = routingKey;
+        this.validator = validator;
     }
 
     /**
@@ -50,6 +55,7 @@ class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
     @Override
     @Measured
     public void create(CreatePackagingUnitCommand command) {
+        ValidationUtil.validate(validator, command);
         amqpTemplate.convertAndSend(exchangeName, routingKey, command);
     }
 }

@@ -15,25 +15,17 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 /**
- * A PackagingUnitApi is the Feign client used internally, not by any business logic directly.
+ * A SyncPackagingUnitApi.
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "packagingUnitApi", fallback = PackagingUnitApiFallback.class)
-interface PackagingUnitApi {
+public interface SyncPackagingUnitApi {
 
     /**
      * Create a new {@code PackagingUnit} on the {@code Location} given as {@code actualLocation} of the {@code pu}.
      *
      * @param pu The PackagingUnit representation, contains the Location where to create it
      */
-    @PostMapping("/v1/packaging-units")
-    void createOnLocation(
-            @RequestBody PackagingUnitVO pu
-    );
+    void createOnLocation(PackagingUnitVO pu);
 }
