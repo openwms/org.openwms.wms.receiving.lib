@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,11 @@ class NoOpSyncPackagingUnitApiImpl implements SyncPackagingUnitApi {
 
     /**
      * {@inheritDoc}
+     *
+     * No operation here!
      */
     @Override
+    @Measured
     public void createOnLocation(PackagingUnitVO pu) {
         LOGGER.error("Not implemented yet");
     }

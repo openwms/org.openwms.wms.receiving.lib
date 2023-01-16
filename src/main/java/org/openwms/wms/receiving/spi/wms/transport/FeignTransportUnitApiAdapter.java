@@ -19,6 +19,7 @@ import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotBlank;
  * @author Heiko Scherrer
  */
 @Profile(SpringProfiles.DISTRIBUTED)
+@Validated
 @Component
 class FeignTransportUnitApiAdapter implements SyncTransportUnitApi {
 

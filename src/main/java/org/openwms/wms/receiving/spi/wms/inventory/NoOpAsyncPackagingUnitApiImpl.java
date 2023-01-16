@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ class NoOpAsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
      * No operation here!
      */
     @Override
+    @Measured
     public void create(CreatePackagingUnitCommand command) {
         LOGGER.warn("Command to send [{}]", command);
     }

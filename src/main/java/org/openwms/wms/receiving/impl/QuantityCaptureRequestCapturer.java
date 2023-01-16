@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -95,7 +94,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
-                throw new ProcessingException(translator, RO_NO_UNEXPECTED_ALLOWED, new String[0]);
+                throw new CapturingException(translator, RO_NO_UNEXPECTED_ALLOWED, new String[0]);
             }
         } else {
             position = openPosition.get();
