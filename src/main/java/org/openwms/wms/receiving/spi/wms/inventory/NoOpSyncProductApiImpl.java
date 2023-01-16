@@ -15,23 +15,33 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.ameba.annotation.Measured;
+import org.openwms.core.SpringProfiles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 /**
- * A ProductApi is the Feign client used internally, not by any business logic directly.
+ * A NoOpSyncProductApiImpl.
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "productApi", fallback = ProductApiFallback.class)
-interface ProductApi {
+@Profile("!" + SpringProfiles.DISTRIBUTED)
+@Component
+class NoOpSyncProductApiImpl implements SyncProductApi {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncProductApiImpl.class);
 
     /**
-     * Gets {@code Product} based on {@code ProductUnit} pKey
+     * {@inheritDoc}
      *
-     * @param pKey The pKey of the productUnit
+     * No operation here!
      */
-    @GetMapping("/v1/product/product-units/{pKey}")
-    ProductVO findProductByProductUnitPkey(@PathVariable("pKey") String pKey);
+    @Override
+    @Measured
+    public ProductVO findProductByProductUnitPkey(String pKey) {
+        LOGGER.error("Not implemented yet");
+        return null;
+    }
 }

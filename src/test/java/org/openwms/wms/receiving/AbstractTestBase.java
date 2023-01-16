@@ -16,7 +16,7 @@
 package org.openwms.wms.receiving;
 
 import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -32,6 +32,6 @@ public abstract class AbstractTestBase {
     @MockBean
     private SyncTransportUnitApi transportUnitApi;
     @MockBean
-    private ProductApi productApi;
+    private SyncProductApi productApi;
 
 }
