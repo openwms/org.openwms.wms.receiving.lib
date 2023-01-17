@@ -1,4 +1,4 @@
 /**
- * Contains types of the public transport API of the WMS Inventory microservice.
+ * Contains types of to access the WMS Inventory Service TransportUnit REST API.
  */
 package org.openwms.wms.receiving.spi.wms.transport;

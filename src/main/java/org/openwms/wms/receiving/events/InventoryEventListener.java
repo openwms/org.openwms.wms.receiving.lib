@@ -16,10 +16,9 @@
 package org.openwms.wms.receiving.events;
 
 import org.ameba.annotation.Measured;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
+import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.events.ProductMO;
-import org.openwms.wms.receiving.inventory.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -40,9 +39,9 @@ public class InventoryEventListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InventoryEventListener.class);
     private final ApplicationEventPublisher publisher;
-    private final BeanMapper mapper;
+    private final ReceivingMapper mapper;
 
-    public InventoryEventListener(ApplicationEventPublisher publisher, BeanMapper mapper) {
+    public InventoryEventListener(ApplicationEventPublisher publisher, ReceivingMapper mapper) {
         this.publisher = publisher;
         this.mapper = mapper;
     }
@@ -54,11 +53,11 @@ public class InventoryEventListener {
             switch (header) {
                 case "created" -> {
                     LOGGER.debug("Product has been created in Inventory service: [{}]", msg);
-                    publisher.publishEvent(new ProductEvent(mapper.map(msg, Product.class), ProductEvent.TYPE.CREATED));
+                    publisher.publishEvent(new ProductEvent(mapper.convertFromMO(msg), ProductEvent.TYPE.CREATED));
                 }
                 case "updated" -> {
                     LOGGER.debug("Product has been updated in Inventory service: [{}]", msg);
-                    publisher.publishEvent(new ProductEvent(mapper.map(msg, Product.class), ProductEvent.TYPE.UPDATED));
+                    publisher.publishEvent(new ProductEvent(mapper.convertFromMO(msg), ProductEvent.TYPE.UPDATED));
                 }
                 case "deleted" -> {
                     LOGGER.debug("Product has been deleted in Inventory service: [{}]", msg);

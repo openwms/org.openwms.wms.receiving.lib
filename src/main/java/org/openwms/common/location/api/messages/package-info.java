@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains all supported Message types of the COMMON Service TransportUnit API.
+ * Contains all supported Message types of the COMMON Service Location API.
  */
-package org.openwms.common.transport.api.messages;
+package org.openwms.common.location.api.messages;
