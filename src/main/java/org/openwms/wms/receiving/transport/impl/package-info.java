@@ -1,4 +1,4 @@
 /**
- * Contains stripped implementation types mirrored from the COMMON microservice.
+ * Contains internal implementation types to manage {@code org.openwms.wms.receiving.transport.TransportUnit TransportUnit}s.
  */
 package org.openwms.wms.receiving.transport.impl;
