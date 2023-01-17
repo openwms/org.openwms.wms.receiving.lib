@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(1.0.0-SNAPSHOT-98)">
+<meta name="author" content="(1.0.0-SNAPSHOT-99)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-98)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-99)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1092,13 +1092,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/8863f434-be06-4253-94c8-60e202c594f5/
+Location: http://localhost:8080/v1/receiving-orders/415b43ae-360d-45ad-b336-028b4423f68a/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 796
 
 {
   "ol" : 0,
-  "pKey" : "8863f434-be06-4253-94c8-60e202c594f5",
+  "pKey" : "415b43ae-360d-45ad-b336-028b4423f68a",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1117,7 +1117,7 @@ Content-Length: 796
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.2691617110369897"
+      "foreignPKey" : "0.3262496890668345"
     },
     "state" : "CREATED",
     "details" : {
@@ -1163,7 +1163,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1943
+Content-Length: 1942
 
 {
   "ol" : 0,
@@ -1186,7 +1186,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5189244573757641"
+      "foreignPKey" : "0.7068496200873042"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1210,7 +1210,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.44020254861164787"
+      "foreignPKey" : "0.2532647806491042"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1366,7 +1366,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1943
+Content-Length: 1942
 
 {
   "ol" : 0,
@@ -1389,7 +1389,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.09041254061056136"
+      "foreignPKey" : "0.1889953320884885"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1413,7 +1413,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.1993921201531883"
+      "foreignPKey" : "0.6253634743517011"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1454,7 +1454,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1946
+Content-Length: 1947
 
 [ {
   "ol" : 0,
@@ -1477,7 +1477,7 @@ Content-Length: 1946
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4739988283890746"
+      "foreignPKey" : "0.04726706881111653"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1501,7 +1501,7 @@ Content-Length: 1946
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5113319271454166"
+      "foreignPKey" : "0.8491513176753642"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1528,7 +1528,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/7104737c-75ed-48b4-81ae-5988157209f6/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/2e3044f5-14ee-43da-8342-f4f31ae1e4a1/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1550,7 +1550,7 @@ Content-Length: 111
 
 {
   "ol" : 0,
-  "pKey" : "7104737c-75ed-48b4-81ae-5988157209f6",
+  "pKey" : "2e3044f5-14ee-43da-8342-f4f31ae1e4a1",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1692,7 +1692,7 @@ and the items are booked to the <code>LoadUnit</code> on top of the `TransportUn
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1941
+Content-Length: 1943
 
 {
   "ol" : 0,
@@ -1715,7 +1715,7 @@ Content-Length: 1941
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.880301713381801"
+      "foreignPKey" : "0.32249648638562434"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1739,7 +1739,7 @@ Content-Length: 1941
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.2296159232168371"
+      "foreignPKey" : "0.1933707374865321"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1867,7 +1867,7 @@ and the items are booked directly onto the given <code>Location</code>. The serv
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1943
+Content-Length: 1941
 
 {
   "ol" : 0,
@@ -1890,7 +1890,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.08392966136455371"
+      "foreignPKey" : "0.7812649749422818"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1914,7 +1914,7 @@ Content-Length: 1943
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6077799704687656"
+      "foreignPKey" : "0.172954128755876"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2036,7 +2036,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1944
+Content-Length: 1942
 
 {
   "ol" : 0,
@@ -2059,7 +2059,7 @@ Content-Length: 1944
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.28016436977617687"
+      "foreignPKey" : "0.54620774213911"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2083,7 +2083,7 @@ Content-Length: 1944
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.670372304062834"
+      "foreignPKey" : "0.6248808176401468"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -2125,7 +2125,7 @@ Content-Length: 195
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-17 18:01:17 UTC
+Last updated 2023-01-17 18:27:56 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
