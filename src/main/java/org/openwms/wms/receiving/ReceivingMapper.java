@@ -19,11 +19,13 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.openwms.common.location.api.messages.LocationMO;
+import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.wms.receiving.api.BaseReceivingOrderPositionVO;
-import org.openwms.wms.receiving.api.ProductVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO;
+import org.openwms.wms.receiving.api.events.ProductMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
 import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
@@ -31,8 +33,11 @@ import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
 import org.openwms.wms.receiving.inventory.Product;
+import org.openwms.wms.receiving.transport.TransportUnit;
 
 import java.util.List;
+
+import static java.lang.String.format;
 
 /**
  * A ReceivingMapper.
@@ -47,8 +52,10 @@ public interface ReceivingMapper {
             return convertFromVO(rop, cycleAvoidingMappingContext);
         } else if (vo instanceof ReceivingTransportUnitOrderPositionVO rtuop) {
             return convertFromVO(rtuop, cycleAvoidingMappingContext);
+        } else if (vo != null){
+            throw new UnsupportedOperationException(format("ReceivingOrderPosition type [%s] is not supported", vo.getClass()));
         } else {
-            return null;
+            throw new UnsupportedOperationException("ReceivingOrderPosition to convert is null");
         }
     }
 
@@ -57,8 +64,10 @@ public interface ReceivingMapper {
             return convertToVO(rop, cycleAvoidingMappingContext);
         } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
             return convertToVO(rtuop, cycleAvoidingMappingContext);
+        } else if (eo != null){
+            throw new UnsupportedOperationException(format("ReceivingOrderPosition type [%s] is not supported", eo.getClass()));
         } else {
-            return null;
+            throw new UnsupportedOperationException("ReceivingOrderPosition to convert is null");
         }
     }
 
@@ -67,12 +76,27 @@ public interface ReceivingMapper {
             return convertToReceivingOrderPositionMO(rop, cycleAvoidingMappingContext);
         } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
             return convertToReceivingOrderPositionMO(rtuop, cycleAvoidingMappingContext);
+        } else if (eo != null){
+            throw new UnsupportedOperationException(format("ReceivingOrderPosition type [%s] is not supported", eo.getClass()));
         } else {
-            return null;
+            throw new UnsupportedOperationException("ReceivingOrderPosition to convert is null");
         }
     }
 
-    ProductVO convertToVO(Product eo);
+    @Mapping(target = "foreignPKey", source = "pKey")
+    @Mapping(target = "ol", ignore = true)
+    Product convertFromMO(ProductMO mo);
+
+    @Mapping(target = "foreignPKey", source = "pKey")
+    @Mapping(target = "ol", ignore = true)
+    TransportUnit convertFromMO(TransportUnitMO mo);
+
+    default String convertFromMO(LocationMO mo) {
+        if (mo == null) {
+            return null;
+        }
+        return mo.id();
+    }
 
     @Mapping(target = "orderState", source = "state")
     @Mapping(target = "positions", source = "positions")
