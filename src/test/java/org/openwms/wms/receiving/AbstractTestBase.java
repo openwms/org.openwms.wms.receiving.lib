@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.openwms.wms.receiving;
 
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
-import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
+import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
@@ -28,10 +28,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public abstract class AbstractTestBase {
 
     @MockBean
-    private PackagingUnitApi packagingUnitApi;
+    private SyncPackagingUnitApi packagingUnitApi;
     @MockBean
-    private TransportUnitApi transportUnitApi;
+    private SyncTransportUnitApi transportUnitApi;
     @MockBean
-    private ProductApi productApi;
+    private SyncProductApi productApi;
 
 }

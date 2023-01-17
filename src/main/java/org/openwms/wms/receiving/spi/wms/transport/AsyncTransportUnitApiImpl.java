@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,9 @@
  */
 package org.openwms.wms.receiving.spi.wms.transport;
 
+import org.ameba.annotation.Measured;
 import org.openwms.common.transport.api.commands.Command;
+import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.core.SpringProfiles;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,8 +45,17 @@ class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
         this.exchangeName = exchangeName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void process(Command command) {
-        template.convertAndSend(exchangeName, "common.tu.command.in.create", command);
+    @Measured
+    public void process(Command<?> command) {
+        if (command instanceof TUCommand tuCommand) {
+            switch (tuCommand.getType()) {
+                case CREATE -> template.convertAndSend(exchangeName, "common.tu.command.in.create", tuCommand);
+                case CHANGE_ACTUAL_LOCATION -> template.convertAndSend(exchangeName, "common.tu.command.in.move", tuCommand);
+            }
+        }
     }
 }

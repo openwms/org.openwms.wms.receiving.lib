@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * A PackagingUnitApi.
+ * A PackagingUnitApi is the Feign client used internally, not by any business logic directly.
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "packagingUnitApi")
-public interface PackagingUnitApi {
+@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "packagingUnitApi", fallback = PackagingUnitApiFallback.class)
+interface PackagingUnitApi {
 
     /**
      * Create a new {@code PackagingUnit} on the {@code Location} given as {@code actualLocation} of the {@code pu}.

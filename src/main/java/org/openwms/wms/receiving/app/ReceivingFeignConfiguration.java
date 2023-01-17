@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 package org.openwms.wms.receiving.app;
 
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
-import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
+import org.openwms.wms.receiving.spi.common.transport.CommonTransportSpiPackage;
+import org.openwms.wms.receiving.spi.wms.inventory.InventorySpiPackage;
+import org.openwms.wms.receiving.spi.wms.transport.TransportSpiPackage;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -31,9 +31,9 @@ import org.springframework.context.annotation.Profile;
 @Profile(SpringProfiles.DISTRIBUTED)
 @Configuration
 @EnableFeignClients(basePackageClasses = {
-        PackagingUnitApi.class,
-        ProductApi.class,
-        TransportUnitApi.class
+        CommonTransportSpiPackage.class,
+        InventorySpiPackage.class,
+        TransportSpiPackage.class
 })
 class ReceivingFeignConfiguration {
 }

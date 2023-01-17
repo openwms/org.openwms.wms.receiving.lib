@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.openwms.wms.receiving.spi.wms.transport;
 import org.openwms.common.transport.api.commands.Command;
 
 /**
- * A AsyncTransportUnitApi is able to process Commands asynchronously.
+ * A AsyncTransportUnitApi is able to process commands for TransportUnits asynchronously.
  *
  * @author Heiko Scherrer
  */
@@ -29,5 +29,5 @@ public interface AsyncTransportUnitApi {
      *
      * @param command Command to process
      */
-    void process(Command command);
+    void process(Command<?> command);
 }

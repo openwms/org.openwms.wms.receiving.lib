@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.ameba.http.identity.EnableIdentityAwareness;
 import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
-import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.openwms.core.units.jsr385.jackson.JSR385JacksonModule;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,10 +78,6 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
-    }
-
-    @Bean BeanMapper beanMapper() {
-        return new DozerMapperImpl("META-INF/dozer/wms-receiving-mappings.xml");
     }
 
     public @Bean

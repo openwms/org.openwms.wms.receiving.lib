@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,18 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", qualifiers = "wmsTransportUnitApi")
-public interface TransportUnitApi {
+@FeignClient(name = "wms-inventory", qualifiers = "wmsTransportUnitApi", fallback = TransportUnitApiFallback.class)
+interface TransportUnitApi {
 
     /**
      * Move a {@code TransportUnit} from its current location to the {@code newLocation}.
      *
      * @param transportUnitBK The unique (physical) identifier
-     * @param newLocation The new {@code Location} to move to
+     * @param newLocationErpCode The ERPCode of the {@code Location} to move to
      */
     @PatchMapping(value = "/v1/transport-units", params = {"bk", "newLocation"})
     void moveTU(
             @RequestParam("bk") String transportUnitBK,
-            @RequestParam("newLocation") String newLocation
+            @RequestParam("newLocation") String newLocationErpCode
     );
 }

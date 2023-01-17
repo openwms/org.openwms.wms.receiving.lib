@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
-import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitApi;
 import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductApi;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,12 +49,12 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
-    private final PackagingUnitApi packagingUnitApi;
+    private final SyncPackagingUnitApi packagingUnitApi;
     private final ProductService productService;
-    private final ProductApi productApi;
+    private final SyncProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            PackagingUnitApi packagingUnitApi, ProductService productService1, ProductApi productApi) {
+            SyncPackagingUnitApi packagingUnitApi, ProductService productService1, SyncProductApi productApi) {
         super(translator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
         this.productService = productService1;
@@ -67,13 +67,11 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
     @Measured
     @Override
     public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
-        final var existingProduct = request.hasUomRelation()
-                ? productApi.findProductByProductUnitPkey(request.getUomRelation().pKey).getSku()
+        final var skuExistingProduct = request.hasUomRelation()
+                ? Optional.ofNullable(productApi.findProductByProductUnitPkey(request.getUomRelation().pKey))
+                .orElseThrow(() -> new NotFoundException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()}, request.getProduct().getSku())).getSku()
                 : productService.findBySku(request.getProduct().getSku())
-                .orElseThrow(() -> new CapturingException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()})).getSku();
-        if (existingProduct == null) {
-            throw new CapturingException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()});
-        }
+                .orElseThrow(() -> new NotFoundException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()}, request.getProduct().getSku())).getSku();
         final var quantityReceived = request.getQuantityReceived();
         var receivingOrder = getOrder(pKey);
         final var erpCode = request.getActualLocation().getErpCode();
@@ -83,7 +81,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
-                .filter(p -> p.getProduct().getSku().equals(existingProduct))
+                .filter(p -> p.getProduct().getSku().equals(skuExistingProduct))
                 .toList();
 
         if (openPositions.isEmpty()) {
@@ -98,7 +96,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
         if (openPosition.isEmpty()) {
             LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded quantity exist");
-            throw new ProcessingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
+            throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         // multi packs
@@ -109,7 +107,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         pu.setDetails(details);
         pu.setSerialNumber(request.getSerialNumber());
         pu.setLotId(request.getLotId());
-        pu.setProduct(ProductVO.newBuilder().sku(existingProduct).build());
+        pu.setProduct(ProductVO.newBuilder().sku(skuExistingProduct).build());
         pu.setExpiresAt(request.getExpiresAt());
         pu.setProductionDate(request.getProductionDate());
 

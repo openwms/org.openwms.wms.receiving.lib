@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
-import org.openwms.wms.receiving.spi.wms.transport.TransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,10 +46,10 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TUCaptureRequestCapturer.class);
     private final ApplicationEventPublisher publisher;
-    private final TransportUnitApi transportUnitApi;
+    private final SyncTransportUnitApi transportUnitApi;
 
     TUCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            ApplicationEventPublisher publisher, TransportUnitApi transportUnitApi) {
+            ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi) {
         super(translator, repository, productService);
         this.publisher = publisher;
         this.transportUnitApi = transportUnitApi;

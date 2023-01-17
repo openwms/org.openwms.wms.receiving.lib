@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -30,12 +30,12 @@ import java.io.Serializable;
 public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
     /** The business key of the actual captured {@code TransportUnit} where the goods are placed on. */
-    @NotEmpty
+    @NotBlank
     @JsonProperty("transportUnitBK")
     private String transportUnitId;
 
     /** The unique identifier if the {@code LoadUnit} where the goods are stored in. */
-    @NotEmpty
+    @NotBlank
     @JsonProperty("loadUnitLabel")
     private String loadUnitLabel;
 
@@ -44,12 +44,12 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     private String loadUnitType;
 
     /** The business key of the expected {@code TransportUnit} to receive. */
-    @NotEmpty
+    @NotBlank
     @JsonProperty("expectedTransportUnitBK")
     private String expectedTransportUnitBK;
 
     /** The ERP code of the actual {@code Location} where the goods were received. */
-    @NotEmpty
+    @NotBlank
     @JsonProperty("actualLocationErpCode")
     private String actualLocationErpCode;
 

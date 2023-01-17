@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.openwms.common.transport.api.commands.Command;
 import org.openwms.core.SpringProfiles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +30,11 @@ import org.springframework.stereotype.Component;
 @Profile("!" + SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
 class NoOpAsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
-    
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpAsyncTransportUnitApiImpl.class);
+
     @Override
-    public void process(Command command) {
-        // Just ignore
+    public void process(Command<?> command) {
+        LOGGER.error("Not yet implemented");
     }
 }

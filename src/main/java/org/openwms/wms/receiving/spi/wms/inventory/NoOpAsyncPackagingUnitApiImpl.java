@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2022 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ class NoOpAsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
      * No operation here!
      */
     @Override
+    @Measured
     public void create(CreatePackagingUnitCommand command) {
         LOGGER.warn("Command to send [{}]", command);
     }
