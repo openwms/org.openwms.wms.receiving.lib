@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2020 the original author or authors.
+ * Copyright 2005-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains all supported Message types of the COMMON Service TransportUnit API.
+ * Contains all supported Message types of the COMMON Service Location API.
  */
-package org.openwms.common.transport.api.messages;
+package org.openwms.common.location.api.messages;
