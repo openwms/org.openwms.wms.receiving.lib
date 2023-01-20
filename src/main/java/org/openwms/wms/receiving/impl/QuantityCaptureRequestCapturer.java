@@ -27,7 +27,6 @@ import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -47,14 +46,11 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOW
 class QuantityCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureRequestCapturer.class);
-    private final boolean overbookingAllowed;
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
 
-    QuantityCaptureRequestCapturer(@Value("${owms.receiving.unexpected-receipts-allowed:true}") boolean overbookingAllowed,
-            Translator translator, ReceivingOrderRepository repository, ProductService productService,
+    QuantityCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
             AsyncPackagingUnitApi asyncPackagingUnitApi) {
         super(translator, repository, productService);
-        this.overbookingAllowed = overbookingAllowed;
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
     }
 
@@ -90,7 +86,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         ReceivingOrderPosition position;
         // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
-            if (overbookingAllowed) {
+            if (openPositions.get(0).getProduct().isOverbookingAllowed()) {
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");

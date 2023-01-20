@@ -42,7 +42,6 @@ owms:
     protocol: http
     hostname: localhost
   receiving:
-    unexpected-receipts-allowed: true
     initial-location-id: EXTERN
     create-tu-on-expected-tu-receipt: true
 

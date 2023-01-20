@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -70,6 +71,10 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     //problems when mapping
     //@NotNull
     private Measurable baseUnit;
+
+    @NotNull
+    @Column(name = "OVERBOOKING_ALLOWED", nullable = false)
+    private boolean overbookingAllowed;
 
     /** Dear JPA ... */
     protected Product() {
@@ -129,6 +134,14 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.baseUnit = baseUnit;
     }
 
+    public boolean isOverbookingAllowed() {
+        return overbookingAllowed;
+    }
+
+    public void setOverbookingAllowed(boolean overbookingAllowed) {
+        this.overbookingAllowed = overbookingAllowed;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -147,10 +160,9 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Product)) return false;
+        if (!(o instanceof Product product)) return false;
         if (!super.equals(o)) return false;
-        Product product = (Product) o;
-        return Objects.equals(foreignPKey, product.foreignPKey) && Objects.equals(sku, product.sku) && Objects.equals(label, product.label) && Objects.equals(description, product.description) && Objects.equals(baseUnit, product.baseUnit);
+        return overbookingAllowed == product.overbookingAllowed && Objects.equals(foreignPKey, product.foreignPKey) && Objects.equals(sku, product.sku) && Objects.equals(label, product.label) && Objects.equals(description, product.description) && Objects.equals(baseUnit, product.baseUnit);
     }
 
     /**
@@ -160,7 +172,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), foreignPKey, sku, label, description, baseUnit);
+        return Objects.hash(super.hashCode(), foreignPKey, sku, label, description, baseUnit, overbookingAllowed);
     }
 
     /**
