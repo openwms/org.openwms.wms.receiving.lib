@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>21</version>
+        <version>23</version>
         <relativePath/>
     </parent>
 	<artifactId>org.openwms.wms.receiving</artifactId>
@@ -72,11 +72,9 @@
         <guava.version>30.0-jre</guava.version>
         <joda-time.version>2.10.8</joda-time.version>
         <objenesis.version>3.2</objenesis.version>
-        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
         <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.3</spring-cloud-dependencies.version>
-        <spring-plugin-core.version>2.0.0.RELEASE</spring-plugin-core.version>
+        <spring-cloud-dependencies.version>2021.0.5</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -260,16 +258,6 @@
                 <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.plugin</groupId>
-                <artifactId>spring-plugin-core</artifactId>
-                <version>${spring-plugin-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.plugin</groupId>
-                <artifactId>spring-plugin-metadata</artifactId>
-                <version>${spring-plugin-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

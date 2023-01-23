@@ -8,7 +8,7 @@ delete from WMS_REC_TRANSPORT_UNIT;
 insert into WMS_REC_TRANSPORT_UNIT (c_pk, c_pid, c_ol, c_created, c_actual_location, c_barcode, c_foreign_pid) values (1000, '1000', 0, now(), 'WE01', '00000000000000004712', '2');
 
 -- Product
-insert into WMS_REC_PRODUCT (c_pk,c_pid,c_foreign_pid,c_sku,c_description,C_BASE_UNIT_TYPE,C_BASE_UNIT_QTY,OVERBOOKING_ALLOWED,c_ol,c_created) values (1000,RANDOM(),RANDOM(),'C1','Skateboard gearings 608ZZ','PC@org.openwms.core.units.api.Piece','1',true,0,now());
+insert into WMS_REC_PRODUCT (c_pk,c_pid,c_foreign_pid,c_sku,c_description,C_BASE_UNIT_TYPE,C_BASE_UNIT_QTY,OVERBOOKING_ALLOWED,c_ol,c_created) values (1000,RANDOM(),RANDOM(),'C1','Skateboard gearings 608ZZ','PC@org.openwms.core.units.api.Piece','1',false,0,now());
 insert into WMS_REC_PRODUCT (c_pk,c_pid,c_foreign_pid,c_sku,c_description,C_BASE_UNIT_TYPE,C_BASE_UNIT_QTY,OVERBOOKING_ALLOWED,c_ol,c_created) values (1001,RANDOM(),RANDOM(),'C2','Notch M8','PC@org.openwms.core.units.api.Piece','1',true,0,now());
 
 -- ReceivingOrder
