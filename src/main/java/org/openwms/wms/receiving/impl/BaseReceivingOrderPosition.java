@@ -104,7 +104,7 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
      *
      * @param serviceProvider An instance that provides application services.
      */
-    public void preCreate(ServiceProvider serviceProvider) {};
+    public void preCreate(ServiceProvider serviceProvider) {}
 
     public ReceivingOrder getOrder() {
         return order;

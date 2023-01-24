@@ -50,14 +50,12 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
     private final SyncPackagingUnitApi packagingUnitApi;
-    private final ProductService productService;
     private final SyncProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            SyncPackagingUnitApi packagingUnitApi, ProductService productService1, SyncProductApi productApi) {
+            SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
         super(translator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
-        this.productService = productService1;
         this.productApi = productApi;
     }
 

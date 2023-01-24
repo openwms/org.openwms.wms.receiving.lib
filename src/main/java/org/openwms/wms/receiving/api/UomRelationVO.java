@@ -19,15 +19,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 
 /**
- * A UomRelationVO defines and identifies an UOM for a given Product with an unique label. It is used to define the same Product in
- * various UOM, each one identified with a different label.
+ * A UomRelationVO defines and identifies an UOM for a given Product with an unique label. It is used to define the same Product in various
+ * UOM, each one identified with a different label.
  *
  * @author Heiko Scherrer
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class UomRelationVO {
+public class UomRelationVO implements Serializable {
 
     /** The persistent unique key. */
     @JsonProperty("pKey")

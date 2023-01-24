@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 /**
  * A AsyncTransportUnitApiImpl is a Spring managed bean to send Commands asynchronously over AMQP, only active with Spring profile
  * {@linkplain SpringProfiles#ASYNCHRONOUS_PROFILE}.
@@ -52,9 +54,10 @@ class AsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
     @Measured
     public void process(Command<?> command) {
         if (command instanceof TUCommand tuCommand) {
-            switch (tuCommand.getType()) {
-                case CREATE -> template.convertAndSend(exchangeName, "common.tu.command.in.create", tuCommand);
-                case CHANGE_ACTUAL_LOCATION -> template.convertAndSend(exchangeName, "common.tu.command.in.move", tuCommand);
+            if (Objects.requireNonNull(tuCommand.getType()) == TUCommand.Type.CREATE) {
+                template.convertAndSend(exchangeName, "common.tu.command.in.create", tuCommand);
+            } else if (tuCommand.getType() == TUCommand.Type.CHANGE_ACTUAL_LOCATION) {
+                template.convertAndSend(exchangeName, "common.tu.command.in.move", tuCommand);
             }
         }
     }

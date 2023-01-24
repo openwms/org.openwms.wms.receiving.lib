@@ -43,6 +43,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import java.util.Objects;
+
 import static org.ameba.LoggingCategories.BOOT;
 
 /**
@@ -87,7 +89,7 @@ public class ReceivingAsyncConfiguration {
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(backOffPolicy);
         rabbitTemplate.setRetryTemplate(retryTemplate);
-        rabbitTemplate.setMessageConverter(messageConverter.getIfUnique());
+        rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));
         if (rabbitTemplateConfigurable != null) {
             rabbitTemplateConfigurable.configure(rabbitTemplate);
         }

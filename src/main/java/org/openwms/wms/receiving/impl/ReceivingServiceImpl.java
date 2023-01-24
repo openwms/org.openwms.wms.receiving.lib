@@ -174,8 +174,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
     public @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder) {
         var order = getOrder(pKey);
         LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
-        var plugins = this.plugins.getPlugins();
-        for (ReceivingOrderUpdater plugin : plugins) {
+        for (var plugin : this.plugins.getPlugins()) {
             order = plugin.update(order, receivingOrder);
         }
         return repository.save(order);
@@ -193,10 +192,10 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
                     .stream()
                     .filter(ReceivingOrderPosition.class::isInstance)
                     .map(ReceivingOrderPosition.class::cast)
-                    .forEach(p -> {
+                    .forEach(p ->
 //                p.setQuantityReceived(p.getQuantityExpected());
-                p.setState(COMPLETED);
-            });
+                p.setState(COMPLETED)
+            );
             order.changeOrderState(publisher, COMPLETED);
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);

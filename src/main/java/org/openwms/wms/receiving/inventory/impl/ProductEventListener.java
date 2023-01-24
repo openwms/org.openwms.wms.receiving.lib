@@ -41,7 +41,6 @@ public class ProductEventListener {
             case CREATED -> productService.create((Product) event.getSource());
             case UPDATED -> productService.update((Product) event.getSource());
             case DELETED -> productService.delete((String) event.getSource());
-            default -> {}
         }
     }
 }

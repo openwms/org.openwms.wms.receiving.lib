@@ -28,8 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.concurrent.TimeUnit;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -53,16 +51,16 @@ class TransportUnitEventListenerIT {
 
     @Test
     void shall_create_TU() throws Exception {
-        assertThat(accessor.getRepository().findAll().size()).isZero();
+        assertThat(accessor.getRepository().findAll()).isEmpty();
 
-        TransportUnitMO create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation(LocationMO.ofId("EXT_/0000/0000/0000/0000")).build();
+        var create = TransportUnitMO.newBuilder().withBarcode("4711").withActualLocation(LocationMO.ofId("EXT_/0000/0000/0000/0000")).build();
         template.convertAndSend(exchangeName, "tu.event.created", create);
-        TimeUnit.MILLISECONDS.sleep(500);
-        assertThat(accessor.getRepository().findAll().size()).isEqualTo(1);
+        //TimeUnit.MILLISECONDS.sleep(500);
+        assertThat(accessor.getRepository().findAll()).hasSize(1);
 
         create.setActualLocation(LocationMO.ofId("INIT/0000/0000/0000/0000"));
         template.convertAndSend(exchangeName, "tu.event.moved.INIT/0000/0000/0000/0000", create);
-        TimeUnit.MILLISECONDS.sleep(500);
+        //TimeUnit.MILLISECONDS.sleep(500);
         assertThat(accessor.getRepository().findAll()).hasSize(1);
         assertThat(accessor.getRepository().findAll().get(0).getActualLocation()).isEqualTo("INIT/0000/0000/0000/0000");
     }
