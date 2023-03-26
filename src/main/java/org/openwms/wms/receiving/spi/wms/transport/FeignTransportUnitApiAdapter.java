@@ -22,9 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
- * A FeignTransportUnitApiAdapter.
+ * A FeignTransportUnitApiAdapter is only active with Spring profile {@literal DISTRIBUTED} and uses the Feign {@code TransportUnitApi API}.
  *
  * @author Heiko Scherrer
  */
@@ -46,5 +47,14 @@ class FeignTransportUnitApiAdapter implements SyncTransportUnitApi {
     @Measured
     public void moveTU(@NotBlank String transportUnitBK, @NotBlank String newLocationErpCode) {
         transportUnitApi.moveTU(transportUnitBK, newLocationErpCode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void createTU(@NotNull TransportUnitVO tu) {
+        transportUnitApi.createTU(tu);
     }
 }

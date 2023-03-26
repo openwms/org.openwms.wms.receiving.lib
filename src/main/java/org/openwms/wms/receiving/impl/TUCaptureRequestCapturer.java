@@ -21,13 +21,15 @@ import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.spi.wms.location.LocationVO;
+import org.openwms.wms.receiving.spi.wms.location.SyncLocationApi;
 import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
+import org.openwms.wms.receiving.spi.wms.transport.TransportUnitVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -35,6 +37,7 @@ import static org.openwms.wms.order.OrderState.COMPLETED;
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS_TU;
+import static org.openwms.wms.receiving.ReceivingMessages.TU_TYPE_NOT_GIVEN;
 
 /**
  * A TUCaptureRequestCapturer.
@@ -47,24 +50,44 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
     private static final Logger LOGGER = LoggerFactory.getLogger(TUCaptureRequestCapturer.class);
     private final ApplicationEventPublisher publisher;
     private final SyncTransportUnitApi transportUnitApi;
+    private final SyncLocationApi locationApi;
 
     TUCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi) {
+            ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi, SyncLocationApi locationApi) {
         super(translator, repository, productService);
         this.publisher = publisher;
         this.transportUnitApi = transportUnitApi;
+        this.locationApi = locationApi;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Measured
     @Override
-    public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull TUCaptureRequestVO request) {
+    @Measured
+    public Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull TUCaptureRequestVO request) {
+        if (pKey.isPresent()) {
+            return handleExpectedReceipt(
+                    pKey.get(),
+                    request);
+        }
+        if (!request.hasTransportUnitType()) {
+            throw new CapturingException(translator, TU_TYPE_NOT_GIVEN, new String[0]);
+        }
+        var locationOpt = locationApi.findByErpCodeOpt(request.getActualLocationErpCode());
+        var location = locationOpt.isPresent()
+                ? LocationVO.of(locationOpt.get().getLocationId())
+                : new LocationVO(); // Handle Locations without locationId later
+        location.setErpCode(request.getActualLocationErpCode());
+        var tu = new TransportUnitVO(request.getTransportUnitId(), location, request.getTransportUnitType());
+        transportUnitApi.createTU(tu);
+        return Optional.empty();
+    }
+
+    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, TUCaptureRequestVO request) {
+        var receivingOrder = getOrder(pKey);
         final var transportUnitBK = request.getTransportUnitId();
         final var actualLocationErpCode = request.getActualLocationErpCode();
-
-        var receivingOrder = getOrder(pKey);
         Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingTransportUnitOrderPosition.class::isInstance)
@@ -84,7 +107,7 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
         }
         receivingOrder = repository.save(receivingOrder);
         transportUnitApi.moveTU(transportUnitBK, actualLocationErpCode);
-        return receivingOrder;
+        return Optional.of(receivingOrder);
     }
 
     @Override

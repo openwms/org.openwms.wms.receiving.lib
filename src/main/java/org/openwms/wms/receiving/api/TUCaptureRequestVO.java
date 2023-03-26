@@ -53,6 +53,10 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     @JsonProperty("actualLocationErpCode")
     private String actualLocationErpCode;
 
+    /** The type of {@code TransportUnit} in case it needs to be created (optional). */
+    @JsonProperty("transportUnitType")
+    private String transportUnitType;
+
     public String getTransportUnitId() {
         return transportUnitId;
     }
@@ -91,5 +95,17 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     public void setActualLocationErpCode(String actualLocationErpCode) {
         this.actualLocationErpCode = actualLocationErpCode;
+    }
+
+    public boolean hasTransportUnitType() {
+        return transportUnitType != null && !transportUnitType.isEmpty();
+    }
+
+    public String getTransportUnitType() {
+        return transportUnitType;
+    }
+
+    public void setTransportUnitType(String transportUnitType) {
+        this.transportUnitType = transportUnitType;
     }
 }

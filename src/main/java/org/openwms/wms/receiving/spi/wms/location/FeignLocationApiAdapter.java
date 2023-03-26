@@ -13,38 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.spi.wms.transport;
+package org.openwms.wms.receiving.spi.wms.location;
 
+import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Optional;
 
 /**
- * A NoOpSyncTransportUnitApiImpl.
+ * A FeignLocationApiAdapter is only active with Spring profile {@literal DISTRIBUTED} and uses the Feign {@code Location API}.
  *
  * @author Heiko Scherrer
+ * @see LocationApi
  */
-@Profile("!" + SpringProfiles.DISTRIBUTED)
+@Profile(SpringProfiles.DISTRIBUTED)
+@Validated
 @Component
-class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
+class FeignLocationApiAdapter implements SyncLocationApi {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncTransportUnitApiImpl.class);
+    private final LocationApi locationApi;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void moveTU(String transportUnitBK, String newLocationErpCode) {
-        LOGGER.error("Not implemented yet");
+    FeignLocationApiAdapter(LocationApi locationApi) {
+        this.locationApi = locationApi;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void createTU(TransportUnitVO tu) {
-        LOGGER.error("Not implemented yet");
+    @Measured
+    public Optional<LocationVO> findByErpCodeOpt(String erpCode) {
+        return locationApi.findByErpCodeOpt(erpCode);
     }
 }

@@ -57,6 +57,18 @@ public interface ReceivingService<T extends CaptureRequestVO> {
     );
 
     /**
+     * Capture an unexpected receipt (aka Blind Receipt) that has no reference to a {@code ReceivingOrder}.
+     * <ul>
+     *     <li>Create physical {@code PackagingUnit}(s) from the received quantity</li>
+     * </ul>
+     *
+     * @param requests Contains all the capturing information according to the process in use
+     */
+    void captureBlindReceipts(
+            @NotNull @Valid List<T> requests
+    );
+
+    /**
      * Cancel a {@link ReceivingOrder}.
      *
      * @param pKey The synthetic persistent key

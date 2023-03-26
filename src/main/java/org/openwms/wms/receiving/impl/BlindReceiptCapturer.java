@@ -20,23 +20,19 @@ import org.springframework.plugin.core.Plugin;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 /**
- * A ReceivingOrderCapturer is responsible to capture receipt goods in its particular flavor.
+ * A BlindReceiptCapturer is able to actually captures unexpected material (Blind Receipts) at Goods-In.
  *
  * @author Heiko Scherrer
  * @see T The flavor or goods receipt capturing
  */
-public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plugin<CaptureRequestVO> {
+public interface BlindReceiptCapturer<T extends CaptureRequestVO> extends Plugin<CaptureRequestVO> {
 
     /**
-     * Capture received goods to a suitable {@code ReceivingOrderPosition}.
+     * Capture received goods without a reference to a {@code ReceivingOrderPosition}.
      *
-     * @param pKey The persistent identifier of the ReceivingOrder if present it is a capturing of an {@literal Expected Receipt} otherwise
-     * it is a {@literal Blind Receipt}.
      * @param request Particular capturing detail information used to perform the capturing process
-     * @return The identified and updated ReceivingOrder instance, in case of {@literal Expected Receipt}s
      */
-    Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull T request);
+    @NotNull void capture(@Valid @NotNull T request);
 }

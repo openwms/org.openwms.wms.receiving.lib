@@ -38,13 +38,14 @@ owms:
     url: http://user:sa@localhost:8761
     zone: ${owms.eureka.url}/eureka/
   srv:
+    hostname: localhost
     prefix: common
     protocol: http
-    hostname: localhost
   receiving:
-    initial-location-id: EXTERN
     create-tu-on-expected-tu-receipt: true
-
+    initial-location-id: EXTERN
+    blind-receipts:
+      allowed: true
 server:
   port: ${PORT:8141}
 

@@ -88,6 +88,14 @@ public class ReceivingController extends AbstractWebController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(value = "/v1/capture", produces = MEDIA_TYPE)
+    public ResponseEntity<Void> captureBlindReceipt(
+            @Valid @RequestBody List<CaptureRequestVO> requests) {
+
+        service.captureBlindReceipts(requests);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping(value = "/v1/receiving-orders/{pKey}/complete", produces = MEDIA_TYPE)
     public ResponseEntity<ReceivingOrderVO> completeOrder(
             @PathVariable("pKey") String pKey) {

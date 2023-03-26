@@ -16,12 +16,15 @@
 package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.ameba.annotation.Measured;
+import org.ameba.i18n.Translator;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.spi.common.transport.CommonTransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import static org.openwms.wms.receiving.ReceivingMessages.LOCATION_ID_NOT_GIVEN;
 
 /**
  * A TransportUnitApiFallback.
@@ -34,9 +37,11 @@ class TransportUnitApiFallback implements TransportUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitApiFallback.class);
     private final CommonTransportUnitApi commonTransportUnitApi;
+    private final Translator translator;
 
-    TransportUnitApiFallback(CommonTransportUnitApi commonTransportUnitApi) {
+    TransportUnitApiFallback(CommonTransportUnitApi commonTransportUnitApi, Translator translator) {
         this.commonTransportUnitApi = commonTransportUnitApi;
+        this.translator = translator;
     }
 
     /**
@@ -48,5 +53,19 @@ class TransportUnitApiFallback implements TransportUnitApi {
         LOGGER.warn("TransportUnitApi not available or took too long, placing a command to move TransportUnit [{}] to [{}] afterwards",
                 transportUnitBK, newLocationErpCode);
         commonTransportUnitApi.moveTU(transportUnitBK, newLocationErpCode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public void createTU(TransportUnitVO tu) {
+        LOGGER.warn("TransportUnitApi not available or took too long, placing a command to create TransportUnit [{}] on [{}]",
+                tu.getTransportUnitBK(), tu.getActualLocation().getLocationId());
+        if (!tu.getActualLocation().hasLocationId()) {
+            throw new IllegalArgumentException(translator.translate(LOCATION_ID_NOT_GIVEN));
+        }
+        commonTransportUnitApi.createTU(tu.getTransportUnitBK(), tu.getActualLocation().getLocationId(), tu.getTransportUnitType(), false);
     }
 }

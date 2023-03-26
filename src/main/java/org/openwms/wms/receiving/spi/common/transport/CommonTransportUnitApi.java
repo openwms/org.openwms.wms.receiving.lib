@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.spi.common.transport;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -38,5 +39,22 @@ public interface CommonTransportUnitApi {
     Object moveTU(
             @RequestParam("bk") String transportUnitBK,
             @RequestParam("newLocation") String newLocation
+    );
+
+    /**
+     * Create a {@code TransportUnit} with the given (minimal) information.
+     *
+     * @param transportUnitBK The unique (physical) identifier
+     * @param actualLocation The current location of the {@code TransportUnit}
+     * @param tut The type ({@code TransportUnitType}
+     * @param strict If the {@code TransportUnit} already exists and this is {@code true} an error is thrown. If
+     * {@code false}, the implementation exists silently (default)
+     */
+    @PostMapping(value = "/v1/transport-units", params = {"bk", "actualLocation", "tut"})
+    void createTU(
+            @RequestParam("bk") String transportUnitBK,
+            @RequestParam("actualLocation") String actualLocation,
+            @RequestParam("tut") String tut,
+            @RequestParam(value = "strict", required = false) Boolean strict
     );
 }

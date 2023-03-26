@@ -19,9 +19,11 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
+import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
+import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
@@ -31,9 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.openwms.wms.order.OrderState.CREATED;
 import static org.openwms.wms.order.OrderState.PROCESSING;
@@ -41,7 +44,7 @@ import static org.openwms.wms.receiving.ReceivingMessages.PRODUCT_NOT_FOUND;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 
 /**
- * A QuantityCaptureOnLocationRequestCapturer.
+ * A QuantityCaptureOnLocationRequestCapturer accepts capturing inbound goods on a Location.
  *
  * @author Heiko Scherrer
  */
@@ -64,22 +67,63 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
      */
     @Measured
     @Override
-    public @NotNull ReceivingOrder capture(@NotBlank String pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
+    public Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
+        var product = getProduct(request);
+        if (pKey.isPresent()) {
+            return handleExpectedReceipt(
+                    pKey.get(),
+                    request.getQuantityReceived(),
+                    product,
+                    v -> createPackagingUnitsForDemand(request, product)
+            );
+        } else {
+            createPackagingUnitsForDemand(request, product);
+            return Optional.empty();
+        }
+    }
+
+    protected Product getProduct(QuantityCaptureOnLocationRequestVO request) {
         final var skuExistingProduct = request.hasUomRelation()
-                ? Optional.ofNullable(productApi.findProductByProductUnitPkey(request.getUomRelation().pKey))
-                .orElseThrow(() -> new NotFoundException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()}, request.getProduct().getSku())).getSku()
-                : productService.findBySku(request.getProduct().getSku())
-                .orElseThrow(() -> new NotFoundException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()}, request.getProduct().getSku())).getSku();
-        final var quantityReceived = request.getQuantityReceived();
-        var receivingOrder = getOrder(pKey);
+                ? Optional.ofNullable(productApi.findProductByProductUnitPkey(request.getUomRelation().pKey)).orElseThrow(ifNotFound(request)).getSku()
+                : productService.findBySku(request.getProduct().getSku()).orElseThrow(ifNotFound(request)).getSku();
+        return super.getProduct(skuExistingProduct);
+    }
+
+    private Supplier<NotFoundException> ifNotFound(QuantityCaptureOnLocationRequestVO request) {
+        return () -> new NotFoundException(translator, PRODUCT_NOT_FOUND, new String[]{request.getProduct().getSku()},
+                request.getProduct().getSku());
+    }
+
+    private void createPackagingUnitsForDemand(QuantityCaptureOnLocationRequestVO request, Product product) {
         final var erpCode = request.getActualLocation().getErpCode();
         final var details = request.getDetails();
+        final var quantityReceived = request.getQuantityReceived();
+        // multi packs
+        var pu = request.hasUomRelation()
+                ? new PackagingUnitVO(request.getUomRelation(), quantityReceived)
+                : new PackagingUnitVO(ProductVO.newBuilder().sku(request.getProduct().getSku()).build(), quantityReceived);
+        pu.setActualLocation(new LocationVO(erpCode));
+        pu.setDetails(details);
+        pu.setSerialNumber(request.getSerialNumber());
+        pu.setLotId(request.getLotId());
+        pu.setProduct(ProductVO.newBuilder().sku(product.getSku()).build());
+        pu.setExpiresAt(request.getExpiresAt());
+        pu.setProductionDate(request.getProductionDate());
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
+        }
+        packagingUnitApi.createOnLocation(pu);
+    }
+
+    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, Measurable quantityReceived, Product existingProduct,
+            Consumer<Void> func) {
+        var receivingOrder = getOrder(pKey);
         var openPositions = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
-                .filter(p -> p.getProduct().getSku().equals(skuExistingProduct))
+                .filter(p -> p.getProduct().getSku().equals(existingProduct.getSku()))
                 .toList();
 
         if (openPositions.isEmpty()) {
@@ -97,28 +141,14 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
-        // multi packs
-        var pu = request.hasUomRelation()
-                ? new PackagingUnitVO(request.getUomRelation(), quantityReceived)
-                : new PackagingUnitVO(ProductVO.newBuilder().sku(request.getProduct().getSku()).build(), quantityReceived);
-        pu.setActualLocation(new LocationVO(erpCode));
-        pu.setDetails(details);
-        pu.setSerialNumber(request.getSerialNumber());
-        pu.setLotId(request.getLotId());
-        pu.setProduct(ProductVO.newBuilder().sku(skuExistingProduct).build());
-        pu.setExpiresAt(request.getExpiresAt());
-        pu.setProductionDate(request.getProductionDate());
+        func.accept(null);
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
-        }
-        packagingUnitApi.createOnLocation(pu);
         openPosition.get().addQuantityReceived(quantityReceived);
         receivingOrder = repository.save(receivingOrder);
-        return receivingOrder;
+        return Optional.of(receivingOrder);
     }
 
-    @Override
+        @Override
     public boolean supports(CaptureRequestVO request) {
         return request instanceof QuantityCaptureOnLocationRequestVO;
     }

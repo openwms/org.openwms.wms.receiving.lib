@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.spi.wms.transport;
+package org.openwms.wms.receiving.spi.wms.location;
 
 import org.openwms.core.SpringProfiles;
 import org.slf4j.Logger;
@@ -21,30 +21,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
- * A NoOpSyncTransportUnitApiImpl.
+ * A NoOpSyncLocationApiImpl.
  *
  * @author Heiko Scherrer
  */
 @Profile("!" + SpringProfiles.DISTRIBUTED)
 @Component
-class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
+class NoOpSyncLocationApiImpl implements SyncLocationApi {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncTransportUnitApiImpl.class);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void moveTU(String transportUnitBK, String newLocationErpCode) {
-        LOGGER.error("Not implemented yet");
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpSyncLocationApiImpl.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void createTU(TransportUnitVO tu) {
+    public Optional<LocationVO> findByErpCodeOpt(String erpCode) {
         LOGGER.error("Not implemented yet");
+        return Optional.empty();
     }
 }

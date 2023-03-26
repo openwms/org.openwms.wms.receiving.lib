@@ -17,6 +17,8 @@ package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -37,5 +39,15 @@ interface TransportUnitApi {
     void moveTU(
             @RequestParam("bk") String transportUnitBK,
             @RequestParam("newLocation") String newLocationErpCode
+    );
+
+    /**
+     * Create a {@code TransportUnit}.
+     *
+     * @param tu Detailed information of the {@code TransportUnit} to create
+     */
+    @PostMapping("/v1/transport-units")
+    void createTU(
+            @RequestBody TransportUnitVO tu
     );
 }

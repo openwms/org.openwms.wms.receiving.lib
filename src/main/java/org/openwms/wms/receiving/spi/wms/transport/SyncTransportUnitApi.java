@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.spi.wms.transport;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * A SyncTransportUnitApi is the public API to manage {@code TransportUnits} in a synchronous way.
@@ -31,4 +32,11 @@ public interface SyncTransportUnitApi {
      * @param newLocationErpCode The ERP code of the {@code Location} to move to
      */
     void moveTU(@NotBlank String transportUnitBK, @NotBlank String newLocationErpCode);
+
+    /**
+     * Create a {@code TransportUnit}.
+     *
+     * @param tu Detailed information of the {@code TransportUnit} to create
+     */
+    void createTU(@NotNull TransportUnitVO tu);
 }
