@@ -73,7 +73,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     private Measurable baseUnit;
 
     @NotNull
-    @Column(name = "OVERBOOKING_ALLOWED", nullable = false)
+    @Column(name = "C_OVERBOOKING_ALLOWED", nullable = false)
     private boolean overbookingAllowed;
 
     /** Dear JPA ... */

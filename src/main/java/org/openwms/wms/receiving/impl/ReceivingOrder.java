@@ -88,7 +88,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     private int priority;
 
     /** Latest date of this order can be processed. */
-    @Column(name = "C_LATEST_DUE", columnDefinition = "timestamp(0)")
+    @Column(name = "C_LATEST_DUE_AT", columnDefinition = "timestamp(0)")
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime latestDueDate;
 
@@ -98,22 +98,22 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     private ZonedDateTime expectedReceiptDate;
 
     /** Earliest date the order can be started. */
-    @Column(name = "C_START_EARLIEST", columnDefinition = "timestamp(0)")
+    @Column(name = "C_START_EARLIEST_AT", columnDefinition = "timestamp(0)")
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime earliestStartDate;
 
     /** When the order has been started. */
-    @Column(name = "C_START_DATE", columnDefinition = "timestamp(0)")
+    @Column(name = "C_STARTED_AT", columnDefinition = "timestamp(0)")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDate;
 
     /** When the order has been finished. */
-    @Column(name = "C_END_DATE", columnDefinition = "timestamp(0)")
+    @Column(name = "C_ENDED_AT", columnDefinition = "timestamp(0)")
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime endDate;
 
     /** Date when the order should be allocated. */
-    @Column(name = "C_NEXT_ALLOC", columnDefinition = "timestamp(0)")
+    @Column(name = "C_NEXT_ALLOC_AT", columnDefinition = "timestamp(0)")
     @DateTimeFormat(pattern = DATE_TIME_WITH_TIMEZONE)
     private ZonedDateTime nextAllocationDate;
 
