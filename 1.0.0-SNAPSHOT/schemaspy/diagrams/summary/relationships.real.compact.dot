@@ -39,7 +39,7 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="c_order_pk" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_order_pk</TD></TR>
       <TR><TD PORT="c_key" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_key</TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="tables/wms_rec_order_detail.html"
     tooltip="wms_rec_order_detail"

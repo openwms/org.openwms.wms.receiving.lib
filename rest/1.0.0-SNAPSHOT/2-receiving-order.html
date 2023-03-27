@@ -603,13 +603,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/a43a00e8-8531-4fd7-be11-efa366cda12c/
+Location: http://localhost:8080/v1/receiving-orders/3908adc1-bf62-42e9-8b70-9d2d05c0e247/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 796
+Content-Length: 820
 
 {
   "ol" : 0,
-  "pKey" : "a43a00e8-8531-4fd7-be11-efa366cda12c",
+  "pKey" : "3908adc1-bf62-42e9-8b70-9d2d05c0e247",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -622,13 +622,14 @@ Content-Length: 796
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9953524018647713"
+      "foreignPKey" : "0.7379253312421241"
     },
     "state" : "CREATED",
     "details" : {
@@ -674,7 +675,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1943
+Content-Length: 2083
 
 {
   "ol" : 0,
@@ -691,13 +692,14 @@ Content-Length: 1943
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4243299623831476"
+      "foreignPKey" : "0.7711895751768765"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -715,13 +717,14 @@ Content-Length: 1943
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.41520205157138435"
+      "foreignPKey" : "0.6247091922166064"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -735,7 +738,11 @@ Content-Length: 1943
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 }</code></pre>
 </div>
 </div>
@@ -767,6 +774,11 @@ Content-Length: 1943
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>state</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The current state of the ReceivingOrder</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>details</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stores arbitrary detail information according to the ReceivingOrder</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>positions[].positionId</code></p></td>
@@ -877,7 +889,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1942
+Content-Length: 2084
 
 {
   "ol" : 0,
@@ -894,13 +906,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9280872518551533"
+      "foreignPKey" : "0.6814229496534381"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -918,13 +931,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9888198394430248"
+      "foreignPKey" : "0.25987009231821645"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -938,7 +952,11 @@ Content-Length: 1942
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 }</code></pre>
 </div>
 </div>
@@ -965,7 +983,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1947
+Content-Length: 2088
 
 [ {
   "ol" : 0,
@@ -982,13 +1000,14 @@ Content-Length: 1947
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.16673292917307236"
+      "foreignPKey" : "0.22665412938263785"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1006,13 +1025,14 @@ Content-Length: 1947
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9423672625889452"
+      "foreignPKey" : "0.1622537506397137"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1026,7 +1046,11 @@ Content-Length: 1947
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 } ]</code></pre>
 </div>
 </div>
@@ -1039,7 +1063,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/94984c21-de34-4438-a181-5e7d9a77ada0/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/f348fcd3-d53c-4665-890e-84bdd4330110/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1061,7 +1085,7 @@ Content-Length: 111
 
 {
   "ol" : 0,
-  "pKey" : "94984c21-de34-4438-a181-5e7d9a77ada0",
+  "pKey" : "f348fcd3-d53c-4665-890e-84bdd4330110",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1203,7 +1227,7 @@ and the items are booked to the <code>LoadUnit</code> on top of the `TransportUn
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1942
+Content-Length: 2084
 
 {
   "ol" : 0,
@@ -1220,13 +1244,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6678399256605942"
+      "foreignPKey" : "0.5699485604855852"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1244,13 +1269,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5197250686209571"
+      "foreignPKey" : "0.21545716609450238"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1264,7 +1290,11 @@ Content-Length: 1942
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 }</code></pre>
 </div>
 </div>
@@ -1378,7 +1408,7 @@ and the items are booked directly onto the given <code>Location</code>. The serv
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1942
+Content-Length: 2083
 
 {
   "ol" : 0,
@@ -1395,13 +1425,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4896876262754617"
+      "foreignPKey" : "0.2590996429439514"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1419,13 +1450,14 @@ Content-Length: 1942
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.8072084645573909"
+      "foreignPKey" : "0.8032419723336588"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1439,7 +1471,11 @@ Content-Length: 1942
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 }</code></pre>
 </div>
 </div>
@@ -1547,7 +1583,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 1944
+Content-Length: 2085
 
 {
   "ol" : 0,
@@ -1564,13 +1600,14 @@ Content-Length: 1944
     },
     "product" : {
       "sku" : "C1",
+      "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7328995792622308"
+      "foreignPKey" : "0.0663565265695496"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1588,13 +1625,14 @@ Content-Length: 1944
     },
     "product" : {
       "sku" : "C2",
+      "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7656227207677375"
+      "foreignPKey" : "0.7979113117486563"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1608,7 +1646,11 @@ Content-Length: 1944
     "transportUnitBK" : "00000000000000004712",
     "transportUnitTypeName" : "EURO",
     "state" : "COMPLETED"
-  } ]
+  } ],
+  "details" : {
+    "Supplier name" : "Bangee Ltd. Hongkong",
+    "Supplier no" : "182"
+  }
 }</code></pre>
 </div>
 </div>
@@ -1636,7 +1678,7 @@ Content-Length: 195
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-26 22:21:28 UTC
+Last updated 2023-03-26 23:41:14 UTC
 </div>
 </div>
 </body>
