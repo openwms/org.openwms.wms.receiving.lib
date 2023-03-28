@@ -603,13 +603,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/3908adc1-bf62-42e9-8b70-9d2d05c0e247/
+Location: http://localhost:8080/v1/receiving-orders/1d55f1c9-0522-4be7-8d8e-ceae445ed787/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 820
+Content-Length: 821
 
 {
   "ol" : 0,
-  "pKey" : "3908adc1-bf62-42e9-8b70-9d2d05c0e247",
+  "pKey" : "1d55f1c9-0522-4be7-8d8e-ceae445ed787",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -629,7 +629,7 @@ Content-Length: 820
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7379253312421241"
+      "foreignPKey" : "0.26174888705894617"
     },
     "state" : "CREATED",
     "details" : {
@@ -699,7 +699,7 @@ Content-Length: 2083
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7711895751768765"
+      "foreignPKey" : "0.7744058215866296"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -724,7 +724,7 @@ Content-Length: 2083
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6247091922166064"
+      "foreignPKey" : "0.8319150962751642"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -889,7 +889,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2084
+Content-Length: 2085
 
 {
   "ol" : 0,
@@ -913,7 +913,7 @@ Content-Length: 2084
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6814229496534381"
+      "foreignPKey" : "0.9738590726726706"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -938,7 +938,7 @@ Content-Length: 2084
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.25987009231821645"
+      "foreignPKey" : "0.008078493608888238"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1007,7 +1007,7 @@ Content-Length: 2088
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.22665412938263785"
+      "foreignPKey" : "0.9692006528277126"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1032,7 +1032,7 @@ Content-Length: 2088
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.1622537506397137"
+      "foreignPKey" : "0.12207845481456658"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1063,7 +1063,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/f348fcd3-d53c-4665-890e-84bdd4330110/ HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /v1/receiving-orders/6c34edc6-be4e-4b9d-98e6-c1fc84d7670a/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1085,7 +1085,7 @@ Content-Length: 111
 
 {
   "ol" : 0,
-  "pKey" : "f348fcd3-d53c-4665-890e-84bdd4330110",
+  "pKey" : "6c34edc6-be4e-4b9d-98e6-c1fc84d7670a",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1111,38 +1111,38 @@ Content-Length: 272
 </div>
 </div>
 <div class="sect2">
-<h3 id="resources-receiving-order-capture">Capture a Receiving</h3>
+<h3 id="resources-receiving-order-capture">Receiving Goods</h3>
 <div class="paragraph">
 <p>When products arrive at the warehouse they are usually announced with a <code>ReceivingOrder</code> and its <code>ReceivingOrderPositions</code> beforehand. This
 is called an expected receipt. Also unexpected receipts may occur, any unplanned material that needs to be stored in the warehouse without
-any previously received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more of
-a product that was previously announced in a <code>ReceivingOrderPosition</code>. Multiple capturing types exists:</p>
+any previous received order information. Unexpected receipts may also happen as part of an expected receipt when a supplier ships more items
+than previously announced in a <code>ReceivingOrderPosition</code>. Multiple types of capturing exists for expected and blind receipts:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Expected <code>Product</code> are captured on a <code>LoadUnit</code></p>
+<p>A <code>Product</code> is captured on a <code>LoadUnit</code></p>
 </li>
 <li>
-<p>Expected <code>Product</code> are captured on a <code>Location</code></p>
+<p>A <code>Product</code> is captured on a <code>Location</code></p>
 </li>
 <li>
-<p>Expected <code>TransportUnits</code> without <code>Product</code> information are captured on a <code>Location</code></p>
+<p>A <code>TransportUnit</code> without <code>Product</code> information is captured on a <code>Location</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The capturing process happens at the Goods In area of the warehouse, where material arrives and is identified (captured). The identified
-articles or <code>TransportUnits</code> are assigned to <code>ReceivingOrderPositions</code>.</p>
+<p>The capturing process happens at the Goods In area of the warehouse, where material arrives and is identified (captured). In case of
+expected receipts, the identified items or <code>TransportUnits</code> are assigned to <code>ReceivingOrderPositions</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="_capture_an_expected_product_on_a_loadunit">Capture an expected Product on a LoadUnit</h4>
+<h4 id="_expected_receipt_capture_a_product_in_a_loadunit">Expected Receipt: Capture a Product in a LoadUnit</h4>
 <div class="paragraph">
 <p>The received <code>Product</code> is identified and assigned to an existing <code>ReceivingOrderPosition</code>. As part of the capturing process the items are
-basically placed on a <code>LoadUnit</code> on top of a <code>TransportUnit</code>.</p>
+basically placed in a <code>LoadUnit</code> on top of a <code>TransportUnit</code>.</p>
 </div>
 <div class="paragraph">
-<p>To capture an amount of a <code>Product</code> in the context of a <code>ReceivingOrder</code> the caller sends a <code>POST</code> request to the server with the
+<p>To capture the amount of a <code>Product</code> in the context of a <code>ReceivingOrder</code> the caller sends a <code>POST</code> request to the server with the
 identifying <code>pKey</code> of the <code>ReceivingOrder</code> as part of the URI:</p>
 </div>
 <div class="listingblock">
@@ -1221,13 +1221,13 @@ Host: localhost:8080
 </table>
 <div class="paragraph">
 <p>If an open and not satisfied <code>ReceivingOrderPosition</code> with the captured <code>Product</code> exists the captured quantity is assigned to that position
-and the items are booked to the <code>LoadUnit</code> on top of the `TransportUnit. The server responds with success:</p>
+and the items are created in the <code>LoadUnit</code> on top of the <code>TransportUnit. The server responds with the updated `ReceivingOrder</code> instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2084
+Content-Length: 2083
 
 {
   "ol" : 0,
@@ -1251,7 +1251,7 @@ Content-Length: 2084
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.5699485604855852"
+      "foreignPKey" : "0.5866446542953305"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1276,7 +1276,7 @@ Content-Length: 2084
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.21545716609450238"
+      "foreignPKey" : "0.2087549989584936"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1299,8 +1299,8 @@ Content-Length: 2084
 </div>
 </div>
 <div class="paragraph">
-<p>If no open <code>ReceivingOrderPosition</code> exists in the <code>ReceivingOrder</code> or the <code>Product</code> does not fit to the list of expected <code>Products</code> and
-overbooking an expected <code>ReceivingOrderPosition</code> is not allowed, the server does not allow to receive the goods and responds with an error:</p>
+<p>If no open <code>ReceivingOrderPosition</code> exists in the <code>ReceivingOrder</code> or the <code>Product</code> does match the list of expected <code>Products</code> and
+overbooking of that kind of <code>Product</code> is not allowed, the server prohibits the goods receipt and responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1316,19 +1316,19 @@ Content-Length: 223
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Overbooking</strong> means: The Receiving Service allows <code>Overbooking</code> or not. In case <code>Overbooking</code> is allowed, the supplier can ship a higher
-quantity than previously announced in the <code>ReceivingOrderPosition</code>. If <code>Overbooking</code> is forbidden, the server raises an exception in case of
-more is received than expected. This setting is currently configured service wide and not per <code>Product</code>.</p>
+<p><strong>Overbooking</strong> means: In case <code>Overbooking</code> is allowed for a <code>Product</code>, the supplier can ship a higher amount of that <code>Product</code> than
+previously announced in the <code>ReceivingOrderPosition</code>. If <code>Overbooking</code> is forbidden, the server raises an exception. Overbooking can be
+configured per <code>Product</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_capture_an_expected_product_on_a_location">Capture an expected Product on a Location</h4>
+<h4 id="_expected_receipt_capture_an_expected_product_on_a_location">Expected Receipt: Capture an expected Product on a Location</h4>
 <div class="paragraph">
 <p>The received <code>Product</code> is identified and assigned to an existing <code>ReceivingOrderPosition</code>. As part of the capturing process the items are
 placed on a <code>Location</code> directly without any carrier like a <code>LoadUnit</code> or a <code>TransportUnit</code>.</p>
 </div>
 <div class="paragraph">
-<p>To capture an amount of a <code>Product</code> in the context of a <code>ReceivingOrder</code> the caller sends a <code>POST</code> request to the server with the
+<p>To capture the amount of a <code>Product</code> in the context of a <code>ReceivingOrder</code> the caller sends a <code>POST</code> request to the server with the
 identifying <code>pKey</code> of the <code>ReceivingOrder</code> as part of the URI:</p>
 </div>
 <div class="listingblock">
@@ -1384,11 +1384,6 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">The Location where the material has been moved to</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].actualLocation.erpCode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the Location</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].quantity</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The captured (received) quantity</p></td>
@@ -1402,13 +1397,13 @@ Host: localhost:8080
 </table>
 <div class="paragraph">
 <p>If an open and not satisfied <code>ReceivingOrderPosition</code> with the captured <code>Product</code> exists the captured quantity is assigned to that position
-and the items are booked directly onto the given <code>Location</code>. The server responds with success:</p>
+and the items are directly placed onto the given <code>Location</code>. The server responds with the updated <code>ReceivingOrder</code> instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2083
+Content-Length: 2082
 
 {
   "ol" : 0,
@@ -1432,7 +1427,7 @@ Content-Length: 2083
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.2590996429439514"
+      "foreignPKey" : "0.382991117210981"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1457,7 +1452,7 @@ Content-Length: 2083
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.8032419723336588"
+      "foreignPKey" : "0.6766869009499281"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1481,7 +1476,7 @@ Content-Length: 2083
 </div>
 <div class="paragraph">
 <p>If no open <code>ReceivingOrderPosition</code> exists in the <code>ReceivingOrder</code> or the <code>Product</code> does not fit to the list of expected <code>Products</code>, the
-server does not allow to receive the article and responds with an error:</p>
+server prohibits the goods receipt and responds with an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1498,14 +1493,14 @@ Content-Length: 223
 </div>
 </div>
 <div class="sect3">
-<h4 id="_capture_an_expected_transportunit_on_a_location">Capture an expected TransportUnit on a Location</h4>
+<h4 id="_expected_receipt_capture_an_expected_transportunit_on_a_location">Expected Receipt: Capture an expected TransportUnit on a Location</h4>
 <div class="paragraph">
-<p>It may happen that an external supplier ships back existing and empty <code>TransportUnits</code> to the warehouse. In this case, the announced
-<code>ReceivingOrder</code> contains <code>ReceivingOrderPositions</code> that point to the expected <code>TransportUnit</code>.</p>
+<p>It may happen that an external supplier ships back existing <code>TransportUnits</code> to the warehouse. In this case, the announced <code>ReceivingOrder</code>
+contains <code>ReceivingOrderPositions</code> that point to the expected <code>TransportUnit</code>.</p>
 </div>
 <div class="paragraph">
-<p>To capture an received <code>TransportUnit</code> the operator identifies (e.g. scans) the <code>TransportUnit</code> and the <code>LoadUnit</code> on top (optional) and the
-client device sends a <code>POST</code> request to the server with the identifying <code>pKey</code> of the <code>ReceivingOrder</code> as part of the URI:</p>
+<p>To capture the received <code>TransportUnit</code> the operator identifies (e.g. scans) the <code>TransportUnit</code> and the <code>LoadUnit</code> on top (optional) and
+the client device sends a <code>POST</code> request to the server with the identifying <code>pKey</code> of the <code>ReceivingOrder</code> as part of the URI:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1576,14 +1571,15 @@ Host: localhost:8080
 </tbody>
 </table>
 <div class="paragraph">
-<p>If an open and not satisfied position with the expected <code>TransportUnit</code> exists the server responds with success and the state of the
-<code>ReceivingOrderPosition</code> changes to <code>COMPLETED</code>:</p>
+<p>If an open and not satisfied position with the expected <code>TransportUnit</code> exists the <code>ReceivingOrderPosition</code> is completely captured, means
+all expected items are created, the state of the <code>ReceivingOrderPosition</code> has changed to <code>COMPLETED</code> and the server responds with the
+updated <code>ReceivingOrder</code> instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2085
+Content-Length: 2086
 
 {
   "ol" : 0,
@@ -1607,7 +1603,7 @@ Content-Length: 2085
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.0663565265695496"
+      "foreignPKey" : "0.42218192528574505"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1632,7 +1628,7 @@ Content-Length: 2085
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7979113117486563"
+      "foreignPKey" : "0.5905252778983758"
     },
     "state" : "CREATED",
     "quantityReceived" : {
@@ -1655,7 +1651,7 @@ Content-Length: 2085
 </div>
 </div>
 <div class="paragraph">
-<p>If no open <code>ReceivingOrderPosition</code> with the captured <code>TransportUnit</code> exists in the <code>ReceivingOrder</code>, the server does not allow to receive
+<p>If no open <code>ReceivingOrderPosition</code> with the captured <code>TransportUnit</code> in the <code>ReceivingOrder</code> exists, the server prohibits the receipt of
 the <code>TransportUnit</code> and responds with an error:</p>
 </div>
 <div class="listingblock">
@@ -1672,13 +1668,263 @@ Content-Length: 195
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_blind_receipt_capture_a_product_on_a_loadunit">Blind Receipt: Capture a Product on a LoadUnit</h4>
+<div class="paragraph">
+<p>Items of a <code>Product</code> are received, without any ASN (Advanced Shipping Notice). Therefor this receipt cannot be captured and validated
+against a <code>ReceivingOrder</code>. The received items are created and put into a <code>LoadUnit</code> on top of a <code>TransportUnit</code>.</p>
+</div>
+<div class="paragraph">
+<p>Similar to an expected receipt the caller sends a <code>POST</code> request to the server but without any <code>ReceivingOrder</code> reference in the URI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/capture HTTP/1.1
+Content-Type: application/json
+Content-Length: 357
+Host: localhost:8080
+
+[ {
+  "@class" : "org.openwms.wms.receiving.api.QuantityCaptureRequestVO",
+  "transportUnitBK" : "4711",
+  "loadUnitLabel" : "1",
+  "loadUnitType" : "EURO",
+  "quantity" : {
+    "@class" : "org.openwms.core.units.api.Piece",
+    "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+    "magnitude" : 1
+  },
+  "product" : {
+    "sku" : "C1"
+  }
+} ]</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts multiple capture requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].@class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of capturing</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].transportUnitBK</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the TransportUnit where the material has been moved to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].loadUnitLabel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The identifier of the LoadUnit where the material has been put in</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].loadUnitType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) The type of the LoadUnit, in case it must be created</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The captured (received) quantity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].product</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The captured (received) Product</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If successful the server responds with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_blind_receipt_capture_a_product_on_a_location">Blind Receipt: Capture a Product on a Location</h4>
+<div class="paragraph">
+<p>Items of a <code>Product</code> are received, without any ASN (Advanced Shipping Notice). Therefor this receipt cannot be captured and validated
+against a <code>ReceivingOrder</code>. The received items are placed on a <code>Location</code> directly without any carrier like a <code>LoadUnit</code> or a <code>TransportUnit</code>.</p>
+</div>
+<div class="paragraph">
+<p>Similar to an expected receipt the caller sends a <code>POST</code> request to the server but without any <code>ReceivingOrder</code> reference reference in the
+URI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/capture HTTP/1.1
+Content-Type: application/json
+Content-Length: 336
+Host: localhost:8080
+
+[ {
+  "@class" : "org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO",
+  "actualLocation" : {
+    "erpCode" : "WE01"
+  },
+  "quantity" : {
+    "@class" : "org.openwms.core.units.api.Piece",
+    "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
+    "magnitude" : 1
+  },
+  "product" : {
+    "sku" : "C1"
+  }
+} ]</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts multiple capture requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].@class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of capturing</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].actualLocation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Location where the material has been moved to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].quantity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The captured (received) quantity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].product</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The captured (received) Product</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If successful the server responds with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_blind_receipt_capture_an_unexpected_transportunit_on_a_location">Blind Receipt: Capture an unexpected TransportUnit on a Location</h4>
+<div class="paragraph">
+<p>It may happen that an external supplier ships back empty <code>TransportUnits</code> to the warehouse without any ASN (Advanced Shipping Notice)
+information. To capture and create those <code>TransportUnits</code> in the system the identifier, type and current <code>Location</code> of the <code>TransportUnit</code>
+must be passed to the API.</p>
+</div>
+<div class="paragraph">
+<p>The client device sends a <code>POST</code> request to the server with the mandatory <code>TransportUnit</code> data in the request body:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/capture HTTP/1.1
+Content-Type: application/json
+Content-Length: 183
+Host: localhost:8080
+
+[ {
+  "@class" : "org.openwms.wms.receiving.api.TUCaptureRequestVO",
+  "transportUnitBK" : "00000000000000004712",
+  "actualLocationErpCode" : "WE01",
+  "transportUnitType" : "FP"
+} ]</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts multiple capture requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].@class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of capturing</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].transportUnitBK</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the actual captured TransportUnit where the goods are placed on</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].actualLocationErpCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The business key of the Location</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].transportUnitType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of TransportUnit in case it needs to be created</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If the <code>TransportUnit</code> has been created successfully the server responds with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-26 23:41:14 UTC
+Last updated 2023-03-28 19:19:44 UTC
 </div>
 </div>
 </body>
