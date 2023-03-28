@@ -18,7 +18,7 @@
     <logger name="org.junit" level="OFF"/>
     <logger name="org.openwms" level="DEBUG"/>
 
-    <logger name="PRESENTATION_LAYER_EXCEPTION" level="OFF" additivity="false">
+    <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="SERVICE_LAYER_EXCEPTION" level="OFF" additivity="false">

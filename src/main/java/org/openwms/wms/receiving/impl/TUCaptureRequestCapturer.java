@@ -80,19 +80,19 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
         if (!request.hasTransportUnitType()) {
             throw new CapturingException(translator, TU_TYPE_NOT_GIVEN, new String[0]);
         }
-        var locationOpt = locationApi.findByErpCodeOpt(request.getActualLocationErpCode());
+        var locationOpt = locationApi.findByErpCodeOpt(request.getActualLocation().getErpCode());
         var location = locationOpt.map(locationVO -> LocationVO.of(locationVO.getLocationId()))
                 .orElseGet(LocationVO::new); // Handle Locations without locationId later
-        location.setErpCode(request.getActualLocationErpCode());
-        var tu = new TransportUnitVO(request.getTransportUnitId(), location, request.getTransportUnitType());
+        location.setErpCode(request.getActualLocation().getErpCode());
+        var tu = new TransportUnitVO(request.getTransportUnit().getTransportUnitId(), location, request.getTransportUnit().getTransportUnitType());
         transportUnitApi.createTU(tu);
         return Optional.empty();
     }
 
     private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, TUCaptureRequestVO request) {
         var receivingOrder = getOrder(pKey);
-        final var transportUnitBK = request.getTransportUnitId();
-        final var actualLocationErpCode = request.getActualLocationErpCode();
+        final var transportUnitBK = request.getTransportUnit().getTransportUnitId();
+        final var actualLocationErpCode = request.getActualLocation().getErpCode();
         Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
                 .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
                 .filter(ReceivingTransportUnitOrderPosition.class::isInstance)

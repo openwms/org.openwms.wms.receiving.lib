@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.wms.receiving.ValidationGroups;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -30,10 +31,10 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The business key of the actual captured {@code TransportUnit} where the goods are placed on. */
-    @JsonProperty("transportUnitBK")
-    @NotBlank(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
-    private String transportUnitId;
+    /** The actual captured {@code TransportUnit} where the goods are located on. */
+    @JsonProperty("transportUnit")
+    @NotNull(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
+    private TransportUnitVO transportUnit;
 
     /** The unique identifier if the {@code LoadUnit} where the goods are stored in. */
     @JsonProperty("loadUnitLabel")
@@ -49,22 +50,17 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String expectedTransportUnitBK;
 
-    /** The ERP code of the actual {@code Location} where the goods were received. */
-    @JsonProperty("actualLocationErpCode")
-    @NotBlank(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
-    private String actualLocationErpCode;
+    /** The {@code Location} where the captured {@code TransportUnit} is located on. */
+    @JsonProperty("actualLocation")
+    @NotNull(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
+    private LocationVO actualLocation;
 
-    /** The type of {@code TransportUnit} in case it needs to be created (optional). */
-    @JsonProperty("transportUnitType")
-    @NotBlank(groups = ValidationGroups.CreateBlindTUReceipt.class)
-    private String transportUnitType;
-
-    public String getTransportUnitId() {
-        return transportUnitId;
+    public TransportUnitVO getTransportUnit() {
+        return transportUnit;
     }
 
-    public void setTransportUnitId(String transportUnitId) {
-        this.transportUnitId = transportUnitId;
+    public void setTransportUnit(TransportUnitVO transportUnit) {
+        this.transportUnit = transportUnit;
     }
 
     public String getLoadUnitLabel() {
@@ -91,23 +87,15 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
         this.expectedTransportUnitBK = expectedTransportUnitBK;
     }
 
-    public String getActualLocationErpCode() {
-        return actualLocationErpCode;
-    }
-
-    public void setActualLocationErpCode(String actualLocationErpCode) {
-        this.actualLocationErpCode = actualLocationErpCode;
-    }
-
     public boolean hasTransportUnitType() {
-        return transportUnitType != null && !transportUnitType.isEmpty();
+        return transportUnit != null && transportUnit.getTransportUnitType() != null && !transportUnit.getTransportUnitType().isEmpty();
     }
 
-    public String getTransportUnitType() {
-        return transportUnitType;
+    public LocationVO getActualLocation() {
+        return actualLocation;
     }
 
-    public void setTransportUnitType(String transportUnitType) {
-        this.transportUnitType = transportUnitType;
+    public void setActualLocation(LocationVO actualLocation) {
+        this.actualLocation = actualLocation;
     }
 }

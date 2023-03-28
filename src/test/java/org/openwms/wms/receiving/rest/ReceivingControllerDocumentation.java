@@ -30,6 +30,7 @@ import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
+import org.openwms.wms.receiving.api.TransportUnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -335,11 +336,14 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_TUCapture_with_unexpected_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
-        vo.setTransportUnitId("00000000000000004711"); // The captured TU
+        var tu = new TransportUnitVO();
+        var actualLocation = new LocationVO("WE01"); // Where the goods have been captured
+        tu.setTransportUnitId("00000000000000004711"); // The captured TU
+        vo.setTransportUnit(tu);
         vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
         vo.setLoadUnitLabel("1"); // The LU id of the captured TU
         vo.setLoadUnitType("EURO"); // The LU type
-        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
+        vo.setActualLocation(actualLocation);
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
@@ -355,11 +359,14 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_TUCapture_with_expected_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
-        vo.setTransportUnitId("00000000000000004712"); // The captured TU
+        var tu = new TransportUnitVO();
+        tu.setTransportUnitId("00000000000000004712"); // The captured TU
+        var loc = new LocationVO("WE01"); // Where the goods have been captured
+        vo.setTransportUnit(tu);
+        vo.setActualLocation(loc);
         vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
         vo.setLoadUnitLabel("1"); // The LU id of the captured TU
         vo.setLoadUnitType("EURO"); // The LU type
-        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
@@ -375,9 +382,12 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_BlindReceipt_with_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
-        vo.setTransportUnitId("00000000000000004712"); // The captured TU
-        vo.setTransportUnitType("FP"); // The TU-Type of the captured TU
-        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
+        var tu = new TransportUnitVO();
+        tu.setTransportUnitId("00000000000000004712"); // The captured TU
+        tu.setTransportUnitType("FP"); // The TU-Type of the captured TU
+        var loc = new LocationVO("WE01"); // Where the goods have been captured
+        vo.setTransportUnit(tu);
+        vo.setActualLocation(loc);
         mockMvc
                 .perform(
                         post("/v1/capture")
@@ -389,9 +399,10 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         requestFields(
                                 fieldWithPath("[]").description("Accepts multiple capture requests"),
                                 fieldWithPath("[].@class").description("The type of capturing"),
-                                fieldWithPath("[].transportUnitBK").description("The business key of the actual captured TransportUnit where the goods are placed on"),
-                                fieldWithPath("[].actualLocationErpCode").description("The business key of the Location"),
-                                fieldWithPath("[].transportUnitType").description("The type of TransportUnit in case it needs to be created")
+                                fieldWithPath("[].transportUnit").description("The actual captured TransportUnit where the goods are placed on"),
+                                fieldWithPath("[].transportUnit.*").ignored(),
+                                fieldWithPath("[].actualLocation").description("The Location where the TransportUnit is placed on"),
+                                fieldWithPath("[].actualLocation.*").ignored()
                         )
                 ))
                 .andExpect(status().isNoContent())
