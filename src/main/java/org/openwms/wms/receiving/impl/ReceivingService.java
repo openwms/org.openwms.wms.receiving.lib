@@ -65,7 +65,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param requests Contains all the capturing information according to the process in use
      */
     void captureBlindReceipts(
-            @NotNull @Valid List<T> requests
+            @NotNull List<T> requests
     );
 
     /**

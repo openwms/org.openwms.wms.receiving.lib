@@ -218,6 +218,39 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
 
     @Transactional
     @Rollback
+    @Test void shall_do_a_BlindReceipt_in_LU() throws Exception {
+        var vo = new QuantityCaptureRequestVO();
+        vo.setTransportUnitId("4711");
+        vo.setLoadUnitLabel("1");
+        vo.setLoadUnitType("EURO");
+        vo.setQuantityReceived(Piece.of(1));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/capture")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("br-lu-capture",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("[]").description("Accepts multiple capture requests"),
+                                fieldWithPath("[].@class").description("The type of capturing"),
+                                fieldWithPath("[].transportUnitBK").description("The business key of the TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].loadUnitLabel").description("The identifier of the LoadUnit where the material has been put in"),
+                                fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
+                                fieldWithPath("[].quantity").description("The captured (received) quantity"),
+                                fieldWithPath("[].quantity.*").ignored(),
+                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].product").description("The captured (received) Product"),
+                                fieldWithPath("[].product.*").ignored()
+                        )))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Transactional
+    @Rollback
     @Test void shall_do_a_QuantityCapture_on_LOC() throws Exception {
         var vo = new QuantityCaptureOnLocationRequestVO();
         vo.setActualLocation(new LocationVO("WE01"));
@@ -235,7 +268,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 fieldWithPath("[]").description("Accepts multiple capture requests"),
                                 fieldWithPath("[].@class").description("The type of capturing"),
                                 fieldWithPath("[].actualLocation").description("The Location where the material has been moved to"),
-                                fieldWithPath("[].actualLocation.erpCode").description("The business key of the Location"),
+                                fieldWithPath("[].actualLocation.erpCode").ignored(),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
                                 fieldWithPath("[].quantity.*").ignored(),
                                 fieldWithPath("[].quantity.unitType[]").ignored(),
@@ -265,6 +298,36 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                 )
                 .andDo(document("order-capture-loc-to-many", preprocessResponse(prettyPrint())))
                 .andExpect(status().isConflict())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_BlindReceipt_on_LOC() throws Exception {
+        var vo = new QuantityCaptureOnLocationRequestVO();
+        vo.setActualLocation(new LocationVO("WE01"));
+        vo.setQuantityReceived(Piece.of(1));
+        vo.setProduct(new ProductVO("C1"));
+        mockMvc
+                .perform(
+                        post("/v1/capture")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("br-loc-capture",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("[]").description("Accepts multiple capture requests"),
+                                fieldWithPath("[].@class").description("The type of capturing"),
+                                fieldWithPath("[].actualLocation").description("The Location where the material has been moved to"),
+                                fieldWithPath("[].actualLocation.erpCode").ignored(),
+                                fieldWithPath("[].quantity").description("The captured (received) quantity"),
+                                fieldWithPath("[].quantity.*").ignored(),
+                                fieldWithPath("[].quantity.unitType[]").ignored(),
+                                fieldWithPath("[].product").description("The captured (received) Product"),
+                                fieldWithPath("[].product.*").ignored()
+                        )))
+                .andExpect(status().isNoContent())
         ;
     }
 
@@ -305,6 +368,33 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                 )
                 .andDo(document("order-capture-tu", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
+        ;
+    }
+
+    @Transactional
+    @Rollback
+    @Test void shall_do_a_BlindReceipt_with_TU() throws Exception {
+        var vo = new TUCaptureRequestVO();
+        vo.setTransportUnitId("00000000000000004712"); // The captured TU
+        vo.setTransportUnitType("FP"); // The TU-Type of the captured TU
+        vo.setActualLocationErpCode("WE01"); // Where the goods have been captured
+        mockMvc
+                .perform(
+                        post("/v1/capture")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(new CaptureRequestVO[]{vo}))
+                )
+                .andDo(document("br-tu-capture",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("[]").description("Accepts multiple capture requests"),
+                                fieldWithPath("[].@class").description("The type of capturing"),
+                                fieldWithPath("[].transportUnitBK").description("The business key of the actual captured TransportUnit where the goods are placed on"),
+                                fieldWithPath("[].actualLocationErpCode").description("The business key of the Location"),
+                                fieldWithPath("[].transportUnitType").description("The type of TransportUnit in case it needs to be created")
+                        )
+                ))
+                .andExpect(status().isNoContent())
         ;
     }
 

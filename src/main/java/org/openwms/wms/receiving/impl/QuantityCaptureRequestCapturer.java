@@ -18,7 +18,9 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
+import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
@@ -30,7 +32,7 @@ import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -49,11 +51,13 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOW
 class QuantityCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureRequestCapturer.class);
+    private final Validator validator;
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
 
     QuantityCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            AsyncPackagingUnitApi asyncPackagingUnitApi) {
+            Validator validator, AsyncPackagingUnitApi asyncPackagingUnitApi) {
         super(translator, repository, productService);
+        this.validator = validator;
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
     }
 
@@ -62,14 +66,16 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
      */
     @Override
     @Measured
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull QuantityCaptureRequestVO request) {
+    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull QuantityCaptureRequestVO request) {
         if (pKey.isPresent()) {
+            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
                     pKey.get(),
                     request.getQuantityReceived(),
                     getProduct(request.getProduct().getSku()),
                     v -> createPackagingUnitsForDemand(request));
         }
+        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
         createPackagingUnitsForDemand(request);
         return Optional.empty();
     }

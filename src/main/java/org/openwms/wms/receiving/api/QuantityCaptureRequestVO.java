@@ -18,8 +18,9 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.receiving.ValidationGroups;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -32,13 +33,13 @@ import java.io.Serializable;
 public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
     /** The business key of the captured {@code TransportUnit} where the goods are captured in. */
-    @NotEmpty
     @JsonProperty("transportUnitBK")
+    @NotBlank(groups = ValidationGroups.CreateQuantityReceipt.class)
     private String transportUnitId;
 
     /** The unique identifier if the {@code LoadUnit} where the goods are captured in. */
-    @NotEmpty
     @JsonProperty("loadUnitLabel")
+    @NotBlank(groups = ValidationGroups.CreateQuantityReceipt.class)
     private String loadUnitLabel;
 
     /** A type in case a {@code LoadUnit} needs to be created (optional). */
@@ -46,13 +47,13 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
     private String loadUnitType;
 
     /** The quantity that has been received during the capturing process. */
-    @NotNull
     @JsonProperty("quantity")
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Measurable quantityReceived;
 
     /** The captured {@code Product}. */
-    @NotNull
     @JsonProperty("product")
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private ProductVO product;
 
     /** A serial number of the captured item (optional) . */

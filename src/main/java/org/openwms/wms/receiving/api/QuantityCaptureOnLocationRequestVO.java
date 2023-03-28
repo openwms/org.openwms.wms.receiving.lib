@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.receiving.ValidationGroups;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -37,13 +39,13 @@ import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
 public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO implements Serializable {
 
     /** The {@code Location} where the captured items are located on. */
-    @NotNull
     @JsonProperty("actualLocation")
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private LocationVO actualLocation;
 
     /** The quantity that has been received during the capturing process. */
-    @NotNull
     @JsonProperty("quantity")
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Measurable quantityReceived;
 
     /** The captured {@code Product}. */
@@ -74,6 +76,7 @@ public class QuantityCaptureOnLocationRequestVO extends CaptureRequestVO impleme
 
     @JsonIgnore
     @Valid
+    @Validated(ValidationGroups.CreateQuantityReceipt.class)
     public boolean isValid() {
         return uomRelation != null || product != null;
     }

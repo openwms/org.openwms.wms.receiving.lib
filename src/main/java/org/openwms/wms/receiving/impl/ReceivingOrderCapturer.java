@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.impl;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.springframework.plugin.core.Plugin;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -38,5 +37,5 @@ public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plug
      * @param request Particular capturing detail information used to perform the capturing process
      * @return The identified and updated ReceivingOrder instance, in case of {@literal Expected Receipt}s
      */
-    Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull T request);
+    Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull T request);
 }

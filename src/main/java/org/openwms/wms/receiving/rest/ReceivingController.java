@@ -89,8 +89,7 @@ public class ReceivingController extends AbstractWebController {
     }
 
     @PostMapping(value = "/v1/capture", produces = MEDIA_TYPE)
-    public ResponseEntity<Void> captureBlindReceipt(
-            @Valid @RequestBody List<CaptureRequestVO> requests) {
+    public ResponseEntity<Void> captureBlindReceipt(@RequestBody List<CaptureRequestVO> requests) {
 
         service.captureBlindReceipts(requests);
         return ResponseEntity.noContent().build();

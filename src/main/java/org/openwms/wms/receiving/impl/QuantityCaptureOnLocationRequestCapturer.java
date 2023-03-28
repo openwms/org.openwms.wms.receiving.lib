@@ -19,7 +19,9 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
+import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
@@ -32,7 +34,7 @@ import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -52,12 +54,14 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
+    private final Validator validator;
     private final SyncPackagingUnitApi packagingUnitApi;
     private final SyncProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
+            Validator validator, SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
         super(translator, repository, productService);
+        this.validator = validator;
         this.packagingUnitApi = packagingUnitApi;
         this.productApi = productApi;
     }
@@ -67,9 +71,10 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
      */
     @Measured
     @Override
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull QuantityCaptureOnLocationRequestVO request) {
+    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull QuantityCaptureOnLocationRequestVO request) {
         var product = getProduct(request);
         if (pKey.isPresent()) {
+            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
                     pKey.get(),
                     request.getQuantityReceived(),
@@ -77,6 +82,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
                     v -> createPackagingUnitsForDemand(request, product)
             );
         } else {
+            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             createPackagingUnitsForDemand(request, product);
             return Optional.empty();
         }

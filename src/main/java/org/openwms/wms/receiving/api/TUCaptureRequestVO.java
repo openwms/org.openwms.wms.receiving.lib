@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.openwms.wms.receiving.ValidationGroups;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -30,13 +31,13 @@ import java.io.Serializable;
 public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
     /** The business key of the actual captured {@code TransportUnit} where the goods are placed on. */
-    @NotBlank
     @JsonProperty("transportUnitBK")
+    @NotBlank(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
     private String transportUnitId;
 
     /** The unique identifier if the {@code LoadUnit} where the goods are stored in. */
-    @NotBlank
     @JsonProperty("loadUnitLabel")
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String loadUnitLabel;
 
     /** The type in case a {@code LoadUnit} needs to be created (optional). */
@@ -44,17 +45,18 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
     private String loadUnitType;
 
     /** The business key of the expected {@code TransportUnit} to receive. */
-    @NotBlank
     @JsonProperty("expectedTransportUnitBK")
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String expectedTransportUnitBK;
 
     /** The ERP code of the actual {@code Location} where the goods were received. */
-    @NotBlank
     @JsonProperty("actualLocationErpCode")
+    @NotBlank(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
     private String actualLocationErpCode;
 
     /** The type of {@code TransportUnit} in case it needs to be created (optional). */
     @JsonProperty("transportUnitType")
+    @NotBlank(groups = ValidationGroups.CreateBlindTUReceipt.class)
     private String transportUnitType;
 
     public String getTransportUnitId() {

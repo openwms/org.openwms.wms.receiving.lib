@@ -26,4 +26,5 @@ public interface ValidationGroups {
     interface Create {}
     interface CreateQuantityReceipt {}
     interface CreateExpectedTUReceipt {}
+    interface CreateBlindTUReceipt {}
 }

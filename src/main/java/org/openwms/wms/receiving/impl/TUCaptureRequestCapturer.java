@@ -18,6 +18,8 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
+import org.ameba.system.ValidationUtil;
+import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -29,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 
-import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -48,13 +50,15 @@ import static org.openwms.wms.receiving.ReceivingMessages.TU_TYPE_NOT_GIVEN;
 class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<TUCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TUCaptureRequestCapturer.class);
+    private final Validator validator;
     private final ApplicationEventPublisher publisher;
     private final SyncTransportUnitApi transportUnitApi;
     private final SyncLocationApi locationApi;
 
     TUCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi, SyncLocationApi locationApi) {
+            Validator validator, ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi, SyncLocationApi locationApi) {
         super(translator, repository, productService);
+        this.validator = validator;
         this.publisher = publisher;
         this.transportUnitApi = transportUnitApi;
         this.locationApi = locationApi;
@@ -65,19 +69,20 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
      */
     @Override
     @Measured
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @Valid @NotNull TUCaptureRequestVO request) {
+    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull TUCaptureRequestVO request) {
         if (pKey.isPresent()) {
+            ValidationUtil.validate(validator, request, ValidationGroups.CreateExpectedTUReceipt.class);
             return handleExpectedReceipt(
                     pKey.get(),
                     request);
         }
+        ValidationUtil.validate(validator, request, ValidationGroups.CreateBlindTUReceipt.class);
         if (!request.hasTransportUnitType()) {
             throw new CapturingException(translator, TU_TYPE_NOT_GIVEN, new String[0]);
         }
         var locationOpt = locationApi.findByErpCodeOpt(request.getActualLocationErpCode());
-        var location = locationOpt.isPresent()
-                ? LocationVO.of(locationOpt.get().getLocationId())
-                : new LocationVO(); // Handle Locations without locationId later
+        var location = locationOpt.map(locationVO -> LocationVO.of(locationVO.getLocationId()))
+                .orElseGet(LocationVO::new); // Handle Locations without locationId later
         location.setErpCode(request.getActualLocationErpCode());
         var tu = new TransportUnitVO(request.getTransportUnitId(), location, request.getTransportUnitType());
         transportUnitApi.createTU(tu);

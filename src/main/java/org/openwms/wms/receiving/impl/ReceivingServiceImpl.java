@@ -153,7 +153,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public void captureBlindReceipts(@NotNull @Valid List<T> requests) {
+    public void captureBlindReceipts(@NotNull List<T> requests) {
         for (T request : requests) {
             capturers.getPluginFor(request)
                 .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
