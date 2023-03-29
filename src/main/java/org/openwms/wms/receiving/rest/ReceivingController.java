@@ -68,6 +68,7 @@ public class ReceivingController extends AbstractWebController {
                         linkTo(methodOn(ReceivingOrderFinder.class).findOrderByOrderId("4711")).withRel("receiving-order-findbyorderid"),
                         linkTo(methodOn(ReceivingOrderCreator.class).createOrder(new ReceivingOrderVO("4711"), null)).withRel("receiving-order-create"),
                         linkTo(methodOn(ReceivingController.class).captureOrder("b65a7658-c53c-4a81-8abb-75ab67783f48", asList(new CaptureRequestVO()))).withRel("receiving-order-capture"),
+                        linkTo(methodOn(ReceivingController.class).captureBlindReceipt(asList(new CaptureRequestVO()))).withRel("receiving-order-blind-receipt"),
                         linkTo(methodOn(ReceivingController.class).completeOrder("b65a7658-c53c-4a81-8abb-75ab67783f49")).withRel("receiving-order-complete"),
                         linkTo(methodOn(ReceivingController.class).saveOrder("b65a7658-c53c-4a81-8abb-75ab67783f46", null)).withRel("receiving-order-save"),
                         linkTo(methodOn(ReceivingController.class).patchOrder("b65a7658-c53c-4a81-8abb-75ab67783f45", null)).withRel("receiving-order-patch")

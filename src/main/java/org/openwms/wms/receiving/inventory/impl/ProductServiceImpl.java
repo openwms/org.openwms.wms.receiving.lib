@@ -20,7 +20,7 @@ import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -43,7 +43,7 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     @Measured
-    public Optional<Product> findBySku(@NotEmpty String sku) {
+    public Optional<Product> findBySku(@NotBlank String sku) {
         return repository.findBySku(sku);
     }
 
@@ -70,7 +70,7 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     @Measured
-    public void delete(@NotEmpty String pKey) {
+    public void delete(@NotBlank String pKey) {
         repository.findBypKey(pKey).ifPresent(repository::delete);
     }
 }
