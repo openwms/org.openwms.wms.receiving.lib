@@ -74,14 +74,14 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
 
     public @Bean
     LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
+        var slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.US);
         return slr;
     }
 
     public @Bean
     LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        var lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
     }
@@ -96,7 +96,7 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
     }
 
     @Bean MessageSource messageSource() {
-        NestedReloadableResourceBundleMessageSource messageSource = new NestedReloadableResourceBundleMessageSource();
+        var messageSource = new NestedReloadableResourceBundleMessageSource();
         messageSource.setBasenames("classpath:/META-INF/i18n/rec");
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCommonMessages(new Properties());

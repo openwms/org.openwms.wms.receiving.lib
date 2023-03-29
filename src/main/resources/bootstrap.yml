@@ -27,6 +27,9 @@ feign:
       common-service:
         read-timeout: 20000
         connect-timeout: 10000
+      wms-inventory:
+        read-timeout: 20000
+        connect-timeout: 10000
   httpclient:
     connection-timeout: 30000
     connection-timer-repeat: 30000

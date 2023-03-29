@@ -17,12 +17,9 @@ package org.openwms.wms.receiving.spi.wms.transport;
 
 import org.ameba.annotation.Measured;
 import org.ameba.i18n.Translator;
-import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.spi.common.transport.CommonTransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
 import static org.openwms.wms.receiving.ReceivingMessages.LOCATION_ID_NOT_GIVEN;
 
@@ -31,8 +28,6 @@ import static org.openwms.wms.receiving.ReceivingMessages.LOCATION_ID_NOT_GIVEN;
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.DISTRIBUTED)
-@Component
 class TransportUnitApiFallback implements TransportUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitApiFallback.class);
@@ -66,6 +61,6 @@ class TransportUnitApiFallback implements TransportUnitApi {
         if (!tu.getActualLocation().hasLocationId()) {
             throw new IllegalArgumentException(translator.translate(LOCATION_ID_NOT_GIVEN));
         }
-        commonTransportUnitApi.createTU(tu.getTransportUnitBK(), tu.getActualLocation().getLocationId(), tu.getTransportUnitType(), false);
+        commonTransportUnitApi.createTU(tu.getTransportUnitBK(), tu.getActualLocation().getLocationId(), tu.getTransportUnitType(), true);
     }
 }
