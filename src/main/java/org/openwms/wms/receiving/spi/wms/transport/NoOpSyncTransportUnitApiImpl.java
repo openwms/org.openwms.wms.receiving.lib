@@ -20,6 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * A NoOpSyncTransportUnitApiImpl.
@@ -27,6 +31,7 @@ import org.springframework.stereotype.Component;
  * @author Heiko Scherrer
  */
 @Profile("!" + SpringProfiles.DISTRIBUTED)
+@Validated
 @Component
 class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
 
@@ -36,7 +41,7 @@ class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
      * {@inheritDoc}
      */
     @Override
-    public void moveTU(String transportUnitBK, String newLocationErpCode) {
+    public void moveTU(@NotBlank String transportUnitBK, @NotBlank String newLocationErpCode) {
         LOGGER.error("Not implemented yet");
     }
 
@@ -44,7 +49,7 @@ class NoOpSyncTransportUnitApiImpl implements SyncTransportUnitApi {
      * {@inheritDoc}
      */
     @Override
-    public void createTU(TransportUnitVO tu) {
+    public void createTU(@NotNull TransportUnitVO tu) {
         LOGGER.error("Not implemented yet");
     }
 }

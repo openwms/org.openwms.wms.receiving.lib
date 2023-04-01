@@ -29,5 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findBypKey(String persistentKey);
 
+    Optional<Product> findByForeignPKey(String foreignPKey);
+
     Optional<Product> findBySku(String sku);
 }
