@@ -33,6 +33,9 @@ class NoOpAsyncTransportUnitApiImpl implements AsyncTransportUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NoOpAsyncTransportUnitApiImpl.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void process(Command<?> command) {
         LOGGER.error("Not yet implemented");

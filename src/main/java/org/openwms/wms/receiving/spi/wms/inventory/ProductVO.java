@@ -18,7 +18,10 @@ package org.openwms.wms.receiving.spi.wms.inventory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
+import org.openwms.core.units.api.Measurable;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,15 +33,31 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProductVO extends AbstractBase<ProductVO> implements Serializable {
 
+    interface Load {}
+
     /** The persistent unique key. */
     @JsonProperty("pKey")
+    @NotBlank(groups = Load.class)
     private String pKey;
     /** The product id is part of the unique business key. */
     @JsonProperty("sku")
+    @NotBlank(groups = Load.class)
     private String sku;
     /** An identifying label of the Product. */
     @JsonProperty("label")
+    @NotBlank(groups = Load.class)
     private String label;
+    /** Is it allowed to receive a higher quantity as expected/announced of this Product? */
+    @JsonProperty("overbookingAllowed")
+    @NotNull(groups = Load.class)
+    private Boolean overbookingAllowed;
+    /** {@code Product}s may be defined with different base units. */
+    @JsonProperty("baseUnit")
+    @NotNull(groups = Load.class)
+    private Measurable baseUnit;
+    /** Textual descriptive text. */
+    @JsonProperty("description")
+    private String description;
 
     public ProductVO() { }
 
@@ -75,6 +94,30 @@ public class ProductVO extends AbstractBase<ProductVO> implements Serializable {
         this.label = label;
     }
 
+    public Boolean getOverbookingAllowed() {
+        return overbookingAllowed;
+    }
+
+    public void setOverbookingAllowed(Boolean overbookingAllowed) {
+        this.overbookingAllowed = overbookingAllowed;
+    }
+
+    public Measurable getBaseUnit() {
+        return baseUnit;
+    }
+
+    public void setBaseUnit(Measurable baseUnit) {
+        this.baseUnit = baseUnit;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return sku;
@@ -107,12 +150,12 @@ public class ProductVO extends AbstractBase<ProductVO> implements Serializable {
         if (this == o) return true;
         if (!(o instanceof ProductVO)) return false;
         if (!super.equals(o)) return false;
-        ProductVO productVO = (ProductVO) o;
-        return Objects.equals(pKey, productVO.pKey) && Objects.equals(sku, productVO.sku) && Objects.equals(label, productVO.label);
+        var productVO = (ProductVO) o;
+        return Objects.equals(pKey, productVO.pKey) && Objects.equals(sku, productVO.sku) && Objects.equals(label, productVO.label) && Objects.equals(overbookingAllowed, productVO.overbookingAllowed && Objects.equals(baseUnit, productVO.baseUnit) && Objects.equals(description, productVO.description));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, sku, label);
+        return Objects.hash(super.hashCode(), pKey, sku, label, overbookingAllowed, baseUnit, description);
     }
 }

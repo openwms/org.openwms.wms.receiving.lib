@@ -102,7 +102,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         ReceivingOrderPosition position;
         // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
-            if (openPositions.get(0).getProduct().isOverbookingAllowed()) {
+            if (openPositions.get(0).getProduct().getOverbookingAllowed()) {
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
@@ -120,7 +120,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
     private void createPackagingUnitsForDemand(QuantityCaptureRequestVO request) {
         final var sku = request.getProduct().getSku();
         final var quantityReceived = request.getQuantityReceived();
-        final var transportUnitId = request.getTransportUnitId();
+        final var transportUnitId = request.getTransportUnit().getTransportUnitId();
         final var loadUnitPosition = request.getLoadUnitLabel();
         final var existingProduct = getProduct(sku);
         final var details = request.getDetails();
@@ -133,9 +133,6 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
             pu.setDetails(details);
             pu.setSerialNumber(request.getSerialNumber());
             pu.setLotId(request.getLotId());
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}]", pu, transportUnitId, loadUnitPosition);
-            }
             asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, request.getLoadUnitType(), pu));
         }
     }

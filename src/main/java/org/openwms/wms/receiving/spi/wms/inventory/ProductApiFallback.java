@@ -38,6 +38,16 @@ class ProductApiFallback implements ProductApi {
      */
     @Override
     @Measured
+    public ProductVO findBySKU(String sku) {
+        LOGGER.error("Resolving Product by SKU not supported, returning null");
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
     public ProductVO findProductByProductUnitPkey(String pKey) {
         LOGGER.error("Resolving Product by ProductUnit not supported, returning null");
         return null;

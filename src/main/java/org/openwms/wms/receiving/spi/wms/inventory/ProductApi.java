@@ -15,17 +15,29 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A ProductApi is the Feign client used internally, not by any business logic directly.
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "productApi", fallback = ProductApiFallback.class)
+@FeignClient(name = "wms-inventory", qualifiers = "productApi", fallback = ProductApiFallback.class)
 interface ProductApi {
+
+    /**
+     * Find and return a {@code Product} identified by its {@code SKU}.
+     *
+     * @param sku The identifying SKU attribute
+     * @return The instance or null
+     */
+    @GetMapping(value = "/v1/products", params = "sku")
+    @Cacheable("products")
+    ProductVO findBySKU(@RequestParam("sku") String sku);
 
     /**
      * Gets {@code Product} based on {@code ProductUnit} pKey
@@ -33,5 +45,6 @@ interface ProductApi {
      * @param pKey The pKey of the productUnit
      */
     @GetMapping("/v1/product/product-units/{pKey}")
+    @Cacheable("products")
     ProductVO findProductByProductUnitPkey(@PathVariable("pKey") String pKey);
 }

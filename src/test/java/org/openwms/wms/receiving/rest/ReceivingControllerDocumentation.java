@@ -168,7 +168,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(1));
@@ -184,7 +184,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         requestFields(
                                 fieldWithPath("[]").description("Accepts multiple capture requests"),
                                 fieldWithPath("[].@class").description("The type of capturing"),
-                                fieldWithPath("[].transportUnitBK").description("The business key of the TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].transportUnit").description("The TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].transportUnit.transportUnitBK").description("The business key of the TransportUnit"),
                                 fieldWithPath("[].loadUnitLabel").description("The identifier of the LoadUnit where the material has been put in"),
                                 fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
@@ -201,7 +202,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
@@ -221,7 +222,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_BlindReceipt_in_LU() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(1));
@@ -237,7 +238,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                         requestFields(
                                 fieldWithPath("[]").description("Accepts multiple capture requests"),
                                 fieldWithPath("[].@class").description("The type of capturing"),
-                                fieldWithPath("[].transportUnitBK").description("The business key of the TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].transportUnit").description("The TransportUnit where the material has been moved to"),
+                                fieldWithPath("[].transportUnit.transportUnitBK").description("The business key of the TransportUnit"),
                                 fieldWithPath("[].loadUnitLabel").description("The identifier of the LoadUnit where the material has been put in"),
                                 fieldWithPath("[].loadUnitType").optional().description("(Optional) The type of the LoadUnit, in case it must be created"),
                                 fieldWithPath("[].quantity").description("The captured (received) quantity"),
@@ -286,7 +288,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture_on_LOC_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
@@ -413,7 +415,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_update_order() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));

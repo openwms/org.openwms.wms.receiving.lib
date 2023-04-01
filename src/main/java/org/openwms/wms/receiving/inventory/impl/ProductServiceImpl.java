@@ -17,11 +17,14 @@ package org.openwms.wms.receiving.inventory.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
+import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -32,10 +35,15 @@ import java.util.Optional;
 @TxService
 class ProductServiceImpl implements ProductService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final ReceivingMapper receivingMapper;
     private final ProductRepository repository;
+    private final SyncProductApi productApi;
 
-    ProductServiceImpl(ProductRepository repository) {
+    ProductServiceImpl(ReceivingMapper receivingMapper, ProductRepository repository, SyncProductApi productApi) {
+        this.receivingMapper = receivingMapper;
         this.repository = repository;
+        this.productApi = productApi;
     }
 
     /**
@@ -44,33 +52,15 @@ class ProductServiceImpl implements ProductService {
     @Override
     @Measured
     public Optional<Product> findBySku(@NotBlank String sku) {
-        return repository.findBySku(sku);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public void create(@NotNull Product product) {
-        repository.save(product);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public Product update(@NotNull Product product) {
-        return repository.save(product);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public void delete(@NotBlank String pKey) {
-        repository.findBypKey(pKey).ifPresent(repository::delete);
+        var vo = productApi.findBySKU(sku);
+        if (vo == null) {
+            LOGGER.debug("Getting the Product with [{}] from the database instead of the Inventory Service", sku);
+            return repository.findBySku(sku);
+        }
+        var savedOne = repository.findByForeignPKey(vo.getpKey());
+        if (savedOne.isPresent()) {
+            return savedOne;
+        }
+        return Optional.of(receivingMapper.convertFromVO(vo));
     }
 }

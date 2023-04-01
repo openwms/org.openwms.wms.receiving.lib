@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.location;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 /**
@@ -30,5 +31,5 @@ public interface SyncLocationApi {
      * @param erpCode The ERP code
      * @return The instance
      */
-    Optional<LocationVO> findByErpCodeOpt(String erpCode);
+    Optional<LocationVO> findByErpCodeOpt(@NotBlank String erpCode);
 }

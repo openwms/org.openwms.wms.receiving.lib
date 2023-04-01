@@ -18,6 +18,8 @@ package org.openwms.wms.receiving.spi.wms.inventory;
 import org.ameba.annotation.Measured;
 import org.ameba.system.ValidationUtil;
 import org.openwms.core.SpringProfiles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -34,6 +36,7 @@ import javax.validation.Validator;
 @Component
 class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncPackagingUnitApiImpl.class);
     private final AmqpTemplate amqpTemplate;
     private final String exchangeName;
     private final String routingKey;
@@ -56,6 +59,9 @@ class AsyncPackagingUnitApiImpl implements AsyncPackagingUnitApi {
     @Measured
     public void create(CreatePackagingUnitCommand command) {
         ValidationUtil.validate(validator, command);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Send command to create new PackagingUnit [{}] on TransportUnit [{}] and LoadUnit [{}/{}]", command.getPackagingUnit(), command.getTransportUnitBK(), command.getLuPos(), command.getLoadUnitType());
+        }
         amqpTemplate.convertAndSend(exchangeName, routingKey, command);
     }
 }

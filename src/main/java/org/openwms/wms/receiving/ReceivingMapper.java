@@ -33,6 +33,7 @@ import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
 import org.openwms.wms.receiving.inventory.Product;
+import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.openwms.wms.receiving.transport.TransportUnit;
 
 import java.util.List;
@@ -84,8 +85,18 @@ public interface ReceivingMapper {
     }
 
     @Mapping(target = "foreignPKey", source = "pKey")
+    @Mapping(target = "overbookingAllowed", source = "overbookingAllowed")
     @Mapping(target = "ol", ignore = true)
     Product convertFromMO(ProductMO mo);
+
+    @Mapping(target = "foreignPKey", source = "pKey")
+    @Mapping(target = "sku", source = "sku")
+    @Mapping(target = "label", source = "label")
+    @Mapping(target = "baseUnit", source = "baseUnit")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "overbookingAllowed", source = "overbookingAllowed")
+    @Mapping(target = "ol", ignore = true)
+    Product convertFromVO(ProductVO vo);
 
     @Mapping(target = "foreignPKey", source = "pKey")
     @Mapping(target = "ol", ignore = true)

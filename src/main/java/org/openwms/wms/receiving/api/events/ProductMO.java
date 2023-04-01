@@ -31,6 +31,7 @@ public class ProductMO implements Serializable {
     private String sku;
     private String label;
     private Measurable baseUnit;
+    private Boolean overbookingAllowed;
     private String description;
 
     public String getpKey() {
@@ -63,6 +64,14 @@ public class ProductMO implements Serializable {
 
     public void setBaseUnit(Measurable baseUnit) {
         this.baseUnit = baseUnit;
+    }
+
+    public Boolean getOverbookingAllowed() {
+        return overbookingAllowed;
+    }
+
+    public void setOverbookingAllowed(Boolean overbookingAllowed) {
+        this.overbookingAllowed = overbookingAllowed;
     }
 
     public String getDescription() {

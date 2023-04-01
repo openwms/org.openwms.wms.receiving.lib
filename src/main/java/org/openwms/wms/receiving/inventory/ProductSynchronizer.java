@@ -16,20 +16,34 @@
 package org.openwms.wms.receiving.inventory;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Optional;
+import javax.validation.constraints.NotNull;
 
 /**
- * A ProductService.
+ * A ProductSynchronizer offers methods to synchronize the internal state of a {@link Product} with an external source.
  *
  * @author Heiko Scherrer
  */
-public interface ProductService {
+public interface ProductSynchronizer {
 
     /**
-     * Find and return a {@code Product}.
+     * Create a new {@link Product} instance.
      *
-     * @param sku The identifying SKU
-     * @return The instance
+     * @param product The instance to create
      */
-    Optional<Product> findBySku(@NotBlank String sku);
+    void create(@NotNull Product product);
+
+    /**
+     * Update an existing {@link Product} instance
+     *
+     * @param product The instance to update
+     * @return The updated instance
+     */
+    Product update(@NotNull Product product);
+
+    /**
+     * Delete an existing {@link Product}.
+     *
+     * @param pKey The persistent key of the instance to delete
+     */
+    void delete(@NotBlank String pKey);
 }

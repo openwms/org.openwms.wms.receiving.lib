@@ -20,7 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 /**
@@ -29,6 +31,7 @@ import java.util.Optional;
  * @author Heiko Scherrer
  */
 @Profile("!" + SpringProfiles.DISTRIBUTED)
+@Validated
 @Component
 class NoOpSyncLocationApiImpl implements SyncLocationApi {
 
@@ -38,7 +41,7 @@ class NoOpSyncLocationApiImpl implements SyncLocationApi {
      * {@inheritDoc}
      */
     @Override
-    public Optional<LocationVO> findByErpCodeOpt(String erpCode) {
+    public Optional<LocationVO> findByErpCodeOpt(@NotBlank String erpCode) {
         LOGGER.error("Not implemented yet");
         return Optional.empty();
     }

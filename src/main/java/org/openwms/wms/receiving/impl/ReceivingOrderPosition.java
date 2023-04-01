@@ -34,6 +34,8 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 import static org.openwms.wms.order.OrderState.COMPLETED;
 
 /**
@@ -64,7 +66,7 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
     private Measurable quantityReceived;
 
     /** The expected {@link Product} to be receipt. */
-    @ManyToOne
+    @ManyToOne(cascade = {PERSIST, MERGE})
     @JoinColumn(name = "C_SKU", referencedColumnName = "C_SKU", foreignKey = @ForeignKey(name = "FK_REC_POS_PRODUCT"), nullable = false)
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
     private Product product;

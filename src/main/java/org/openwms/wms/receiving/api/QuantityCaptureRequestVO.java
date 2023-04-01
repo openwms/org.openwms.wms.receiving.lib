@@ -32,10 +32,10 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The business key of the captured {@code TransportUnit} where the goods are captured in. */
-    @JsonProperty("transportUnitBK")
-    @NotBlank(groups = ValidationGroups.CreateQuantityReceipt.class)
-    private String transportUnitId;
+    /** The captured {@code TransportUnit} where the goods are captured in. */
+    @JsonProperty("transportUnit")
+    @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
+    private TransportUnitVO transportUnit;
 
     /** The unique identifier if the {@code LoadUnit} where the goods are captured in. */
     @JsonProperty("loadUnitLabel")
@@ -64,12 +64,12 @@ public class QuantityCaptureRequestVO extends CaptureRequestVO implements Serial
     @JsonProperty("lotId")
     private String lotId;
 
-    public String getTransportUnitId() {
-        return transportUnitId;
+    public TransportUnitVO getTransportUnit() {
+        return transportUnit;
     }
 
-    public void setTransportUnitId(String transportUnitId) {
-        this.transportUnitId = transportUnitId;
+    public void setTransportUnit(TransportUnitVO transportUnit) {
+        this.transportUnit = transportUnit;
     }
 
     public String getLoadUnitLabel() {

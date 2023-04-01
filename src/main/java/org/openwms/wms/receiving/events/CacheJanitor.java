@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2023 the original author or authors.
+ * Copyright 2005-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.inventory.impl;
+package org.openwms.wms.receiving.events;
 
-import org.openwms.wms.receiving.inventory.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Component;
 
 /**
- * A ProductRepository.
+ * A CacheJanitor is used to evict caches.
  *
  * @author Heiko Scherrer
  */
-public interface ProductRepository extends JpaRepository<Product, Long> {
+@Component
+public class CacheJanitor {
 
-    Optional<Product> findBypKey(String persistentKey);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CacheJanitor.class);
 
-    Optional<Product> findByForeignPKey(String foreignPKey);
-
-    Optional<Product> findBySku(String sku);
+    @CacheEvict(cacheNames = "products", allEntries = true)
+    public void evictProductCache() {
+        LOGGER.debug("Product cache evicted");
+    }
 }

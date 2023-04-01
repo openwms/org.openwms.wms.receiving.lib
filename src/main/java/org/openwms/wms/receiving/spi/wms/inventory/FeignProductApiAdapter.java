@@ -16,11 +16,13 @@
 package org.openwms.wms.receiving.spi.wms.inventory;
 
 import org.ameba.annotation.Measured;
+import org.ameba.system.ValidationUtil;
 import org.openwms.core.SpringProfiles;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Validator;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -33,10 +35,27 @@ import javax.validation.constraints.NotBlank;
 @Component
 class FeignProductApiAdapter implements SyncProductApi {
 
+    private final Validator validator;
     private final ProductApi productApi;
 
-    FeignProductApiAdapter(ProductApi productApi) {
+    FeignProductApiAdapter(Validator validator, ProductApi productApi) {
+        this.validator = validator;
         this.productApi = productApi;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public ProductVO findBySKU(@NotBlank String sku) {
+        var vo = productApi.findBySKU(sku);
+        if (vo == null) {
+
+            return null;
+        }
+        ValidationUtil.validate(validator, vo, ProductVO.Load.class);
+        return vo;
     }
 
     /**
