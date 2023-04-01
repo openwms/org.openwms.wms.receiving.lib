@@ -1,6 +1,7 @@
-The Receiving service is responsible to handle incoming orders, so called receiving orders, aka expected receipts or receiving notices.
-Before a pallet or box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier, and
-some other characteristics that may differ between projects.
+# Purpose
+The purpose of the Receiving service is to handle goods receipts. It offers an API to create incoming orders, so called Receiving Orders
+(expected receipts). These kind of receipts are announced before goods are received. In contrast, blind receipts are also supported. Those
+don't require any announcements and allow to capture goods that are not expected to receive.
 
 # Resources
 [![Build status](https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml/badge.svg)](https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml)
