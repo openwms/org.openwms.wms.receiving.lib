@@ -34,6 +34,13 @@ public class TransportUnitVO extends AbstractBase<LocationVO> implements Seriali
     @JsonProperty("transportUnitType")
     private String transportUnitType;
 
+    public TransportUnitVO() {
+    }
+
+    public TransportUnitVO(String transportUnitId) {
+        this.transportUnitId = transportUnitId;
+    }
+
     public String getTransportUnitId() {
         return transportUnitId;
     }

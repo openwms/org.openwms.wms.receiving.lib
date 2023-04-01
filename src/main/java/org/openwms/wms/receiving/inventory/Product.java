@@ -74,7 +74,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
 
     @NotNull
     @Column(name = "C_OVERBOOKING_ALLOWED", nullable = false)
-    private boolean overbookingAllowed;
+    private Boolean overbookingAllowed;
 
     /** Dear JPA ... */
     protected Product() {
@@ -134,11 +134,11 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.baseUnit = baseUnit;
     }
 
-    public boolean isOverbookingAllowed() {
+    public Boolean getOverbookingAllowed() {
         return overbookingAllowed;
     }
 
-    public void setOverbookingAllowed(boolean overbookingAllowed) {
+    public void setOverbookingAllowed(Boolean overbookingAllowed) {
         this.overbookingAllowed = overbookingAllowed;
     }
 

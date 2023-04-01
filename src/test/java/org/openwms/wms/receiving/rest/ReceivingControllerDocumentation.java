@@ -168,7 +168,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(1));
@@ -201,7 +201,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
@@ -221,7 +221,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_BlindReceipt_in_LU() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(1));
@@ -286,7 +286,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_do_a_QuantityCapture_on_LOC_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
@@ -413,7 +413,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Rollback
     @Test void shall_update_order() throws Exception {
         var vo = new QuantityCaptureRequestVO();
-        vo.setTransportUnitId("4711");
+        vo.setTransportUnit(new TransportUnitVO("4711"));
         vo.setLoadUnitLabel("1");
         vo.setLoadUnitType("EURO");
         vo.setQuantityReceived(Piece.of(2));
