@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20230401" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>OpenWMS.org WMS: Receiving Service &#x2013; </title>
+    <title>OpenWMS.org WMS: Receiving Service &#x2013; Purpose</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.7.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -32,7 +32,8 @@
         <ul class="dropdown-menu">
             <li><a href="index.html" title="Home">Home</a></li>
             <li><a href="rest/1.0.0-SNAPSHOT/api.html" title="REST API Documentation">REST API Documentation</a></li>
-            <li><a href="https://openwms.atlassian.net/l/c/d11p3GgQ" title="Confluence Wiki">Confluence Wiki</a></li>
+            <li><a href="https://wiki.butan092.startdedicated.de/projects/wms-receiving-service/wiki" title="Wiki">Wiki</a></li>
+            <li><a href="configuration.html" title="Configuration">Configuration</a></li>
             <li><a href="1.0.0-SNAPSHOT/schemaspy/relationships.html" title="Database Schema">Database Schema</a></li>
             <li><a href="https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving" title="Sonarcloud">Sonarcloud</a></li>
         </ul>
@@ -84,9 +85,10 @@
         </ul>
       </div>
         <div id="bodyColumn" >
-<p>The Receiving service is responsible to handle incoming orders, so called receiving orders, aka expected receipts or receiving notices.
-Before a pallet or box enters a warehouse it must be announced beforehand. The box must be registered in the system with an identifier, and
-some other characteristics that may differ between projects.</p>
+<h1>Purpose</h1>
+<p>The purpose of the Receiving service is to handle goods receipts. It offers an API to create incoming orders, so called Receiving Orders
+(expected receipts). These kind of receipts are announced before goods are received. In contrast, blind receipts are also supported. Those
+don't require any announcements and allow to capture goods that are not expected to receive.</p>
 <h1>Resources</h1>
 <p><a class="externalLink" href="https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml"><img src="https://github.com/openwms/org.openwms.wms.receiving/actions/workflows/master-build.yml/badge.svg" alt="Build status" /></a>
 <a class="externalLink" href="https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving"><img src="https://sonarcloud.io/api/project_badges/measure?project=org.openwms:org.openwms.wms.receiving&amp;metric=alert_status" alt="Quality" /></a>
