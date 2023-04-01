@@ -15,9 +15,10 @@
  */
 package org.openwms.wms.receiving.inventory.impl;
 
+import org.openwms.wms.receiving.events.CacheJanitor;
 import org.openwms.wms.receiving.events.ProductEvent;
 import org.openwms.wms.receiving.inventory.Product;
-import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.inventory.ProductSynchronizer;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -29,18 +30,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductEventListener {
 
-    private final ProductService productService;
+    private final CacheJanitor cacheJanitor;
+    private final ProductSynchronizer productSynchronizer;
 
-    public ProductEventListener(ProductService productService) {
-        this.productService = productService;
+    public ProductEventListener(CacheJanitor cacheJanitor, ProductSynchronizer productSynchronizer) {
+        this.cacheJanitor = cacheJanitor;
+        this.productSynchronizer = productSynchronizer;
     }
 
     @EventListener
     public void onEvent(ProductEvent event) {
+        cacheJanitor.evictProductCache();
         switch (event.getType()) {
-            case CREATED -> productService.create((Product) event.getSource());
-            case UPDATED -> productService.update((Product) event.getSource());
-            case DELETED -> productService.delete((String) event.getSource());
+            case CREATED -> productSynchronizer.create((Product) event.getSource());
+            case UPDATED -> productSynchronizer.update((Product) event.getSource());
+            case DELETED -> productSynchronizer.delete((String) event.getSource());
         }
     }
 }

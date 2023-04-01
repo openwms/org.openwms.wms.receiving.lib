@@ -21,6 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * A NoOpSyncProductApiImpl.
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Component;
  * @author Heiko Scherrer
  */
 @Profile("!" + SpringProfiles.DISTRIBUTED)
+@Validated
 @Component
 class NoOpSyncProductApiImpl implements SyncProductApi {
 
@@ -40,7 +44,19 @@ class NoOpSyncProductApiImpl implements SyncProductApi {
      */
     @Override
     @Measured
-    public ProductVO findProductByProductUnitPkey(String pKey) {
+    public ProductVO findBySKU(@NotBlank String sku) {
+        LOGGER.error("Not implemented yet");
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * No operation here!
+     */
+    @Override
+    @Measured
+    public ProductVO findProductByProductUnitPkey(@NotBlank String pKey) {
         LOGGER.error("Not implemented yet");
         return null;
     }

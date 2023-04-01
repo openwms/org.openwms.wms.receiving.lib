@@ -25,9 +25,18 @@ import javax.validation.constraints.NotBlank;
 public interface SyncProductApi {
 
     /**
+     * Find and return a {@code Product} identified by its {@code SKU}.
+     *
+     * @param sku The identifying SKU attribute
+     * @return The instance or null
+     */
+    ProductVO findBySKU(@NotBlank String sku);
+
+    /**
      * Gets {@code Product} based on {@code ProductUnit} pKey
      *
      * @param pKey The pKey of the productUnit
+     * @return The instance or null
      */
     ProductVO findProductByProductUnitPkey(@NotBlank String pKey);
 }
