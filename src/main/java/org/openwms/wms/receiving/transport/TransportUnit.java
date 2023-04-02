@@ -21,8 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -40,16 +39,17 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
 
     /** The foreign persistent key of the {@code TransportUnit}. */
     @Column(name = "C_FOREIGN_PID", nullable = false)
-    @NotEmpty
+    @NotBlank
     private String foreignPKey;
 
     /** Unique natural key. */
     @Column(name = "C_BARCODE", nullable = false)
-    @NotNull
+    @NotBlank
     private String barcode;
 
     /** The current {@code Location} of the {@code TransportUnit}. */
     @Column(name = "C_ACTUAL_LOCATION", nullable = false)
+    @NotBlank
     private String actualLocation;
 
     /** Dear JPA... */

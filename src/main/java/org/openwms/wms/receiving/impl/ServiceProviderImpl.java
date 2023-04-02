@@ -15,9 +15,9 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
-import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.inventory.ProductService;
 
 /**
@@ -36,11 +36,17 @@ class ServiceProviderImpl implements ServiceProvider {
         this.productService = productService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductService getProductService() {
         return productService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Translator getTranslator() {
         return translator;

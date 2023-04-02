@@ -66,11 +66,11 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
      */
     @Override
     @Measured
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull QuantityCaptureRequestVO request) {
-        if (pKey.isPresent()) {
+    public Optional<ReceivingOrder> capture(String pKey, @NotNull QuantityCaptureRequestVO request) {
+        if (pKey != null) {
             ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
-                    pKey.get(),
+                    pKey,
                     request.getQuantityReceived(),
                     getProduct(request.getProduct().getSku()),
                     v -> createPackagingUnitsForDemand(request));
@@ -102,7 +102,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         ReceivingOrderPosition position;
         // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
-            if (openPositions.get(0).getProduct().getOverbookingAllowed()) {
+            if (Boolean.TRUE.equals(openPositions.get(0).getProduct().getOverbookingAllowed())) {
                 position = openPositions.get(0);
             } else {
                 LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
@@ -119,21 +119,20 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
 
     private void createPackagingUnitsForDemand(QuantityCaptureRequestVO request) {
         final var sku = request.getProduct().getSku();
-        final var quantityReceived = request.getQuantityReceived();
-        final var transportUnitId = request.getTransportUnit().getTransportUnitId();
-        final var loadUnitPosition = request.getLoadUnitLabel();
-        final var existingProduct = getProduct(sku);
-        final var details = request.getDetails();
-        for (var i = 0; i < quantityReceived.getMagnitude().intValue(); i++) {
+        for (var i = 0; i < request.getQuantityReceived().getMagnitude().intValue(); i++) {
             // single packs
             var pu = new PackagingUnitVO(
                     ProductVO.newBuilder().sku(sku).build(),
-                    existingProduct.getBaseUnit()
+                    getProduct(sku).getBaseUnit()
             );
-            pu.setDetails(details);
+            pu.setDetails(request.getDetails());
             pu.setSerialNumber(request.getSerialNumber());
             pu.setLotId(request.getLotId());
-            asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(transportUnitId, loadUnitPosition, request.getLoadUnitType(), pu));
+            asyncPackagingUnitApi.create(new CreatePackagingUnitCommand(
+                    request.getTransportUnit().getTransportUnitId(),
+                    request.getLoadUnitLabel(),
+                    request.getLoadUnitType(), pu)
+            );
         }
     }
 

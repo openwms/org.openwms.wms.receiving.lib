@@ -13,19 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving;
+package org.openwms.wms.receiving.impl;
 
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.inventory.ProductService;
 
 /**
- * A ServiceProvider.
+ * A ServiceProvider provides access to injected Spring components for not managed classes.
  *
  * @author Heiko Scherrer
  */
 public interface ServiceProvider {
 
+    /**
+     * Get a reference to the {@link ProductService}.
+     *
+     * @return Ihe instance
+     */
     ProductService getProductService();
 
+    /**
+     * Get a reference to the {@link Translator}.
+     *
+     * @return Ihe instance
+     */
     Translator getTranslator();
 }

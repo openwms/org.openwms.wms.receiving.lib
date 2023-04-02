@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,7 +32,7 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LocationVO extends AbstractBase<LocationVO> implements Serializable {
 
-    @NotEmpty
+    @NotBlank
     @JsonProperty("erpCode")
     private String erpCode;
 

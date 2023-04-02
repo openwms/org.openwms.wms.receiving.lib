@@ -22,7 +22,7 @@ import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
 
@@ -54,7 +54,7 @@ public abstract class AbstractCapturer {
                 ));
     }
 
-    protected ReceivingOrder getOrder(@NotEmpty String pKey) {
+    protected ReceivingOrder getOrder(@NotBlank String pKey) {
         return repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(
                 translator,
                 RO_NOT_FOUND_BY_PKEY,

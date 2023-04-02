@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- * A ReceivingOrderDetailsUpdater.
+ * A ReceivingOrderDetailsUpdater is a {@link ReceivingOrderUpdater} strategy.
  *
  * @author Heiko Scherrer
  */

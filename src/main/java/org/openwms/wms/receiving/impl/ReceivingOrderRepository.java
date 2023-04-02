@@ -24,7 +24,7 @@ import java.util.Optional;
  *
  * @author Heiko Scherrer
  */
-public interface ReceivingOrderRepository extends JpaRepository<ReceivingOrder, Long> {
+interface ReceivingOrderRepository extends JpaRepository<ReceivingOrder, Long> {
 
     Optional<ReceivingOrder> findBypKey(String pKey);
 

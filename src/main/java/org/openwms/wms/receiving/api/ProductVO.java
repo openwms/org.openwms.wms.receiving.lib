@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -34,7 +34,7 @@ import java.util.Objects;
 public class ProductVO implements Serializable {
 
     /** The product id is part of the unique business key. */
-    @NotEmpty(groups = ValidationGroups.Capture.class)
+    @NotBlank(groups = ValidationGroups.Capture.class)
     @JsonProperty("sku")
     private String sku;
     /** An identifying label of the Product. */
@@ -54,7 +54,7 @@ public class ProductVO implements Serializable {
     ProductVO() {
     }
 
-    public ProductVO(@NotEmpty String sku) {
+    public ProductVO(@NotBlank String sku) {
         this.sku = sku;
     }
 

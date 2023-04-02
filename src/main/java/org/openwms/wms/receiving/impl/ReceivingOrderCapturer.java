@@ -37,5 +37,5 @@ public interface ReceivingOrderCapturer<T extends CaptureRequestVO> extends Plug
      * @param request Particular capturing detail information used to perform the capturing process
      * @return The identified and updated ReceivingOrder instance, in case of {@literal Expected Receipt}s
      */
-    Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull T request);
+    Optional<ReceivingOrder> capture(String pKey, @NotNull T request);
 }

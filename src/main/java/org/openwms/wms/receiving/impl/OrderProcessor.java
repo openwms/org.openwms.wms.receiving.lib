@@ -55,9 +55,7 @@ class OrderProcessor {
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void onCreate(ReceivingOrderCreatedEvent event) {
         var order = event.getSource();
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("ReceivingOrder with orderId [{}] saved", order.getOrderId());
-        }
+        LOGGER.info("ReceivingOrder with orderId [{}] created", order.getOrderId());
         LOGGER.debug("Processing ReceivingOrder [{}]", order.getOrderId());
         order.setOrderState(OrderState.PROCESSED);
         if (positionProcessor != null) {

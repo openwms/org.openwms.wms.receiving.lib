@@ -23,7 +23,6 @@ import org.ameba.tenancy.TenantHolder;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
-import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
@@ -37,7 +36,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
@@ -140,12 +138,9 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
         for (T request : requests) {
             ro = capturers.getPluginFor(request)
                     .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
-                    .capture(Optional.of(pKey), request);
+                    .capture(pKey, request);
         }
-        if (ro.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(receivingMapper.convertToVO(repository.save(ro.get()), new CycleAvoidingMappingContext()));
+        return ro.map(receivingOrder -> receivingMapper.convertToVO(repository.save(receivingOrder), new CycleAvoidingMappingContext()));
     }
 
     /**
@@ -157,7 +152,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
         for (T request : requests) {
             capturers.getPluginFor(request)
                 .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
-                .capture(Optional.empty(), request);
+                .capture(null, request);
         }
     }
 
@@ -261,7 +256,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
         return repository.save(order);
     }
 
-    private ReceivingOrder getOrder(@NotEmpty String pKey) {
+    private ReceivingOrder getOrder(String pKey) {
         return repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(
                 serviceProvider.getTranslator(),
                 RO_NOT_FOUND_BY_PKEY,

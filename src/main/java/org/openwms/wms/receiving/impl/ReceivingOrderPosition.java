@@ -20,7 +20,6 @@ import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingMessages;
-import org.openwms.wms.receiving.ServiceProvider;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.inventory.Product;
 

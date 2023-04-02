@@ -69,11 +69,11 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
      */
     @Override
     @Measured
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull TUCaptureRequestVO request) {
-        if (pKey.isPresent()) {
+    public Optional<ReceivingOrder> capture(String pKey, @NotNull TUCaptureRequestVO request) {
+        if (pKey != null) {
             ValidationUtil.validate(validator, request, ValidationGroups.CreateExpectedTUReceipt.class);
             return handleExpectedReceipt(
-                    pKey.get(),
+                    pKey,
                     request);
         }
         ValidationUtil.validate(validator, request, ValidationGroups.CreateBlindTUReceipt.class);
@@ -81,9 +81,7 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
             throw new CapturingException(translator, TU_TYPE_NOT_GIVEN, new String[0]);
         }
         var locationOpt = locationApi.findByErpCodeOpt(request.getActualLocation().getErpCode());
-        var location = locationOpt.isPresent()
-                ? LocationVO.of(locationOpt.get().getLocationId())
-                : new LocationVO(); // Handle Locations without locationId later
+        var location = locationOpt.map(locationVO -> LocationVO.of(locationVO.getLocationId())).orElseGet(LocationVO::new); // Handle Locations without locationId later
         location.setErpCode(request.getActualLocation().getErpCode());
         var tu = new TransportUnitVO(request.getTransportUnit().getTransportUnitId(), location, request.getTransportUnit().getTransportUnitType());
         transportUnitApi.createTU(tu);

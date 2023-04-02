@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.wms.receiving.ValidationGroups;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
@@ -36,11 +36,11 @@ public class ReceivingTransportUnitOrderPositionVO extends BaseReceivingOrderPos
 
     /** Expected receipts may also carry the unique identifier of the suppliers {@code TransportUnit}. */
     @JsonProperty("transportUnitBK")
-    @NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class)
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String transportUnitBK;
     /** The name of the {@code TransportUnitType} the expected {@code TransportUnit} is of. */
     @JsonProperty("transportUnitTypeName")
-    @NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class)
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String transportUnitTypeName;
 
     @JsonCreator
@@ -48,8 +48,8 @@ public class ReceivingTransportUnitOrderPositionVO extends BaseReceivingOrderPos
 
     @ConstructorProperties({"positionId", "transportUnitBK", "transportUnitTypeName"})
     public ReceivingTransportUnitOrderPositionVO(@NotNull Integer positionId,
-                                                 @NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitBK,
-                                                 @NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitTypeName) {
+                                                 @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitBK,
+                                                 @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitTypeName) {
         super(positionId);
         this.transportUnitBK = transportUnitBK;
         this.transportUnitTypeName = transportUnitTypeName;
@@ -59,7 +59,7 @@ public class ReceivingTransportUnitOrderPositionVO extends BaseReceivingOrderPos
         return transportUnitBK;
     }
 
-    public void setTransportUnitBK(@NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitBK) {
+    public void setTransportUnitBK(@NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitBK) {
         this.transportUnitBK = transportUnitBK;
     }
 
@@ -67,7 +67,7 @@ public class ReceivingTransportUnitOrderPositionVO extends BaseReceivingOrderPos
         return transportUnitTypeName;
     }
 
-    public void setTransportUnitTypeName(@NotEmpty(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitTypeName) {
+    public void setTransportUnitTypeName(@NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class) String transportUnitTypeName) {
         this.transportUnitTypeName = transportUnitTypeName;
     }
 

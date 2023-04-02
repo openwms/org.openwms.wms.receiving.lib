@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         }
     }
 
-    public ReceivingOrderVO(@NotEmpty String orderId) {
+    public ReceivingOrderVO(@NotBlank String orderId) {
         this.orderId = orderId;
     }
 

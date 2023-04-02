@@ -15,7 +15,7 @@
  */
 package org.openwms.common.transport.api.commands;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
@@ -37,7 +37,7 @@ public class MessageCommand implements Command<MessageCommand.Type>, Serializabl
     private Type type;
     private String transportUnitId;
 
-    @NotEmpty
+    @NotBlank
     private String messageText;
     private String messageNumber;
     private Date messageOccurred;
@@ -119,7 +119,7 @@ public class MessageCommand implements Command<MessageCommand.Type>, Serializabl
             return this;
         }
 
-        public Builder withMessageText(@NotEmpty String val) {
+        public Builder withMessageText(@NotBlank String val) {
             messageText = val;
             return this;
         }

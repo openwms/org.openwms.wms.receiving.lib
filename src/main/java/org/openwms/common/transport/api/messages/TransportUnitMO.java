@@ -19,7 +19,7 @@ import org.openwms.common.location.api.messages.LocationMO;
 import org.openwms.common.transport.api.ValidationGroups;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -33,14 +33,14 @@ import java.util.StringJoiner;
 public class TransportUnitMO implements Serializable {
 
     /** The persistent key of TransportUnit. */
-    @NotEmpty(groups = {
+    @NotBlank(groups = {
             ValidationGroups.TransportUnit.Create.class,
             ValidationGroups.TransportUnit.Request.class,
             ValidationGroups.TransportUnit.Remove.class
     })
     private String pKey;
     /** The business key of the TransportUnit. */
-    @NotEmpty(groups = {
+    @NotBlank(groups = {
             ValidationGroups.TransportUnit.ChangeTarget.class,
             ValidationGroups.TransportUnit.Create.class,
             ValidationGroups.TransportUnit.Modified.class
@@ -59,7 +59,7 @@ public class TransportUnitMO implements Serializable {
     /** The plcCode of the TransportUnit. */
     private String plcCode;
     /** The targetLocation of the TransportUnit. */
-    @NotEmpty(groups = ValidationGroups.TransportUnit.ChangeTarget.class)
+    @NotNull(groups = ValidationGroups.TransportUnit.ChangeTarget.class)
     private LocationMO targetLocation;
     /** The transportUnitType of the TransportUnit. */
     @Valid

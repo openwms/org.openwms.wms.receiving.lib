@@ -25,7 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
@@ -46,12 +46,12 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
 
     /** The foreign persistent key of the {@code Product}. */
     @Column(name = "C_FOREIGN_PID", nullable = false)
-    @NotEmpty
+    @NotBlank
     private String foreignPKey;
 
     /** The product id is part of the unique business key. */
     @Column(name = "C_SKU")
-    @NotEmpty
+    @NotBlank
     private String sku;
 
     /** An identifying label of the Product. */
@@ -72,8 +72,8 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     //@NotNull
     private Measurable baseUnit;
 
-    @NotNull
     @Column(name = "C_OVERBOOKING_ALLOWED", nullable = false)
+    @NotNull
     private Boolean overbookingAllowed;
 
     /** Dear JPA ... */

@@ -71,12 +71,12 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
      */
     @Measured
     @Override
-    public Optional<ReceivingOrder> capture(Optional<String> pKey, @NotNull QuantityCaptureOnLocationRequestVO request) {
+    public Optional<ReceivingOrder> capture(String pKey, @NotNull QuantityCaptureOnLocationRequestVO request) {
         var product = getProduct(request);
-        if (pKey.isPresent()) {
+        if (pKey != null) {
             ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
-                    pKey.get(),
+                    pKey,
                     request.getQuantityReceived(),
                     product,
                     v -> createPackagingUnitsForDemand(request, product)
@@ -102,14 +102,13 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
     private void createPackagingUnitsForDemand(QuantityCaptureOnLocationRequestVO request, Product product) {
         final var erpCode = request.getActualLocation().getErpCode();
-        final var details = request.getDetails();
         final var quantityReceived = request.getQuantityReceived();
         // multi packs
         var pu = request.hasUomRelation()
                 ? new PackagingUnitVO(request.getUomRelation(), quantityReceived)
                 : new PackagingUnitVO(ProductVO.newBuilder().sku(request.getProduct().getSku()).build(), quantityReceived);
         pu.setActualLocation(new LocationVO(erpCode));
-        pu.setDetails(details);
+        pu.setDetails(request.getDetails());
         pu.setSerialNumber(request.getSerialNumber());
         pu.setLotId(request.getLotId());
         pu.setProduct(ProductVO.newBuilder().sku(product.getSku()).build());

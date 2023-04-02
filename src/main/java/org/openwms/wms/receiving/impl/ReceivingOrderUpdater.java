@@ -31,6 +31,13 @@ public interface ReceivingOrderUpdater extends Plugin<ReceivingOrderUpdater.Type
         DETAILS_CHANGE
     }
 
+    /**
+     * Update parts of a {@link ReceivingOrder} instance.
+     *
+     * @param existingReceivingOrder The existing unmodified instance
+     * @param receivingOrder The instance with modified values to update
+     * @return The updated (not saved) instance
+     */
     @NotNull ReceivingOrder update(@NotNull ReceivingOrder existingReceivingOrder,
                           @Valid @NotNull ReceivingOrder receivingOrder);
 }

@@ -54,6 +54,9 @@ public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosit
         this.transportUnitTypeName = transportUnitTypeName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validateOnCreation(Validator validator, Class<?> clazz) {
         if (clazz.isAssignableFrom(ValidationGroups.Create.class)) {
@@ -62,6 +65,9 @@ public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosit
         validator.validate(this, clazz);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void accept(BaseReceivingOrderPositionVisitor visitor) {
         visitor.visit(this);

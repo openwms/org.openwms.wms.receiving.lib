@@ -18,7 +18,7 @@ package org.openwms.wms.receiving.impl;
 import org.openwms.core.event.RootApplicationEvent;
 
 /**
- * A ReceivingOrderCreatedEvent.
+ * A ReceivingOrderCreatedEvent is raised when a {@link ReceivingOrder} has been created.
  * 
  * @author Heiko Scherrer
  */
