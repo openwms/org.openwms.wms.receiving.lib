@@ -72,6 +72,7 @@
         <guava.version>30.0-jre</guava.version>
         <joda-time.version>2.10.8</joda-time.version>
         <objenesis.version>3.2</objenesis.version>
+        <org.openwms.wms.receiving.ui.version>1.0.0-SNAPSHOT</org.openwms.wms.receiving.ui.version>
         <maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
         <servo-core.version>0.12.21</servo-core.version>
         <spring-cloud-dependencies.version>2021.0.6</spring-cloud-dependencies.version>
@@ -111,11 +112,8 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <showWarnings>true</showWarnings>
+                    <enablePreview>true</enablePreview>
                     <compilerArgs>
-                        <arg>
-                            --enable-preview
-                        </arg>
                         <arg>
                             -Amapstruct.defaultComponentModel=spring
                         </arg>
@@ -132,6 +130,7 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
+                    <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
             <plugin>
@@ -434,11 +433,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -485,6 +479,9 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>spring-milestones</id>
@@ -493,6 +490,9 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -503,14 +503,73 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </pluginRepository>
         <pluginRepository>
             <id>sonatype-nexus-snapshots</id>
             <name>Snapshot Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
             <releases>
                 <enabled>false</enabled>
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>enterprise</id>
+            <distributionManagement>
+                <repository>
+                    <id>interface21-releases</id>
+                    <name>OpenWMS.org Release Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
+                </repository>
+                <snapshotRepository>
+                    <id>interface21-snapshots</id>
+                    <name>OpenWMS.org Snapshot Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
+                </snapshotRepository>
+                <site>
+                    <id>site</id>
+                    <url>scm:git:git@github.com:interface21-io/${project.artifactId}.git</url>
+                </site>
+            </distributionManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openwms</groupId>
+                    <artifactId>org.openwms.wms.receiving.ui</artifactId>
+                    <version>${org.openwms.wms.receiving.ui.version}</version>
+                </dependency>
+            </dependencies>
+            <repositories>
+                <repository>
+                    <id>interface21-snapshots</id>
+                    <name>Interface21.io Snapshot Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </repository>
+                <repository>
+                    <id>interface21-releases</id>
+                    <name>Interface21.io Release Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 </project>
