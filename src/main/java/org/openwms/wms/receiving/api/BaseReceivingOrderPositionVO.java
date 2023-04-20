@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +40,10 @@ public class BaseReceivingOrderPositionVO implements Serializable {
 
     @JsonBackReference
     private ReceivingOrderVO order;
+    /** The unique identifier of this {@code ReceivingOrder}. */
+    @NotNull
+    @JsonProperty("orderId")
+    private String orderId;
     /** The unique position ID within an ReceivingOrder - must not be empty. */
     @NotNull
     @JsonProperty("positionId")
@@ -52,6 +57,9 @@ public class BaseReceivingOrderPositionVO implements Serializable {
     /** Arbitrary detail information on this position, might be populated with ERP information. */
     @JsonProperty("details")
     private Map<String, String> details;
+    /** Timestamp when the record was created. */
+    @JsonProperty("createDt")
+    private Date createDt;
 
     @JsonCreator
     BaseReceivingOrderPositionVO() {}
@@ -67,6 +75,14 @@ public class BaseReceivingOrderPositionVO implements Serializable {
 
     public void setOrder(ReceivingOrderVO order) {
         this.order = order;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public void setPositionId(Integer positionId) {
@@ -104,6 +120,14 @@ public class BaseReceivingOrderPositionVO implements Serializable {
         this.details = details;
     }
 
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(positionId);
@@ -119,7 +143,7 @@ public class BaseReceivingOrderPositionVO implements Serializable {
         if (this == o) return true;
         if (!(o instanceof BaseReceivingOrderPositionVO)) return false;
         BaseReceivingOrderPositionVO that = (BaseReceivingOrderPositionVO) o;
-        return Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(startMode, that.startMode) && Objects.equals(details, that.details);
+        return Objects.equals(orderId, that.orderId) && Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(startMode, that.startMode) && Objects.equals(details, that.details) && Objects.equals(createDt, that.createDt);
     }
 
     /**
@@ -129,6 +153,6 @@ public class BaseReceivingOrderPositionVO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, state, startMode, details);
+        return Objects.hash(orderId, positionId, state, startMode, details, createDt);
     }
 }

@@ -126,8 +126,11 @@ public interface ReceivingMapper {
     List<ReceivingOrderVO> convertToVO(List<ReceivingOrder> eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     /*~ Positions */
+    @Mapping(target = "orderId", source = "eo.order.orderId")
     @Mapping(target = "positionId", source = "posNo")
     @Mapping(target = "quantityExpected", source = "quantityExpected")
+    @Mapping(target = "details", source = "details")
+    @Mapping(target = "createDt", source = "createDt")
     ReceivingOrderPositionVO convertToVO(ReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "positionId", source = "posNo")
