@@ -104,6 +104,7 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[]").description("An array of positions, must not be empty"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
+                                fieldWithPath("positions[].priority").description("The current priority of the ReceivingOrder the position belongs to"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),
                                 fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
                                 fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),

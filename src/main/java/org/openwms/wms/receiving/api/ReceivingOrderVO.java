@@ -23,8 +23,8 @@ import org.ameba.http.AbstractBase;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -51,6 +51,9 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     /** The current state of this {@code ReceivingOrder}. */
     @JsonProperty("state")
     private String state;
+    /** When the order is expected to be received. */
+    @JsonProperty("expectedReceiptDate")
+    private ZonedDateTime expectedReceiptDate;
     /** A set of {@code ReceivingOrderPosition}s belonging to this {@code ReceivingOrder}. */
     @JsonProperty("positions")
     @JsonManagedReference
@@ -91,6 +94,26 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         this.orderId = orderId;
     }
 
+    public boolean hasState() {
+        return state != null;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public ZonedDateTime getExpectedReceiptDate() {
+        return expectedReceiptDate;
+    }
+
+    public void setExpectedReceiptDate(ZonedDateTime expectedReceiptDate) {
+        this.expectedReceiptDate = expectedReceiptDate;
+    }
+
     public List<BaseReceivingOrderPositionVO> getPositions() {
         return positions;
     }
@@ -107,18 +130,6 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         this.details = details;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public boolean hasState() {
-        return state != null;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -128,13 +139,14 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         return Objects.equals(pKey, that.pKey) &&
                 Objects.equals(orderId, that.orderId) &&
                 Objects.equals(state, that.state) &&
+                Objects.equals(expectedReceiptDate, that.expectedReceiptDate) &&
                 Objects.equals(positions, that.positions) &&
                 Objects.equals(details, that.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, orderId, state, positions, details);
+        return Objects.hash(super.hashCode(), pKey, orderId, state, expectedReceiptDate, positions, details);
     }
 
     @Override

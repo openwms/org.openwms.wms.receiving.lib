@@ -51,13 +51,16 @@ public class BaseReceivingOrderPositionVO implements Serializable {
     /** Current position state. */
     @JsonProperty("state")
     private String state;
+    /** The current priority of the ReceivingOrder the position belongs to. */
+    @JsonProperty("priority")
+    private int priority;
     /** Optional: How the position should be processed, manually oder automatically. */
     @JsonProperty("startMode")
     private String startMode;
     /** Arbitrary detail information on this position, might be populated with ERP information. */
     @JsonProperty("details")
     private Map<String, String> details;
-    /** Timestamp when the record was created. */
+    /** Timestamp when the position has been created. */
     @JsonProperty("createDt")
     private Date createDt;
 
@@ -99,6 +102,14 @@ public class BaseReceivingOrderPositionVO implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getStartMode() {
@@ -143,7 +154,7 @@ public class BaseReceivingOrderPositionVO implements Serializable {
         if (this == o) return true;
         if (!(o instanceof BaseReceivingOrderPositionVO)) return false;
         BaseReceivingOrderPositionVO that = (BaseReceivingOrderPositionVO) o;
-        return Objects.equals(orderId, that.orderId) && Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(startMode, that.startMode) && Objects.equals(details, that.details) && Objects.equals(createDt, that.createDt);
+        return Objects.equals(orderId, that.orderId) && Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(priority, that.priority) && Objects.equals(startMode, that.startMode) && Objects.equals(details, that.details) && Objects.equals(createDt, that.createDt);
     }
 
     /**
@@ -153,6 +164,6 @@ public class BaseReceivingOrderPositionVO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, positionId, state, startMode, details, createDt);
+        return Objects.hash(orderId, positionId, state, priority, startMode, details, createDt);
     }
 }

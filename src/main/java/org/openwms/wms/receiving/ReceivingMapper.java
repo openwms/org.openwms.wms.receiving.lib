@@ -127,6 +127,7 @@ public interface ReceivingMapper {
 
     /*~ Positions */
     @Mapping(target = "orderId", source = "eo.order.orderId")
+    @Mapping(target = "priority", source = "eo.order.priority")
     @Mapping(target = "positionId", source = "posNo")
     @Mapping(target = "quantityExpected", source = "quantityExpected")
     @Mapping(target = "details", source = "details")

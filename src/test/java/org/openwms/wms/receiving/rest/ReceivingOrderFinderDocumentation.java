@@ -85,6 +85,7 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("details").description("Stores arbitrary detail information according to the ReceivingOrder"),
                                 fieldWithPath("details.*").ignored(),
                                 fieldWithPath("positions[].positionId").description("The position of the ReceivingOrderPosition"),
+                                fieldWithPath("positions[].priority").description("The current priority of the ReceivingOrder the position belongs to"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].state").description("The state of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].quantityExpected").optional().description("The expected quantity to be received"),
@@ -101,7 +102,9 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].product.baseUnit").description("The default unit and quantity the Product is shipped"),
                                 fieldWithPath("positions[].product.baseUnit.unitType").description("The default unit type of the Product"),
                                 fieldWithPath("positions[].product.baseUnit.*").ignored(),
-                                fieldWithPath("positions[].product.*").ignored()
+                                fieldWithPath("positions[].product.*").ignored(),
+                                fieldWithPath("positions[].orderId").optional().description("The unique id of the ReceivingOrder the position belongs to"),
+                                fieldWithPath("positions[].createDt").description("Timestamp when the position has been created.")
                         )
                 ))
         ;

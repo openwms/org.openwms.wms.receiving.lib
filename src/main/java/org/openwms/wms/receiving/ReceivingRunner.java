@@ -16,9 +16,6 @@
 package org.openwms.wms.receiving;
 
 import org.ameba.app.SolutionApp;
-import org.openwms.wms.receiving.inventory.Product;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
-import org.openwms.wms.receiving.transport.TransportUnit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -34,8 +31,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                 ReceivingRunner.class,
                 SolutionApp.class
         })
-@EnableJpaRepositories(basePackageClasses = {ReceivingOrder.class, TransportUnit.class, Product.class})
-@EntityScan(basePackageClasses = {ReceivingOrder.class, TransportUnit.class, Product.class})
+@EnableJpaRepositories(basePackages = {
+        "org.openwms.wms.receiving.impl",
+        "org.openwms.wms.receiving.ui.impl",
+        "org.openwms.wms.receiving.transport.impl",
+        "org.openwms.wms.receiving.inventory"
+})
+@EntityScan(basePackages = {
+        "org.openwms.wms.receiving.impl",
+        "org.openwms.wms.receiving.ui.impl",
+        "org.openwms.wms.receiving.transport.impl",
+        "org.openwms.wms.receiving.inventory"
+})
 public class ReceivingRunner {
 
     public static void main(String[] args) {
