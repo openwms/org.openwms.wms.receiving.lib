@@ -47,7 +47,7 @@ public class ReceivingOrderPositionVO extends BaseReceivingOrderPositionVO imple
     private ProductVO product;
 
     @JsonCreator
-    ReceivingOrderPositionVO() {}
+    protected ReceivingOrderPositionVO() {}
 
     @ConstructorProperties({"positionId", "quantityExpected", "product"})
     public ReceivingOrderPositionVO(
