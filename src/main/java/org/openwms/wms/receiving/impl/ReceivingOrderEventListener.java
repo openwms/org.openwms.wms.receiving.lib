@@ -27,18 +27,18 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * A OrderProcessor processes order changes.
+ * A ReceivingOrderEventListener listens on events according to {@link ReceivingOrder}s.
  *
  * @author Heiko Scherrer
  */
 @TxService
-class OrderProcessor {
+class ReceivingOrderEventListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingOrderEventListener.class);
     private final OrderPositionProcessor positionProcessor;
     private final ReceivingOrderRepository repository;
 
-    OrderProcessor(
+    ReceivingOrderEventListener(
             @Autowired(required = false) OrderPositionProcessor positionProcessor,
             ReceivingOrderRepository repository
     ) {
