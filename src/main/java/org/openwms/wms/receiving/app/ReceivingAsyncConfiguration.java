@@ -63,17 +63,15 @@ public class ReceivingAsyncConfiguration {
     @ConditionalOnExpression("'${owms.receiving.serialization}'=='json'")
     @Bean
     MessageConverter messageConverter() {
-        Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
         BOOT_LOGGER.info("Using JSON serialization over AMQP");
-        return messageConverter;
+        return new Jackson2JsonMessageConverter();
     }
 
     @ConditionalOnExpression("'${owms.receiving.serialization}'=='barray'")
     @Bean
     MessageConverter serializerMessageConverter() {
-        SerializerMessageConverter messageConverter = new SerializerMessageConverter();
         BOOT_LOGGER.info("Using byte array serialization over AMQP");
-        return messageConverter;
+        return new SerializerMessageConverter();
     }
 
     @Primary
@@ -81,12 +79,12 @@ public class ReceivingAsyncConfiguration {
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
             ObjectProvider<MessageConverter> messageConverter,
             @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        var rabbitTemplate = new RabbitTemplate(connectionFactory);
+        var backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setMultiplier(2);
         backOffPolicy.setMaxInterval(15000);
         backOffPolicy.setInitialInterval(500);
-        RetryTemplate retryTemplate = new RetryTemplate();
+        var retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(backOffPolicy);
         rabbitTemplate.setRetryTemplate(retryTemplate);
         rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));

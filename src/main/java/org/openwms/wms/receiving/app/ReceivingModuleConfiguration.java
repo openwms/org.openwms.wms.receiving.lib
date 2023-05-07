@@ -101,4 +101,5 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCommonMessages(new Properties());
         return messageSource;
-    }}
+    }
+}
