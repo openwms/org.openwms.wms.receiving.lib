@@ -130,6 +130,7 @@ public interface ReceivingMapper {
     @Mapping(target = "priority", source = "eo.order.priority")
     @Mapping(target = "positionId", source = "posNo")
     @Mapping(target = "quantityExpected", source = "quantityExpected")
+    @Mapping(target = "quantityReceived", source = "quantityReceived")
     @Mapping(target = "details", source = "details")
     @Mapping(target = "createDt", source = "createDt")
     ReceivingOrderPositionVO convertToVO(ReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
