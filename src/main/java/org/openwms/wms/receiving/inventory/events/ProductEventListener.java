@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.inventory.impl;
+package org.openwms.wms.receiving.inventory.events;
 
 import org.openwms.wms.receiving.events.CacheJanitor;
-import org.openwms.wms.receiving.events.ProductEvent;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductSynchronizer;
 import org.springframework.context.event.EventListener;

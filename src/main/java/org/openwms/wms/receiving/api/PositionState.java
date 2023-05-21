@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.order;
+package org.openwms.wms.receiving.api;
 
 /**
- * An OrderStartMode.
+ * An PositionState enum defines all possible states of any kind of ReceivingOrderPosition.
  * 
  * @author Heiko Scherrer
  */
-public enum OrderStartMode {
+public enum PositionState {
 
-    /** Order is started automatically. */
-    AUTOMATIC,
-
-    /** Order has to be started manually, e.g. via user interface. */
-    MANUAL;
+    /** When the ReceivingOrderPosition has been created. */
+    CREATED,
+    /** When the ReceivingOrderPosition is currently in the receiving process and goods are captured. */
+    PROCESSING,
+    /** If the ReceivingOrderPosition has been cancelled. */
+    CANCELED,
+    /** ReceivingOrderPosition has not been captured completely but the ReceivingOrder has been closed. */
+    PARTIALLY_COMPLETED,
+    /** ReceivingOrderPosition has been completed (captured) successfully. */
+    COMPLETED
 }

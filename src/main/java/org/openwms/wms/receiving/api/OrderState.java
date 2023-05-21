@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.order;
+package org.openwms.wms.receiving.api;
 
 /**
  * An OrderState is used to define the state of a ReceivingOrder or ReceivingOrderPosition.
@@ -26,10 +26,10 @@ public enum OrderState {
     UNDEFINED,
     /** When the Order has been created. */
     CREATED,
-    /** Not Used. */
+    /** After creation, if all position have been validated successfully. */
+    VALIDATED,
+    /** When the Order is currently in the process of capturing. */
     PROCESSING,
-    /** After creation, if all position have been processed successfully. */
-    PROCESSED,
     /** If the Order or Position has been cancelled. */
     CANCELED,
     /** Order has been completed only partially, the unfulfilled positions can be transferred to a new order. */

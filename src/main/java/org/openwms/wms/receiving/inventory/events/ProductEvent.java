@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.api.events;
+package org.openwms.wms.receiving.inventory.events;
 
 import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.api.OrderState;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
 
 import java.io.Serializable;
 
 /**
- * A ReceivingOrderCreatedEvent.
- * 
+ * A ProductEvent.
+ *
  * @author Heiko Scherrer
  */
-public class ReceivingOrderStateChangeEvent extends RootApplicationEvent implements Serializable {
+public class ProductEvent extends RootApplicationEvent implements Serializable {
 
-    public final OrderState state;
+    public enum TYPE {
+        CREATED, UPDATED, DELETED
+    }
 
-    public ReceivingOrderStateChangeEvent(ReceivingOrder source, OrderState state) {
+    private TYPE type;
+
+    public ProductEvent(Object source) {
         super(source);
-        this.state = state;
     }
 
-    @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
+    public ProductEvent(Object source, TYPE type) {
+        super(source);
+        this.type = type;
     }
 
-    public OrderState getState() {
-        return state;
+    public TYPE getType() {
+        return type;
     }
 }

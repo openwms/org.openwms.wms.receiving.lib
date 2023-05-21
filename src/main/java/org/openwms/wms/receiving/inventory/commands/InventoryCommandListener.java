@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.inventory;
+package org.openwms.wms.receiving.inventory.commands;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ReceivingMessages;
+import org.openwms.wms.receiving.inventory.ProductService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

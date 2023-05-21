@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.spi.common.location;
 
-import org.openwms.wms.receiving.spi.wms.location.LocationVO;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,5 +40,5 @@ public interface CommonLocationApi {
      */
     @GetMapping(value = "/v1/locations", params = {"erpCode"}, produces = "application/vnd.openwms.common.location-opt-v1+json")
     @Cacheable("locations")
-    Optional<LocationVO> findByErpCode(@RequestParam("erpCode") String erpCode);
+    Optional<CommonLocationVO> findByErpCode(@RequestParam("erpCode") String erpCode);
 }

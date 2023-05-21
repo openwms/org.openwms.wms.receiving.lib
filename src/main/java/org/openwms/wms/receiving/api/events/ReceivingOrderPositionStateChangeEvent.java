@@ -16,8 +16,8 @@
 package org.openwms.wms.receiving.api.events;
 
 import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.order.OrderState;
-import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
+import org.openwms.wms.receiving.api.PositionState;
+import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 
 import java.io.Serializable;
 
@@ -26,11 +26,11 @@ import java.io.Serializable;
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderPositionStateChangeEvent<T extends BaseReceivingOrderPosition> extends RootApplicationEvent implements Serializable {
+public class ReceivingOrderPositionStateChangeEvent<T extends AbstractReceivingOrderPosition> extends RootApplicationEvent implements Serializable {
 
-    public final OrderState state;
+    public final PositionState state;
 
-    public ReceivingOrderPositionStateChangeEvent(T source, OrderState state) {
+    public ReceivingOrderPositionStateChangeEvent(T source, PositionState state) {
         super(source);
         this.state = state;
     }
@@ -40,7 +40,7 @@ public class ReceivingOrderPositionStateChangeEvent<T extends BaseReceivingOrder
         return (T) super.getSource();
     }
 
-    public OrderState getState() {
+    public PositionState getState() {
         return state;
     }
 }

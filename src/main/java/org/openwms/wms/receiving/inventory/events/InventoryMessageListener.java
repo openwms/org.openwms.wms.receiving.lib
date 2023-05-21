@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.events;
+package org.openwms.wms.receiving.inventory.events;
 
 import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.ReceivingMapper;
-import org.openwms.wms.receiving.api.events.ProductMO;
+import org.openwms.wms.receiving.inventory.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -29,26 +28,26 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 /**
- * A InventoryEventListener is a Spring managed bean, active in profile ASYNCHRONOUS that listens for Product changes.
+ * A InventoryMessageListener is a Spring managed bean, active in profile ASYNCHRONOUS that listens on Product changes.
  *
  * @author Heiko Scherrer
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
-public class InventoryEventListener {
+public class InventoryMessageListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InventoryEventListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InventoryMessageListener.class);
     private final ApplicationEventPublisher publisher;
-    private final ReceivingMapper mapper;
+    private final ProductMapper mapper;
 
-    public InventoryEventListener(ApplicationEventPublisher publisher, ReceivingMapper mapper) {
+    public InventoryMessageListener(ApplicationEventPublisher publisher, ProductMapper mapper) {
         this.publisher = publisher;
         this.mapper = mapper;
     }
 
     @Measured
     @RabbitListener(queues = "${owms.events.inventory.products.queue-name}")
-    void handle(ProductMO msg, @Header("owms_event_type") String header) {
+    void handle(InventoryProductMO msg, @Header("owms_event_type") String header) {
         try {
             switch (header) {
                 case "created" -> {

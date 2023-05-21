@@ -15,25 +15,25 @@
  */
 package org.openwms.wms.receiving.spi.wms.location;
 
-import org.ameba.annotation.Measured;
+import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.spi.common.location.CommonLocationApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 /**
- * A LocationApiFallback.
+ * A LocationApiFallbackFactory.
  *
  * @author Heiko Scherrer
  */
-class LocationApiFallback implements LocationApi {
+@Profile(SpringProfiles.DISTRIBUTED)
+@Component
+class LocationApiFallbackFactory implements FallbackFactory<LocationApi> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocationApiFallback.class);
     private final LocationMapper mapper;
     private final CommonLocationApi commonLocationApi;
 
-    LocationApiFallback(LocationMapper mapper, CommonLocationApi commonLocationApi) {
+    LocationApiFallbackFactory(LocationMapper mapper, CommonLocationApi commonLocationApi) {
         this.mapper = mapper;
         this.commonLocationApi = commonLocationApi;
     }
@@ -42,9 +42,7 @@ class LocationApiFallback implements LocationApi {
      * {@inheritDoc}
      */
     @Override
-    @Measured
-    public Optional<LocationVO> findByErpCodeOpt(String erpCode) {
-        LOGGER.warn("WMS LocationApi not available or took too long, calling the COMMON LocationApi instead");
-        return commonLocationApi.findByErpCode(erpCode).map(mapper::convertBetween);
+    public LocationApi create(Throwable cause) {
+        return new LocationApiFallback(mapper, commonLocationApi);
     }
 }

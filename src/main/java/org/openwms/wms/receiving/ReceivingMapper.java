@@ -19,22 +19,14 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.openwms.common.location.api.messages.LocationMO;
-import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.wms.receiving.api.BaseReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderPositionVO;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
 import org.openwms.wms.receiving.api.ReceivingTransportUnitOrderPositionVO;
-import org.openwms.wms.receiving.api.events.ProductMO;
-import org.openwms.wms.receiving.api.events.ReceivingOrderMO;
-import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
-import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
+import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
-import org.openwms.wms.receiving.inventory.Product;
-import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
-import org.openwms.wms.receiving.transport.TransportUnit;
 
 import java.util.List;
 
@@ -48,7 +40,7 @@ import static java.lang.String.format;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReceivingMapper {
 
-    default BaseReceivingOrderPosition fromVOtoEO(BaseReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
+    default AbstractReceivingOrderPosition fromVOtoEO(BaseReceivingOrderPositionVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
         if (vo instanceof ReceivingOrderPositionVO rop) {
             return convertFromVO(rop, cycleAvoidingMappingContext);
         } else if (vo instanceof ReceivingTransportUnitOrderPositionVO rtuop) {
@@ -60,7 +52,7 @@ public interface ReceivingMapper {
         }
     }
 
-    default BaseReceivingOrderPositionVO fromEOtoVO(BaseReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
+    default BaseReceivingOrderPositionVO fromEOtoVO(AbstractReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
         if (eo instanceof ReceivingOrderPosition rop) {
             return convertToVO(rop, cycleAvoidingMappingContext);
         } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
@@ -72,42 +64,6 @@ public interface ReceivingMapper {
         }
     }
 
-    default ReceivingOrderPositionMO fromEOtoMO(BaseReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext) {
-        if (eo instanceof ReceivingOrderPosition rop) {
-            return convertToReceivingOrderPositionMO(rop, cycleAvoidingMappingContext);
-        } else if (eo instanceof ReceivingTransportUnitOrderPosition rtuop) {
-            return convertToReceivingOrderPositionMO(rtuop, cycleAvoidingMappingContext);
-        } else if (eo != null){
-            throw new UnsupportedOperationException(format("ReceivingOrderPosition type [%s] is not supported", eo.getClass()));
-        } else {
-            throw new UnsupportedOperationException("ReceivingOrderPosition to convert is null");
-        }
-    }
-
-    @Mapping(target = "foreignPKey", source = "pKey")
-    @Mapping(target = "overbookingAllowed", source = "overbookingAllowed")
-    @Mapping(target = "ol", ignore = true)
-    Product convertFromMO(ProductMO mo);
-
-    @Mapping(target = "foreignPKey", source = "pKey")
-    @Mapping(target = "sku", source = "sku")
-    @Mapping(target = "label", source = "label")
-    @Mapping(target = "baseUnit", source = "baseUnit")
-    @Mapping(target = "description", source = "description")
-    @Mapping(target = "overbookingAllowed", source = "overbookingAllowed")
-    @Mapping(target = "ol", ignore = true)
-    Product convertFromVO(ProductVO vo);
-
-    @Mapping(target = "foreignPKey", source = "pKey")
-    @Mapping(target = "ol", ignore = true)
-    TransportUnit convertFromMO(TransportUnitMO mo);
-
-    default String convertFromMO(LocationMO mo) {
-        if (mo == null) {
-            return null;
-        }
-        return mo.id();
-    }
 
     @Mapping(target = "orderState", source = "state")
     @Mapping(target = "positions", source = "positions")
@@ -116,10 +72,6 @@ public interface ReceivingMapper {
     @Mapping(target = "pKey", source = "persistentKey")
     @Mapping(target = "state", source = "orderState")
     ReceivingOrderVO convertToVO(ReceivingOrder eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-    @Mapping(target = "pKey", source = "persistentKey")
-    @Mapping(target = "state", source = "orderState")
-    ReceivingOrderMO convertToMO(ReceivingOrder eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "pKey", source = "persistentKey")
     @Mapping(target = "state", source = "orderState")
@@ -138,12 +90,6 @@ public interface ReceivingMapper {
     @Mapping(target = "positionId", source = "posNo")
     @Mapping(target = "order", source = "order")
     ReceivingTransportUnitOrderPositionVO convertToVO(ReceivingTransportUnitOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-    @Mapping(target = "positionId", source = "posNo")
-    ReceivingOrderPositionMO convertToReceivingOrderPositionMO(ReceivingOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-    @Mapping(target = "positionId", source = "posNo")
-    ReceivingOrderPositionMO convertToReceivingOrderPositionMO(ReceivingTransportUnitOrderPosition eo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @Mapping(target = "posNo", source = "positionId")
     @Mapping(target = "order", source = "order")

@@ -13,35 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.events;
-
-import org.openwms.core.event.RootApplicationEvent;
-
-import java.io.Serializable;
+package org.openwms.wms.receiving.api;
 
 /**
- * A ProductEvent.
- *
+ * An OrderStartMode.
+ * 
  * @author Heiko Scherrer
  */
-public class ProductEvent extends RootApplicationEvent implements Serializable {
+public enum OrderStartMode {
 
-    public enum TYPE {
-        CREATED, UPDATED, DELETED
-    }
+    /** Order is started automatically. */
+    AUTOMATIC,
 
-    private TYPE type;
-
-    public ProductEvent(Object source) {
-        super(source);
-    }
-
-    public ProductEvent(Object source, TYPE type) {
-        super(source);
-        this.type = type;
-    }
-
-    public TYPE getType() {
-        return type;
-    }
+    /** Order has to be started manually, e.g. via user interface. */
+    MANUAL;
 }

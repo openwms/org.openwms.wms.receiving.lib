@@ -42,6 +42,9 @@ class TransportUnitApiFallbackFactory implements FallbackFactory<TransportUnitAp
         this.translator = translator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TransportUnitApi create(Throwable cause) {
         cause.printStackTrace();

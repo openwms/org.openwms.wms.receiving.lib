@@ -17,8 +17,8 @@ package org.openwms.wms.receiving.inventory.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
-import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.inventory.Product;
+import org.openwms.wms.receiving.inventory.ProductMapper;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.slf4j.Logger;
@@ -36,12 +36,12 @@ import java.util.Optional;
 class ProductServiceImpl implements ProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
-    private final ReceivingMapper receivingMapper;
+    private final ProductMapper mapper;
     private final ProductRepository repository;
     private final SyncProductApi productApi;
 
-    ProductServiceImpl(ReceivingMapper receivingMapper, ProductRepository repository, SyncProductApi productApi) {
-        this.receivingMapper = receivingMapper;
+    ProductServiceImpl(ProductMapper mapper, ProductRepository repository, SyncProductApi productApi) {
+        this.mapper = mapper;
         this.repository = repository;
         this.productApi = productApi;
     }
@@ -61,6 +61,6 @@ class ProductServiceImpl implements ProductService {
         if (savedOne.isPresent()) {
             return savedOne;
         }
-        return Optional.of(receivingMapper.convertFromVO(vo));
+        return Optional.of(repository.save(mapper.convertFromVO(vo)));
     }
 }

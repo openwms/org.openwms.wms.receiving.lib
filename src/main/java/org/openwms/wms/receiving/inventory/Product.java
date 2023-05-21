@@ -184,4 +184,13 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     public String toString() {
         return sku;
     }
+
+    /**
+     * Return the short identification of this Product.
+     *
+     * @return The SKU
+     */
+    public String shortId() {
+        return sku;
+    }
 }

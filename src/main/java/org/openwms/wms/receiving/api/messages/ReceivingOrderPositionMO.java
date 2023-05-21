@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.api.events;
+package org.openwms.wms.receiving.api.messages;
 
 import org.openwms.core.units.api.Measurable;
 
