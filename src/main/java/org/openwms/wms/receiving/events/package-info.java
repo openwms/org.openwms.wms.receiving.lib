@@ -1,4 +1,4 @@
 /**
- * Contains internal used event types and listeners.
+ * Contains listener classes that listen on internal events.
  */
 package org.openwms.wms.receiving.events;
