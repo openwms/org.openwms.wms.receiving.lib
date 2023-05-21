@@ -17,20 +17,16 @@ package org.openwms.wms.receiving.events;
 
 import org.ameba.annotation.Measured;
 import org.ameba.app.SpringProfiles;
-import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
-import org.openwms.wms.receiving.ReceivingMapper;
-import org.openwms.wms.receiving.api.events.ReceivingOrderPositionMO;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
-import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
+import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
@@ -44,20 +40,20 @@ public class EventPropagator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPropagator.class);
     private final AmqpTemplate amqpTemplate;
-    private final ReceivingMapper receivingMapper;
+    private final ReceivingMOMapper mapper;
     private final String receivingExchangeName;
 
     public EventPropagator(AmqpTemplate amqpTemplate,
-                           ReceivingMapper receivingMapper, @Value("${owms.events.receiving.exchange-name}") String receivingExchangeName) {
+            ReceivingMOMapper mapper, @Value("${owms.events.receiving.exchange-name}") String receivingExchangeName) {
         this.amqpTemplate = amqpTemplate;
-        this.receivingMapper = receivingMapper;
+        this.mapper = mapper;
         this.receivingExchangeName = receivingExchangeName;
     }
 
     @Measured
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener
     public void onEvent(ReceivingOrderStateChangeEvent event) {
-        var mo = receivingMapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
+        var mo = mapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
         switch (event.getState()) {
             case COMPLETED -> {
                 LOGGER.debug("ReceivingOrder [{}] with all positions completed, sending ReceivingOrderMO: [{}]",
@@ -74,20 +70,25 @@ public class EventPropagator {
                         event.getSource().getPersistentKey(), mo);
                 amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.ro.cancelled", mo);
             }
-            default -> LOGGER.warn("ReceivingOrderStateChangeEvent [{}] not supported", event.getState());
+            default -> LOGGER.debug("ReceivingOrderStateChangeEvent [{}] not exposed", event.getState());
         }
     }
 
     @Measured
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public <T extends BaseReceivingOrderPosition> void onEvent(ReceivingOrderPositionStateChangeEvent<T> event) {
-        ReceivingOrderPositionMO mo = receivingMapper.fromEOtoMO(event.getSource(), new CycleAvoidingMappingContext());
-        if (event.getState() == OrderState.COMPLETED) {
-            LOGGER.debug("ReceivingOrderPosition [{}]/[{}] completed, sending ReceivingOrderPositionMO [{}]",
-                    event.getSource().getOrder().getOrderId(), event.getSource().getPosNo(), mo);
-            amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.completed", mo);
-        } else {
-            LOGGER.warn("ReceivingOrderPositionStateChangeEvent [{}] not supported", event.getState());
+    @TransactionalEventListener
+    public <T extends AbstractReceivingOrderPosition> void onEvent(ReceivingOrderPositionStateChangeEvent<T> event) {
+        var mo = mapper.fromEOtoMO(event.getSource(), new CycleAvoidingMappingContext());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("ReceivingOrderPosition [{}]/[{}] changed state to [{}], sending ReceivingOrderPositionMO [{}]",
+                    event.getSource().getOrder().getOrderId(), event.getSource().getPosNo(), event.getState(), mo);
+        }
+        switch(event.getState()) {
+            case CREATED -> amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.created", mo);
+            case PROCESSING -> amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.processing", mo);
+            case CANCELED -> amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.canceled", mo);
+            case PARTIALLY_COMPLETED -> amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.partially_completed", mo);
+            case COMPLETED -> amqpTemplate.convertAndSend(receivingExchangeName, "receiving.event.rop.completed", mo);
+            default -> LOGGER.warn("ReceivingOrderPositionStateChangeEvent [{}] not supported", event.getState());
         }
     }
 }

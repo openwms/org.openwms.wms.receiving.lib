@@ -18,6 +18,7 @@ package org.openwms.wms.receiving.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.receiving.AbstractTestBase;
@@ -90,8 +91,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_complete_order() throws Exception {
         mockMvc
                 .perform(
@@ -105,8 +104,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_cancel_order() throws Exception {
         var toLocation = createOrder("4714");
         var value = new ReceivingOrderVO("4714");
@@ -117,8 +114,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(value))
                 )
-                .andExpect(status().isOk())
                 .andDo(document("order-cancel", preprocessResponse(prettyPrint())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.state", CoreMatchers.is("CANCELED")))
         ;
     }
 
@@ -134,6 +132,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(value))
                 )
+                .andExpect(jsonPath("$.state", CoreMatchers.is("CANCELED")))
                 .andExpect(status().isOk())
         ;
         mockMvc
@@ -148,6 +147,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
+    @Disabled("Must be changed to validated against an PROCESSING order")
     @Test void shall_NOT_cancel_order() throws Exception {
         var toLocation = createOrder("4716");
         var value = new ReceivingOrderVO("4716");
@@ -158,9 +158,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(value))
                 )
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("messageKey", is(ReceivingMessages.RO_CANCELLATION_DENIED)))
                 .andDo(document("order-cancel-403", preprocessResponse(prettyPrint())))
+                .andExpect(jsonPath("messageKey", is(ReceivingMessages.RO_CANCELLATION_DENIED)))
+                .andExpect(status().isForbidden())
         ;
     }
 

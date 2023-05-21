@@ -21,6 +21,7 @@ import org.ameba.i18n.Translator;
 import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.spi.wms.location.LocationVO;
@@ -35,9 +36,6 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-import static org.openwms.wms.order.OrderState.COMPLETED;
-import static org.openwms.wms.order.OrderState.CREATED;
-import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS_TU;
 import static org.openwms.wms.receiving.ReceivingMessages.TU_TYPE_NOT_GIVEN;
 
@@ -50,16 +48,12 @@ import static org.openwms.wms.receiving.ReceivingMessages.TU_TYPE_NOT_GIVEN;
 class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<TUCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TUCaptureRequestCapturer.class);
-    private final Validator validator;
-    private final ApplicationEventPublisher publisher;
     private final SyncTransportUnitApi transportUnitApi;
     private final SyncLocationApi locationApi;
 
     TUCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
             Validator validator, ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi, SyncLocationApi locationApi) {
-        super(translator, repository, productService);
-        this.validator = validator;
-        this.publisher = publisher;
+        super(publisher, translator, validator, repository, productService);
         this.transportUnitApi = transportUnitApi;
         this.locationApi = locationApi;
     }
@@ -92,8 +86,8 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
         var receivingOrder = getOrder(pKey);
         final var transportUnitBK = request.getTransportUnit().getTransportUnitId();
         final var actualLocationErpCode = request.getActualLocation().getErpCode();
-        Optional<ReceivingTransportUnitOrderPosition> openPosition = receivingOrder.getPositions().stream()
-                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+        var openPosition = receivingOrder.getPositions().stream()
+                .filter(p -> p.getState() == PositionState.CREATED || p.getState() == PositionState.PROCESSING)
                 .filter(ReceivingTransportUnitOrderPosition.class::isInstance)
                 .map(ReceivingTransportUnitOrderPosition.class::cast)
                 .filter(p -> p.getTransportUnitBK().equals(transportUnitBK))
@@ -103,12 +97,9 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
             LOGGER.error("Received a goods receipt but no open ReceivingTransportUnitOrderPosition with the expected TransportUnit exist");
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS_TU, new String[0]);
         }
-        LOGGER.info("Received TransportUnit [{}] with ReceivingOrder [{}] in ReceivingOrderPosition [{}]",
+        LOGGER.info("Received TransportUnit [{}] with ReceivingOrder [{}] and ReceivingOrderPosition [{}]",
                 transportUnitBK, receivingOrder.getOrderId(), openPosition.get().getPosNo());
-        openPosition.get().changeOrderState(publisher, COMPLETED);
-        if (receivingOrder.getPositions().stream().allMatch(rop -> rop.getState() == COMPLETED)) {
-            receivingOrder.changeOrderState(publisher, COMPLETED);
-        }
+        openPosition.get().changePositionState(publisher, PositionState.COMPLETED);
         receivingOrder = repository.save(receivingOrder);
         transportUnitApi.moveTU(transportUnitBK, actualLocationErpCode);
         return Optional.of(receivingOrder);

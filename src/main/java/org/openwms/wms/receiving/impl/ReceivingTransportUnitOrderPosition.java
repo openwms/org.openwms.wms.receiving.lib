@@ -33,7 +33,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "WMS_REC_ORDER_POS_TU")
-public class ReceivingTransportUnitOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
+public class ReceivingTransportUnitOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */
     @Column(name = "C_TRANSPORT_UNIT_BK")

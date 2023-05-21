@@ -19,7 +19,7 @@ import org.ameba.annotation.Measured;
 import org.openwms.common.transport.api.ValidationGroups;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.core.SpringProfiles;
-import org.openwms.wms.receiving.ReceivingMapper;
+import org.openwms.wms.receiving.transport.TransportUnitMapper;
 import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +46,10 @@ class TransportUnitMessageListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitMessageListener.class);
     private final TransportUnitService service;
-    private final ReceivingMapper mapper;
+    private final TransportUnitMapper mapper;
     private final Validator validator;
 
-    TransportUnitMessageListener(TransportUnitService service, ReceivingMapper mapper, Validator validator) {
+    TransportUnitMessageListener(TransportUnitService service, TransportUnitMapper mapper, Validator validator) {
         this.service = service;
         this.mapper = mapper;
         this.validator = validator;

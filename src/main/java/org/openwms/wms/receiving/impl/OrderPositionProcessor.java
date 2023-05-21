@@ -28,5 +28,5 @@ public interface OrderPositionProcessor {
      * @param order The Order that holds the position, here for reference
      * @param orderPosition The actual position to process
      */
-    void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition);
+    void processPosition(ReceivingOrder order, AbstractReceivingOrderPosition orderPosition);
 }

@@ -20,8 +20,9 @@ import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 
+import javax.validation.Validator;
 import javax.validation.constraints.NotBlank;
 
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
@@ -33,14 +34,17 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
  */
 public abstract class AbstractCapturer {
 
+    protected final ApplicationEventPublisher publisher;
     protected final Translator translator;
+    protected final Validator validator;
     protected final ReceivingOrderRepository repository;
     protected final ProductService productService;
-    @Value("${owms.receiving.blind-receipts.allowed}")
-    protected boolean isBlindReceiptsAllowed;
 
-    AbstractCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService) {
+    AbstractCapturer(ApplicationEventPublisher publisher, Translator translator, Validator validator, ReceivingOrderRepository repository,
+            ProductService productService) {
+        this.publisher = publisher;
         this.translator = translator;
+        this.validator = validator;
         this.repository = repository;
         this.productService = productService;
     }

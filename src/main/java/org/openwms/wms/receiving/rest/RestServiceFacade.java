@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.impl;
+package org.openwms.wms.receiving.rest;
 
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.OrderState;
+import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.impl.CancellationDeniedException;
+import org.openwms.wms.receiving.impl.ReceivingOrder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -25,19 +28,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A ReceivingService manages {@link ReceivingOrder}s.
+ * A RestServiceFacade.
  *
  * @author Heiko Scherrer
  */
-public interface ReceivingService<T extends CaptureRequestVO> {
-
-    /**
-     * Create a {@link ReceivingOrder} with containing {@link ReceivingOrderPosition}.
-     *
-     * @param order The ReceivingOrder instance to create
-     * @return The saved instance
-     */
-    @NotNull ReceivingOrder createOrder(@NotNull ReceivingOrder order);
+public interface RestServiceFacade<T extends CaptureRequestVO> {
 
     /**
      * Capturing on a {@code ReceivingOrder} means:
@@ -50,10 +45,9 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param requests Contains all the capturing information according to the process in use
      * @return The updated ReceivingOrder instance with updated positions
      */
-    @NotNull Optional<ReceivingOrder> capture(
+    @NotNull Optional<ReceivingOrderVO> capture(
             @NotBlank String pKey,
-            @NotNull @Valid List<T> requests
-    );
+            @NotNull @Valid List<T> requests);
 
     /**
      * Capture an unexpected receipt (aka Blind Receipt) that has no reference to a {@code ReceivingOrder}.
@@ -74,7 +68,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws CancellationDeniedException in case the cancellation is not allowed
      * @return The cancelled instance
      */
-    @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey);
+    @NotNull ReceivingOrderVO cancelOrder(@NotBlank String pKey);
 
     /**
      * Change the state of a {@link ReceivingOrder}.
@@ -84,31 +78,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws CancellationDeniedException in case the state change is not allowed
      * @return The updated instance
      */
-    @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state);
-
-    /**
-     * Find and return all existing {@link ReceivingOrder}s.
-     *
-     * @return A list of ReceivingOrders, never {@literal null}
-     */
-    @NotNull List<ReceivingOrder> findAll();
-
-    /**
-     * Find and return a {@link ReceivingOrder} identified by its synthetic persistent key.
-     *
-     * @param pKey The synthetic persistent key
-     * @return The instance
-     * @throws org.ameba.exception.NotFoundException if not found
-     */
-    @NotNull ReceivingOrder findByPKey(@NotBlank String pKey);
-
-    /**
-     * Find and return a {@link ReceivingOrder} identified by its business key.
-     *
-     * @param orderId The business key
-     * @return The order instance
-     */
-    Optional<ReceivingOrder> findByOrderId(@NotBlank String orderId);
+    @NotNull ReceivingOrderVO changeState(@NotBlank String pKey, @NotNull OrderState state);
 
     /**
      * Update an existing {@link ReceivingOrder} with the given data.
@@ -118,7 +88,7 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @throws org.ameba.exception.NotFoundException if not found
      * @return The updated instance
      */
-    @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder);
+    @NotNull ReceivingOrderVO update(@NotBlank String pKey, @NotNull ReceivingOrderVO receivingOrder);
 
     /**
      * Complete a {@link ReceivingOrder} and all positions. Satisfy quantities and set the state to {@code COMPLETED}.
@@ -126,5 +96,5 @@ public interface ReceivingService<T extends CaptureRequestVO> {
      * @param pKey The synthetic persistent key
      * @return The updated instance
      */
-    @NotNull ReceivingOrder complete(@NotBlank String pKey);
+    @NotNull ReceivingOrderVO complete(@NotBlank String pKey);
 }

@@ -20,17 +20,18 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.tenancy.TenantHolder;
-import org.openwms.wms.order.OrderState;
-import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
-import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.api.OrderState;
+import org.openwms.wms.receiving.api.PositionState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.plugin.core.PluginRegistry;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -41,14 +42,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.openwms.wms.ReceivingConstants.DEFAULT_ACCOUNT_NAME;
-import static org.openwms.wms.order.OrderState.CANCELED;
-import static org.openwms.wms.order.OrderState.COMPLETED;
-import static org.openwms.wms.order.OrderState.CREATED;
-import static org.openwms.wms.order.OrderState.UNDEFINED;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_ALREADY_EXISTS;
-import static org.openwms.wms.receiving.ReceivingMessages.RO_ALREADY_IN_STATE;
-import static org.openwms.wms.receiving.ReceivingMessages.RO_CANCELLATION_DENIED;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
+import static org.openwms.wms.receiving.api.OrderState.COMPLETED;
 
 /**
  * A ReceivingServiceImpl is a Spring managed transactional Services that deals with {@link ReceivingOrder}s.
@@ -133,14 +129,19 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    public @NotNull Optional<ReceivingOrderVO> capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
-        Optional<ReceivingOrder> ro = Optional.empty();
+    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    public @NotNull Optional<ReceivingOrder> capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
+        Optional<ReceivingOrder> opt = Optional.empty();
         for (T request : requests) {
-            ro = capturers.getPluginFor(request)
+            opt = capturers.getPluginFor(request)
                     .orElseThrow(() -> new IllegalArgumentException("Type of CaptureRequestVO not supported"))
                     .capture(pKey, request);
         }
-        return ro.map(receivingOrder -> receivingMapper.convertToVO(repository.save(receivingOrder), new CycleAvoidingMappingContext()));
+        if (opt.isPresent()) {
+            var ro = repository.save(opt.get());
+            return repository.findById(ro.getPk());
+        }
+        return Optional.empty();
     }
 
     /**
@@ -179,9 +180,12 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
+    @Transactional//(propagation = Propagation.REQUIRES_NEW)
     public @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder) {
         var order = getOrder(pKey);
-        LOGGER.info("Updating ReceivingOrder [{}]", order.getOrderId());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Updating ReceivingOrder [{}] with content [{}]", pKey, order);
+        }
         for (var plugin : this.plugins.getPlugins()) {
             order = plugin.update(order, receivingOrder);
         }
@@ -193,49 +197,23 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
-    public @NotNull ReceivingOrderVO complete(@NotBlank String pKey) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public @NotNull ReceivingOrder complete(@NotBlank String pKey) {
+        LOGGER.info("Complete whole ReceivingOrder with pKey [{}]", pKey);
         var order = getOrder(pKey);
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
             order.getPositions()
                     .stream()
-                    .filter(ReceivingOrderPosition.class::isInstance)
-                    .map(ReceivingOrderPosition.class::cast)
+                    //.filter(ReceivingOrderPosition.class::isInstance)
+                    //.map(ReceivingOrderPosition.class::cast)
                     .forEach(p ->
 //                p.setQuantityReceived(p.getQuantityExpected());
-                p.setState(COMPLETED)
+                p.changePositionState(publisher, PositionState.COMPLETED)
             );
-            order.changeOrderState(publisher, COMPLETED);
+//            order.recalculateOrderState(publisher);
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
         }
-        return receivingMapper.convertToVO(repository.save(order), new CycleAvoidingMappingContext());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey) {
-        var order = getOrder(pKey);
-        LOGGER.info("Cancelling ReceivingOrder [{}] in state [{}]", order.getOrderId(), order.getOrderState());
-        if (order.getOrderState() == CANCELED) {
-            throw new AlreadyCancelledException(
-                    serviceProvider.getTranslator(),
-                    RO_ALREADY_IN_STATE,
-                    new String[]{order.getOrderId(), order.getOrderState().name()},
-                    order.getOrderId(), order.getOrderState()
-            );
-        }
-        if (order.getOrderState() != UNDEFINED && order.getOrderState() != CREATED) {
-            throw new CancellationDeniedException(
-                    serviceProvider.getTranslator(),
-                    RO_CANCELLATION_DENIED,
-                    new String[]{order.getOrderId(), order.getOrderState().name()},
-                    order.getOrderId(), order.getOrderState()
-            );
-        }
-        order.changeOrderState(publisher, CANCELED);
         return repository.save(order);
     }
 
@@ -244,15 +222,32 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
+    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    public @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey) {
+        var order = getOrder(pKey);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Trying to cancel ReceivingOrder [{}]", order.getOrderId());
+        }
+        order.cancelOrder(publisher, serviceProvider.getTranslator());
+        return repository.save(order);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    @Transactional//(propagation = Propagation.REQUIRES_NEW)
     public @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state) {
         var order = getOrder(pKey);
-        LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getOrderId(), state);
-        if (state == COMPLETED) {
-
-            // Set all positions to COMPLETED
-            order.getPositions().forEach(p -> p.setState(COMPLETED));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getPersistentKey(), state);
         }
-        order.setOrderState(state);
+        if (state == COMPLETED) {
+            complete(pKey);
+        } else {
+            throw new IllegalArgumentException("Not allowed to change the state to something else than COMPLETED");
+        }
         return repository.save(order);
     }
 

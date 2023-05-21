@@ -15,10 +15,14 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.i18n.Translator;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
-import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.api.OrderState;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -49,7 +53,16 @@ import java.util.Map;
 import java.util.Objects;
 
 import static javax.persistence.CascadeType.ALL;
+import static org.openwms.wms.receiving.ReceivingMessages.RO_ALREADY_IN_STATE;
+import static org.openwms.wms.receiving.ReceivingMessages.RO_CANCELLATION_DENIED;
 import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
+import static org.openwms.wms.receiving.api.OrderState.CANCELED;
+import static org.openwms.wms.receiving.api.OrderState.COMPLETED;
+import static org.openwms.wms.receiving.api.OrderState.CREATED;
+import static org.openwms.wms.receiving.api.OrderState.PARTIALLY_COMPLETED;
+import static org.openwms.wms.receiving.api.OrderState.PROCESSING;
+import static org.openwms.wms.receiving.api.OrderState.UNDEFINED;
+import static org.openwms.wms.receiving.api.OrderState.VALIDATED;
 
 /**
  * A ReceivingOrder.
@@ -63,6 +76,8 @@ import static org.openwms.wms.receiving.TimeProvider.DATE_TIME_WITH_TIMEZONE;
         }
 )
 public class ReceivingOrder extends ApplicationEntity implements Serializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingOrder.class);
 
     /** Unique order id, business key. */
     @Column(name = "C_ORDER_ID", nullable = false)
@@ -125,7 +140,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @OneToMany(mappedBy = "order", cascade = {ALL}, fetch = FetchType.EAGER)
     @OrderBy("posNo")
     @Valid
-    private List<BaseReceivingOrderPosition> positions = new ArrayList<>();
+    private List<AbstractReceivingOrderPosition> positions = new ArrayList<>();
 
     /** Arbitrary detail information on this order, might by populated with ERP information. */
     @ElementCollection(fetch = FetchType.EAGER)
@@ -150,7 +165,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     /*~ --------------- Lifecycle ---------------- */
     @PrePersist
     protected void prePersist() {
-        this.orderState = OrderState.CREATED;
+        this.orderState = CREATED;
     }
 
     /*~ --------------- Accessors ---------------- */
@@ -174,9 +189,82 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.orderState = orderState;
     }
 
-    public void changeOrderState(ApplicationEventPublisher eventPublisher, OrderState orderState) {
-        eventPublisher.publishEvent(new ReceivingOrderStateChangeEvent(this, orderState));
+    protected void setOrderState(ApplicationEventPublisher publisher, OrderState orderState) {
+        publisher.publishEvent(new ReceivingOrderStateChangeEvent(this, orderState));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("ReceivingOrder changed state from [{}] -> [{}]", this.orderState, orderState);
+        }
         this.orderState = orderState;
+    }
+
+    public void cancelOrder(ApplicationEventPublisher publisher, Translator translator) {
+        if (orderState == CANCELED) {
+            throw new AlreadyCancelledException(
+                    translator,
+                    RO_ALREADY_IN_STATE,
+                    new String[]{orderId, orderState.name()},
+                    orderId, orderState
+            );
+        }
+        if (orderState != UNDEFINED && orderState != CREATED && orderState != VALIDATED) {
+            throw new CancellationDeniedException(
+                    translator,
+                    RO_CANCELLATION_DENIED,
+                    new String[]{orderId, orderState.name()},
+                    orderId, orderState
+            );
+        }
+        if (positions.isEmpty()) {
+            setOrderState(publisher, CANCELED);
+        } else {
+            // Changing the orderState to CANCELED is done implicitly by changing the positions state
+            positions.forEach(p -> p.changePositionState(publisher, PositionState.CANCELED));
+        }
+    }
+
+    /**
+     * Recalculate and occasionally change the state of this {@link ReceivingOrder}.
+     *
+     * @return {@code true} if the state has been changed
+     */
+    public boolean recalculateOrderState(ApplicationEventPublisher publisher) {
+        var currentPositionStates = positions.stream().map(AbstractReceivingOrderPosition::getState).toList();
+
+        switch (orderState) {
+            case CREATED, VALIDATED -> {
+                if (currentPositionStates.contains(PositionState.PROCESSING)) {
+                    LOGGER.info("At least one ReceivingOrderPosition is in PROCESSING");
+                    setOrderState(publisher, PROCESSING);
+                    return true;
+                } else if (positions.stream().allMatch(p -> p.getState() == PositionState.COMPLETED)) {
+                    LOGGER.info("All ReceivingOrderPositions are COMPLETED");
+                    setOrderState(publisher, COMPLETED);
+                    return true;
+                }
+            }
+            case PROCESSING -> {
+                if (!currentPositionStates.contains(PositionState.CREATED) &&
+                        !currentPositionStates.contains(PositionState.PROCESSING)) {
+
+                    // Not active anymore: Action required...
+                    if (currentPositionStates.contains(PositionState.PARTIALLY_COMPLETED)) {
+                        LOGGER.info("All ReceivingOrderPositions are DONE but some are PARTIALLY_COMPLETED");
+                        setOrderState(publisher, PARTIALLY_COMPLETED);
+                        return true;
+                    } else if (currentPositionStates.contains(PositionState.COMPLETED)) {
+                        LOGGER.info("All ReceivingOrderPositions are DONE but some are COMPLETED");
+                        setOrderState(publisher, COMPLETED);
+                        return true;
+                    } else {
+                        LOGGER.info("All ReceivingOrderPositions are CANCELED");
+                        setOrderState(publisher, CANCELED);
+                        return true;
+                    }
+                }
+            }
+            default -> LOGGER.debug("No state change required, position states are [{}]", currentPositionStates);
+        }
+        return false;
     }
 
     public boolean isLocked() {
@@ -223,11 +311,11 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         return problem;
     }
 
-    public List<BaseReceivingOrderPosition> getPositions() {
+    public List<AbstractReceivingOrderPosition> getPositions() {
         return positions == null ? Collections.emptyList() : positions;
     }
 
-    public void setPositions(List<BaseReceivingOrderPosition> positions) {
+    public void setPositions(List<AbstractReceivingOrderPosition> positions) {
         this.positions = positions;
     }
 

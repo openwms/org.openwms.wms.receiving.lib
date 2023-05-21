@@ -18,12 +18,10 @@ package org.openwms.wms.receiving.rest;
 import org.ameba.http.MeasuredRestController;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
-import org.openwms.wms.order.OrderState;
-import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
-import org.openwms.wms.receiving.impl.ReceivingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,10 +49,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
-    private final ReceivingService service;
+    private final RestServiceFacadeImpl service;
     private final ReceivingMapper receivingMapper;
 
-    ReceivingController(ReceivingService service, ReceivingMapper receivingMapper) {
+    ReceivingController(RestServiceFacadeImpl service, ReceivingMapper receivingMapper) {
         this.service = service;
         this.receivingMapper = receivingMapper;
     }
@@ -101,7 +99,6 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey) {
 
         var result = service.complete(pKey);
-        result.sortPositions();
         return ResponseEntity.ok(result);
     }
 
@@ -109,11 +106,7 @@ public class ReceivingController extends AbstractWebController {
     public ResponseEntity<ReceivingOrderVO> saveOrder(
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody ReceivingOrderVO receivingOrder){
-
-        var eo = receivingMapper.convertVO(receivingOrder, new CycleAvoidingMappingContext());
-        var vo = receivingMapper.convertToVO(service.update(pKey, eo), new CycleAvoidingMappingContext());
-        vo.sortPositions();
-        return ResponseEntity.ok(vo);
+        return ResponseEntity.ok(service.update(pKey, receivingOrder));
     }
 
     @PatchMapping(value = "/v1/receiving-orders/{pKey}", produces = MEDIA_TYPE, consumes = MEDIA_TYPE)
@@ -121,17 +114,14 @@ public class ReceivingController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @Valid @RequestBody ReceivingOrderVO receivingOrder){
 
-        var updated = receivingMapper.convertVO(receivingOrder, new CycleAvoidingMappingContext());
         if (receivingOrder.hasState()) {
             var state = OrderState.valueOf(receivingOrder.getState());
             if (state == OrderState.CANCELED) {
-                updated = service.cancelOrder(pKey);
-            } else {
-                updated = service.changeState(pKey, state);
+                return ResponseEntity.ok(service.cancelOrder(pKey));
             }
+            return ResponseEntity.ok(service.changeState(pKey, state));
         }
-        var vo = receivingMapper.convertToVO(updated, new CycleAvoidingMappingContext());
-        vo.sortPositions();
-        return ResponseEntity.ok(vo);
+        receivingOrder.sortPositions();
+        return ResponseEntity.ok(receivingOrder);
     }
 }

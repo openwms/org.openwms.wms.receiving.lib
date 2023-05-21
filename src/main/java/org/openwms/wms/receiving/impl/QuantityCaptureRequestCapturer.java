@@ -22,6 +22,7 @@ import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -31,14 +32,13 @@ import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static org.openwms.wms.order.OrderState.CREATED;
-import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOWED;
 
@@ -51,13 +51,11 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOW
 class QuantityCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureRequestCapturer.class);
-    private final Validator validator;
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
 
     QuantityCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            Validator validator, AsyncPackagingUnitApi asyncPackagingUnitApi) {
-        super(translator, repository, productService);
-        this.validator = validator;
+            ApplicationEventPublisher publisher, Validator validator, AsyncPackagingUnitApi asyncPackagingUnitApi) {
+        super(publisher, translator, validator, repository, productService);
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
     }
 
@@ -84,14 +82,14 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
             Consumer<Void> func) {
         var receivingOrder = getOrder(pKey);
         var openPositions = receivingOrder.getPositions().stream()
-                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(AbstractReceivingOrderPosition::doesStateAllowCapturing)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
                 .filter(p -> p.getProduct().equals(existingProduct))
                 .toList();
 
         if (openPositions.isEmpty()) {
-            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
+            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product [{}] exist", existingProduct.shortId());
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
@@ -100,19 +98,31 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
                 .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
                 .findFirst();
         ReceivingOrderPosition position;
-        // Got an unexpected receipt. If this is configured to be okay we proceed otherwise throw
         if (openPosition.isEmpty()) {
+            // Have an expected position but quantity is already exceeded
             if (Boolean.TRUE.equals(openPositions.get(0).getProduct().getOverbookingAllowed())) {
                 position = openPositions.get(0);
+                LOGGER.debug("Overbooking for product [{}] is allowed, so capture on position [{}]",
+                        openPositions.get(0).getProduct().shortId(), position.getPosNo());
             } else {
-                LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed");
+                LOGGER.error("Received a goods receipt but all ReceivingOrderPositions are already satisfied and unexpected receipts are not allowed for product [{}]",
+                        existingProduct.shortId());
                 throw new CapturingException(translator, RO_NO_UNEXPECTED_ALLOWED, new String[0]);
             }
         } else {
             position = openPosition.get();
+            LOGGER.info("Capture on the first open position [{}]", position.getPosNo());
         }
+
         func.accept(null);
+
         position.addQuantityReceived(quantityReceived);
+        LOGGER.debug("New quantity of position [{}] is set to [{}]", position.getPosNo(), position.getQuantityReceived());
+        if (position.getQuantityReceived().compareTo(position.getQuantityExpected()) >= 0) {
+            position.changePositionState(publisher, PositionState.COMPLETED);
+        } else {
+            position.changePositionState(publisher, PositionState.PROCESSING);
+        }
         receivingOrder = repository.save(receivingOrder);
         return Optional.of(receivingOrder);
     }

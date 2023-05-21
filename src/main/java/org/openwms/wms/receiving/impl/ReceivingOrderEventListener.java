@@ -16,14 +16,13 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.TxService;
-import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ProcessingException;
+import org.openwms.wms.receiving.api.OrderState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
@@ -47,17 +46,17 @@ class ReceivingOrderEventListener {
     }
 
     /**
-     * After a {@link ReceivingOrder} is created all positions are processed.
+     * After a {@link ReceivingOrder} is created all positions are validated.
      *
      * @param event Expected to keep the created order instance
      */
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
     public void onCreate(ReceivingOrderCreatedEvent event) {
         var order = event.getSource();
         LOGGER.info("ReceivingOrder with orderId [{}] created", order.getOrderId());
-        LOGGER.debug("Processing ReceivingOrder [{}]", order.getOrderId());
-        order.setOrderState(OrderState.PROCESSED);
+        LOGGER.debug("Validating ReceivingOrder [{}]", order.getOrderId());
+        order.setOrderState(OrderState.VALIDATED);
         if (positionProcessor != null) {
             order.getPositions().forEach(p -> positionProcessor.processPosition(order, p));
         }

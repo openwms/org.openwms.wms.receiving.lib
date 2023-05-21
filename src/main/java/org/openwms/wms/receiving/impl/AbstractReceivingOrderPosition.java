@@ -16,7 +16,7 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.integration.jpa.BaseEntity;
-import org.openwms.wms.order.OrderState;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A BaseReceivingOrderPosition.
+ * A AbstractReceivingOrderPosition.
  * 
  * @author Heiko Scherrer
  */
@@ -50,7 +50,7 @@ import java.util.Map;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "WMS_REC_ORDER_POSITION",
         uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
-public abstract class BaseReceivingOrderPosition extends BaseEntity implements Serializable {
+public abstract class AbstractReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, targetEntity = ReceivingOrder.class)
     @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
@@ -65,7 +65,7 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
     @Enumerated(EnumType.STRING)
     @Column(name = "C_STATE")
     @NotNull
-    private OrderState state = OrderState.CREATED;
+    private PositionState state = PositionState.CREATED;
 
     /** Arbitrary detail information on this position, might be populated with ERP information. */
     @ElementCollection
@@ -84,9 +84,9 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
     private ZonedDateTime latestDueDate;
 
     /** Used by the JPA provider. */
-    protected BaseReceivingOrderPosition() {}
+    protected AbstractReceivingOrderPosition() {}
 
-    public BaseReceivingOrderPosition(Integer posNo) {
+    public AbstractReceivingOrderPosition(Integer posNo) {
         this.posNo = posNo;
     }
 
@@ -117,21 +117,34 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
         return posNo;
     }
 
-    public OrderState getState() {
+    public PositionState getState() {
         return state;
     }
 
-    public void setState(OrderState state) {
+    public void setState(PositionState state) {
         this.state = state;
     }
 
-    public void changeOrderState(ApplicationEventPublisher eventPublisher, OrderState orderState) {
-        eventPublisher.publishEvent(new ReceivingOrderPositionStateChangeEvent(this, orderState));
-        this.state = orderState;
+    public void changePositionState(ApplicationEventPublisher eventPublisher, PositionState positionState) {
+        if (this.state.ordinal() < positionState.ordinal()) {
+            eventPublisher.publishEvent(new ReceivingOrderPositionStateChangeEvent(this, positionState));
+            this.state = positionState;
+            this.order.recalculateOrderState(eventPublisher);
+        }
     }
 
     /**
-     * Get all the details of this {@link BaseReceivingOrderPosition}.
+     * Capturing on an ReceivingOrderPosition is allowed if the state is any but not {@link PositionState#CANCELED}.
+     *
+     * @return if allowed
+     */
+    public boolean doesStateAllowCapturing() {
+        return this.state == PositionState.CREATED || this.state == PositionState.PROCESSING
+                || this.state == PositionState.PARTIALLY_COMPLETED || this.state == PositionState.COMPLETED;
+    }
+
+    /**
+     * Get all the details of this {@link AbstractReceivingOrderPosition}.
      *
      * @return As Map
      */
@@ -147,13 +160,13 @@ public abstract class BaseReceivingOrderPosition extends BaseEntity implements S
     }
 
     /**
-     * Add a new detail to the {@link BaseReceivingOrderPosition}.
+     * Add a new detail to the {@link AbstractReceivingOrderPosition}.
      *
      * @param key The unique key of the detail
      * @param value The value as String
      * @return This instance
      */
-    public BaseReceivingOrderPosition addDetail(String key, String value) {
+    public AbstractReceivingOrderPosition addDetail(String key, String value) {
         getDetails().put(key, value);
         return this;
     }

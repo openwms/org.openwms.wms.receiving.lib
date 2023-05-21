@@ -22,7 +22,7 @@ import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
 import org.openwms.wms.receiving.ProcessingException;
-import org.openwms.wms.receiving.impl.BaseReceivingOrderPosition;
+import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
 import org.openwms.wms.receiving.impl.ReceivingTransportUnitOrderPosition;
@@ -55,7 +55,7 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
     @Override
     @Measured
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
-    public void processPosition(ReceivingOrder order, BaseReceivingOrderPosition orderPosition) {
+    public void processPosition(ReceivingOrder order, AbstractReceivingOrderPosition orderPosition) {
         if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
             var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
             var initialLocation = initialLocationProvider.findInitial();

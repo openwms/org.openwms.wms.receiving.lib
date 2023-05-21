@@ -24,6 +24,7 @@ import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.QuantityCaptureOnLocationRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
@@ -33,6 +34,7 @@ import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
 import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
@@ -40,8 +42,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static org.openwms.wms.order.OrderState.CREATED;
-import static org.openwms.wms.order.OrderState.PROCESSING;
 import static org.openwms.wms.receiving.ReceivingMessages.PRODUCT_NOT_FOUND;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 
@@ -54,14 +54,13 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
-    private final Validator validator;
     private final SyncPackagingUnitApi packagingUnitApi;
     private final SyncProductApi productApi;
 
-    QuantityCaptureOnLocationRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
+    QuantityCaptureOnLocationRequestCapturer(ApplicationEventPublisher publisher, Translator translator,
+            ReceivingOrderRepository repository, ProductService productService,
             Validator validator, SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
-        super(translator, repository, productService);
-        this.validator = validator;
+        super(publisher, translator, validator, repository, productService);
         this.packagingUnitApi = packagingUnitApi;
         this.productApi = productApi;
     }
@@ -81,11 +80,10 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
                     product,
                     v -> createPackagingUnitsForDemand(request, product)
             );
-        } else {
-            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
-            createPackagingUnitsForDemand(request, product);
-            return Optional.empty();
         }
+        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
+        createPackagingUnitsForDemand(request, product);
+        return Optional.empty();
     }
 
     protected Product getProduct(QuantityCaptureOnLocationRequestVO request) {
@@ -125,19 +123,20 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
             Consumer<Void> func) {
         var receivingOrder = getOrder(pKey);
         var openPositions = receivingOrder.getPositions().stream()
-                .filter(p -> p.getState() == CREATED || p.getState() == PROCESSING)
+                .filter(AbstractReceivingOrderPosition::doesStateAllowCapturing)
                 .filter(ReceivingOrderPosition.class::isInstance)
                 .map(ReceivingOrderPosition.class::cast)
                 .filter(p -> p.getProduct().getSku().equals(existingProduct.getSku()))
                 .toList();
 
         if (openPositions.isEmpty()) {
-            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product exist");
+            LOGGER.error("Received a goods receipt but no open ReceivingOrderPositions with the demanded Product [{}] exist",
+                    existingProduct.shortId());
             throw new CapturingException(translator, RO_NO_OPEN_POSITIONS, new String[0]);
         }
 
         var openPosition = openPositions.stream()
-                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
+                //.filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
                 .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
                 .findFirst();
 
@@ -149,6 +148,11 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         func.accept(null);
 
         openPosition.get().addQuantityReceived(quantityReceived);
+        if (openPosition.get().getQuantityReceived().compareTo(openPosition.get().getQuantityExpected()) >= 0) {
+            openPosition.get().changePositionState(publisher, PositionState.COMPLETED);
+        } else {
+            openPosition.get().changePositionState(publisher, PositionState.PROCESSING);
+        }
         receivingOrder = repository.save(receivingOrder);
         return Optional.of(receivingOrder);
     }

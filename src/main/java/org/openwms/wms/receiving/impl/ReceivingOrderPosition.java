@@ -18,10 +18,11 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.exception.NotFoundException;
 import org.ameba.system.ValidationUtil;
 import org.openwms.core.units.api.Measurable;
-import org.openwms.wms.order.OrderState;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.ValidationGroups;
+import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.inventory.Product;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,6 @@ import java.io.Serializable;
 
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
-import static org.openwms.wms.order.OrderState.COMPLETED;
 
 /**
  * A ReceivingOrderPosition is a persisted entity class that represents an expected receipt of {@code Product}s in a
@@ -45,7 +45,7 @@ import static org.openwms.wms.order.OrderState.COMPLETED;
  */
 @Entity
 @Table(name = "WMS_REC_ORDER_POS_PRODUCT")
-public class ReceivingOrderPosition extends BaseReceivingOrderPosition implements Convertable, Serializable {
+public class ReceivingOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
     @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
@@ -110,11 +110,11 @@ public class ReceivingOrderPosition extends BaseReceivingOrderPosition implement
      * If the state is set to {@code COMPLETED} the {@code quantityReceived} is set to {@code quantityExpected}.
      */
     @Override
-    public void setState(OrderState state) {
-        if (state == COMPLETED) {
+    public void changePositionState(ApplicationEventPublisher eventPublisher, PositionState positionState) {
+        super.changePositionState(eventPublisher, positionState);
+        if (positionState == PositionState.COMPLETED) {
             this.quantityReceived = this.quantityExpected;
         }
-        super.setState(state);
     }
 
     public Measurable getQuantityExpected() {
