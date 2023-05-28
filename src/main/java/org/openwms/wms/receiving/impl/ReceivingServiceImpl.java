@@ -16,11 +16,9 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.Measured;
-import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.tenancy.TenantHolder;
-import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.OrderState;
@@ -30,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.plugin.core.PluginRegistry;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -52,12 +50,11 @@ import static org.openwms.wms.receiving.api.OrderState.COMPLETED;
  * @author Heiko Scherrer
  */
 @Validated
-@TxService
+@Service
 class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingService<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceivingServiceImpl.class);
     private final Validator validator;
-    private final ReceivingMapper receivingMapper;
     private final NextReceivingOrderRepository nextReceivingOrderRepository;
     private final ReceivingOrderRepository repository;
     private final PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins;
@@ -66,13 +63,11 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
     private final ServiceProvider serviceProvider;
 
     ReceivingServiceImpl(
-            Validator validator, ReceivingMapper receivingMapper, NextReceivingOrderRepository nextReceivingOrderRepository,
-            ReceivingOrderRepository repository,
+            Validator validator, NextReceivingOrderRepository nextReceivingOrderRepository, ReceivingOrderRepository repository,
             @Qualifier("plugins") PluginRegistry<ReceivingOrderUpdater, ReceivingOrderUpdater.Type> plugins,
             @Qualifier("capturers") PluginRegistry<ReceivingOrderCapturer<T>, CaptureRequestVO> capturers,
             ApplicationEventPublisher publisher, ServiceProvider serviceProvider) {
         this.validator = validator;
-        this.receivingMapper = receivingMapper;
         this.nextReceivingOrderRepository = nextReceivingOrderRepository;
         this.repository = repository;
         this.plugins = plugins;
@@ -129,7 +124,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public @NotNull Optional<ReceivingOrder> capture(@NotBlank String pKey, @NotNull @Valid List<T> requests) {
         Optional<ReceivingOrder> opt = Optional.empty();
         for (T request : requests) {
@@ -180,7 +175,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
-    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public @NotNull ReceivingOrder update(@NotBlank String pKey, @NotNull ReceivingOrder receivingOrder) {
         var order = getOrder(pKey);
         if (LOGGER.isInfoEnabled()) {
@@ -197,20 +192,12 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Measured
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public @NotNull ReceivingOrder complete(@NotBlank String pKey) {
         LOGGER.info("Complete whole ReceivingOrder with pKey [{}]", pKey);
         var order = getOrder(pKey);
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
-            order.getPositions()
-                    .stream()
-                    //.filter(ReceivingOrderPosition.class::isInstance)
-                    //.map(ReceivingOrderPosition.class::cast)
-                    .forEach(p ->
-//                p.setQuantityReceived(p.getQuantityExpected());
-                p.changePositionState(publisher, PositionState.COMPLETED)
-            );
-//            order.recalculateOrderState(publisher);
+            order.getPositions().forEach(p -> p.changePositionState(publisher, PositionState.COMPLETED));
         } else {
             LOGGER.info("ReceivingOrder [{}] is not in a state to be completed", pKey);
         }
@@ -222,7 +209,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public @NotNull ReceivingOrder cancelOrder(@NotBlank String pKey) {
         var order = getOrder(pKey);
         if (LOGGER.isDebugEnabled()) {
@@ -237,17 +224,16 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
      */
     @Override
     @Measured
-    @Transactional//(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state) {
         var order = getOrder(pKey);
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getPersistentKey(), state);
         }
-        if (state == COMPLETED) {
-            complete(pKey);
-        } else {
+        if (state != COMPLETED) {
             throw new IllegalArgumentException("Not allowed to change the state to something else than COMPLETED");
         }
+        complete(pKey);
         return repository.save(order);
     }
 

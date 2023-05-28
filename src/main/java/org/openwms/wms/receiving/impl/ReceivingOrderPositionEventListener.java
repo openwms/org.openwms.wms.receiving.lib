@@ -55,9 +55,9 @@ class ReceivingOrderPositionEventListener {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("State of ReceivingOrderPosition has changed, recalculating the state of ReceivingOrder [{}]", order.getOrderId());
         }
-//        if (order.recalculateOrderState(publisher)) {
-//            LOGGER.info("State of ReceivingOrder [{}] changed to [{}]", order.getOrderId(), order.getOrderState());
-//            repository.save(order);
-//        }
+        if (order.recalculateOrderState(publisher)) {
+            LOGGER.info("State of ReceivingOrder [{}] changed to [{}]", order.getOrderId(), order.getOrderState());
+            repository.save(order);
+        }
     }
 }

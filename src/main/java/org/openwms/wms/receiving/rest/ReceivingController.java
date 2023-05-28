@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.rest;
 import org.ameba.http.MeasuredRestController;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
-import org.openwms.wms.receiving.ReceivingMapper;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
@@ -50,11 +49,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ReceivingController extends AbstractWebController {
 
     private final RestServiceFacadeImpl service;
-    private final ReceivingMapper receivingMapper;
 
-    ReceivingController(RestServiceFacadeImpl service, ReceivingMapper receivingMapper) {
+    ReceivingController(RestServiceFacadeImpl service) {
         this.service = service;
-        this.receivingMapper = receivingMapper;
     }
 
     @GetMapping("/v1/receiving-orders/index")

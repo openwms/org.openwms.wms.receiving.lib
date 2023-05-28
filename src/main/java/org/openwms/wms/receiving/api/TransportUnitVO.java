@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A TransportUnitVO.
@@ -55,5 +56,18 @@ public class TransportUnitVO extends AbstractBase<LocationVO> implements Seriali
 
     public void setTransportUnitType(String transportUnitType) {
         this.transportUnitType = transportUnitType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransportUnitVO that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(transportUnitId, that.transportUnitId) && Objects.equals(transportUnitType, that.transportUnitType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), transportUnitId, transportUnitType);
     }
 }

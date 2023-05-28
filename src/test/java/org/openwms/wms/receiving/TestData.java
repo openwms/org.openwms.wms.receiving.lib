@@ -25,6 +25,7 @@ public final class TestData {
     private TestData() {}
 
     public static final String ORDER1_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578f";
+    public static final String ORDER2_PKEY = "d8099b89-bdb6-40d3-9580-d56aeadd578e";
 
     public static final String PRODUCT1_SKU = "C1";
 

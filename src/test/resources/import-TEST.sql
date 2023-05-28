@@ -13,6 +13,7 @@ insert into WMS_REC_PRODUCT (c_pk,c_pid,c_foreign_pid,c_sku,c_label,c_descriptio
 
 -- ReceivingOrder
 insert into WMS_REC_ORDER (c_pk,c_pid,c_order_id,c_order_state,c_locked,c_priority,c_start_earliest_at,c_ol,c_created,c_created_by) values (1000,'d8099b89-bdb6-40d3-9580-d56aeadd578f','T4711','CREATED',false,0,now(),0,now(),'SYSTEM');
+insert into WMS_REC_ORDER (c_pk,c_pid,c_order_id,c_order_state,c_locked,c_priority,c_start_earliest_at,c_ol,c_created,c_created_by) values (1001,'d8099b89-bdb6-40d3-9580-d56aeadd578e','T4712','COMPLETED',false,0,now(),0,now(),'SYSTEM');
 
 insert into WMS_REC_ORDER_DETAIL (c_order_pk, c_key, c_value) values (1000, 'Supplier name', 'Bangee Ltd. Hongkong');
 insert into WMS_REC_ORDER_DETAIL (c_order_pk, c_key, c_value) values (1000, 'Supplier no', '182');

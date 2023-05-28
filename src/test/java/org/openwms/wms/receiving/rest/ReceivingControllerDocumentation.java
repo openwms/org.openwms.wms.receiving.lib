@@ -18,7 +18,6 @@ package org.openwms.wms.receiving.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
 import org.openwms.wms.receiving.AbstractTestBase;
@@ -45,6 +44,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.wms.receiving.TestData.ORDER1_PKEY;
+import static org.openwms.wms.receiving.TestData.ORDER2_PKEY;
 import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -116,13 +116,11 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                 )
                 .andDo(document("order-cancel", preprocessResponse(prettyPrint())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.state", CoreMatchers.is("CANCELED")))
+                .andExpect(jsonPath("$.state", is("CANCELED")))
         ;
     }
 
-    @Transactional
-    @Rollback
-    @Test void shall_cancel_cancelled_order() throws Exception {
+    @Test void shall_fail_to_cancel_a_cancelled_order() throws Exception {
         var toLocation = createOrder("4715");
         var value = new ReceivingOrderVO("4715");
         value.setState("CANCELED");
@@ -132,7 +130,7 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
                                 .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(value))
                 )
-                .andExpect(jsonPath("$.state", CoreMatchers.is("CANCELED")))
+                .andExpect(jsonPath("$.state", is("CANCELED")))
                 .andExpect(status().isOk())
         ;
         mockMvc
@@ -147,14 +145,12 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Disabled("Must be changed to validated against an PROCESSING order")
     @Test void shall_NOT_cancel_order() throws Exception {
-        var toLocation = createOrder("4716");
-        var value = new ReceivingOrderVO("4716");
+        var value = new ReceivingOrderVO("T4712");
         value.setState("CANCELED");
         mockMvc
                 .perform(
-                        patch(toLocation)
+                        patch("/v1/receiving-orders/{pKey}", ORDER2_PKEY)
                                 .contentType(MEDIA_TYPE)
                                 .content(om.writeValueAsString(value))
                 )
@@ -164,8 +160,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_QuantityCapture() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnit(new TransportUnitVO("4711"));
@@ -198,8 +192,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_QuantityCapture_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnit(new TransportUnitVO("4711"));
@@ -218,8 +210,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_BlindReceipt_in_LU() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnit(new TransportUnitVO("4711"));
@@ -252,8 +242,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_QuantityCapture_on_LOC() throws Exception {
         var vo = new QuantityCaptureOnLocationRequestVO();
         vo.setActualLocation(new LocationVO("WE01"));
@@ -284,8 +272,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_QuantityCapture_on_LOC_INSUFFICIENT() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnit(new TransportUnitVO("4711"));
@@ -304,8 +290,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_BlindReceipt_on_LOC() throws Exception {
         var vo = new QuantityCaptureOnLocationRequestVO();
         vo.setActualLocation(new LocationVO("WE01"));
@@ -334,8 +318,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_TUCapture_with_unexpected_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
         var tu = new TransportUnitVO();
@@ -357,8 +339,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_TUCapture_with_expected_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
         var tu = new TransportUnitVO();
@@ -380,8 +360,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_do_a_BlindReceipt_with_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
         var tu = new TransportUnitVO();
@@ -411,8 +389,6 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         ;
     }
 
-    @Transactional
-    @Rollback
     @Test void shall_update_order() throws Exception {
         var vo = new QuantityCaptureRequestVO();
         vo.setTransportUnit(new TransportUnitVO("4711"));

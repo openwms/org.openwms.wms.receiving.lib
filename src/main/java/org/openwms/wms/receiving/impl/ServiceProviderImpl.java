@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.inventory.ProductService;
