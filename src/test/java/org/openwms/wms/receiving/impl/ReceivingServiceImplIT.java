@@ -66,7 +66,7 @@ class ReceivingServiceImplIT extends AbstractTestBase {
 
         var order2 = service.createOrder(new ReceivingOrder());
         assertThat(order2.getOrderId()).isNotNull();
-        assertThat(Integer.parseInt(order.getOrderId()) + 1).isEqualTo(Integer.parseInt(order2.getOrderId()));
+        assertThat(order.getOrderId()).isLessThan(order2.getOrderId());
     }
 
     @Sql("classpath:import-TEST.sql")

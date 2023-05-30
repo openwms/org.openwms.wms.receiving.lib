@@ -16,7 +16,6 @@
 package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.TxService;
-import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,7 @@ class ReceivingOrderPositionEventListener {
      * @param event Expected to store the position as source
      */
     @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class})
     public void onStateChange(ReceivingOrderPositionStateChangeEvent event) {
         var position = event.getSource();
         var order = repository.findBypKey(position.getOrder().getPersistentKey()).orElseThrow();

@@ -21,7 +21,6 @@ import org.openwms.common.location.api.messages.LocationMO;
 import org.openwms.common.transport.api.commands.TUCommand;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
 import org.openwms.common.transport.api.messages.TransportUnitTypeMO;
-import org.openwms.wms.receiving.ProcessingException;
 import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 import org.openwms.wms.receiving.impl.OrderPositionProcessor;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
@@ -54,7 +53,7 @@ class DefaultOrderPositionProcessor implements OrderPositionProcessor {
      */
     @Override
     @Measured
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class, ProcessingException.class})
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class})
     public void processPosition(ReceivingOrder order, AbstractReceivingOrderPosition orderPosition) {
         if (orderPosition instanceof ReceivingTransportUnitOrderPosition rtuop) {
             var type = TransportUnitTypeMO.newBuilder().type(rtuop.getTransportUnitTypeName());
