@@ -5,7 +5,7 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.7</version>
+        <version>2.0.0-M6</version>
     </skin>
 
     <custom>
@@ -35,7 +35,7 @@
             <item name="Wiki" href="https://wiki.butan092.startdedicated.de/projects/wms-receiving-service/wiki" />
             <item name="Configuration" href="configuration.html" />
             <item name="Database Schema" href="${project.version}/schemaspy/relationships.html" />
-            <item name="Sonarcloud" href="https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving" />
+            <item name="Sonarcloud" href="https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.receiving.lib" />
         </menu>
         <menu name="Project" ref="reports" />
     </body>
