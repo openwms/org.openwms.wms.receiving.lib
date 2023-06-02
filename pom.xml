@@ -188,7 +188,7 @@
                 <version>${joda-time.version}</version>
             </dependency>
             <dependency>
-                <!-- Clash between spring-boot-starter-test and dozer -->
+                <!-- Clash between Dozer and spring-boot-starter-test -->
                 <groupId>org.objenesis</groupId>
                 <artifactId>objenesis</artifactId>
                 <version>${objenesis.version}</version>
@@ -311,6 +311,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <!-- Required to use PATCH -->
@@ -344,6 +345,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- Test dependencies -->
