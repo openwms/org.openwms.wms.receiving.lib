@@ -27,7 +27,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.openwms.wms.receiving.TestData.ORDER1_PKEY;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -72,9 +74,10 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
     @Test void shall_find_order() throws Exception {
         mockMvc
                 .perform(
-                        get("/v1/receiving-orders/d8099b89-bdb6-40d3-9580-d56aeadd578f")
+                        get("/v1/receiving-orders/" + ORDER1_PKEY)
                 )
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.details.length()", equalTo(2)))
                 .andDo(document("order-find",
                         preprocessResponse(prettyPrint()),
                         responseFields(
