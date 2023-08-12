@@ -78,6 +78,7 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.details.length()", equalTo(2)))
+                .andExpect(jsonPath("$.positions[0].details.length()", equalTo(3)))
                 .andDo(document("order-find",
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -99,6 +100,8 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].quantityReceived.magnitude").description("The received quantity amount"),
                                 fieldWithPath("positions[].quantityReceived.unitType").description("The received quantity type"),
                                 fieldWithPath("positions[].quantityReceived.*").ignored(),
+                                fieldWithPath("positions[].details").optional().description("Stores arbitrary detail information according to the ReceivingOrderPosition"),
+                                fieldWithPath("positions[].details.*").optional().ignored(),
                                 fieldWithPath("positions[].transportUnitBK").optional().description("The business key of the captured TransportUnit"),
                                 fieldWithPath("positions[].transportUnitTypeName").optional().description("The name of the captured TransportUnitType"),
                                 fieldWithPath("positions[].product").optional().description("The expected Product to be received"),

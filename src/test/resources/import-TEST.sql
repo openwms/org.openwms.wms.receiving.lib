@@ -25,8 +25,9 @@ insert into WMS_REC_ORDER_POS_PRODUCT (c_pk,c_order_id,c_pos_no,c_state,c_qty_ex
 insert into WMS_REC_ORDER_POS_PRODUCT (c_pk,c_order_id,c_pos_no,c_state,c_qty_expected_type,c_qty_expected,c_qty_received_type,c_qty_received,c_sku,c_ol,c_created,c_created_by) values (1001,'T4711','2','CREATED','DOZ@org.openwms.core.units.api.Piece','2','PC@org.openwms.core.units.api.Piece','0','C2',0,now(), 'SYSTEM');
 insert into WMS_REC_ORDER_POS_TU      (c_pk,c_order_id,c_pos_no,c_state,c_latest_due,c_transport_unit_bk,c_transport_unit_type_name,c_ol,c_created,c_created_by) values (1002,'T4711','3','CREATED', now(), '00000000000000004712','EURO',0,now(), 'SYSTEM');
 
---insert into WMS_REC_ORDER_POSITION_DETAIL (c_order_pos_pk, c_key, c_value) values (1000, 'Unload', 'Unload carefully');
---insert into WMS_REC_ORDER_POSITION_DETAIL (c_order_pos_pk, c_key, c_value) values (1000, 'Unload cond.', 'Put to freezer zone');
+insert into WMS_REC_ORDER_POSITION_DETAIL (c_order_pos_pk, c_key, c_value) values (1000, 'Unload', 'Unload carefully');
+insert into WMS_REC_ORDER_POSITION_DETAIL (c_order_pos_pk, c_key, c_value) values (1000, 'Unload cond.', 'Put to freezer zone');
+insert into WMS_REC_ORDER_POSITION_DETAIL (c_order_pos_pk, c_key, c_value) values (1000, 'Supplier', 'UNC Texas - Dallas');
 
 -- TransportUnits
 insert into WMS_REC_TRANSPORT_UNIT (c_pk, c_pid, c_ol, c_created, c_actual_location, c_barcode, c_foreign_pid) values (1000, '1000', 0, now(), 'WE01', '00000000000000004712', '2');
