@@ -122,7 +122,7 @@
             <column ascending="true" name="c_pos_no"/>
          </index>
       </table>
-      <table name="wms_rec_order_position_detail" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="wms_rec_order_position_detail" numRows="3" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_order_pos_pk" nullable="false" remarks="" size="19" type="int8"/>
          <column autoUpdated="false" digits="0" id="1" name="c_value" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="c_key" nullable="false" remarks="" size="255" type="varchar"/>
