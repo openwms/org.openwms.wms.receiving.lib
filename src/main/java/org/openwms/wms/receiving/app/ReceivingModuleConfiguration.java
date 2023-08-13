@@ -23,6 +23,8 @@ import org.ameba.http.identity.EnableIdentityAwareness;
 import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.MessageSource;
@@ -30,6 +32,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -43,6 +47,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import javax.servlet.Filter;
 import java.util.Locale;
 import java.util.Properties;
+
+import static org.ameba.LoggingCategories.BOOT;
 
 /**
  * A ReceivingModuleConfiguration.
@@ -58,6 +64,8 @@ import java.util.Properties;
 @ImportResource("classpath:META-INF/spring/plugins-ctx.xml")
 public class ReceivingModuleConfiguration implements WebMvcConfigurer {
 
+    private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
@@ -70,6 +78,11 @@ public class ReceivingModuleConfiguration implements WebMvcConfigurer {
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
+    }
+
+    @EventListener
+    public void onContextStarted(ContextStartedEvent cse) {
+        BOOT_LOGGER.info("<> Receiving Service Library registered");
     }
 
     public @Bean
