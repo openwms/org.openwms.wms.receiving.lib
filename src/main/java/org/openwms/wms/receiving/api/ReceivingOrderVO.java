@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -168,6 +169,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
      *
      * @return All values as LinkedList implementation
      */
+    @JsonIgnore
     public Iterable<Object> getValuesOrdered() {
         return new LinkedList<>(asList(pKey, orderId, state, expectedReceiptDate, details));
     }
