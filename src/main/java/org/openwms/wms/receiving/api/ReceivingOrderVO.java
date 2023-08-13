@@ -28,9 +28,12 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static java.util.Arrays.asList;
 
 /**
  * A ReceivingOrderVO.
@@ -41,6 +44,7 @@ import java.util.Objects;
 public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements Serializable {
 
     public static final String MEDIA_TYPE = "application/vnd.openwms.receiving-order-v1+json";
+    public static final String MEDIA_TYPE_CSV = "application/vnd.openwms.receiving-order-v1+csv";
 
     /** The persistent identifier. */
     @JsonProperty("pKey")
@@ -149,8 +153,22 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
         return Objects.hash(super.hashCode(), pKey, orderId, state, expectedReceiptDate, positions, details);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return Just the {@code orderId}
+     */
     @Override
     public String toString() {
         return orderId;
+    }
+
+    /**
+     * Get all values, without positions, as a ordered list.
+     *
+     * @return All values as LinkedList implementation
+     */
+    public Iterable<Object> getValuesOrdered() {
+        return new LinkedList<>(asList(pKey, orderId, state, expectedReceiptDate, details));
     }
 }
