@@ -228,7 +228,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
     public @NotNull ReceivingOrder changeState(@NotBlank String pKey, @NotNull OrderState state) {
         var order = getOrder(pKey);
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Change ReceivingOrder [{}] to state [{}]", order.getPersistentKey(), state);
+            LOGGER.info("Changing ReceivingOrder [{}] to state [{}]", order.getPersistentKey(), state);
         }
         if (state != COMPLETED) {
             throw new IllegalArgumentException("Not allowed to change the state to something else than COMPLETED");
