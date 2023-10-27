@@ -78,10 +78,10 @@ jobs:
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -Pschemagen,release -B $MAVEN_OPTS
         env:
-          PUSHKEY: ${{ secrets.PUSHKEY }}
+          PUSHKEY: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar
         run: >
-          ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
           -DsurefireArgs="-Dspring.profiles.active=ASYNCHRONOUS,TEST"
           -Dspring.rabbitmq.host=localhost
           -Dsonar.login=$SONAR_TOKEN
