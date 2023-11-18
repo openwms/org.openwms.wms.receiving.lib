@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(1.0.0-SNAPSHOT-138)">
+<meta name="author" content="(1.0.0-SNAPSHOT-141)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-138)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-141)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1104,13 +1104,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/e5bad108-e718-47bf-80fd-2b5b2a434132/
+Location: http://localhost:8080/v1/receiving-orders/0c71157b-a394-4dc5-9bb2-f72c87863f60/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 896
 
 {
   "ol" : 0,
-  "pKey" : "e5bad108-e718-47bf-80fd-2b5b2a434132",
+  "pKey" : "0c71157b-a394-4dc5-9bb2-f72c87863f60",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1130,7 +1130,7 @@ Content-Length: 896
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.8043738887435055"
+      "foreignPKey" : "0.9525490884301497"
     },
     "orderId" : "4712",
     "state" : "CREATED",
@@ -1138,7 +1138,7 @@ Content-Length: 896
     "details" : {
       "p1" : "v1"
     },
-    "createDt" : 1691954918498
+    "createDt" : 1700335202275
   } ]
 }</code></pre>
 </div>
@@ -1179,7 +1179,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2438
+Content-Length: 2439
 
 {
   "ol" : 0,
@@ -1203,7 +1203,7 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4883022385493163"
+      "foreignPKey" : "0.5707221724355414"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1213,7 +1213,7 @@ Content-Length: 2438
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1691954918555,
+    "createDt" : 1700335202325,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1236,12 +1236,12 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.30730100560248275"
+      "foreignPKey" : "0.012908416406130385"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918555,
+    "createDt" : 1700335202325,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1254,7 +1254,7 @@ Content-Length: 2438
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918555
+    "createDt" : 1700335202325
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1426,7 +1426,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2438
+Content-Length: 2437
 
 {
   "ol" : 0,
@@ -1450,7 +1450,7 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.31641796983004866"
+      "foreignPKey" : "0.8983474586473541"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1460,7 +1460,7 @@ Content-Length: 2438
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1691954918628,
+    "createDt" : 1700335202428,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1483,12 +1483,12 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.2977531277931149"
+      "foreignPKey" : "0.3731085876790239"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918628,
+    "createDt" : 1700335202428,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1501,7 +1501,7 @@ Content-Length: 2438
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918628
+    "createDt" : 1700335202428
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1557,7 +1557,7 @@ Content-Length: 2583
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.4708040466529795"
+      "foreignPKey" : "0.8505020564882138"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1567,7 +1567,7 @@ Content-Length: 2583
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : "2023-08-13T19:28:38Z",
+    "createDt" : "2023-11-18T19:20:02Z",
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1590,12 +1590,12 @@ Content-Length: 2583
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.9663109349203154"
+      "foreignPKey" : "0.9986190257048513"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : "2023-08-13T19:28:38Z",
+    "createDt" : "2023-11-18T19:20:02Z",
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1608,7 +1608,7 @@ Content-Length: 2583
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : "2023-08-13T19:28:38Z"
+    "createDt" : "2023-11-18T19:20:02Z"
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1631,7 +1631,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/b625fa44-7fd3-45e5-b11d-0020c843452e/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/a081ee51-ac4d-4628-9d66-2fc5ff1944b5/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1653,7 +1653,7 @@ Content-Length: 111
 
 {
   "ol" : 2,
-  "pKey" : "b625fa44-7fd3-45e5-b11d-0020c843452e",
+  "pKey" : "a081ee51-ac4d-4628-9d66-2fc5ff1944b5",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1802,7 +1802,7 @@ and the items are created in the <code>LoadUnit</code> on top of the <code>Trans
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2438
+Content-Length: 2439
 
 {
   "ol" : 0,
@@ -1826,7 +1826,7 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.923899606854313"
+      "foreignPKey" : "0.9212686516199149"
     },
     "orderId" : "T4711",
     "state" : "COMPLETED",
@@ -1836,7 +1836,7 @@ Content-Length: 2438
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1691954918363,
+    "createDt" : 1700335203275,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1859,12 +1859,12 @@ Content-Length: 2438
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.6782451080179328"
+      "foreignPKey" : "0.4591330568019849"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918363,
+    "createDt" : 1700335203275,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1877,7 +1877,7 @@ Content-Length: 2438
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918363
+    "createDt" : 1700335203275
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1991,7 +1991,7 @@ and the items are directly placed onto the given <code>Location</code>. The serv
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2440
+Content-Length: 2439
 
 {
   "ol" : 0,
@@ -2015,7 +2015,7 @@ Content-Length: 2440
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.7899600914278082"
+      "foreignPKey" : "0.7107773301322489"
     },
     "orderId" : "T4711",
     "state" : "COMPLETED",
@@ -2025,7 +2025,7 @@ Content-Length: 2440
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1691954917830,
+    "createDt" : 1700335202907,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2048,12 +2048,12 @@ Content-Length: 2440
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.39659963000374887"
+      "foreignPKey" : "0.5237922160154049"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954917830,
+    "createDt" : 1700335202907,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2066,7 +2066,7 @@ Content-Length: 2440
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954917830
+    "createDt" : 1700335202907
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -2213,7 +2213,7 @@ Content-Length: 2440
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.3393110172499476"
+      "foreignPKey" : "0.39702695438939273"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -2223,7 +2223,7 @@ Content-Length: 2440
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1691954918259,
+    "createDt" : 1700335203164,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2246,12 +2246,12 @@ Content-Length: 2440
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
       },
-      "foreignPKey" : "0.31594368431511555"
+      "foreignPKey" : "0.6415939273190467"
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1691954918259,
+    "createDt" : 1700335203164,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2264,7 +2264,7 @@ Content-Length: 2440
     "transportUnitTypeName" : "EURO",
     "state" : "COMPLETED",
     "priority" : 0,
-    "createDt" : 1691954918259
+    "createDt" : 1700335203164
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -2553,7 +2553,7 @@ Host: localhost:8080
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-13 19:25:50 UTC
+Last updated 2023-11-18 19:17:27 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
