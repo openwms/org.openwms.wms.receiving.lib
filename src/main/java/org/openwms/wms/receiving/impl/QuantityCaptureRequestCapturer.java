@@ -66,6 +66,9 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
     @Measured
     public Optional<ReceivingOrder> capture(String pKey, @NotNull QuantityCaptureRequestVO request) {
         if (pKey != null) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Capturing an expected receipt with pKey [{}], request [{}]", pKey, request);
+            }
             ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
                     pKey,

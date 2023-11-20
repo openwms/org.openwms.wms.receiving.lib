@@ -1,9 +1,0 @@
-[[section-glossary]]
-== Glossary
-
-[options="header"]
-|===
-| Term         | Definition
-| Receiving Order     | <definition-1>
-| <Term-2>     | <definition-2>
-|===
