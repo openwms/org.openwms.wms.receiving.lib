@@ -194,6 +194,10 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
     @Override
     @Transactional
     public @NotNull ReceivingOrder complete(@NotBlank String pKey) {
+        return completeInternal(pKey);
+    }
+
+    private ReceivingOrder completeInternal(String pKey) {
         LOGGER.info("Complete whole ReceivingOrder with pKey [{}]", pKey);
         var order = getOrder(pKey);
         if (order.getOrderState().ordinal() <= COMPLETED.ordinal()) {
@@ -233,8 +237,7 @@ class ReceivingServiceImpl<T extends CaptureRequestVO> implements ReceivingServi
         if (state != COMPLETED) {
             throw new IllegalArgumentException("Not allowed to change the state to something else than COMPLETED");
         }
-        complete(pKey);
-        return repository.save(order);
+        return repository.save(completeInternal(pKey));
     }
 
     private ReceivingOrder getOrder(String pKey) {
