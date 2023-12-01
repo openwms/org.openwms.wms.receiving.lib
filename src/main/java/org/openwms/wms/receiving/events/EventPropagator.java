@@ -30,7 +30,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * A EventPropagator is a Spring managed bean, actived in profile ASYNCHRONOUS that propagates internal events to the outer world via AMQP.
+ * A EventPropagator is a Spring managed bean, activated in profile ASYNCHRONOUS that propagates internal events to the outer world via
+ * AMQP.
  *
  * @author Heiko Scherrer
  */

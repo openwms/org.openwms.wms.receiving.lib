@@ -142,7 +142,7 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     @Valid
     private List<AbstractReceivingOrderPosition> positions = new ArrayList<>();
 
-    /** Arbitrary detail information on this order, might by populated with ERP information. */
+    /** Arbitrary detail information on this order, might be populated with ERP information. */
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "WMS_REC_ORDER_DETAIL",
             joinColumns = {

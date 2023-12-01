@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.openwms.wms.receiving.ValidationGroups;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -31,24 +30,10 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable {
 
-    /** The actual captured {@code TransportUnit} where the goods are located on. */
+    /** The actual captured {@code TransportUnit}. */
     @JsonProperty("transportUnit")
     @NotNull(groups = {ValidationGroups.CreateBlindTUReceipt.class, ValidationGroups.CreateExpectedTUReceipt.class})
     private TransportUnitVO transportUnit;
-
-    /** The unique identifier if the {@code LoadUnit} where the goods are stored in. */
-    @JsonProperty("loadUnitLabel")
-    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
-    private String loadUnitLabel;
-
-    /** The type in case a {@code LoadUnit} needs to be created (optional). */
-    @JsonProperty("loadUnitType")
-    private String loadUnitType;
-
-    /** The business key of the expected {@code TransportUnit} to receive. */
-    @JsonProperty("expectedTransportUnitBK")
-    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
-    private String expectedTransportUnitBK;
 
     /** The {@code Location} where the captured {@code TransportUnit} is located on. */
     @JsonProperty("actualLocation")
@@ -61,30 +46,6 @@ public class TUCaptureRequestVO extends CaptureRequestVO implements Serializable
 
     public void setTransportUnit(TransportUnitVO transportUnit) {
         this.transportUnit = transportUnit;
-    }
-
-    public String getLoadUnitLabel() {
-        return loadUnitLabel;
-    }
-
-    public void setLoadUnitLabel(String loadUnitLabel) {
-        this.loadUnitLabel = loadUnitLabel;
-    }
-
-    public String getLoadUnitType() {
-        return loadUnitType;
-    }
-
-    public void setLoadUnitType(String loadUnitType) {
-        this.loadUnitType = loadUnitType;
-    }
-
-    public String getExpectedTransportUnitBK() {
-        return expectedTransportUnitBK;
-    }
-
-    public void setExpectedTransportUnitBK(String expectedTransportUnitBK) {
-        this.expectedTransportUnitBK = expectedTransportUnitBK;
     }
 
     public boolean hasTransportUnitType() {

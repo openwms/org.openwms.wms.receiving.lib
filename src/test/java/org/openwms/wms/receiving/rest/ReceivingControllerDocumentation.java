@@ -34,12 +34,10 @@ import org.openwms.wms.receiving.api.TransportUnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -321,13 +319,9 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
     @Test void shall_do_a_TUCapture_with_unexpected_TU() throws Exception {
         var vo = new TUCaptureRequestVO();
         var tu = new TransportUnitVO();
-        var actualLocation = new LocationVO("WE01"); // Where the goods have been captured
         tu.setTransportUnitId("00000000000000004711"); // The captured TU
+        vo.setActualLocation(new LocationVO("WE01")); // Where the goods have been captured
         vo.setTransportUnit(tu);
-        vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
-        vo.setLoadUnitLabel("1"); // The LU id of the captured TU
-        vo.setLoadUnitType("EURO"); // The LU type
-        vo.setActualLocation(actualLocation);
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
@@ -343,12 +337,8 @@ class ReceivingControllerDocumentation extends AbstractTestBase {
         var vo = new TUCaptureRequestVO();
         var tu = new TransportUnitVO();
         tu.setTransportUnitId("00000000000000004712"); // The captured TU
-        var loc = new LocationVO("WE01"); // Where the goods have been captured
         vo.setTransportUnit(tu);
-        vo.setActualLocation(loc);
-        vo.setExpectedTransportUnitBK("00000000000000004712"); // The expected TU
-        vo.setLoadUnitLabel("1"); // The LU id of the captured TU
-        vo.setLoadUnitType("EURO"); // The LU type
+        vo.setActualLocation(new LocationVO("WE01")); // Where the goods have been captured
         mockMvc
                 .perform(
                         post("/v1/receiving-orders/{pKey}/capture", ORDER1_PKEY)
