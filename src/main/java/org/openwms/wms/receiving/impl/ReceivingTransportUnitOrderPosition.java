@@ -18,9 +18,15 @@ package org.openwms.wms.receiving.impl;
 import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
 
+import javax.persistence.AssociationOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -32,7 +38,13 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "WMS_REC_ORDER_POS_TU")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+// Bug in hibernate prevents overrding fkcontraints
+@AssociationOverride(name = "order", joinColumns =
+    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
+        foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_TU"))
+@Table(name = "WMS_REC_ORDER_POS_TU",
+        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS_TU", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
 public class ReceivingTransportUnitOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */

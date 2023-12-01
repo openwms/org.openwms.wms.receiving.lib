@@ -32,8 +32,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -48,12 +46,10 @@ import java.util.Map;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "WMS_REC_ORDER_POSITION",
-        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
 public abstract class AbstractReceivingOrderPosition extends BaseEntity implements Serializable {
 
     @ManyToOne(optional = false, targetEntity = ReceivingOrder.class)
-    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID"))
+    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID")
     private ReceivingOrder order;
 
     /** The position number is a unique index within a single {@link ReceivingOrder} instance. */
