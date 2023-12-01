@@ -76,6 +76,7 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     @NotNull
     private Boolean overbookingAllowed;
 
+    /*~ -------------- constructors -------------- */
     /** Dear JPA ... */
     protected Product() {
     }
@@ -89,6 +90,18 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
         this.sku = sku;
     }
 
+    /*~ --------------- lifecycle ---------------- */
+    /**
+     * In case the {@code foreignPKey} is set, we use this external immutable identifier as persistent key.
+     */
+    @Override
+    protected void onEntityPersist() {
+        if (this.foreignPKey != null && !this.foreignPKey.isEmpty()) {
+            super.setPersistentKey(this.foreignPKey);
+        }
+    }
+
+    /*~ --------------- accessors ---------------- */
     public String getForeignPKey() {
         return foreignPKey;
     }

@@ -16,12 +16,17 @@
 package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.ameba.annotation.Default;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,6 +38,9 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ProductVO implements Serializable {
 
+    /** The foreign persistent key of the {@code Product}. */
+    @JsonProperty("foreignPKey")
+    private String foreignPKey;
     /** The product id is part of the unique business key. */
     @NotBlank(groups = ValidationGroups.Capture.class)
     @JsonProperty("sku")
@@ -46,16 +54,34 @@ public class ProductVO implements Serializable {
     /** Products may be defined with different base units. */
     @JsonProperty("baseUnit")
     private Measurable baseUnit;
-    /** The foreign persistent key of the {@code Product}. */
-    @JsonProperty("foreignPKey")
-    private String foreignPKey;
 
-    @JsonCreator
-    ProductVO() {
+    @JsonIgnore
+    @Valid
+    @Validated({ValidationGroups.Create.class,
+            ValidationGroups.CreateBlindTUReceipt.class,
+            ValidationGroups.CreateQuantityReceipt.class,
+            ValidationGroups.CreateExpectedTUReceipt.class})
+    public boolean isValid() {
+        return ((sku != null && !sku.isEmpty()) ||
+                (foreignPKey != null && !foreignPKey.isEmpty()));
     }
 
+    @JsonCreator
+    ProductVO() { }
+
+    @Default
+    @ConstructorProperties({"sku"})
     public ProductVO(@NotBlank String sku) {
         this.sku = sku;
+    }
+
+    public ProductVO(String sku, String foreignPKey) {
+        if (sku != null && !sku.isEmpty()) {
+            this.sku = sku;
+        }
+        if (foreignPKey != null && !foreignPKey.isEmpty()) {
+            this.foreignPKey = foreignPKey;
+        }
     }
 
     public String getSku() {
