@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="(1.0.0-SNAPSHOT-143)">
+<meta name="author" content="(1.0.0-SNAPSHOT-144)">
 <title>OpenWMS.org WMS: RESTful API (Receiving Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org WMS: RESTful API (Receiving Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-143)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-144)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -1104,13 +1104,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/receiving-orders/41925a98-fbe8-472c-bef5-c10fe9dc6b01/
+Location: http://localhost:8080/v1/receiving-orders/61aaa772-6125-4b8c-b2e6-8917ca15b8d3/
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 897
+Content-Length: 896
 
 {
   "ol" : 0,
-  "pKey" : "41925a98-fbe8-472c-bef5-c10fe9dc6b01",
+  "pKey" : "61aaa772-6125-4b8c-b2e6-8917ca15b8d3",
   "orderId" : "4712",
   "state" : "CREATED",
   "positions" : [ {
@@ -1123,14 +1123,14 @@ Content-Length: 897
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.9638326243476278",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.44100228324848345"
+      }
     },
     "orderId" : "4712",
     "state" : "CREATED",
@@ -1138,7 +1138,7 @@ Content-Length: 897
     "details" : {
       "p1" : "v1"
     },
-    "createDt" : 1700479799426
+    "createDt" : 1701418228231
   } ]
 }</code></pre>
 </div>
@@ -1179,7 +1179,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2436
+Content-Length: 2437
 
 {
   "ol" : 0,
@@ -1196,14 +1196,14 @@ Content-Length: 2436
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.9381255699547886",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.961426826880345"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1213,7 +1213,7 @@ Content-Length: 2436
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1700479800310,
+    "createDt" : 1701418228284,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1229,19 +1229,19 @@ Content-Length: 2436
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.6302516825679483",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.9569748059571843"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800310,
+    "createDt" : 1701418228284,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1254,7 +1254,7 @@ Content-Length: 2436
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800310
+    "createDt" : 1701418228284
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1443,14 +1443,14 @@ Content-Length: 2437
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.2742599655409599",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.9702895203538908"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1460,7 +1460,7 @@ Content-Length: 2437
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1700479800365,
+    "createDt" : 1701418228384,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1476,19 +1476,19 @@ Content-Length: 2437
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.9895042135053025",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.9732682495180676"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800365,
+    "createDt" : 1701418228384,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1501,7 +1501,7 @@ Content-Length: 2437
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800365
+    "createDt" : 1701418228384
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1533,7 +1533,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/vnd.openwms.receiving-order-v1+json
-Content-Length: 2584
+Content-Length: 2583
 
 [ {
   "ol" : 0,
@@ -1550,14 +1550,14 @@ Content-Length: 2584
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.5010194552272758",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.20479364171224645"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -1567,7 +1567,7 @@ Content-Length: 2584
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : "2023-11-20T11:30:00Z",
+    "createDt" : "2023-12-01T08:10:28Z",
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1583,19 +1583,19 @@ Content-Length: 2584
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.6393462461795316",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.5656099282600415"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : "2023-11-20T11:30:00Z",
+    "createDt" : "2023-12-01T08:10:28Z",
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1608,7 +1608,7 @@ Content-Length: 2584
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : "2023-11-20T11:30:00Z"
+    "createDt" : "2023-12-01T08:10:28Z"
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -1631,7 +1631,7 @@ unique identifier of the order.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/e18fde17-3809-42d6-837f-31e495e7660c/ HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/receiving-orders/ecdb72f0-ac28-4d68-bea5-c75c5bf058fb/ HTTP/1.1
 Content-Type: application/vnd.openwms.receiving-order-v1+json
 Content-Length: 48
 Host: localhost:8080
@@ -1653,7 +1653,7 @@ Content-Length: 111
 
 {
   "ol" : 2,
-  "pKey" : "e18fde17-3809-42d6-837f-31e495e7660c",
+  "pKey" : "ecdb72f0-ac28-4d68-bea5-c75c5bf058fb",
   "orderId" : "4714",
   "state" : "CANCELED"
 }</code></pre>
@@ -1819,14 +1819,14 @@ Content-Length: 2439
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.5200670725286578",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.5666373973694085"
+      }
     },
     "orderId" : "T4711",
     "state" : "COMPLETED",
@@ -1836,7 +1836,7 @@ Content-Length: 2439
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1700479800242,
+    "createDt" : 1701418229247,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1852,19 +1852,19 @@ Content-Length: 2439
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.3552494797918406",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.3518055055812077"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800242,
+    "createDt" : 1701418229247,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -1877,7 +1877,7 @@ Content-Length: 2439
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800242
+    "createDt" : 1701418229247
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -2008,14 +2008,14 @@ Content-Length: 2440
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.06996728710697298",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.7585282794887185"
+      }
     },
     "orderId" : "T4711",
     "state" : "COMPLETED",
@@ -2025,7 +2025,7 @@ Content-Length: 2440
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1700479799836,
+    "createDt" : 1701418228882,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2041,19 +2041,19 @@ Content-Length: 2440
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.7574200191273839",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.19885227982697629"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479799836,
+    "createDt" : 1701418228882,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2066,7 +2066,7 @@ Content-Length: 2440
     "transportUnitTypeName" : "EURO",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479799836
+    "createDt" : 1701418228882
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -2107,7 +2107,7 @@ the client device sends a <code>POST</code> request to the server with the ident
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/receiving-orders/d8099b89-bdb6-40d3-9580-d56aeadd578f/capture HTTP/1.1
 Content-Type: application/json
-Content-Length: 302
+Content-Length: 196
 Host: localhost:8080
 
 [ {
@@ -2115,9 +2115,6 @@ Host: localhost:8080
   "transportUnit" : {
     "transportUnitBK" : "00000000000000004712"
   },
-  "loadUnitLabel" : "1",
-  "loadUnitType" : "EURO",
-  "expectedTransportUnitBK" : "00000000000000004712",
   "actualLocation" : {
     "erpCode" : "WE01"
   }
@@ -2206,14 +2203,14 @@ Content-Length: 2439
     },
     "product" : {
       "sku" : "C1",
+      "foreignPKey" : "0.8781777933448431",
       "label" : "L_C1",
       "description" : "Skateboard gearings 608ZZ",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.3989641288289114"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
@@ -2223,7 +2220,7 @@ Content-Length: 2439
       "Unload cond." : "Put to freezer zone",
       "Supplier" : "UNC Texas - Dallas"
     },
-    "createDt" : 1700479800119,
+    "createDt" : 1701418229137,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2239,19 +2236,19 @@ Content-Length: 2439
     },
     "product" : {
       "sku" : "C2",
+      "foreignPKey" : "0.1492076731626817",
       "label" : "L_C2",
       "description" : "Notch M8",
       "baseUnit" : {
         "@class" : "org.openwms.core.units.api.Piece",
         "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
         "magnitude" : 1
-      },
-      "foreignPKey" : "0.6260877202078454"
+      }
     },
     "orderId" : "T4711",
     "state" : "CREATED",
     "priority" : 0,
-    "createDt" : 1700479800119,
+    "createDt" : 1701418229137,
     "quantityReceived" : {
       "@class" : "org.openwms.core.units.api.Piece",
       "unitType" : [ "org.openwms.core.units.api.PieceUnit", "PC" ],
@@ -2264,7 +2261,7 @@ Content-Length: 2439
     "transportUnitTypeName" : "EURO",
     "state" : "COMPLETED",
     "priority" : 0,
-    "createDt" : 1700479800119
+    "createDt" : 1701418229137
   } ],
   "details" : {
     "Supplier name" : "Bangee Ltd. Hongkong",
@@ -2553,7 +2550,7 @@ Host: localhost:8080
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-11-20 11:27:40 UTC
+Last updated 2023-12-01 08:04:13 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -93,7 +93,7 @@
          <index name="wms_rec_order_pos_product_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
-         <index name="uk_axlftk09h2d5f5bprmuaka1bg" unique="true">
+         <index name="uc_order_id_pos" unique="true">
             <column ascending="true" name="c_order_id"/>
             <column ascending="true" name="c_pos_no"/>
          </index>
@@ -117,7 +117,7 @@
          <index name="wms_rec_order_pos_tu_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
-         <index name="uk_r9e4hklwcmaiybxruipkxyl9w" unique="true">
+         <index name="uc_order_id_pos_tu" unique="true">
             <column ascending="true" name="c_order_id"/>
             <column ascending="true" name="c_pos_no"/>
          </index>
