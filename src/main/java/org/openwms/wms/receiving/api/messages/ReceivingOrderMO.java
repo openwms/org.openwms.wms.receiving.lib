@@ -15,7 +15,8 @@
  */
 package org.openwms.wms.receiving.api.messages;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

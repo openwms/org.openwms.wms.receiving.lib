@@ -15,18 +15,18 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.validation.ConstraintViolationException;
 import org.ameba.exception.ResourceExistsException;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.units.api.Piece;
-import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.AbstractTestBase;
 import org.openwms.wms.receiving.ReceivingApplicationTest;
+import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -15,10 +15,9 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.plugin.core.Plugin;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * A ReceivingOrderUpdater.

@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
@@ -36,8 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 
-import javax.validation.Validator;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;

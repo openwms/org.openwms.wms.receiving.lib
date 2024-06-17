@@ -15,20 +15,20 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.persistence.AssociationOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Validator;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

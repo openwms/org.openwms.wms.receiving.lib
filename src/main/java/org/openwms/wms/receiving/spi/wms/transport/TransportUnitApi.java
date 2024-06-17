@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", qualifiers = "wmsTransportUnitApi", decode404 = true, fallbackFactory = TransportUnitApiFallbackFactory.class)
+@FeignClient(name = "wms-inventory", qualifiers = "wmsTransportUnitApi", dismiss404 = true, fallbackFactory = TransportUnitApiFallbackFactory.class)
 interface TransportUnitApi {
 
     /**

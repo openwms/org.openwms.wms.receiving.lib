@@ -15,7 +15,7 @@
  */
 package org.openwms.wms.receiving.transport;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * A TransportUnitService.

@@ -15,15 +15,14 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.springframework.context.ApplicationEventPublisher;
-
-import javax.validation.Validator;
-import javax.validation.constraints.NotBlank;
 
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
 

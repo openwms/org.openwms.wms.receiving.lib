@@ -15,8 +15,9 @@
  */
 package org.openwms.common.transport.api.commands;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.util.Date;

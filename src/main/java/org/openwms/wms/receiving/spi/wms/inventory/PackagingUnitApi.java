@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", decode404 = true, qualifiers = "packagingUnitApi", fallback = PackagingUnitApiFallback.class)
+@FeignClient(name = "wms-inventory", dismiss404 = true, qualifiers = "packagingUnitApi", fallback = PackagingUnitApiFallback.class)
 interface PackagingUnitApi {
 
     /**

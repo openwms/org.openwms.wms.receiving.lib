@@ -28,7 +28,7 @@ import java.util.Optional;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "common-service", decode404 = true, qualifiers = "locationApi")
+@FeignClient(name = "common-service", dismiss404 = true, qualifiers = "locationApi")
 public interface CommonLocationApi {
 
 

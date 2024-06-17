@@ -19,13 +19,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.annotation.Default;
 import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.util.Objects;

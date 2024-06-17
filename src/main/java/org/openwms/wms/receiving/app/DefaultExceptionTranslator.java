@@ -15,10 +15,10 @@
  */
 package org.openwms.wms.receiving.app;
 
+import jakarta.validation.ConstraintViolationException;
 import org.ameba.aop.ExceptionTranslator;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
 /**

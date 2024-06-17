@@ -15,18 +15,19 @@
  */
 package org.openwms.wms.receiving.inventory;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.integration.jpa.ApplicationEntity;
-import org.hibernate.annotations.Columns;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.CompositeType;
 import org.openwms.core.units.UnitConstants;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.core.units.persistence.UnitUserType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -63,14 +64,13 @@ public class Product extends ApplicationEntity implements Comparable<Product>, S
     private String description;
 
     /** Products may be defined with different base units. */
-    @Type(type = "org.openwms.core.units.persistence.UnitUserType")
-    @Columns(columns = {
-            @Column(name = "C_BASE_UNIT_TYPE", nullable = false),
-            @Column(name = "C_BASE_UNIT_QTY", length = UnitConstants.QUANTITY_LENGTH, nullable = false)
-    })
+    @NotNull
+    @CompositeType(UnitUserType.class)
+    @AttributeOverride(name = "magnitude", column = @Column(name = "C_BASE_UNIT_QTY", length = UnitConstants.QUANTITY_LENGTH, nullable = false))
+    @AttributeOverride(name = "unitType", column = @Column(name = "C_BASE_UNIT_TYPE", nullable = false))
     //problems when mapping
     //@NotNull
-    private Measurable baseUnit;
+    private Measurable<?,?,?> baseUnit;
 
     @Column(name = "C_OVERBOOKING_ALLOWED", nullable = false)
     @NotNull

@@ -16,6 +16,7 @@
 package org.openwms.wms.receiving.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.servlet.Filter;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
@@ -44,7 +45,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import javax.servlet.Filter;
 import java.util.Locale;
 import java.util.Properties;
 

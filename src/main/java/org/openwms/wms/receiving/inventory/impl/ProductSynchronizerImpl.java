@@ -15,13 +15,12 @@
  */
 package org.openwms.wms.receiving.inventory.impl;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductSynchronizer;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * A ProductSynchronizerImpl.

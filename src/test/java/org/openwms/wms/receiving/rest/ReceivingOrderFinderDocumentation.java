@@ -110,7 +110,8 @@ class ReceivingOrderFinderDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[].product.baseUnit.*").ignored(),
                                 fieldWithPath("positions[].product.*").ignored(),
                                 fieldWithPath("positions[].orderId").optional().description("The unique id of the ReceivingOrder the position belongs to"),
-                                fieldWithPath("positions[].createDt").description("Timestamp when the position has been created.")
+                                fieldWithPath("positions[].createDt").description("Timestamp when the position has been created."),
+                                fieldWithPath("createDt").description("Timestamp when the ReceivingOrder has been created.")
                         )
                 ))
         ;

@@ -15,7 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * A SyncProductApi.

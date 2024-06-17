@@ -15,31 +15,35 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import jakarta.persistence.AssociationOverride;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.exception.NotFoundException;
 import org.ameba.system.ValidationUtil;
+import org.hibernate.annotations.CompositeType;
+import org.openwms.core.units.UnitConstants;
 import org.openwms.core.units.api.Measurable;
+import org.openwms.core.units.persistence.UnitUserType;
 import org.openwms.wms.receiving.ReceivingMessages;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.context.ApplicationEventPublisher;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Validator;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 
 /**
  * A ReceivingOrderPosition is a persisted entity class that represents an expected receipt of {@code Product}s in a
@@ -57,21 +61,17 @@ import static javax.persistence.CascadeType.PERSIST;
 public class ReceivingOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
-    @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_EXPECTED_TYPE"),
-            @Column(name = "C_QTY_EXPECTED")
-    })
+    @CompositeType(UnitUserType.class)
+    @AttributeOverride(name = "magnitude", column = @Column(name = "C_QTY_EXPECTED", length = UnitConstants.QUANTITY_LENGTH, nullable = false))
+    @AttributeOverride(name = "unitType", column = @Column(name = "C_QTY_EXPECTED_TYPE", nullable = false))
     @NotNull(groups = ValidationGroups.CreateQuantityReceipt.class)
-    private Measurable quantityExpected;
+    private Measurable<?,?,?> quantityExpected;
 
     /** The receipt quantity, this might be increased at arrival. */
-    @org.hibernate.annotations.Type(type = "org.openwms.core.units.persistence.UnitUserType")
-    @org.hibernate.annotations.Columns(columns = {
-            @Column(name = "C_QTY_RECEIVED_TYPE"),
-            @Column(name = "C_QTY_RECEIVED")
-    })
-    private Measurable quantityReceived;
+    @CompositeType(UnitUserType.class)
+    @AttributeOverride(name = "magnitude", column = @Column(name = "C_QTY_RECEIVED", length = UnitConstants.QUANTITY_LENGTH))
+    @AttributeOverride(name = "unitType", column = @Column(name = "C_QTY_RECEIVED_TYPE"))
+    private Measurable<?,?,?> quantityReceived;
 
     /** The expected {@link Product} to be receipt. */
     @ManyToOne(cascade = {PERSIST, MERGE})

@@ -15,7 +15,8 @@
  */
 package org.openwms.wms.receiving.spi.wms.location;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Optional;
 
 /**

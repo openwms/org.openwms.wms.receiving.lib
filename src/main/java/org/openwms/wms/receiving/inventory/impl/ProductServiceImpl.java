@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.inventory.impl;
 
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.inventory.Product;
@@ -24,7 +25,6 @@ import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 /**

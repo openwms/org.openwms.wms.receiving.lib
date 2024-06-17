@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.rest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.ameba.http.MeasuredRestController;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
@@ -28,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static org.openwms.wms.receiving.api.ReceivingOrderVO.MEDIA_TYPE;
 

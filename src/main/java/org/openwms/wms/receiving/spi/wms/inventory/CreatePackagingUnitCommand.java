@@ -15,9 +15,9 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 

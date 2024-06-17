@@ -27,7 +27,7 @@ import java.util.Optional;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "wms-inventory", qualifiers = "wmsLocationApi", decode404 = true, fallbackFactory = LocationApiFallbackFactory.class)
+@FeignClient(name = "wms-inventory", qualifiers = "wmsLocationApi", dismiss404 = true, fallbackFactory = LocationApiFallbackFactory.class)
 interface LocationApi {
 
     /**

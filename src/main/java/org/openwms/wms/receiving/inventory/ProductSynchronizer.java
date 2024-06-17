@@ -15,8 +15,8 @@
  */
 package org.openwms.wms.receiving.inventory;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * A ProductSynchronizer offers methods to synchronize the internal state of a {@link Product} with an external source.

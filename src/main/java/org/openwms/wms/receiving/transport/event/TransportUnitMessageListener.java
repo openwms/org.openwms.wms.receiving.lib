@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.transport.event;
 
+import jakarta.validation.Validator;
 import org.ameba.annotation.Measured;
 import org.openwms.common.transport.api.ValidationGroups;
 import org.openwms.common.transport.api.messages.TransportUnitMO;
@@ -29,8 +30,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-
-import javax.validation.Validator;
 
 import static org.ameba.system.ValidationUtil.validate;
 

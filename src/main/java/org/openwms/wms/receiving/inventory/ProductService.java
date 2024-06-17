@@ -15,7 +15,8 @@
  */
 package org.openwms.wms.receiving.inventory;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Optional;
 
 /**

@@ -15,14 +15,13 @@
  */
 package org.openwms.wms.receiving.transport.impl;
 
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.transport.TransportUnit;
 import org.openwms.wms.receiving.transport.TransportUnitService;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * A TransportUnitServiceImpl.

@@ -18,9 +18,9 @@ package org.openwms.wms.receiving.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.http.AbstractBase;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 

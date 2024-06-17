@@ -15,8 +15,8 @@
  */
 package org.openwms.wms.receiving.spi.wms.transport;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * A SyncTransportUnitApi is the public API to manage {@code TransportUnits} in a synchronous way.

@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import jakarta.validation.Validator;
 import org.ameba.annotation.Measured;
 import org.ameba.system.ValidationUtil;
 import org.openwms.core.SpringProfiles;
@@ -24,8 +25,6 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import javax.validation.Validator;
 
 /**
  * A AsyncPackagingUnitApiImpl is used to asynchronously work with a remote service to manage {@code PackagingUnits}.

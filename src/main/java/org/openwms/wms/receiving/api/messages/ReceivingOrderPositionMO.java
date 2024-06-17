@@ -15,9 +15,9 @@
  */
 package org.openwms.wms.receiving.api.messages;
 
+import jakarta.validation.constraints.NotNull;
 import org.openwms.core.units.api.Measurable;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

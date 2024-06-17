@@ -15,6 +15,9 @@
  */
 package org.openwms.wms.receiving.rest;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
 import org.openwms.wms.receiving.ReceivingMapper;
@@ -28,9 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 

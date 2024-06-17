@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.impl.updaters;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.impl.ReceivingOrder;
@@ -22,9 +24,6 @@ import org.openwms.wms.receiving.impl.ReceivingOrderUpdater;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * A ReceivingOrderDetailsUpdater is a {@link ReceivingOrderUpdater} strategy.
