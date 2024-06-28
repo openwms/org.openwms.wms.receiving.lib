@@ -1,4 +1,4 @@
-// dot 2.43.0 on Linux 6.2.0-1016-azure
+// dot 2.43.0 on Linux 6.5.0-1022-azure
 // SchemaSpy rev Unknown
 digraph "wms_rec_order_position_detail" {
   graph [
@@ -22,8 +22,8 @@ digraph "wms_rec_order_position_detail" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">wms_rec_order_position_detail</TD></TR>
       <TR><TD PORT="c_order_pos_pk" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_order_pos_pk</TD></TR>
-      <TR><TD PORT="c_value" COLSPAN="3" ALIGN="LEFT">c_value</TD></TR>
       <TR><TD PORT="c_key" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_key</TD></TR>
+      <TR><TD PORT="c_value" COLSPAN="3" ALIGN="LEFT">c_value</TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="tables/wms_rec_order_position_detail.html"

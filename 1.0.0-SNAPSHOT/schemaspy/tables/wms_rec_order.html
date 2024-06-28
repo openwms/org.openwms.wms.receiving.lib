@@ -83,22 +83,35 @@
 </thead>
 <tbody valign='top'>
 <tr class='even'>
- <td class='primaryKey' title='Primary Key'>c_pk</td>
- <td class='detail'>int8</td>
- <td class='detail' align='right'>19</td>
+ <td class='detail'>c_locked</td>
+ <td class='detail'>bool</td>
+ <td class='detail' align='right'>1</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
  <td class='detail'></td>
- <td class='detail'>
-  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
-    <td class='relatedTable detail' title="wms_rec_order_detail.c_order_pk refs wms_rec_order.c_pk via fk_details_ro"><a href='wms_rec_order_detail.html'>wms_rec_order_detail</a><span class='relatedKey'>.c_order_pk</span>
-    </td>
-    <td class='constraint detail'>fk_details_ro<span title='Restrict delete:
- Parent cannot be deleted if children exist'>&nbsp;R</span></td>
-   </tr>
-  </table>
-</td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
+ <td class='detail'>c_priority</td>
+ <td class='detail'>int4</td>
+ <td class='detail' align='right'>10</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>c_problem_message_no</td>
+ <td class='detail'>int4</td>
+ <td class='detail' align='right'>10</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
@@ -106,72 +119,6 @@
  <td class='detail'>c_created</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>29,6</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
- <td class='detail'>c_created_by</td>
- <td class='detail'>varchar</td>
- <td class='detail' align='right'>255</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='odd'>
- <td class='detail'>c_updated_by</td>
- <td class='detail'>varchar</td>
- <td class='detail' align='right'>255</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
- <td class='detail'>c_updated</td>
- <td class='detail'>timestamp</td>
- <td class='detail' align='right'>29,6</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='odd'>
- <td class='detail'>c_ol</td>
- <td class='detail'>int8</td>
- <td class='detail' align='right'>19</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
- <td class='indexedColumn' title='Indexed'>c_pid</td>
- <td class='detail'>varchar</td>
- <td class='detail' align='right'>255</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
- <td class='detail'></td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='odd'>
- <td class='detail'>c_start_earliest_at</td>
- <td class='detail'>timestamp</td>
- <td class='detail' align='right'>22</td>
  <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='right'>null</td>
@@ -213,9 +160,9 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>c_locked</td>
- <td class='detail'>bool</td>
- <td class='detail' align='right'>1</td>
+ <td class='detail'>c_next_alloc_at</td>
+ <td class='detail'>timestamp</td>
+ <td class='detail' align='right'>22</td>
  <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='right'>null</td>
@@ -224,9 +171,84 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='even'>
- <td class='detail'>c_next_alloc_at</td>
+ <td class='detail'>c_ol</td>
+ <td class='detail'>int8</td>
+ <td class='detail' align='right'>19</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
+ <td class='primaryKey' title='Primary Key'>c_pk</td>
+ <td class='detail'>int8</td>
+ <td class='detail' align='right'>19</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative odd' valign='top'>
+    <td class='relatedTable detail' title="wms_rec_order_detail.c_order_pk refs wms_rec_order.c_pk via fk_details_ro"><a href='wms_rec_order_detail.html'>wms_rec_order_detail</a><span class='relatedKey'>.c_order_pk</span>
+    </td>
+    <td class='constraint detail'>fk_details_ro<span title='Restrict delete:
+ Parent cannot be deleted if children exist'>&nbsp;R</span></td>
+   </tr>
+  </table>
+</td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>c_problem_occurred</td>
+ <td class='detail'>timestamp</td>
+ <td class='detail' align='right'>29,6</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
+ <td class='detail'>c_start_earliest_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>22</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>c_started_at</td>
+ <td class='detail'>timestamp</td>
+ <td class='detail' align='right'>22</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
+ <td class='detail'>c_updated</td>
+ <td class='detail'>timestamp</td>
+ <td class='detail' align='right'>29,6</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>null</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>c_created_by</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
  <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='right'>null</td>
@@ -272,12 +294,12 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>c_priority</td>
- <td class='detail'>int4</td>
- <td class='detail' align='right'>10</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
+ <td class='indexedColumn' title='Indexed'>c_pid</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
  <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
@@ -294,31 +316,9 @@
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>c_problem_message_no</td>
- <td class='detail'>int4</td>
- <td class='detail' align='right'>10</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
- <td class='detail'>c_problem_occurred</td>
- <td class='detail'>timestamp</td>
- <td class='detail' align='right'>29,6</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='odd'>
- <td class='detail'>c_started_at</td>
- <td class='detail'>timestamp</td>
- <td class='detail' align='right'>22</td>
+ <td class='detail'>c_updated_by</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
  <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='right'>null</td>
@@ -327,7 +327,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='20 columns'>Table contained 2 rows at Wed Dec 06 14:49 UTC 2023<p/>
+<p title='20 columns'>Table contained 2 rows at Fri Jun 28 19:40 UTC 2024<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -357,7 +357,7 @@
   <td class='indexedColumn'>c_pid</td>
   <td class='detail'>Must be unique</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
-  <td class='constraint' style='text-align:left;'>uk_cutckn7kskbndmhc5g614hv71</td>
+  <td class='constraint' style='text-align:left;'>wms_rec_order_c_pid_key</td>
  </tr>
 </table>
 </div>
@@ -366,17 +366,17 @@
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
 <area shape="rect" id="node1" href="wms_rec_order_detail.html" title="wms_rec_order_detail" alt="" coords="413,5,601,136">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,55,345,599">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,7,345,551">
 <area shape="rect" id="node3" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="389,153,625,572">
 <area shape="rect" id="node4" href="wms_rec_order_pos_tu.html" title="wms_rec_order_pos_tu" alt="" coords="389,589,625,936">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/wms_rec_order.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="wms_rec_order_detail.html" title="wms_rec_order_detail" alt="" coords="413,5,601,136">
-<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,55,345,599">
-<area shape="rect" id="node3" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="389,517,625,936">
-<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="97,853,254,936">
-<area shape="rect" id="node5" href="wms_rec_order_pos_tu.html" title="wms_rec_order_pos_tu" alt="" coords="389,153,625,500">
+<area shape="rect" id="node1" href="wms_rec_order_detail.html" title="wms_rec_order_detail" alt="" coords="413,52,601,183">
+<area shape="rect" id="node2" href="wms_rec_order.html" title="wms_rec_order" alt="" coords="5,5,345,549">
+<area shape="rect" id="node3" href="wms_rec_order_pos_product.html" title="wms_rec_order_pos_product" alt="" coords="389,564,625,983">
+<area shape="rect" id="node4" href="wms_rec_product.html" title="wms_rec_product" alt="" coords="97,852,254,935">
+<area shape="rect" id="node5" href="wms_rec_order_pos_tu.html" title="wms_rec_order_pos_tu" alt="" coords="389,200,625,547">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/wms_rec_order.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
