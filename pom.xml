@@ -67,7 +67,7 @@
 
     <properties>
         <core.units.version>0.7.0-SNAPSHOT</core.units.version>
-		<core.version>3.0.0-SNAPSHOT</core.version>
+        <core.version>3.0.0-SNAPSHOT</core.version>
         <guava.version>32.0.0-jre</guava.version>
         <joda-time.version>2.10.14</joda-time.version>
         <spring-cloud-dependencies.version>2023.0.1</spring-cloud-dependencies.version>
@@ -329,9 +329,9 @@
             <artifactId>feign-httpclient</artifactId>
             <optional>true</optional>
         </dependency>
-		<dependency>
-			<groupId>io.interface21</groupId>
-			<artifactId>ameba-lib</artifactId>
+        <dependency>
+            <groupId>io.interface21</groupId>
+            <artifactId>ameba-lib</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -343,6 +343,7 @@
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
+            <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -398,7 +399,7 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-		</repository>
+        </repository>
         <repository>
             <id>sonatype-nexus-staging</id>
             <name>Staging Repository</name>
