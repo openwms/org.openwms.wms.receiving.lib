@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.api.OrderState;
 import org.slf4j.Logger;
@@ -49,6 +50,7 @@ class ReceivingOrderEventListener {
      *
      * @param event Expected to keep the created order instance
      */
+    @Measured
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class})
     public void onCreate(ReceivingOrderCreatedEvent event) {

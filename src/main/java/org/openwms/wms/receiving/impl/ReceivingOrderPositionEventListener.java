@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.impl;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ class ReceivingOrderPositionEventListener {
      *
      * @param event Expected to store the position as source
      */
+    @Measured
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = {IllegalArgumentException.class})
     public void onStateChange(ReceivingOrderPositionStateChangeEvent event) {

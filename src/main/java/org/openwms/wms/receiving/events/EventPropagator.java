@@ -27,6 +27,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
@@ -53,6 +55,7 @@ public class EventPropagator {
 
     @Measured
     @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onEvent(ReceivingOrderStateChangeEvent event) {
         var mo = mapper.convertToMO(event.getSource(), new CycleAvoidingMappingContext());
         switch (event.getState()) {
@@ -77,6 +80,7 @@ public class EventPropagator {
 
     @Measured
     @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public <T extends AbstractReceivingOrderPosition> void onEvent(ReceivingOrderPositionStateChangeEvent<T> event) {
         var mo = mapper.fromEOtoMO(event.getSource(), new CycleAvoidingMappingContext());
         if (LOGGER.isDebugEnabled()) {
