@@ -25,6 +25,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
@@ -39,7 +40,7 @@ import java.io.Serializable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-// Bug in hibernate prevents overrding fkcontraints
+// Bug in hibernate prevents overriding fkcontraints
 @AssociationOverride(name = "order", joinColumns =
     @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
         foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_TU"))
@@ -49,18 +50,18 @@ public class ReceivingTransportUnitOrderPosition extends AbstractReceivingOrderP
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */
     @Column(name = "C_TRANSPORT_UNIT_BK")
-    @NotNull(groups = ValidationGroups.CreateExpectedTUReceipt.class)
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String transportUnitBK;
 
     /** The name of the {@code TransportUnitType} the expected {@code TransportUnit} is of. */
     @Column(name = "C_TRANSPORT_UNIT_TYPE_NAME")
-    @NotNull(groups = ValidationGroups.CreateExpectedTUReceipt.class)
+    @NotBlank(groups = ValidationGroups.CreateExpectedTUReceipt.class)
     private String transportUnitTypeName;
 
     /** Used by the JPA provider. */
     protected ReceivingTransportUnitOrderPosition() {}
 
-    public ReceivingTransportUnitOrderPosition(Integer posNo, String transportUnitBK, String transportUnitTypeName) {
+    public ReceivingTransportUnitOrderPosition(@NotNull Integer posNo, @NotBlank String transportUnitBK, @NotBlank String transportUnitTypeName) {
         super(posNo);
         this.transportUnitBK = transportUnitBK;
         this.transportUnitTypeName = transportUnitTypeName;

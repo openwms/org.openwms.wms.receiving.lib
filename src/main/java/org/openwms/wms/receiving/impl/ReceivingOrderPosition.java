@@ -53,7 +53,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-// Bug in hibernate prevents overrding fkcontraints
+// Bug in hibernate prevents overriding fkcontraints
 @AssociationOverride(name = "order", joinColumns =
     @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_PROD")))
 @Table(name = "WMS_REC_ORDER_POS_PRODUCT",

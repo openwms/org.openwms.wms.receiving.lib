@@ -64,7 +64,6 @@ public interface ReceivingMapper {
         }
     }
 
-
     @Mapping(target = "orderState", source = "state")
     @Mapping(target = "positions", source = "positions")
     ReceivingOrder convertVO(ReceivingOrderVO vo, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
