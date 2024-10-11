@@ -46,6 +46,7 @@ owms:
     protocol: http
   receiving:
     create-tu-on-expected-tu-receipt: true
+    create-tu-strictly: true
     initial-location-id: EXTERN
     blind-receipts:
       allowed: true

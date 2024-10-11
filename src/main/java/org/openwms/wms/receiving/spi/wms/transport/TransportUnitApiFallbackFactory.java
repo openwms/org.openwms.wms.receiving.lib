@@ -21,6 +21,7 @@ import org.ameba.exception.ServiceLayerException;
 import org.ameba.i18n.Translator;
 import org.openwms.core.SpringProfiles;
 import org.openwms.wms.receiving.spi.common.transport.CommonTransportUnitApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -34,10 +35,13 @@ import org.springframework.stereotype.Component;
 @Component
 class TransportUnitApiFallbackFactory implements FallbackFactory<TransportUnitApi> {
 
+    private final Boolean strictlyCreateTU;
     private final CommonTransportUnitApi commonTransportUnitApi;
     private final Translator translator;
 
-    TransportUnitApiFallbackFactory(CommonTransportUnitApi commonTransportUnitApi, Translator translator) {
+    TransportUnitApiFallbackFactory(@Value("${owms.receiving.create-tu-strictly}") Boolean strictlyCreateTU,
+                                    CommonTransportUnitApi commonTransportUnitApi, Translator translator) {
+        this.strictlyCreateTU = strictlyCreateTU;
         this.commonTransportUnitApi = commonTransportUnitApi;
         this.translator = translator;
     }
@@ -47,11 +51,10 @@ class TransportUnitApiFallbackFactory implements FallbackFactory<TransportUnitAp
      */
     @Override
     public TransportUnitApi create(Throwable cause) {
-        cause.printStackTrace();
         if (cause instanceof FeignException fe) {
             if (fe.status() == 404) {
                 // If TU not exists in Inventory Service...
-                return new TransportUnitApiFallback(commonTransportUnitApi, translator);
+                return new TransportUnitApiFallback(strictlyCreateTU, commonTransportUnitApi, translator);
             }
             if (fe.status() > 400) {
                 if (fe.status() == 409) {
@@ -62,6 +65,6 @@ class TransportUnitApiFallbackFactory implements FallbackFactory<TransportUnitAp
             }
         }
         // default hand over to fallback
-        return new TransportUnitApiFallback(commonTransportUnitApi, translator);
+        return new TransportUnitApiFallback(strictlyCreateTU, commonTransportUnitApi, translator);
     }
 }

@@ -20,6 +20,7 @@ import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.spi.common.transport.CommonTransportUnitApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import static org.openwms.wms.receiving.ReceivingMessages.LOCATION_ID_NOT_GIVEN;
 
@@ -31,10 +32,12 @@ import static org.openwms.wms.receiving.ReceivingMessages.LOCATION_ID_NOT_GIVEN;
 class TransportUnitApiFallback implements TransportUnitApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransportUnitApiFallback.class);
+    private final Boolean strictlyCreateTU;
     private final CommonTransportUnitApi commonTransportUnitApi;
     private final Translator translator;
 
-    TransportUnitApiFallback(CommonTransportUnitApi commonTransportUnitApi, Translator translator) {
+    TransportUnitApiFallback(@Value("${owms.receiving.create-tu-strictly}") Boolean strictlyCreateTU, CommonTransportUnitApi commonTransportUnitApi, Translator translator) {
+        this.strictlyCreateTU = strictlyCreateTU;
         this.commonTransportUnitApi = commonTransportUnitApi;
         this.translator = translator;
     }
@@ -61,6 +64,6 @@ class TransportUnitApiFallback implements TransportUnitApi {
         if (!tu.getActualLocation().hasLocationId()) {
             throw new IllegalArgumentException(translator.translate(LOCATION_ID_NOT_GIVEN));
         }
-        commonTransportUnitApi.createTU(tu.getTransportUnitBK(), tu.getActualLocation().getLocationId(), tu.getTransportUnitType(), true);
+        commonTransportUnitApi.createTU(tu.getTransportUnitBK(), tu.getActualLocation().getLocationId(), tu.getTransportUnitType(), strictlyCreateTU);
     }
 }

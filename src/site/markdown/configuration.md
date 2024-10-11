@@ -22,5 +22,6 @@ OpenWMS.org defines additional configuration parameters beside the standard Spri
 |owms.events.common.tu.queue-name|string|receiving-tu-queue|Queue to receive TransportUnit events|
 |owms.receiving.serialization|string|json|The AMQP message exchange format, either `json` or `binary`|
 |owms.receiving.create-tu-on-expected-tu-receipt|boolean|true|A TransportUnit with the expected BK is created when captured|
+|owms.receiving.create-tu-strictly|boolean|true|If the TransportUnit to create already exists, an exception is thrown|
 |owms.receiving.initial-location-id|string|EXTERN|The ERP code of the Location where the expected TransportUnit is created on|
 |owms.receiving.blind-receipts.allowed|boolean|true|Whether blind receipts are allowed|

@@ -28,7 +28,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.Valid;
@@ -163,8 +162,8 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
     }
 
     /*~ --------------- Lifecycle ---------------- */
-    @PrePersist
-    protected void prePersist() {
+    @Override
+    protected void onEntityPersist() {
         this.orderState = CREATED;
     }
 
@@ -177,6 +176,11 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.orderId = orderId;
     }
 
+    /**
+     * Whether the order has an {@code orderId} set or not.
+     *
+     * @return true is assigned
+     */
     public boolean hasOrderId() {
         return this.orderId != null && !this.orderId.isEmpty();
     }
@@ -189,6 +193,12 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.orderState = orderState;
     }
 
+    /**
+     * Changes the state of the order and publishes an event indicating the state change.
+     *
+     * @param publisher The {@link ApplicationEventPublisher} used to publish the {@link ReceivingOrderStateChangeEvent}.
+     * @param orderState The new {@link OrderState} to set for the order.
+     */
     protected void setOrderState(ApplicationEventPublisher publisher, OrderState orderState) {
         publisher.publishEvent(new ReceivingOrderStateChangeEvent(this, orderState));
         if (LOGGER.isInfoEnabled()) {
@@ -197,6 +207,15 @@ public class ReceivingOrder extends ApplicationEntity implements Serializable {
         this.orderState = orderState;
     }
 
+    /**
+     * Cancel the current order. This method sets the order state to CANCELED under specific conditions
+     * and updates the state of order positions.
+     *
+     * @param publisher The ApplicationEventPublisher used to publish events related to state changes.
+     * @param translator The Translator used to retrieve error messages.
+     * @throws AlreadyCancelledException If the order has already been canceled.
+     * @throws CancellationDeniedException If the order state does not permit cancellation.
+     */
     public void cancelOrder(ApplicationEventPublisher publisher, Translator translator) {
         if (orderState == CANCELED) {
             throw new AlreadyCancelledException(
