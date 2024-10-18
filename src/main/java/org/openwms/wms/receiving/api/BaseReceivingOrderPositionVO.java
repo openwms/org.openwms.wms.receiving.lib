@@ -17,6 +17,7 @@ package org.openwms.wms.receiving.api;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,10 +26,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.ameba.http.AbstractBase.DATETIME_FORMAT_ZULU;
 
 /**
  * A BaseReceivingOrderPositionVO.
@@ -63,7 +66,11 @@ public class BaseReceivingOrderPositionVO implements Serializable {
     private Map<String, String> details;
     /** Timestamp when the position has been created. */
     @JsonProperty("createDt")
-    private Date createDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATETIME_FORMAT_ZULU) // required
+    private LocalDateTime createDt;
+    /** The name of the warehouses' LocationGroup where the {@code ReceivingOrderPosition} is expected to be received. */
+    @JsonProperty("expectedReceiptWarehouse")
+    private String expectedReceiptWarehouse;
 
     @JsonCreator
     BaseReceivingOrderPositionVO() {}
@@ -132,12 +139,20 @@ public class BaseReceivingOrderPositionVO implements Serializable {
         this.details = details;
     }
 
-    public Date getCreateDt() {
+    public LocalDateTime getCreateDt() {
         return createDt;
     }
 
-    public void setCreateDt(Date createDt) {
+    public void setCreateDt(LocalDateTime createDt) {
         this.createDt = createDt;
+    }
+
+    public String getExpectedReceiptWarehouse() {
+        return expectedReceiptWarehouse;
+    }
+
+    public void setExpectedReceiptWarehouse(String expectedReceiptWarehouse) {
+        this.expectedReceiptWarehouse = expectedReceiptWarehouse;
     }
 
     @Override
@@ -154,8 +169,15 @@ public class BaseReceivingOrderPositionVO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BaseReceivingOrderPositionVO)) return false;
-        BaseReceivingOrderPositionVO that = (BaseReceivingOrderPositionVO) o;
-        return Objects.equals(orderId, that.orderId) && Objects.equals(positionId, that.positionId) && Objects.equals(state, that.state) && Objects.equals(priority, that.priority) && Objects.equals(startMode, that.startMode) && Objects.equals(details, that.details) && Objects.equals(createDt, that.createDt);
+        var that = (BaseReceivingOrderPositionVO) o;
+        return Objects.equals(orderId, that.orderId) &&
+               Objects.equals(positionId, that.positionId) &&
+               Objects.equals(state, that.state) &&
+               Objects.equals(priority, that.priority) &&
+               Objects.equals(startMode, that.startMode) &&
+               Objects.equals(details, that.details) &&
+               Objects.equals(createDt, that.createDt) &&
+               Objects.equals(expectedReceiptWarehouse, that.expectedReceiptWarehouse);
     }
 
     /**
@@ -165,6 +187,6 @@ public class BaseReceivingOrderPositionVO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, positionId, state, priority, startMode, details, createDt);
+        return Objects.hash(orderId, positionId, state, priority, startMode, details, createDt, expectedReceiptWarehouse);
     }
 }
