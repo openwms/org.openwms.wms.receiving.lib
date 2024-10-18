@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A RestServiceFacade.
+ * A RestServiceFacadeImpl.
  *
  * @author Heiko Scherrer
  */

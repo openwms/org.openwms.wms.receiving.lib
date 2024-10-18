@@ -79,6 +79,11 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
     @Column(name = "C_LATEST_DUE")
     private ZonedDateTime latestDueDate;
 
+    /** The name of the warehouses' LocationGroup where the {@code ReceivingOrderPosition} is expected to be received. */
+    @Column(name = "C_EXPECTED_RECEIPT_AT")
+    private String expectedReceiptWarehouse;
+
+    /*~ -------------- Constructors -------------- */
     /** Used by the JPA provider. */
     protected AbstractReceivingOrderPosition() {}
 
@@ -86,6 +91,7 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
         this.posNo = posNo;
     }
 
+    /*~ --------------- Methods ---------------- */
     /**
      * Subclasses may validate themselves.
      *
@@ -95,12 +101,49 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
     public abstract void validateOnCreation(Validator validator, Class<?> clazz);
 
     /**
+     * Change the state of the position and publish a state change event if the new state has a higher ordinal value than the current state.
+     * Additionally, recalculate the order state.
+     *
+     * @param eventPublisher The publisher to broadcast the state change event.
+     * @param positionState The new state to which the position is transitioning.
+     */
+    public void changePositionState(ApplicationEventPublisher eventPublisher, PositionState positionState) {
+        if (this.state.ordinal() < positionState.ordinal()) {
+            eventPublisher.publishEvent(new ReceivingOrderPositionStateChangeEvent(this, positionState));
+            this.state = positionState;
+            this.order.recalculateOrderState(eventPublisher);
+        }
+    }
+
+    /**
+     * Capturing on an ReceivingOrderPosition is allowed if the state is any but not {@link PositionState#CANCELED}.
+     *
+     * @return if allowed
+     */
+    public boolean doesStateAllowCapturing() {
+        return this.state == PositionState.CREATED || this.state == PositionState.PROCESSING
+               || this.state == PositionState.PARTIALLY_COMPLETED || this.state == PositionState.COMPLETED;
+    }
+
+    /**
+     * Returns a string representation of this AbstractReceivingOrderPosition instance, which includes the order ID and position number.
+     *
+     * @return A string containing the order ID (or "n/a" if the order is null) and the position number.
+     */
+    @Override
+    public String toString() {
+        return (order == null ? "n/a" : order.getOrderId()) + "/" + posNo;
+    }
+
+    /*~ --------------- Lifecycle ---------------- */
+    /**
      * Subclasses have the chance for manipulation before creation.
      *
      * @param serviceProvider An instance that provides application services.
      */
     public void preCreate(ServiceProvider serviceProvider) {}
 
+    /*~ --------------- Accessors ---------------- */
     public ReceivingOrder getOrder() {
         return order;
     }
@@ -119,24 +162,6 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
 
     public void setState(PositionState state) {
         this.state = state;
-    }
-
-    public void changePositionState(ApplicationEventPublisher eventPublisher, PositionState positionState) {
-        if (this.state.ordinal() < positionState.ordinal()) {
-            eventPublisher.publishEvent(new ReceivingOrderPositionStateChangeEvent(this, positionState));
-            this.state = positionState;
-            this.order.recalculateOrderState(eventPublisher);
-        }
-    }
-
-    /**
-     * Capturing on an ReceivingOrderPosition is allowed if the state is any but not {@link PositionState#CANCELED}.
-     *
-     * @return if allowed
-     */
-    public boolean doesStateAllowCapturing() {
-        return this.state == PositionState.CREATED || this.state == PositionState.PROCESSING
-                || this.state == PositionState.PARTIALLY_COMPLETED || this.state == PositionState.COMPLETED;
     }
 
     /**
@@ -171,8 +196,15 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
         return latestDueDate;
     }
 
-    @Override
-    public String toString() {
-        return (order == null ? "n/a" : order.getOrderId()) + "/" + posNo;
+    public void setLatestDueDate(ZonedDateTime latestDueDate) {
+        this.latestDueDate = latestDueDate;
+    }
+
+    public String getExpectedReceiptWarehouse() {
+        return expectedReceiptWarehouse;
+    }
+
+    public void setExpectedReceiptWarehouse(String expectedReceiptWarehouse) {
+        this.expectedReceiptWarehouse = expectedReceiptWarehouse;
     }
 }

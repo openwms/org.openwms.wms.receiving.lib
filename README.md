@@ -1,6 +1,6 @@
 # Purpose
 The purpose of the Receiving service is to handle goods receipts. It offers an API to create incoming orders, so called Receiving Orders
-(expected receipts). This kind of receipts are announced before the actual goods are received. Blind receipts are supported as well. Those
+(expected receipts). These kind of receipts are announced before the actual goods are received. Blind receipts are supported as well. Those
 don't require any announcements and allow to capture goods that are not expected to receive. 
 
 # Resources

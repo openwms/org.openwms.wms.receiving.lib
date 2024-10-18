@@ -21,21 +21,22 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.i18n.Translator;
 import org.ameba.system.ValidationUtil;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.PositionState;
 import org.openwms.wms.receiving.api.QuantityCaptureRequestVO;
-import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.spi.wms.inventory.AsyncPackagingUnitApi;
 import org.openwms.wms.receiving.spi.wms.inventory.CreatePackagingUnitCommand;
 import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
+import org.openwms.wms.receiving.spi.wms.receiving.CapturingApproval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -48,14 +49,17 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_UNEXPECTED_ALLOW
  * @author Heiko Scherrer
  */
 @TxService
-class QuantityCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureRequestVO> {
+class QuantityCaptureRequestCapturer extends AbstractCapturer<QuantityCaptureRequestVO> implements ReceivingOrderCapturer<QuantityCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureRequestCapturer.class);
     private final AsyncPackagingUnitApi asyncPackagingUnitApi;
 
-    QuantityCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            ApplicationEventPublisher publisher, Validator validator, AsyncPackagingUnitApi asyncPackagingUnitApi) {
-        super(publisher, translator, validator, repository, productService);
+    QuantityCaptureRequestCapturer(ApplicationEventPublisher publisher, Translator translator, Validator validator,
+                                   ReceivingOrderRepository repository,
+                                   @Autowired(required = false) List<CapturingApproval<QuantityCaptureRequestVO>> capturingApprovals,
+                                   ProductService productService,
+                                   AsyncPackagingUnitApi asyncPackagingUnitApi) {
+        super(publisher, translator, validator, repository, capturingApprovals, productService);
         this.asyncPackagingUnitApi = asyncPackagingUnitApi;
     }
 
@@ -65,25 +69,25 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
     @Override
     @Measured
     public Optional<ReceivingOrder> capture(String pKey, @NotNull QuantityCaptureRequestVO request) {
+        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
         if (pKey != null) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Capturing an expected receipt with pKey [{}], request [{}]", pKey, request);
             }
-            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
                     pKey,
-                    request.getQuantityReceived(),
-                    getProduct(request.getProduct().getSku()),
+                    request,
                     v -> createPackagingUnitsForDemand(request));
         }
-        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
         createPackagingUnitsForDemand(request);
         return Optional.empty();
     }
 
-    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, Measurable quantityReceived, Product existingProduct,
+    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, QuantityCaptureRequestVO request,
             Consumer<Void> func) {
         var receivingOrder = getOrder(pKey);
+        receivingOrder.getPositions().forEach(p -> capturingApprovals.forEach(ca -> ca.approve(p, request)));
+        var existingProduct = getProduct(request.getProduct().getSku());
         var openPositions = receivingOrder.getPositions().stream()
                 .filter(AbstractReceivingOrderPosition::doesStateAllowCapturing)
                 .filter(ReceivingOrderPosition.class::isInstance)
@@ -97,8 +101,8 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
         }
 
         var openPosition = openPositions.stream()
-                .filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
-                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .filter(p -> p.getQuantityExpected().getUnitType().equals(request.getQuantityReceived().getUnitType()))
+                .filter(p -> p.getQuantityExpected().compareTo(request.getQuantityReceived()) >= 0)
                 .findFirst();
         ReceivingOrderPosition position;
         if (openPosition.isEmpty()) {
@@ -119,7 +123,7 @@ class QuantityCaptureRequestCapturer extends AbstractCapturer implements Receivi
 
         func.accept(null);
 
-        position.addQuantityReceived(quantityReceived);
+        position.addQuantityReceived(request.getQuantityReceived());
         LOGGER.debug("New quantity of position [{}] is set to [{}]", position.getPosNo(), position.getQuantityReceived());
         if (position.getQuantityReceived().compareTo(position.getQuantityExpected()) >= 0) {
             position.changePositionState(publisher, PositionState.COMPLETED);

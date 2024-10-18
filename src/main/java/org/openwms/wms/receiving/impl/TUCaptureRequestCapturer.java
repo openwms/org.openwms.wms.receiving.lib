@@ -28,12 +28,15 @@ import org.openwms.wms.receiving.api.TUCaptureRequestVO;
 import org.openwms.wms.receiving.inventory.ProductService;
 import org.openwms.wms.receiving.spi.wms.location.LocationVO;
 import org.openwms.wms.receiving.spi.wms.location.SyncLocationApi;
+import org.openwms.wms.receiving.spi.wms.receiving.CapturingApproval;
 import org.openwms.wms.receiving.spi.wms.transport.SyncTransportUnitApi;
 import org.openwms.wms.receiving.spi.wms.transport.TransportUnitVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS_TU;
@@ -45,15 +48,18 @@ import static org.openwms.wms.receiving.ReceivingMessages.TU_TYPE_NOT_GIVEN;
  * @author Heiko Scherrer
  */
 @TxService
-class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<TUCaptureRequestVO> {
+class TUCaptureRequestCapturer extends AbstractCapturer<TUCaptureRequestVO> implements ReceivingOrderCapturer<TUCaptureRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TUCaptureRequestCapturer.class);
     private final SyncTransportUnitApi transportUnitApi;
     private final SyncLocationApi locationApi;
 
-    TUCaptureRequestCapturer(Translator translator, ReceivingOrderRepository repository, ProductService productService,
-            Validator validator, ApplicationEventPublisher publisher, SyncTransportUnitApi transportUnitApi, SyncLocationApi locationApi) {
-        super(publisher, translator, validator, repository, productService);
+    TUCaptureRequestCapturer(ApplicationEventPublisher publisher, Translator translator, Validator validator,
+                             ReceivingOrderRepository repository,
+                             @Autowired(required = false) List<CapturingApproval<TUCaptureRequestVO>> capturingApprovals,
+                             ProductService productService, SyncTransportUnitApi transportUnitApi,
+                             SyncLocationApi locationApi) {
+        super(publisher, translator, validator, repository, capturingApprovals, productService);
         this.transportUnitApi = transportUnitApi;
         this.locationApi = locationApi;
     }
@@ -84,6 +90,7 @@ class TUCaptureRequestCapturer extends AbstractCapturer implements ReceivingOrde
 
     private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, TUCaptureRequestVO request) {
         var receivingOrder = getOrder(pKey);
+        receivingOrder.getPositions().forEach(p -> capturingApprovals.forEach(ca -> ca.approve(p, request)));
         final var transportUnitBK = request.getTransportUnit().getTransportUnitId();
         final var actualLocationErpCode = request.getActualLocation().getErpCode();
         var openPosition = receivingOrder.getPositions().stream()

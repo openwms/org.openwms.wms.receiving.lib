@@ -22,7 +22,6 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
 import org.ameba.system.ValidationUtil;
-import org.openwms.core.units.api.Measurable;
 import org.openwms.wms.receiving.ValidationGroups;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.LocationVO;
@@ -34,10 +33,13 @@ import org.openwms.wms.receiving.spi.wms.inventory.PackagingUnitVO;
 import org.openwms.wms.receiving.spi.wms.inventory.ProductVO;
 import org.openwms.wms.receiving.spi.wms.inventory.SyncPackagingUnitApi;
 import org.openwms.wms.receiving.spi.wms.inventory.SyncProductApi;
+import org.openwms.wms.receiving.spi.wms.receiving.CapturingApproval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -51,16 +53,18 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
  * @author Heiko Scherrer
  */
 @TxService
-class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
+class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer<QuantityCaptureOnLocationRequestVO> implements ReceivingOrderCapturer<QuantityCaptureOnLocationRequestVO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityCaptureOnLocationRequestCapturer.class);
     private final SyncPackagingUnitApi packagingUnitApi;
     private final SyncProductApi productApi;
 
     QuantityCaptureOnLocationRequestCapturer(ApplicationEventPublisher publisher, Translator translator,
-            ReceivingOrderRepository repository, ProductService productService,
-            Validator validator, SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
-        super(publisher, translator, validator, repository, productService);
+                                             ReceivingOrderRepository repository, ProductService productService,
+                                             Validator validator,
+                                             @Autowired(required = false) List<CapturingApproval<QuantityCaptureOnLocationRequestVO>> capturingApprovals,
+                                             SyncPackagingUnitApi packagingUnitApi, SyncProductApi productApi) {
+        super(publisher, translator, validator, repository, capturingApprovals, productService);
         this.packagingUnitApi = packagingUnitApi;
         this.productApi = productApi;
     }
@@ -71,18 +75,15 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
     @Measured
     @Override
     public Optional<ReceivingOrder> capture(String pKey, @NotNull QuantityCaptureOnLocationRequestVO request) {
-        var product = getProduct(request);
+        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
         if (pKey != null) {
-            ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
             return handleExpectedReceipt(
                     pKey,
-                    request.getQuantityReceived(),
-                    product,
-                    v -> createPackagingUnitsForDemand(request, product)
+                    request,
+                    v -> createPackagingUnitsForDemand(request)
             );
         }
-        ValidationUtil.validate(validator, request, ValidationGroups.CreateQuantityReceipt.class);
-        createPackagingUnitsForDemand(request, product);
+        createPackagingUnitsForDemand(request);
         return Optional.empty();
     }
 
@@ -98,7 +99,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
                 request.getProduct().getSku());
     }
 
-    private void createPackagingUnitsForDemand(QuantityCaptureOnLocationRequestVO request, Product product) {
+    private void createPackagingUnitsForDemand(QuantityCaptureOnLocationRequestVO request) {
         final var erpCode = request.getActualLocation().getErpCode();
         final var quantityReceived = request.getQuantityReceived();
         // multi packs
@@ -109,7 +110,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         pu.setDetails(request.getDetails());
         pu.setSerialNumber(request.getSerialNumber());
         pu.setLotId(request.getLotId());
-        pu.setProduct(ProductVO.newBuilder().sku(product.getSku()).build());
+        pu.setProduct(ProductVO.newBuilder().sku(request.getProduct().getSku()).build());
         pu.setExpiresAt(request.getExpiresAt());
         pu.setProductionDate(request.getProductionDate());
 
@@ -119,9 +120,10 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
         packagingUnitApi.createOnLocation(pu);
     }
 
-    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, Measurable quantityReceived, Product existingProduct,
-            Consumer<Void> func) {
+    private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, QuantityCaptureOnLocationRequestVO request, Consumer<Void> func) {
         var receivingOrder = getOrder(pKey);
+        receivingOrder.getPositions().forEach(p -> capturingApprovals.forEach(ca -> ca.approve(p, request)));
+        var existingProduct = getProduct(request);
         var openPositions = receivingOrder.getPositions().stream()
                 .filter(AbstractReceivingOrderPosition::doesStateAllowCapturing)
                 .filter(ReceivingOrderPosition.class::isInstance)
@@ -137,7 +139,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
         var openPosition = openPositions.stream()
                 //.filter(p -> p.getQuantityExpected().getUnitType().equals(quantityReceived.getUnitType()))
-                .filter(p -> p.getQuantityExpected().compareTo(quantityReceived) >= 0)
+                .filter(p -> p.getQuantityExpected().compareTo(request.getQuantityReceived()) >= 0)
                 .findFirst();
 
         if (openPosition.isEmpty()) {
@@ -147,7 +149,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer implemen
 
         func.accept(null);
 
-        openPosition.get().addQuantityReceived(quantityReceived);
+        openPosition.get().addQuantityReceived(request.getQuantityReceived());
         if (openPosition.get().getQuantityReceived().compareTo(openPosition.get().getQuantityExpected()) >= 0) {
             openPosition.get().changePositionState(publisher, PositionState.COMPLETED);
         } else {

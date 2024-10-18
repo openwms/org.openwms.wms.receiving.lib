@@ -87,6 +87,7 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
 
         orderVO.getPositions().clear();
         var sku001 = new ReceivingOrderPositionVO(1, Piece.of(1), new ProductVO(PRODUCT1_SKU));
+        sku001.setExpectedReceiptWarehouse("WHSE1");
         sku001.getDetails().put("p1", "v1");
         orderVO.getPositions().add(sku001);
         mockMvc
@@ -104,7 +105,8 @@ class ReceivingOrderCreatorDocumentation extends AbstractTestBase {
                                 fieldWithPath("positions[]").description("An array of positions, must not be empty"),
                                 fieldWithPath("positions[].@class").description("The type of the ReceivingOrderPosition"),
                                 fieldWithPath("positions[].positionId").description("Unique identifier of the ReceivingOrderPosition within the ReceivingOrder"),
-                                fieldWithPath("positions[].priority").description("The current priority of the ReceivingOrder the position belongs to"),
+                                fieldWithPath("positions[].priority").optional().description("(Optional) The current priority of the ReceivingOrder the position belongs to"),
+                                fieldWithPath("positions[].expectedReceiptWarehouse").optional().description("(Optional) The name of the warehouses' LocationGroup where the ReceivingOrderPosition is expected to be received"),
                                 fieldWithPath("positions[].quantityExpected").description("The expected quantity of the Product"),
                                 fieldWithPath("positions[].quantityExpected.@class").description("Must be one of the static values to identify the type of UOM"),
                                 fieldWithPath("positions[].quantityExpected.unitType").description("Must be one of the static values to identify the concrete UOM"),

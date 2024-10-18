@@ -20,9 +20,13 @@ import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.NotFoundException;
 import org.ameba.i18n.Translator;
 import org.openwms.wms.receiving.ReceivingMessages;
+import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.inventory.Product;
 import org.openwms.wms.receiving.inventory.ProductService;
+import org.openwms.wms.receiving.spi.wms.receiving.CapturingApproval;
 import org.springframework.context.ApplicationEventPublisher;
+
+import java.util.List;
 
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
 
@@ -31,20 +35,23 @@ import static org.openwms.wms.receiving.ReceivingMessages.RO_NOT_FOUND_BY_PKEY;
  *
  * @author Heiko Scherrer
  */
-public abstract class AbstractCapturer {
+public abstract class AbstractCapturer<T extends CaptureRequestVO> {
 
     protected final ApplicationEventPublisher publisher;
     protected final Translator translator;
     protected final Validator validator;
-    protected final ReceivingOrderRepository repository;
+    final ReceivingOrderRepository repository;
+    protected final List<CapturingApproval<T>> capturingApprovals;
     protected final ProductService productService;
 
-    AbstractCapturer(ApplicationEventPublisher publisher, Translator translator, Validator validator, ReceivingOrderRepository repository,
-            ProductService productService) {
+    AbstractCapturer(ApplicationEventPublisher publisher, Translator translator, Validator validator,
+                     ReceivingOrderRepository repository, List<CapturingApproval<T>> capturingApprovals,
+                     ProductService productService) {
         this.publisher = publisher;
         this.translator = translator;
         this.validator = validator;
         this.repository = repository;
+        this.capturingApprovals = capturingApprovals == null ? List.of() : capturingApprovals;
         this.productService = productService;
     }
 
@@ -57,7 +64,7 @@ public abstract class AbstractCapturer {
                 ));
     }
 
-    protected ReceivingOrder getOrder(@NotBlank String pKey) {
+    ReceivingOrder getOrder(@NotBlank String pKey) {
         return repository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(
                 translator,
                 RO_NOT_FOUND_BY_PKEY,

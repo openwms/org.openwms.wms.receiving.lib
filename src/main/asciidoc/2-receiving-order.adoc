@@ -25,7 +25,6 @@ include::{generated}/order-create/http-response.adoc[]
 
 In case the client request did not match the server expectations because of invalid or missing fields in the request body, the server
 responds with:
-
 include::{generated}/order-create-400/http-response.adoc[]
 
 [[resources-receiving-order-find]]
@@ -92,9 +91,13 @@ than previously announced in a `ReceivingOrderPosition`. Multiple types of captu
 - A `Product` is captured on a `Location`
 - A `TransportUnit` without `Product` information is captured on a `Location`
 
-The capturing process happens at the Goods In area of the warehouse, where material arrives and is identified (captured). In case of
-expected receipts, the identified items or `TransportUnits` are assigned to `ReceivingOrderPositions`.
+The capturing process happens at the Goods In area of the warehouse, where material arrives and is identified (captured or recorded). In
+case of expected receipts, the identified items or `TransportUnits` are assigned to `ReceivingOrderPositions`.
 
+The default capturing implementation can be configured with custom capturing approval rules that validate each `ReceivingOrderPosition`
+before capturing to prohibit the process. An example can be found in the section <<Expected Receipt: Capture an expected Product on a Location>>
+
+[[resources-receiving-order-capture-p-in-lu]]
 ==== Expected Receipt: Capture a Product in a LoadUnit
 The received `Product` is identified and assigned to an existing `ReceivingOrderPosition`. As part of the capturing process the items are
 basically placed in a `LoadUnit` on top of a `TransportUnit`.
@@ -116,6 +119,7 @@ include::{generated}/order-capture-to-many/http-response.adoc[]
 previously announced in the `ReceivingOrderPosition`. If `Overbooking` is forbidden, the server raises an exception. Overbooking can be
 configured per `Product`.
 
+[[resources-receiving-order-capture-p-on-loc]]
 ==== Expected Receipt: Capture an expected Product on a Location
 The received `Product` is identified and assigned to an existing `ReceivingOrderPosition`. As part of the capturing process the items are
 placed on a `Location` directly without any carrier like a `LoadUnit` or a `TransportUnit`.
@@ -133,6 +137,11 @@ If no open `ReceivingOrderPosition` exists in the `ReceivingOrder` or the `Produ
 server prohibits the goods receipt and responds with an error:
 include::{generated}/order-capture-loc-to-many/http-response.adoc[]
 
+If a custom `CapturingApproval` is registered that validates the `ReceivingOrderPosition` and prohibits the capturing process, the server
+responds with:
+include::{generated}/order-capture-loc-403/http-response.adoc[]
+
+[[resources-receiving-order-capture-tu-on-loc]]
 ==== Expected Receipt: Capture an expected TransportUnit on a Location
 It may happen that an external supplier ships back existing `TransportUnits` to the warehouse. In this case, the announced `ReceivingOrder`
 contains `ReceivingOrderPositions` that point to the expected `TransportUnit`.
@@ -151,7 +160,8 @@ If no open `ReceivingOrderPosition` with the captured `TransportUnit` in the `Re
 the `TransportUnit` and responds with an error:
 include::{generated}/order-capture-tu-unexpected/http-response.adoc[]
 
-==== Blind Receipt: Capture a Product on a LoadUnit
+[[resources-receiving-order-captureb-p-in-lu]]
+==== Blind Receipt: Capture a Product in a LoadUnit
 Items of a `Product` are received, without any ASN (Advanced Shipping Notice). Therefor this receipt cannot be captured and validated
 against a `ReceivingOrder`. The received items are created and put into a `LoadUnit` on top of a `TransportUnit`.
 
@@ -162,6 +172,7 @@ include::{generated}/br-lu-capture/request-fields.adoc[]
 If successful the server responds with:
 include::{generated}/br-lu-capture/http-response.adoc[]
 
+[[resources-receiving-order-captureb-p-on-loc]]
 ==== Blind Receipt: Capture a Product on a Location
 Items of a `Product` are received, without any ASN (Advanced Shipping Notice). Therefor this receipt cannot be captured and validated
 against a `ReceivingOrder`. The received items are placed on a `Location` directly without any carrier like a `LoadUnit` or a `TransportUnit`.
@@ -174,6 +185,7 @@ include::{generated}/br-loc-capture/request-fields.adoc[]
 If successful the server responds with:
 include::{generated}/br-loc-capture/http-response.adoc[]
 
+[[resources-receiving-order-captureb-tu-on-loc]]
 ==== Blind Receipt: Capture an unexpected TransportUnit on a Location
 It may happen that an external supplier ships back empty `TransportUnits` to the warehouse without any ASN (Advanced Shipping Notice)
 information. To capture and create those `TransportUnits` in the system the identifier, type and current `Location` of the `TransportUnit`

@@ -16,14 +16,21 @@
 package org.openwms.wms.receiving.rest;
 
 import jakarta.validation.Valid;
+import org.ameba.LoggingCategories;
 import org.ameba.http.MeasuredRestController;
+import org.ameba.http.Response;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.wms.receiving.api.CaptureRequestVO;
 import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.api.ReceivingOrderVO;
+import org.openwms.wms.receiving.spi.wms.receiving.NotApprovedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,11 +55,26 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class ReceivingController extends AbstractWebController {
 
+    private static final Logger EXC_LOGGER = LoggerFactory.getLogger(LoggingCategories.PRESENTATION_LAYER_EXCEPTION);
     private final RestServiceFacadeImpl service;
 
     ReceivingController(RestServiceFacadeImpl service) {
         this.service = service;
     }
+
+    @ExceptionHandler(NotApprovedException.class)
+    protected ResponseEntity<Response<?>> handleNotApprovedException(NotApprovedException rnae) {
+        EXC_LOGGER.error("[P] Presentation Layer Exception: {}", rnae.getLocalizedMessage(), rnae);
+        return new ResponseEntity<>(Response.newBuilder()
+                .withMessage(rnae.getMessage())
+                .withMessageKey(rnae.getMessageKey())
+                .withObj(rnae.getData())
+                .withHttpStatus(String.valueOf(HttpStatus.FORBIDDEN.value()))
+                .build(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
 
     @GetMapping("/v1/receiving-orders/index")
     public ResponseEntity<Index> index() {

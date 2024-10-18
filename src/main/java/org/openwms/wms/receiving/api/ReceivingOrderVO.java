@@ -165,7 +165,7 @@ public class ReceivingOrderVO extends AbstractBase<ReceivingOrderVO> implements 
     }
 
     /**
-     * Get all values, without positions, as a ordered list.
+     * Get all values, without positions, as an ordered list.
      *
      * @return All values as LinkedList implementation
      */
