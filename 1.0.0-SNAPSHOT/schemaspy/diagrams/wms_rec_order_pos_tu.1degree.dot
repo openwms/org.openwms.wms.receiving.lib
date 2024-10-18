@@ -60,6 +60,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_pk" COLSPAN="2" BGCOLOR="#bed1b8" ALIGN="LEFT">c_pk</TD><TD PORT="c_pk.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="c_updated" COLSPAN="2" ALIGN="LEFT">c_updated</TD><TD PORT="c_updated.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
       <TR><TD PORT="c_created_by" COLSPAN="2" ALIGN="LEFT">c_created_by</TD><TD PORT="c_created_by.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="c_expected_receipt_at" COLSPAN="2" ALIGN="LEFT">c_expected_receipt_at</TD><TD PORT="c_expected_receipt_at.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD><TD PORT="c_order_id.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_state" COLSPAN="2" ALIGN="LEFT">c_state</TD><TD PORT="c_state.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_transport_unit_bk" COLSPAN="2" ALIGN="LEFT">c_transport_unit_bk</TD><TD PORT="c_transport_unit_bk.type" ALIGN="LEFT">varchar[255]</TD></TR>

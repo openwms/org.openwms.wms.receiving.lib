@@ -75,6 +75,7 @@ digraph "twoDegreesRelationshipsDiagram" {
       <TR><TD PORT="c_qty_expected" COLSPAN="2" ALIGN="LEFT">c_qty_expected</TD><TD PORT="c_qty_expected.type" ALIGN="LEFT">varchar[16]</TD></TR>
       <TR><TD PORT="c_qty_received" COLSPAN="2" ALIGN="LEFT">c_qty_received</TD><TD PORT="c_qty_received.type" ALIGN="LEFT">varchar[16]</TD></TR>
       <TR><TD PORT="c_created_by" COLSPAN="2" ALIGN="LEFT">c_created_by</TD><TD PORT="c_created_by.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="c_expected_receipt_at" COLSPAN="2" ALIGN="LEFT">c_expected_receipt_at</TD><TD PORT="c_expected_receipt_at.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD><TD PORT="c_order_id.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_expected_type" COLSPAN="2" ALIGN="LEFT">c_qty_expected_type</TD><TD PORT="c_qty_expected_type.type" ALIGN="LEFT">varchar[255]</TD></TR>
       <TR><TD PORT="c_qty_received_type" COLSPAN="2" ALIGN="LEFT">c_qty_received_type</TD><TD PORT="c_qty_received_type.type" ALIGN="LEFT">varchar[255]</TD></TR>

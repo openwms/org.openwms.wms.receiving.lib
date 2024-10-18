@@ -23,6 +23,7 @@ org.openwms.wms.receiving.spi.common.transport
 org.openwms.wms.receiving.spi.wms
 org.openwms.wms.receiving.spi.wms.inventory
 org.openwms.wms.receiving.spi.wms.location
+org.openwms.wms.receiving.spi.wms.receiving
 org.openwms.wms.receiving.spi.wms.transport
 org.openwms.wms.receiving.transport
 org.openwms.wms.receiving.transport.event

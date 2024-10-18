@@ -76,6 +76,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_qty_expected" COLSPAN="3" ALIGN="LEFT">c_qty_expected</TD></TR>
       <TR><TD PORT="c_qty_received" COLSPAN="3" ALIGN="LEFT">c_qty_received</TD></TR>
       <TR><TD PORT="c_created_by" COLSPAN="3" ALIGN="LEFT">c_created_by</TD></TR>
+      <TR><TD PORT="c_expected_receipt_at" COLSPAN="3" ALIGN="LEFT">c_expected_receipt_at</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD></TR>
       <TR><TD PORT="c_qty_expected_type" COLSPAN="3" ALIGN="LEFT">c_qty_expected_type</TD></TR>
       <TR><TD PORT="c_qty_received_type" COLSPAN="3" ALIGN="LEFT">c_qty_received_type</TD></TR>
@@ -98,6 +99,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="c_pk" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">c_pk</TD></TR>
       <TR><TD PORT="c_updated" COLSPAN="3" ALIGN="LEFT">c_updated</TD></TR>
       <TR><TD PORT="c_created_by" COLSPAN="3" ALIGN="LEFT">c_created_by</TD></TR>
+      <TR><TD PORT="c_expected_receipt_at" COLSPAN="3" ALIGN="LEFT">c_expected_receipt_at</TD></TR>
       <TR><TD PORT="c_order_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_order_id</TD></TR>
       <TR><TD PORT="c_state" COLSPAN="3" ALIGN="LEFT">c_state</TD></TR>
       <TR><TD PORT="c_transport_unit_bk" COLSPAN="3" ALIGN="LEFT">c_transport_unit_bk</TD></TR>
