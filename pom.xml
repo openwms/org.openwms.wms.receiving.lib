@@ -66,6 +66,7 @@
     </ciManagement>
 
     <properties>
+        <ameba-lib.version>4.0</ameba-lib.version>
         <core.units.version>0.7.0-SNAPSHOT</core.units.version>
         <core.version>3.0.0-SNAPSHOT</core.version>
         <guava.version>32.0.0-jre</guava.version>
