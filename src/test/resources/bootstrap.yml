@@ -224,7 +224,6 @@ spring:
         hbm2ddl:
           auto: create
           import_files: import-TEST.sql
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         temp:
           use_jdbc_metadata_defaults: false
         default_schema: public
