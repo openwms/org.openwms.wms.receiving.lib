@@ -44,6 +44,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static java.util.Arrays.asList;
 import static org.openwms.wms.receiving.ReceivingMessages.PRODUCT_NOT_FOUND;
 import static org.openwms.wms.receiving.ReceivingMessages.RO_NO_OPEN_POSITIONS;
 
@@ -117,7 +118,7 @@ class QuantityCaptureOnLocationRequestCapturer extends AbstractCapturer<Quantity
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Create new PackagingUnit [{}] on Location [{}]", pu, erpCode);
         }
-        packagingUnitApi.createOnLocation(pu);
+        packagingUnitApi.createOnLocation(asList(pu));
     }
 
     private Optional<ReceivingOrder> handleExpectedReceipt(String pKey, QuantityCaptureOnLocationRequestVO request, Consumer<Void> func) {

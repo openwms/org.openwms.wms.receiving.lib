@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * A PackagingUnitApiFallback.
  *
@@ -43,8 +45,8 @@ class PackagingUnitApiFallback implements PackagingUnitApi {
      */
     @Override
     @Measured
-    public void createOnLocation(PackagingUnitVO pu) {
-        LOGGER.warn("PackagingUnitApi not available or took too long, placing a command to create PackagingUnit afterwards [{}]", pu);
-        packagingUnitApi.create(new CreatePackagingUnitCommand(pu));
+    public void createOnLocation(List<PackagingUnitVO> pus) {
+        LOGGER.warn("PackagingUnitApi not available or took too long, placing a command to create PackagingUnits afterwards");
+        pus.forEach( pu -> packagingUnitApi.create(new CreatePackagingUnitCommand(pu)));
     }
 }

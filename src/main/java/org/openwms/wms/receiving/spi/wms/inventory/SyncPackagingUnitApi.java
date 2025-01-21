@@ -15,6 +15,8 @@
  */
 package org.openwms.wms.receiving.spi.wms.inventory;
 
+import java.util.List;
+
 /**
  * A SyncPackagingUnitApi.
  *
@@ -23,9 +25,9 @@ package org.openwms.wms.receiving.spi.wms.inventory;
 public interface SyncPackagingUnitApi {
 
     /**
-     * Create a new {@code PackagingUnit} on the {@code Location} given as {@code actualLocation} of the {@code pu}.
+     * Create new {@code PackagingUnit}s on the {@code Location} given as {@code actualLocation} of the {@code pu}.
      *
-     * @param pu The PackagingUnit representation, contains the Location where to create it
+     * @param pus The PackagingUnit representations, contains the Location where to create them
      */
-    void createOnLocation(PackagingUnitVO pu);
+    void createOnLocation(List<PackagingUnitVO> pus);
 }

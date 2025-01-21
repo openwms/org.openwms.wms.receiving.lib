@@ -19,6 +19,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 /**
  * A PackagingUnitApi is the Feign client used internally, not by any business logic directly.
  *
@@ -33,7 +35,5 @@ interface PackagingUnitApi {
      * @param pu The PackagingUnit representation, contains the Location where to create it
      */
     @PostMapping("/v1/packaging-units")
-    void createOnLocation(
-            @RequestBody PackagingUnitVO pu
-    );
+    void createOnLocation(@RequestBody List<PackagingUnitVO> pus);
 }

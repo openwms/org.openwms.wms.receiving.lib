@@ -20,6 +20,8 @@ import org.openwms.core.SpringProfiles;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * A FeignPackagingUnitApiAdapter.
  *
@@ -40,7 +42,7 @@ class FeignPackagingUnitApiAdapter implements SyncPackagingUnitApi {
      */
     @Override
     @Measured
-    public void createOnLocation(PackagingUnitVO pu) {
-        packagingUnitApi.createOnLocation(pu);
+    public void createOnLocation(List<PackagingUnitVO> pus) {
+        packagingUnitApi.createOnLocation(pus);
     }
 }

@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * A NoOpSyncPackagingUnitApiImpl.
  *
@@ -40,7 +42,7 @@ class NoOpSyncPackagingUnitApiImpl implements SyncPackagingUnitApi {
      */
     @Override
     @Measured
-    public void createOnLocation(PackagingUnitVO pu) {
+    public void createOnLocation(List<PackagingUnitVO> pus) {
         LOGGER.error("Not implemented yet");
     }
 }
