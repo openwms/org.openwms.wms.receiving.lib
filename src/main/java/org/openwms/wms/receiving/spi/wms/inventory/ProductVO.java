@@ -45,7 +45,7 @@ public class ProductVO extends AbstractBase<ProductVO> implements Serializable {
     private String sku;
     /** An identifying label of the Product. */
     @JsonProperty("label")
-    @NotBlank(groups = Load.class)
+    //@NotBlank(groups = Load.class) Might be null in inventory
     private String label;
     /** Is it allowed to receive a higher quantity as expected/announced of this Product? */
     @JsonProperty("overbookingAllowed")
