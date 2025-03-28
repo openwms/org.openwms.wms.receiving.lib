@@ -37,7 +37,6 @@
         <core.test.arch.version>1.0.2</core.test.arch.version>
         <core.units.version>0.7.0</core.units.version>
         <core.version>3.0.0</core.version>
-        <joda-time.version>2.10.14</joda-time.version>
         <schemaspy-maven-plugin.version>5.3.1</schemaspy-maven-plugin.version>
         <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
     </properties>
@@ -139,12 +138,6 @@
 
     <dependencyManagement>
         <dependencies>
-			<dependency>
-                <!-- Mismatch between Eureka Client and Envers -->
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>${joda-time.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.units</artifactId>
