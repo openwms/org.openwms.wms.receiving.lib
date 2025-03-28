@@ -88,7 +88,6 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
 
     public PackagingUnitVO() { }
 
-    @ConstructorProperties({"product", "quantity"})
     public PackagingUnitVO(ProductVO product, Measurable quantity) {
         this.product = product;
         this.quantity = quantity;
