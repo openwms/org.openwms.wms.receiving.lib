@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" scan="false">
+<configuration debug="false" scan="false" scanPeriod="30 seconds">
 
     <property name="LOG_TEMP" value="/tmp/owms"/>
-    <property name="MODULE_NAME" value="WMS" />
-    <property name="SERVICE_NAME" value="WMS-Receiving" />
+    <property name="MODULE_NAME" value="TEST"/>
 
     <include resource="logback-appenders.xml" />
     <include resource="logback-loggers.xml" />
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <logger name="com.netflix.discovery" level="OFF"/>
-    <logger name="org.ameba" level="WARN"/>
+    <logger name="org.ameba" level="OFF"/>
+    <logger name="org.hibernate" level="ERROR"/>
     <logger name="org.hibernate.SQL" level="OFF"/>
     <logger name="org.hibernate.type" level="OFF"/>
     <logger name="org.junit" level="OFF"/>
-    <logger name="org.openwms" level="OFF"/>
+    <logger name="org.openwms" level="DEBUG"/> <!-- Coverage reasons -->
     <logger name="org.springframework" level="ERROR"/>
 
-    <logger name="PRESENTATION_LAYER_EXCEPTION" level="OFF" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="SERVICE_LAYER_EXCEPTION" level="OFF" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="CORE_INTEGRATION_MESSAGING" level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+    <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR"/>
+    <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR"/>
+    <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR"/>
+    <logger name="CORE_INTEGRATION_MESSAGING" level="OFF"/>
     <logger name="MEASURED" level="OFF" />
 
-    <root level="OFF">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 
