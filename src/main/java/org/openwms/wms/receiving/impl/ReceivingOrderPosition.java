@@ -15,7 +15,6 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import jakarta.persistence.AssociationOverride;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +40,7 @@ import org.openwms.wms.receiving.inventory.Product;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
@@ -54,10 +54,13 @@ import static jakarta.persistence.CascadeType.PERSIST;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 // Bug in hibernate prevents overriding fkcontraints
-@AssociationOverride(name = "order", joinColumns =
-    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_PROD")))
-@Table(name = "WMS_REC_ORDER_POS_PRODUCT",
-        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
+//@AssociationOverride(name = "order", joinColumns =
+//    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID", foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_PROD")))
+// under observation: seems to be fixed with upgrade to SpringBoot 3.4.1
+@Table(
+        name = "WMS_REC_ORDER_POS_PRODUCT",
+        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS", columnNames = { "C_ORDER_ID", "C_POS_NO" })
+)
 public class ReceivingOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The quantity that is expected to be receipt. */
@@ -105,7 +108,6 @@ public class ReceivingOrderPosition extends AbstractReceivingOrderPosition imple
                         sku
                 ));
     }
-
 
     public ReceivingOrderPosition(Integer posNo, Measurable quantityExpected, Product product) {
         super(posNo);
@@ -166,5 +168,28 @@ public class ReceivingOrderPosition extends AbstractReceivingOrderPosition imple
     @Override
     public void accept(BaseReceivingOrderPositionVisitor visitor) {
         visitor.visit(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ReceivingOrderPosition that = (ReceivingOrderPosition) o;
+        return Objects.equals(quantityExpected, that.quantityExpected) && Objects.equals(quantityReceived, that.quantityReceived) && Objects.equals(product, that.product);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), quantityExpected, quantityReceived, product);
     }
 }

@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.api.events;
+package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.event.RootApplicationEvent;
 import org.openwms.wms.receiving.api.PositionState;
-import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
 
 import java.io.Serializable;
 

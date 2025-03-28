@@ -18,9 +18,9 @@ package org.openwms.wms.receiving.events;
 import org.ameba.annotation.Measured;
 import org.ameba.app.SpringProfiles;
 import org.openwms.wms.receiving.CycleAvoidingMappingContext;
-import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
-import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
 import org.openwms.wms.receiving.impl.AbstractReceivingOrderPosition;
+import org.openwms.wms.receiving.impl.ReceivingOrderPositionStateChangeEvent;
+import org.openwms.wms.receiving.impl.ReceivingOrderStateChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -39,7 +39,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
-public class EventPropagator {
+class EventPropagator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPropagator.class);
     private final AmqpTemplate amqpTemplate;

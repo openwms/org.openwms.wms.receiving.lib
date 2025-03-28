@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
 @Component
-public class InventoryMessageListener {
+class InventoryMessageListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InventoryMessageListener.class);
     private final ApplicationEventPublisher publisher;

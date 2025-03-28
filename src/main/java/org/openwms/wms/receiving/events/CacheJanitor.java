@@ -15,6 +15,7 @@
  */
 package org.openwms.wms.receiving.events;
 
+import org.ameba.annotation.Public;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Heiko Scherrer
  */
+@Public
 @Component
 public class CacheJanitor {
 

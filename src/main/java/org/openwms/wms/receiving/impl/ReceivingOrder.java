@@ -36,7 +36,6 @@ import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.values.Problem;
 import org.openwms.wms.receiving.api.OrderState;
 import org.openwms.wms.receiving.api.PositionState;
-import org.openwms.wms.receiving.api.events.ReceivingOrderStateChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

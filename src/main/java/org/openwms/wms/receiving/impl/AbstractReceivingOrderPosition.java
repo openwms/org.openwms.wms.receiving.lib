@@ -31,13 +31,13 @@ import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import org.ameba.integration.jpa.BaseEntity;
 import org.openwms.wms.receiving.api.PositionState;
-import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A AbstractReceivingOrderPosition.
@@ -142,6 +142,30 @@ public abstract class AbstractReceivingOrderPosition extends BaseEntity implemen
      * @param serviceProvider An instance that provides application services.
      */
     public void preCreate(ServiceProvider serviceProvider) {}
+
+    /*~ --------------- Methods ---------------- */
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields without the details map.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractReceivingOrderPosition that = (AbstractReceivingOrderPosition) o;
+        return Objects.equals(order, that.order) && Objects.equals(posNo, that.posNo) && state == that.state && Objects.equals(latestDueDate, that.latestDueDate) && Objects.equals(expectedReceiptWarehouse, that.expectedReceiptWarehouse);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields without the details map.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(order, posNo, state, latestDueDate, expectedReceiptWarehouse);
+    }
 
     /*~ --------------- Accessors ---------------- */
     public ReceivingOrder getOrder() {

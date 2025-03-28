@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,8 +40,9 @@ import java.util.Optional;
  *
  * @author Heiko Scherrer
  */
+@Validated
 @Service
-public class RestServiceFacadeImpl<T extends CaptureRequestVO> implements RestServiceFacade<T> {
+class RestServiceFacadeImpl<T extends CaptureRequestVO> implements RestServiceFacade<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestServiceFacadeImpl.class);
     private final ReceivingMapper receivingMapper;

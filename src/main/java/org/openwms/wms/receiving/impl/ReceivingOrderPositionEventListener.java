@@ -17,7 +17,6 @@ package org.openwms.wms.receiving.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
-import org.openwms.wms.receiving.api.events.ReceivingOrderPositionStateChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;

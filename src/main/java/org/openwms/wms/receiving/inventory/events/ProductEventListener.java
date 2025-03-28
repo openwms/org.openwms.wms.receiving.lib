@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
  * @author Heiko Scherrer
  */
 @Component
-public class ProductEventListener {
+class ProductEventListener {
 
     private final CacheJanitor cacheJanitor;
     private final ProductSynchronizer productSynchronizer;

@@ -6,33 +6,14 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>26</version>
-        <relativePath />
+        <version>27.2</version>
+        <relativePath/>
     </parent>
 	<artifactId>org.openwms.wms.receiving.lib</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>OpenWMS.org WMS: Receiving Service Library</name>
     <description>Manages good receipts aka ReceivingOrders</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/openwms/${project.artifactId}/issues</url>
-    </issueManagement>
-
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <url>scm:git:ssh://git@github.com:openwms/${project.artifactId}.git</url>
-        </site>
-    </distributionManagement>
-
-    <scm>
-        <url>https://github.com/openwms/${project.artifactId}</url>
-        <connection>scm:git:https://github.com/openwms/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https://github.com/openwms/${project.artifactId}.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
 
     <developers>
         <developer>
@@ -52,26 +33,13 @@
         </developer>
     </developers>
 
-    <ciManagement>
-        <system>GitHub</system>
-        <url>https://github.com/openwms/${project.artifactId}/actions</url>
-        <notifiers>
-            <notifier>
-                <type>mail</type>
-                <configuration>
-                    <address>product@openwms.org</address>
-                </configuration>
-            </notifier>
-        </notifiers>
-    </ciManagement>
-
     <properties>
-        <ameba-lib.version>4.0</ameba-lib.version>
-        <core.units.version>0.7.0-SNAPSHOT</core.units.version>
-        <core.version>3.0.0-SNAPSHOT</core.version>
-        <guava.version>32.0.0-jre</guava.version>
+        <core.test.arch.version>1.0.2</core.test.arch.version>
+        <core.units.version>0.7.0</core.units.version>
+        <core.version>3.0.0</core.version>
         <joda-time.version>2.10.14</joda-time.version>
-        <spring-cloud-dependencies.version>2023.0.1</spring-cloud-dependencies.version>
+        <schemaspy-maven-plugin.version>5.3.1</schemaspy-maven-plugin.version>
+        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -108,7 +76,6 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <enablePreview>false</enablePreview>
                     <compilerArgs>
                         <arg>
                             -Amapstruct.defaultComponentModel=spring
@@ -126,6 +93,7 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
+                    <enablePreview>false</enablePreview>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
@@ -171,12 +139,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-				<!-- Clash in spring-cloud-starter-netflix-eureka-client -->
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
 			<dependency>
                 <!-- Mismatch between Eureka Client and Envers -->
                 <groupId>joda-time</groupId>
@@ -187,6 +149,11 @@
                 <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.units</artifactId>
                 <version>${core.units.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openwms</groupId>
+                <artifactId>org.openwms.core.test.arch</artifactId>
+                <version>${core.test.arch.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
@@ -214,6 +181,11 @@
             <groupId>org.openwms</groupId>
             <artifactId>org.openwms.core.util</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.core.test.arch</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Spring Dependencies -->
@@ -297,13 +269,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -329,6 +296,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.interface21</groupId>
@@ -391,17 +364,6 @@
 
     <repositories>
         <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
             <id>sonatype-nexus-staging</id>
             <name>Staging Repository</name>
             <url>https://oss.sonatype.org/content/groups/staging/</url>
@@ -412,51 +374,5 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
