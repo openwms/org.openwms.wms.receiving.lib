@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2023 the original author or authors.
+ * Copyright 2005-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,6 @@ public class PackagingUnitVO extends AbstractBase<PackagingUnitVO> implements Se
 
     public PackagingUnitVO() { }
 
-    @ConstructorProperties({"product", "quantity"})
     public PackagingUnitVO(ProductVO product, Measurable quantity) {
         this.product = product;
         this.quantity = quantity;

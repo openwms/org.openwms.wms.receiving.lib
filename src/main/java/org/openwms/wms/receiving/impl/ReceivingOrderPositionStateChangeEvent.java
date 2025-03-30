@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2023 the original author or authors.
+ * Copyright 2005-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,34 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.receiving.api.events;
+package org.openwms.wms.receiving.impl;
 
 import org.openwms.core.event.RootApplicationEvent;
-import org.openwms.wms.receiving.api.OrderState;
-import org.openwms.wms.receiving.impl.ReceivingOrder;
+import org.openwms.wms.receiving.api.PositionState;
 
 import java.io.Serializable;
 
 /**
- * A ReceivingOrderCreatedEvent.
+ * A ReceivingOrderPositionStateChangeEvent.
  * 
  * @author Heiko Scherrer
  */
-public class ReceivingOrderStateChangeEvent extends RootApplicationEvent implements Serializable {
+public class ReceivingOrderPositionStateChangeEvent<T extends AbstractReceivingOrderPosition> extends RootApplicationEvent implements Serializable {
 
-    public final OrderState state;
+    public final PositionState state;
 
-    public ReceivingOrderStateChangeEvent(ReceivingOrder source, OrderState state) {
+    public ReceivingOrderPositionStateChangeEvent(T source, PositionState state) {
         super(source);
         this.state = state;
     }
 
     @Override
-    public ReceivingOrder getSource() {
-        return (ReceivingOrder) super.getSource();
+    public T getSource() {
+        return (T) super.getSource();
     }
 
-    public OrderState getState() {
+    public PositionState getState() {
         return state;
     }
 }

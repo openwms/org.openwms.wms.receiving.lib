@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2023 the original author or authors.
+ * Copyright 2005-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,10 @@
  */
 package org.openwms.wms.receiving.impl;
 
-import jakarta.persistence.AssociationOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.Validator;
@@ -31,6 +28,7 @@ import org.ameba.system.ValidationUtil;
 import org.openwms.wms.receiving.ValidationGroups;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A ReceivingTransportUnitOrderPosition is a persisted entity class that represents an expected receipt of a
@@ -41,11 +39,14 @@ import java.io.Serializable;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 // Bug in hibernate prevents overriding fkcontraints
-@AssociationOverride(name = "order", joinColumns =
-    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
-        foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_TU"))
-@Table(name = "WMS_REC_ORDER_POS_TU",
-        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS_TU", columnNames = { "C_ORDER_ID", "C_POS_NO" }))
+//@AssociationOverride(name = "order", joinColumns =
+//    @JoinColumn(name = "C_ORDER_ID", referencedColumnName = "C_ORDER_ID"),
+//        foreignKey = @ForeignKey(name = "FK_REC_POS_ORDER_ID_TU"))
+// under observation: seems to be fixed with upgrade to SpringBoot 3.4.1
+@Table(
+        name = "WMS_REC_ORDER_POS_TU",
+        uniqueConstraints = @UniqueConstraint(name = "UC_ORDER_ID_POS_TU", columnNames = { "C_ORDER_ID", "C_POS_NO" })
+)
 public class ReceivingTransportUnitOrderPosition extends AbstractReceivingOrderPosition implements Convertable, Serializable {
 
     /** The business key of the expected {@code TransportUnit} that is expected to be received. */
@@ -84,6 +85,29 @@ public class ReceivingTransportUnitOrderPosition extends AbstractReceivingOrderP
     @Override
     public void accept(BaseReceivingOrderPositionVisitor visitor) {
         visitor.visit(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ReceivingTransportUnitOrderPosition that = (ReceivingTransportUnitOrderPosition) o;
+        return Objects.equals(transportUnitBK, that.transportUnitBK) && Objects.equals(transportUnitTypeName, that.transportUnitTypeName);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), transportUnitBK, transportUnitTypeName);
     }
 
     public String getTransportUnitBK() {
