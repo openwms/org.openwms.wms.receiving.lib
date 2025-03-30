@@ -6,7 +6,6 @@ org.openwms.values
 org.openwms.wms
 org.openwms.wms.receiving
 org.openwms.wms.receiving.api
-org.openwms.wms.receiving.api.events
 org.openwms.wms.receiving.api.messages
 org.openwms.wms.receiving.app
 org.openwms.wms.receiving.events
